@@ -1,0 +1,458 @@
+<main class="app-wrapper">
+
+  <div class="container-fluid">
+
+    <div class="app-page-head d-flex align-items-center justify-content-between">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb mb-0">
+          <li class="breadcrumb-item">
+            <a href="index.html">
+              <i class="fi fi-rr-home"></i> Home
+            </a>
+          </li>
+          <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
+        </ol>
+      </nav>
+    </div>
+
+    <div class="row">
+
+      <div class="col-xxl-8 col-lg-8">
+        <div class="row">
+          <div class="col-xxl-4 col-md-6">
+            <div class="card">
+              <div class="card-header d-flex align-items-center justify-content-between border-0 pb-0">
+                <div class="clearfix">
+                  <h6>TOTAL REVISIONES</h6>
+                </div>
+                <div class="d-flex align-items-center gap-2">
+                  <button type="button" class="btn btn-primary waves-effect waves-light" routerLink="/nueva">
+                    <i class="fi fi-rr-plus me-1"></i> Nueva inspeccion
+                  </button>
+                </div>
+              </div>
+
+              <div class="card-body py-0 d-flex align-items-start justify-content-between">
+                <div class="d-flex align-items-center gap-2">
+                  <h2 class="mb-0">{{ totalInspections | number:'1.0-0' }}</h2>
+
+                </div>
+                <div id="chartContacts" class="mb-n4 mt-n3"></div>
+              </div>
+              <div class="card-footer border-0 pt-0 mt-n1">
+                <div class="border-top pb-2"></div>
+                <div class="d-flex align-items-center justify-content-between">
+                  <p class="mb-0">Últimas del mes: {{ currentMonthInspections | number:'1.0-0' }}</p>
+
+                  <a class="btn-link">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path opacity="0.5"
+                        d="M3.33301 9.375C2.98783 9.375 2.70801 9.65483 2.70801 10C2.70801 10.3452 2.98783 10.625 3.33301 10.625V9.375ZM3.33301 10.625H16.6663V9.375H3.33301V10.625Z"
+                        fill="var(--bs-primary)" />
+                      <path d="M11.667 5L16.667 10L11.667 15" stroke="var(--bs-primary)" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+
+          <div class="col-xxl-4 col-md-6">
+            <div class="card">
+              <div class="card-body">
+                <div class="mb-4">
+                  <div class="d-flex justify-content-between mb-2">
+                    <h6 class="mb-0">APROBADAS</h6>
+                    <span class="text-2xs">Total de inspecciones <span class="text-primary fw-semibold">{{
+                        totalInspections}}</span></span>
+                  </div>
+                  <div class="progress progress-sm" role="progressbar" aria-label="Barra de progreso" aria-valuenow="10"
+                    aria-valuemin="0" aria-valuemax="100">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated" style="width: 70%"></div>
+                  </div>
+                </div>
+                <div class="d-flex align-items-center justify-content-between">
+                  <div class="d-grid text-1xs">
+
+                    <div class="d-flex gap-1 align-items-center py-1 mx-1">
+                      <i class="fa fa-square text-primary text-opacity-25 me-1"></i>
+                      En progreso
+                    </div>
+                    <div class="d-flex gap-1 align-items-center py-1 mx-1">
+                      <i class="fa fa-square text-primary text-opacity-50 me-1"></i>
+                      Pendientes
+                    </div>
+                  </div>
+                  <div class="maxw-100px ratio ratio-1x1">
+                    <canvas id="chartTasksOverview"></canvas>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-xxl-4 col-md-6">
+            <div class="card">
+              <div class="card-header d-flex align-items-center justify-content-between border-0 pb-0">
+                <div class="clearfix">
+                  <h6>RECHAZADAS</h6>
+                </div>
+                <div class="btn-group">
+                  <button class="btn btn-action-primary btn-sm btn-icon waves-effect dropdown-toggle" type="button"
+                    data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="fi fi-bs-menu-dots"></i>
+                  </button>
+                  <ul class="dropdown-menu dropdown-menu-end">
+                    <li><a class="dropdown-item" href="javascript:void(0);">Editar</a></li>
+                    <li><a class="dropdown-item" href="javascript:void(0);">Eliminar</a></li>
+                  </ul>
+                </div>
+              </div>
+              <div class="card-body pt-0">
+                <div class="d-flex align-items-center gap-2">
+                  <h2 class="mb-0">0</h2>
+                  <span class="badge badge-sm bg-success-subtle text-success">0</span>
+                </div>
+              </div>
+              <div class="card-footer border-0 pt-0">
+                <div class="border-top pb-2"></div>
+                <div class="d-flex align-items-center justify-content-between">
+                  <p class="mb-0">Vs mes anterior: 1,195</p>
+                  <a href="javascript:void(0);" class="btn-link">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path opacity="0.5"
+                        d="M3.33301 9.375C2.98783 9.375 2.70801 9.65483 2.70801 10C2.70801 10.3452 2.98783 10.625 3.33301 10.625V9.375ZM3.33301 10.625H16.6663V9.375H3.33301V10.625Z"
+                        fill="var(--bs-primary)" />
+                      <path d="M11.667 5L16.667 10L11.667 15" stroke="var(--bs-primary)" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xxl-4 col-lg-4">
+        <div class="row">
+          <div class="col-12">
+            <div class="card overflow-hidden bg-primary border-0 ovarlay-primary-gradient"
+              style="background-image: url(assets/images/auth/auth-frame.webp); background-position: center; background-size: cover;">
+              <div
+                class="card-header pb-0 border-0 d-flex align-items-center justify-content-between z-1 position-relative">
+                <h6 class="card-title mb-0 text-white">Total Earning</h6>
+                <div class="btn-group">
+                  <button class="btn btn-sm btn-icon text-white waves-effect dropdown-toggle" type="button"
+                    data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="fi fi-bs-menu-dots"></i>
+                  </button>
+                  <ul class="dropdown-menu dropdown-menu-end">
+                    <li>
+                      <a class="dropdown-item" href="javascript:void(0);">Editar</a>
+                    </li>
+                    <li>
+                      <a class="dropdown-item" href="javascript:void(0);">Eliminar</a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div class="card-body pt-0 border-light border-bottom border-opacity-10">
+                <div class="mb-5 mt-n3 z-n1 position-relative">
+                  <div id="statusChart"></div>
+                  <div class="text-white mt-n5 text-center">{{ totalInspections | number:'1.0-0' }} Inspecciones</div>
+                </div>
+                <div class="px-4 mb-3 d-flex align-items-start justify-content-between">
+                  <div class="d-flex align-items-start gap-2">
+                    <div class="py-1">
+                      <i class="text-white fa-solid fa-square"></i>
+                    </div>
+                    <div class="clearfix">
+                      <h3 class="mb-0 text-white">1</h3>
+                      <p class="text-white text-opacity-50 mb-0">Aprobadas</p>
+                    </div>
+                  </div>
+                  <div class="d-flex align-items-start gap-2">
+                    <div class="p-1">
+                      <i class="text-white text-opacity-50 fa-solid fa-square"></i>
+                    </div>
+                    <div class="clearfix">
+                      <h3 class="mb-0 text-white">0</h3>
+                      <p class="text-white text-opacity-50 mb-0">Rechazadas</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- <div class="card-footer border-0">
+                    <h6 class="card-title mb-3 text-white">Orders Status</h6>
+                    <div class="progress-stacked bg-transparent mb-4">
+                      <div class="progress bg-transparent" role="progressbar" aria-label="Segment one" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100" style="width: 70%">
+                        <div class="progress-bar bg-white"></div>
+                      </div>
+                      <div class="progress bg-transparent" role="progressbar" aria-label="Segment two" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" style="width: 25%">
+                        <div class="progress-bar bg-white bg-opacity-50"></div>
+                      </div>
+                      <div class="progress bg-transparent" role="progressbar" aria-label="Segment three" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 5%">
+                        <div class="progress-bar bg-white bg-opacity-25"></div>
+                      </div>
+                    </div>
+                    <div class="d-flex align-items-center justify-content-between mb-2">
+                      <div class="d-flex align-items-center gap-2">
+                        <i class="text-white fa-solid fa-square"></i>
+                        <h6 class="fw-light text-white mb-0">Paid</h6>
+                      </div>
+                      <strong class="text-white fw-semibold">70%</strong>
+                    </div>
+                    <div class="d-flex align-items-center justify-content-between mb-2">
+                      <div class="d-flex align-items-center gap-2">
+                        <i class="text-white text-opacity-50 fa-solid fa-square"></i>
+                        <h6 class="fw-light text-white mb-0">Cancelled</h6>
+                      </div>
+                      <strong class="text-white fw-semibold">25%</strong>
+                    </div>
+                    <div class="d-flex align-items-center justify-content-between mb-2">
+                      <div class="d-flex align-items-center gap-2">
+                        <i class="text-white text-opacity-25 fa-solid fa-square"></i>
+                        <h6 class="fw-light text-white mb-0">Refunded</h6>
+                      </div>
+                      <strong class="text-white fw-semibold">5%</strong>
+                    </div>
+                  </div> -->
+            </div>
+          </div>
+
+
+        </div>
+      </div>
+
+      <div class="col-xxl-12">
+        <div class="card overflow-hidden">
+          <div class="card-header d-flex flex-wrap gap-3 align-items-center justify-content-between border-0 pb-0">
+            <h6 class="card-title mb-0">Inspecciones recientes</h6>
+            <div class="d-flex flex-wrap gap-2">
+              <div id="dt_NewCustomers_Search"></div>
+              <button type="button" class="btn btn-sm btn-secondary waves-effect" routerLink="/inspections">
+                <i class="fi fi-rr-eye text-2xs me-1"></i> Ver todas
+              </button>
+            </div>
+          </div>
+          <div class="card-body px-1 pt-2 pb-2">
+            <table id="dt_NewCustomers" class="table table-sm display table-row-rounded data-row-checkbox">
+              <thead class="table-light">
+                <tr>
+                  <th class="pe-0">
+                    <div class="form-check">
+                      <input class="form-check-input" data-row-checkbox type="checkbox">
+                    </div>
+                  </th>
+                  <th class="minw-200px">Conductor</th>
+                  <th class="minw-150px">Placa del vehículo</th>
+                  <th class="minw-150px">Telefono</th>
+                  <th class="minw-125px">Fecha</th>
+                  <th>Status</th>
+                  <th>Accion</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let inspection of RealtimeInspectionsService.inspections$ | async" 
+                    (click)="viewInspection(inspection.id)"
+                    class="inspection-row">
+                  <td class="pe-0" (click)="$event.stopPropagation()">
+                    <div class="form-check p-0 w-auto d-inline-block mb-0 mb-n1">
+                      <input class="form-check-input m-0" data-checkbox="" type="checkbox" (click)="$event.stopPropagation()">
+                    </div>
+                  </td>
+                  <td>
+                    <div class="d-flex align-items-center">
+                      <div class="avatar avatar-xxs rounded-circle me-2">
+                        <img [src]="inspection.foto_conductor || 'assets/images/avatar/avatar1.webp'" alt="Foto del conductor" class="img-fluid">
+                      </div>
+                      {{ inspection.nombres_conductor || 'Sin nombre' }}
+                    </div>
+                  </td>
+                  <td>{{ inspection.placa || 'Sin placa' }}</td>
+                  <td>{{ inspection.telefono || 'Sin teléfono' }}</td>
+                  <td>{{ (inspection.fecha_inspeccion | date: 'dd/MM/yyyy') || 'Sin fecha' }}</td>
+                  <td>
+                    <span class="badge badge-lg" 
+                          [ngClass]="{
+                            'bg-success-subtle text-success': inspection.estado === 'aprobada',
+                            'bg-warning-subtle text-warning': inspection.estado === 'pendiente',
+                            'bg-danger-subtle text-danger': inspection.estado === 'rechazada',
+                            'bg-primary-subtle text-primary': !inspection.estado
+                          }">
+                      {{ inspection.estado || 'Pendiente' | titlecase }}
+                    </span>
+                  </td>
+                  <td>
+                    <div class="btn-group float-end" (click)="$event.stopPropagation()">
+                      <button class="btn btn-subtle-primary btn-sm btn-shadow btn-icon waves-effect dropdown-toggle"
+                        type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fi fi-rr-menu-dots"></i>
+                      </button>
+                      <ul class="dropdown-menu dropdown-menu-end">
+                        <li>
+                          <a class="dropdown-item" [routerLink]="['/detail', inspection.id]" (click)="$event.stopPropagation()">
+                            <i class="fi fi-rr-edit me-2"></i>Editar
+                          </a>
+                        </li>
+                        <li><a class="dropdown-item text-danger" href="javascript:void(0);" (click)="$event.stopPropagation(); deleteInspection(inspection.id)">
+                          <i class="fi fi-rr-trash me-2"></i>Eliminar
+                        </a></li>
+                      </ul>
+                    </div>
+                  </td>
+                </tr>
+
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+
+
+    </div>
+
+  </div>
+
+  <!-- Floating Action Button for Mobile/Tablet -->
+  <div class="floating-action d-lg-none">
+    <input type="checkbox" id="fab-check" class="fab-check">
+    <label class="fab" for="fab-check">
+      <span class="fab-icon">+</span>
+      <span class="fab-icon-close">×</span>
+    </label>
+    <div class="fab-options">
+      <a href="#" class="fab-option">
+        <span class="fab-label">Camioneta</span>
+        <span class="fab-option-icon">1</span>
+      </a>
+      <a href="#" class="fab-option">
+        <span class="fab-label">Busetas</span>
+        <span class="fab-option-icon">2</span>
+      </a>
+      <a href="#" class="fab-option">
+        <span class="fab-label">Pesados</span>
+        <span class="fab-option-icon">3</span>
+      </a>
+    </div>
+  </div>
+
+  <style>
+    .floating-action {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      z-index: 1000;
+    }
+
+    .fab {
+      width: 56px;
+      height: 56px;
+      background-color: var(--bs-primary);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 2rem;
+      font-weight: 300;
+      cursor: pointer;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+      transition: all 0.3s ease;
+      user-select: none;
+      position: relative;
+    }
+
+    .fab:hover {
+      background-color: var(--bs-primary);
+      transform: scale(1.1);
+    }
+
+    .fab-icon-close {
+      position: absolute;
+      opacity: 0;
+      transform: rotate(-45deg);
+      transition: all 0.3s ease;
+    }
+
+    .fab-check:checked + .fab .fab-icon {
+      opacity: 0;
+      transform: rotate(45deg);
+    }
+
+    .fab-check:checked + .fab .fab-icon-close {
+      opacity: 1;
+      transform: rotate(0);
+    }
+
+    .fab-check:checked + .fab {
+      background-color: var(--bs-primary);
+    }
+
+    .fab-check:checked + .fab:hover {
+      background-color: var(--bs-primary);
+    }
+
+    .fab-check {
+      display: none;
+    }
+
+    .fab-options {
+      position: absolute;
+      bottom: 70px;
+      right: 0;
+      opacity: 0;
+      transform: scale(0);
+      transform-origin: bottom right;
+      transition: all 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .fab-check:checked ~ .fab-options {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .fab-option {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      text-decoration: none;
+      color: #333;
+    }
+
+    .fab-label {
+      background: white;
+      padding: 8px 12px;
+      border-radius: 20px;
+      margin-right: 10px;
+      font-size: 0.85rem;
+      white-space: nowrap;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .fab-option-icon {
+      width: 40px;
+      height: 40px;
+      background-color: var(--bs-primary);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: bold;
+    }
+
+    @media (min-width: 992px) {
+      .floating-action {
+        display: none;
+      }
+    }
+  </style>
+</main>

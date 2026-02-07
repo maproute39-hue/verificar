@@ -1,0 +1,1253 @@
+<main class="app-wrapper">
+  <div class="container-fluid">
+    <div class="app-page-head d-flex align-items-center justify-content-between">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb mb-0">
+          <li class="breadcrumb-item">
+            <a routerLink="/">
+              <i class="fi fi-rr-home"></i> Inicio
+            </a>
+          </li>
+          <li class="breadcrumb-item active" aria-current="page">Listado de Inspecciones</li>
+        </ol>
+      </nav>
+      <div class="d-flex gap-2">
+        <div class="search-box">
+          <input type="text" class="form-control" placeholder="Buscar inspecciones..." [(ngModel)]="searchTerm"
+            (input)="onSearch()">
+          <i class="fi fi-rr-search"></i>
+        </div>
+        <button type="button" class="btn btn-primary" routerLink="/nueva">
+          <i class="fi fi-rr-plus me-1"></i> Nueva Inspección
+        </button>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header d-flex align-items-center justify-content-between">
+            <h5 class="mb-0">Inspecciones</h5>
+            <div class="text-muted">
+              Total: {{ totalInspections }} | Este mes: {{ currentMonthInspections }}
+            </div>
+          </div>
+          <div class="card-body px-1 pt-2 pb-2">
+            <table id="dt_Inspections" class="table table-sm display table-row-rounded data-row-checkbox">
+              <thead class="table-light">
+                <tr>
+                  <th class="pe-0">
+                    <div class="form-check">
+                      <input class="form-check-input" data-row-checkbox type="checkbox">
+                    </div>
+                  </th>
+                  <th class="minw-200px">Conductor</th>
+                  <th class="minw-150px">Placa del vehículo</th>
+                  <th class="minw-150px">Teléfono</th>
+                  <th class="minw-125px">Fecha</th>
+                  <th>Status</th>
+                  <th>Acción</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let inspection of filteredInspections" (click)="viewInspection(inspection.id)"
+                  style="cursor: pointer;">
+                  <td class="pe-0">
+                    <div class="form-check p-0 w-auto d-inline-block mb-0 mb-n1">
+                      <input class="form-check-input m-0" data-checkbox type="checkbox"
+                        (click)="$event.stopPropagation()">
+                    </div>
+                  </td>
+                  <td>
+                    <div class="d-flex align-items-center">
+                      <div class="avatar avatar-circle avatar-xs me-2">
+                        <i class="fi fi-rr-user"></i>
+                      </div>
+                      <span class="fw-semibold">{{ inspection.nombres_conductor || 'N/A' }}</span>
+                    </div>
+                  </td>
+                  <td>
+                    <span class="">{{ inspection.placa || 'N/A' }}</span>
+                  </td>
+                  <td>
+                    <span class="text-muted">{{ inspection.telefono || 'N/A' }}</span>
+                  </td>
+                  <td>
+                    <span class="text-muted">{{ inspection.fecha_inspeccion ? (inspection.fecha_inspeccion |
+                      date:'dd/MM/yyyy') : 'N/A' }}</span>
+                  </td>
+                  <td>
+                    <span class="badge" [ngClass]="{
+                            'bg-success': inspection.status === 'approved',
+                            'bg-warning': inspection.status === 'rejected',
+                            'bg-soft-primary': !['approved', 'rejected'].includes(inspection.status || '')
+                          }">
+                      {{ inspection.status || 'N/A' }}
+                    </span>
+                  </td>
+                  <td class="text-center">
+                    <div class="d-flex gap-2 justify-content-center">
+                      <button class="btn btn-sm btn-icon btn-soft-primary"
+                        (click)="$event.stopPropagation(); viewInspection(inspection.id)" title="Ver">
+                        <i class="fi fi-rr-eye"></i>
+                      </button>
+                      <button class="btn btn-sm btn-icon btn-soft-info" (click)="$event.stopPropagation();"
+                        title="Editar">
+                        <i class="fi fi-rr-edit"></i>
+                      </button>
+                      <button class="btn btn-sm btn-icon btn-soft-danger" (click)="$event.stopPropagation();"
+                        title="Eliminar">
+                        <i class="fi fi-rr-trash"></i>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                <tr *ngIf="filteredInspections.length === 0">
+                  <td colspan="9" class="text-center py-4">
+                    <div class="d-flex flex-column align-items-center">
+                      <i class="fi fi-rr-search-alt text-muted mb-2" style="font-size: 2rem;"></i>
+                      <p class="mb-0">No se encontraron inspecciones</p>
+                      <small class="text-muted">Intenta con otros términos de búsqueda</small>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+<div class="modal fade" id="addCustomerModal" tabindex="-1" aria-labelledby="addCustomerModal" aria-hidden="true">
+  <div class="modal-dialog modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Nueva inspección</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form class="row">
+          <!-- columna izquierda -->
+          <div class="col-lg-6 mb-3">
+            <!-- Encabezado General -->
+            <div class="col-12 mb-3">
+              <h6 class="fw-bold border-bottom pb-2">DATOS GENERALES</h6>
+            </div>
+
+            <div class="row">
+              <div class="col-lg-6 mb-3">
+                <label class="form-label">Fecha de Inspección</label>
+                <input type="text" class="form-control flatpickr-date" readonly="readonly" placeholder="DD/MM/YYYY">
+              </div>
+
+              <div class="col-lg-6 mb-3">
+                <label class="form-label">Vigencia Hasta</label>
+                <input type="text" class="form-control flatpickr-date" readonly="readonly" placeholder="DD/MM/YYYY">
+              </div>
+            </div>
+
+            <!-- DATOS DEL CONDUCTOR -->
+            <div class="col-12 mb-3">
+              <h6 class="fw-bold border-bottom pb-2">DATOS DEL CONDUCTOR</h6>
+            </div>
+            <div class="row">
+              <div class="col-lg-6 mb-3">
+                <label class="form-label">Nombre Transportadora</label>
+                <input type="text" class="form-control" placeholder="Nombre transportadora">
+              </div>
+
+              <div class="col-lg-6 mb-3">
+                <label class="form-label">Nombres Conductor</label>
+                <input type="text" class="form-control" placeholder="Nombres conductor">
+              </div>
+
+              <div class="col-lg-6 mb-3">
+                <label class="form-label">No. Identificación</label>
+                <input type="text" class="form-control" placeholder="Número de identificación">
+              </div>
+
+              <div class="col-lg-6 mb-3">
+                <label class="form-label">Teléfono</label>
+                <input type="text" class="form-control" placeholder="Teléfono">
+              </div>
+
+              <div class="col-lg-6 mb-3">
+                <label class="form-label">V / Licencia conducción</label>
+                <input type="text" class="form-control" placeholder="Fecha vencimiento licencia">
+              </div>
+            </div>
+            <!-- DATOS DEL VEHÍCULO -->
+            <div class="col-12 mb-3">
+              <h6 class="fw-bold border-bottom pb-2">DATOS DEL VEHÍCULO</h6>
+            </div>
+            <div class="row">
+              <div class="col-lg-6 mb-3">
+                <label class="form-label">Placa</label>
+                <input type="text" class="form-control" placeholder="Placa del vehículo">
+              </div>
+
+              <div class="col-lg-6 mb-3">
+                <label class="form-label">Marca</label>
+                <input type="text" class="form-control" placeholder="Marca">
+              </div>
+
+              <div class="col-lg-6 mb-3">
+                <label class="form-label">Modelo</label>
+                <input type="text" class="form-control" placeholder="Modelo">
+              </div>
+
+              <div class="col-lg-6 mb-3">
+                <label class="form-label">Kilometraje actual</label>
+                <input type="text" class="form-control" placeholder="Kilometraje">
+              </div>
+
+              <div class="col-lg-6 mb-3">
+                <label class="form-label">SOAT</label>
+                <input type="text" class="form-control" placeholder="Número SOAT">
+              </div>
+
+              <div class="col-lg-6 mb-3">
+                <label class="form-label">Licencia Transito</label>
+                <input type="text" class="form-control" placeholder="Licencia transito">
+              </div>
+
+              <div class="col-lg-6 mb-3">
+                <label class="form-label">R. Tecnicomecánica</label>
+                <input type="text" class="form-control" placeholder="Número R. Tecnicomecánica">
+              </div>
+
+              <div class="col-lg-6 mb-3">
+                <label class="form-label">Clase de vehículo</label>
+                <input type="text" class="form-control" placeholder="Clase de vehículo">
+              </div>
+
+              <div class="col-lg-6 mb-3">
+                <label class="form-label">Tarjeta de Operación</label>
+                <input type="text" class="form-control" placeholder="Tarjeta de operación">
+              </div>
+
+              <div class="col-lg-6 mb-3">
+                <label class="form-label">Color</label>
+                <input type="text" class="form-control" placeholder="Color">
+              </div>
+
+              <div class="col-lg-6 mb-3">
+                <label class="form-label">Código del Vehículo</label>
+                <input type="text" class="form-control" placeholder="Código del vehículo">
+              </div>
+
+              <div class="col-lg-6 mb-3">
+                <label class="form-label">Capacidad de pasajeros</label>
+                <input type="text" class="form-control" placeholder="Cantidad de pasajeros">
+              </div>
+            </div>
+            <!-- INSPECCIÓN DEL VEHÍCULO -->
+
+          </div>
+          <!-- columna derecha -->
+          <div class="col-lg-6 mb-3">
+            <div class="col-12 mb-3">
+              <h6 class="fw-bold border-bottom pb-2">INSPECCIÓN DEL VEHÍCULO</h6>
+              <p class="small text-muted">Marque con una ✓ según el estado del ítem verificado: Estado OK (verde),
+                Estado Negativo (rojo), No Aplica (blanco).</p>
+            </div>
+            <div class="">
+              <div class="y">
+                <div class="d-flex">
+                  <div class="nav flex-column nav-pills border-end p-2" id="v-pills-tab" role="tablist"
+                    aria-orientation="vertical">
+                    <button class="nav-link active" id="v-pills-home-tab" data-bs-toggle="pill"
+                      data-bs-target="#electrico" type="button" role="tab" aria-controls="electrico"
+                      aria-selected="true">SISTEMA ELÉCTRICO</button>
+                    <button class="nav-link" id="v-pills-profile-tab" data-bs-toggle="pill" data-bs-target="#motor"
+                      type="button" role="tab" aria-controls="motor" aria-selected="false">SISTEMA DE MOTOR</button>
+                    <button class="nav-link" id="v-pills-disabled-tab" data-bs-toggle="pill"
+                      data-bs-target="#carroceria" type="button" role="tab" aria-controls="carroceria"
+                      aria-selected="false">CARROCERÍA / PARTE EXTERNA</button>
+                    <button class="nav-link" id="v-pills-messages-tab" data-bs-toggle="pill" data-bs-target="#cabina"
+                      type="button" role="tab" aria-controls="cabina" aria-selected="false">CABINA Y MANDOS / PARTE
+                      INTERNA</button>
+                    <button class="nav-link" id="v-pills-settings-tab" data-bs-toggle="pill"
+                      data-bs-target="#seguridadActiva" type="button" role="tab" aria-controls="seguridadActiva"
+                      aria-selected="false">SEGURIDAD ACTIVA</button>
+                    <button class="nav-link" id="v-pills-settings-tab" data-bs-toggle="pill"
+                      data-bs-target="#seguridadPasiva" type="button" role="tab" aria-controls="seguridadPasiva"
+                      aria-selected="false"> SISTEMA DE SEGURIDAD PASIVA</button>
+                    <button class="nav-link" id="v-pills-settings-tab" data-bs-toggle="pill" data-bs-target="#kit"
+                      type="button" role="tab" aria-controls="kit" aria-selected="false">KIT DE CARRETERA</button>
+                    <button class="nav-link" id="v-pills-settings-tab" data-bs-toggle="pill" data-bs-target="#parteBaja"
+                      type="button" role="tab" aria-controls="parteBaja" aria-selected="false">PARTE BAJA</button>
+                    <button class="nav-link" id="v-pills-settings-tab" data-bs-toggle="pill"
+                      data-bs-target="#profundidad" type="button" role="tab" aria-controls="profundidad"
+                      aria-selected="false">PROFUNDIDAD DE LABRADO DE LLANTAS</button>
+                  </div>
+                  <div class="tab-content">
+                    <div class="tab-pane fade show active" id="electrico" role="tabpanel"
+                      aria-labelledby="electrico-tabPillsFill" tabindex="0">
+
+                      <div class="col-lg-6 mb-3">
+                        <label class="form-label">Luces de navegación: altas - bajas</label>
+                        <div class="btn-group w-100" role="group">
+                          <input type="radio" class="btn-check" name="luces_navegacion" id="luces_navegacion_ok"
+                            autocomplete="off">
+                          <label class="btn btn-outline-success" for="luces_navegacion_ok">OK</label>
+                          <input type="radio" class="btn-check" name="luces_navegacion" id="luces_navegacion_neg"
+                            autocomplete="off">
+                          <label class="btn btn-outline-danger" for="luces_navegacion_neg">Negativo</label>
+                          <input type="radio" class="btn-check" name="luces_navegacion" id="luces_navegacion_na"
+                            autocomplete="off">
+                          <label class="btn btn-outline-secondary" for="luces_navegacion_na">N/A</label>
+                        </div>
+                      </div>
+
+                      <div class="col-lg-6 mb-3">
+                        <label class="form-label">Luces de frenado</label>
+                        <div class="btn-group w-100" role="group">
+                          <input type="radio" class="btn-check" name="luces_frenado" id="luces_frenado_ok"
+                            autocomplete="off">
+                          <label class="btn btn-outline-success" for="luces_frenado_ok">OK</label>
+                          <input type="radio" class="btn-check" name="luces_frenado" id="luces_frenado_neg"
+                            autocomplete="off">
+                          <label class="btn btn-outline-danger" for="luces_frenado_neg">Negativo</label>
+                          <input type="radio" class="btn-check" name="luces_frenado" id="luces_frenado_na"
+                            autocomplete="off">
+                          <label class="btn btn-outline-secondary" for="luces_frenado_na">N/A</label>
+                        </div>
+                      </div>
+
+                      <div class="col-lg-6 mb-3">
+                        <label class="form-label">Luces direccionales</label>
+                        <div class="btn-group w-100" role="group">
+                          <input type="radio" class="btn-check" name="luces_direccionales" id="luces_direccionales_ok"
+                            autocomplete="off">
+                          <label class="btn btn-outline-success" for="luces_direccionales_ok">OK</label>
+                          <input type="radio" class="btn-check" name="luces_direccionales" id="luces_direccionales_neg"
+                            autocomplete="off">
+                          <label class="btn btn-outline-danger" for="luces_direccionales_neg">Negativo</label>
+                          <input type="radio" class="btn-check" name="luces_direccionales" id="luces_direccionales_na"
+                            autocomplete="off">
+                          <label class="btn btn-outline-secondary" for="luces_direccionales_na">N/A</label>
+                        </div>
+                      </div>
+
+                      <div class="col-lg-6 mb-3">
+                        <label class="form-label">Luz de reversa</label>
+                        <div class="btn-group w-100" role="group">
+                          <input type="radio" class="btn-check" name="luz_reversa" id="luz_reversa_ok"
+                            autocomplete="off">
+                          <label class="btn btn-outline-success" for="luz_reversa_ok">OK</label>
+                          <input type="radio" class="btn-check" name="luz_reversa" id="luz_reversa_neg"
+                            autocomplete="off">
+                          <label class="btn btn-outline-danger" for="luz_reversa_neg">Negativo</label>
+                          <input type="radio" class="btn-check" name="luz_reversa" id="luz_reversa_na"
+                            autocomplete="off">
+                          <label class="btn btn-outline-secondary" for="luz_reversa_na">N/A</label>
+                        </div>
+                      </div>
+
+                      <div class="col-lg-6 mb-3">
+                        <label class="form-label">Luces de estacionamiento</label>
+                        <div class="btn-group w-100" role="group">
+                          <input type="radio" class="btn-check" name="luces_estacionamiento"
+                            id="luces_estacionamiento_ok" autocomplete="off">
+                          <label class="btn btn-outline-success" for="luces_estacionamiento_ok">OK</label>
+                          <input type="radio" class="btn-check" name="luces_estacionamiento"
+                            id="luces_estacionamiento_neg" autocomplete="off">
+                          <label class="btn btn-outline-danger" for="luces_estacionamiento_neg">Negativo</label>
+                          <input type="radio" class="btn-check" name="luces_estacionamiento"
+                            id="luces_estacionamiento_na" autocomplete="off">
+                          <label class="btn btn-outline-secondary" for="luces_estacionamiento_na">N/A</label>
+                        </div>
+                      </div>
+
+                      <div class="col-lg-6 mb-3">
+                        <label class="form-label">Luces de posición (cocuyos)</label>
+                        <div class="btn-group w-100" role="group">
+                          <input type="radio" class="btn-check" name="luces_posicion" id="luces_posicion_ok"
+                            autocomplete="off">
+                          <label class="btn btn-outline-success" for="luces_posicion_ok">OK</label>
+                          <input type="radio" class="btn-check" name="luces_posicion" id="luces_posicion_neg"
+                            autocomplete="off">
+                          <label class="btn btn-outline-danger" for="luces_posicion_neg">Negativo</label>
+                          <input type="radio" class="btn-check" name="luces_posicion" id="luces_posicion_na"
+                            autocomplete="off">
+                          <label class="btn btn-outline-secondary" for="luces_posicion_na">N/A</label>
+                        </div>
+                      </div>
+
+                      <div class="col-lg-6 mb-3">
+                        <label class="form-label">Luz antineblina (exploradoras)</label>
+                        <div class="btn-group w-100" role="group">
+                          <input type="radio" class="btn-check" name="luz_antineblina" id="luz_antineblina_ok"
+                            autocomplete="off">
+                          <label class="btn btn-outline-success" for="luz_antineblina_ok">OK</label>
+                          <input type="radio" class="btn-check" name="luz_antineblina" id="luz_antineblina_neg"
+                            autocomplete="off">
+                          <label class="btn btn-outline-danger" for="luz_antineblina_neg">Negativo</label>
+                          <input type="radio" class="btn-check" name="luz_antineblina" id="luz_antineblina_na"
+                            autocomplete="off">
+                          <label class="btn btn-outline-secondary" for="luz_antineblina_na">N/A</label>
+                        </div>
+                      </div>
+
+                      <div class="col-lg-6 mb-3">
+                        <label class="form-label">Luz de placa</label>
+                        <div class="btn-group w-100" role="group">
+                          <input type="radio" class="btn-check" name="luz_placa" id="luz_placa_ok" autocomplete="off">
+                          <label class="btn btn-outline-success" for="luz_placa_ok">OK</label>
+                          <input type="radio" class="btn-check" name="luz_placa" id="luz_placa_neg" autocomplete="off">
+                          <label class="btn btn-outline-danger" for="luz_placa_neg">Negativo</label>
+                          <input type="radio" class="btn-check" name="luz_placa" id="luz_placa_na" autocomplete="off">
+                          <label class="btn btn-outline-secondary" for="luz_placa_na">N/A</label>
+                        </div>
+                      </div>
+
+                      <div class="col-lg-6 mb-3">
+                        <label class="form-label">Tablero de instrumentos (testigos)</label>
+                        <div class="btn-group w-100" role="group">
+                          <input type="radio" class="btn-check" name="tablero_instrumentos" id="tablero_instrumentos_ok"
+                            autocomplete="off">
+                          <label class="btn btn-outline-success" for="tablero_instrumentos_ok">OK</label>
+                          <input type="radio" class="btn-check" name="tablero_instrumentos"
+                            id="tablero_instrumentos_neg" autocomplete="off">
+                          <label class="btn btn-outline-danger" for="tablero_instrumentos_neg">Negativo</label>
+                          <input type="radio" class="btn-check" name="tablero_instrumentos" id="tablero_instrumentos_na"
+                            autocomplete="off">
+                          <label class="btn btn-outline-secondary" for="tablero_instrumentos_na">N/A</label>
+                        </div>
+                      </div>
+
+                      <div class="col-lg-6 mb-3">
+                        <label class="form-label">Bocina o pito</label>
+                        <div class="btn-group w-100" role="group">
+                          <input type="radio" class="btn-check" name="bocina" id="bocina_ok" autocomplete="off">
+                          <label class="btn btn-outline-success" for="bocina_ok">OK</label>
+                          <input type="radio" class="btn-check" name="bocina" id="bocina_neg" autocomplete="off">
+                          <label class="btn btn-outline-danger" for="bocina_neg">Negativo</label>
+                          <input type="radio" class="btn-check" name="bocina" id="bocina_na" autocomplete="off">
+                          <label class="btn btn-outline-secondary" for="bocina_na">N/A</label>
+                        </div>
+                      </div>
+
+                      <div class="col-lg-6 mb-3">
+                        <label class="form-label">BATERÍA (bornes, nivel ácido, fugas)</label>
+                        <div class="btn-group w-100" role="group">
+                          <input type="radio" class="btn-check" name="bateria" id="bateria_ok" autocomplete="off">
+                          <label class="btn btn-outline-success" for="bateria_ok">OK</label>
+                          <input type="radio" class="btn-check" name="bateria" id="bateria_neg" autocomplete="off">
+                          <label class="btn btn-outline-danger" for="bateria_neg">Negativo</label>
+                          <input type="radio" class="btn-check" name="bateria" id="bateria_na" autocomplete="off">
+                          <label class="btn btn-outline-secondary" for="bateria_na">N/A</label>
+                        </div>
+                      </div>
+
+                      <div class="col-lg-6 mb-3">
+                        <label class="form-label">Aire acondicionado</label>
+                        <div class="btn-group w-100" role="group">
+                          <input type="radio" class="btn-check" name="aire_acondicionado" id="aire_acondicionado_ok"
+                            autocomplete="off">
+                          <label class="btn btn-outline-success" for="aire_acondicionado_ok">OK</label>
+                          <input type="radio" class="btn-check" name="aire_acondicionado" id="aire_acondicionado_neg"
+                            autocomplete="off">
+                          <label class="btn btn-outline-danger" for="aire_acondicionado_neg">Negativo</label>
+                          <input type="radio" class="btn-check" name="aire_acondicionado" id="aire_acondicionado_na"
+                            autocomplete="off">
+                          <label class="btn btn-outline-secondary" for="aire_acondicionado_na">N/A</label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="tab-pane fade" id="motor" role="tabpanel" aria-labelledby="motor-tabPillsFill"
+                      tabindex="0">
+
+                      <div class="col-lg-6 mb-3">
+                        <label class="form-label">Nivel de aceite del motor</label>
+                        <div class="btn-group w-100" role="group">
+                          <input type="radio" class="btn-check" name="aceite_motor" id="aceite_motor_ok"
+                            autocomplete="off">
+                          <label class="btn btn-outline-success" for="aceite_motor_ok">OK</label>
+                          <input type="radio" class="btn-check" name="aceite_motor" id="aceite_motor_neg"
+                            autocomplete="off">
+                          <label class="btn btn-outline-danger" for="aceite_motor_neg">Negativo</label>
+                          <input type="radio" class="btn-check" name="aceite_motor" id="aceite_motor_na"
+                            autocomplete="off">
+                          <label class="btn btn-outline-secondary" for="aceite_motor_na">N/A</label>
+                        </div>
+                      </div>
+
+                      <div class="col-lg-6 mb-3">
+                        <label class="form-label">Nivel de aceite de transmisión</label>
+                        <div class="btn-group w-100" role="group">
+                          <input type="radio" class="btn-check" name="aceite_transmision" id="aceite_transmision_ok"
+                            autocomplete="off">
+                          <label class="btn btn-outline-success" for="aceite_transmision_ok">OK</label>
+                          <input type="radio" class="btn-check" name="aceite_transmision" id="aceite_transmision_neg"
+                            autocomplete="off">
+                          <label class="btn btn-outline-danger" for="aceite_transmision_neg">Negativo</label>
+                          <input type="radio" class="btn-check" name="aceite_transmision" id="aceite_transmision_na"
+                            autocomplete="off">
+                          <label class="btn btn-outline-secondary" for="aceite_transmision_na">N/A</label>
+                        </div>
+                      </div>
+
+                      <div class="col-lg-6 mb-3">
+                        <label class="form-label">Nivel líquido refrigerante</label>
+                        <div class="btn-group w-100" role="group">
+                          <input type="radio" class="btn-check" name="liquido_refrigerante" id="liquido_refrigerante_ok"
+                            autocomplete="off">
+                          <label class="btn btn-outline-success" for="liquido_refrigerante_ok">OK</label>
+                          <input type="radio" class="btn-check" name="liquido_refrigerante"
+                            id="liquido_refrigerante_neg" autocomplete="off">
+                          <label class="btn btn-outline-danger" for="liquido_refrigerante_neg">Negativo</label>
+                          <input type="radio" class="btn-check" name="liquido_refrigerante" id="liquido_refrigerante_na"
+                            autocomplete="off">
+                          <label class="btn btn-outline-secondary" for="liquido_refrigerante_na">N/A</label>
+                        </div>
+                      </div>
+
+                      <div class="col-lg-6 mb-3">
+                        <label class="form-label">Nivel de líquido de frenos</label>
+                        <div class="btn-group w-100" role="group">
+                          <input type="radio" class="btn-check" name="liquido_frenos" id="liquido_frenos_ok"
+                            autocomplete="off">
+                          <label class="btn btn-outline-success" for="liquido_frenos_ok">OK</label>
+                          <input type="radio" class="btn-check" name="liquido_frenos" id="liquido_frenos_neg"
+                            autocomplete="off">
+                          <label class="btn btn-outline-danger" for="liquido_frenos_neg">Negativo</label>
+                          <input type="radio" class="btn-check" name="liquido_frenos" id="liquido_frenos_na"
+                            autocomplete="off">
+                          <label class="btn btn-outline-secondary" for="liquido_frenos_na">N/A</label>
+                        </div>
+                      </div>
+
+                      <div class="col-lg-6 mb-3">
+                        <label class="form-label">Filtro de Aire</label>
+                        <div class="btn-group w-100" role="group">
+                          <input type="radio" class="btn-check" name="filtro_aire" id="filtro_aire_ok"
+                            autocomplete="off">
+                          <label class="btn btn-outline-success" for="filtro_aire_ok">OK</label>
+                          <input type="radio" class="btn-check" name="filtro_aire" id="filtro_aire_neg"
+                            autocomplete="off">
+                          <label class="btn btn-outline-danger" for="filtro_aire_neg">Negativo</label>
+                          <input type="radio" class="btn-check" name="filtro_aire" id="filtro_aire_na"
+                            autocomplete="off">
+                          <label class="btn btn-outline-secondary" for="filtro_aire_na">N/A</label>
+                        </div>
+                      </div>
+
+                      <div class="col-lg-6 mb-3">
+                        <label class="form-label">Nivel hidráulico dirección</label>
+                        <div class="btn-group w-100" role="group">
+                          <input type="radio" class="btn-check" name="hidraulico_direccion" id="hidraulico_direccion_ok"
+                            autocomplete="off">
+                          <label class="btn btn-outline-success" for="hidraulico_direccion_ok">OK</label>
+                          <input type="radio" class="btn-check" name="hidraulico_direccion"
+                            id="hidraulico_direccion_neg" autocomplete="off">
+                          <label class="btn btn-outline-danger" for="hidraulico_direccion_neg">Negativo</label>
+                          <input type="radio" class="btn-check" name="hidraulico_direccion" id="hidraulico_direccion_na"
+                            autocomplete="off">
+                          <label class="btn btn-outline-secondary" for="hidraulico_direccion_na">N/A</label>
+                        </div>
+                      </div>
+
+                      <div class="col-lg-6 mb-3">
+                        <label class="form-label">Tensión y estado de correas</label>
+                        <div class="btn-group w-100" role="group">
+                          <input type="radio" class="btn-check" name="tension_correas" id="tension_correas_ok"
+                            autocomplete="off">
+                          <label class="btn btn-outline-success" for="tension_correas_ok">OK</label>
+                          <input type="radio" class="btn-check" name="tension_correas" id="tension_correas_neg"
+                            autocomplete="off">
+                          <label class="btn btn-outline-danger" for="tension_correas_neg">Negativo</label>
+                          <input type="radio" class="btn-check" name="tension_correas" id="tension_correas_na"
+                            autocomplete="off">
+                          <label class="btn btn-outline-secondary" for="tension_correas_na">N/A</label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="tab-pane fade" id="carroceria" role="tabpanel" aria-labelledby="carroceria-tabPillsFill"
+                      tabindex="0">
+
+
+                      <div class="col-lg-6 mb-3">
+                        <label class="form-label">Parachoques Delantero</label>
+                        <div class="btn-group w-100" role="group">
+                          <input type="radio" class="btn-check" name="parachoque_delantero" id="parachoque_delantero_ok"
+                            autocomplete="off">
+                          <label class="btn btn-outline-success" for="parachoque_delantero_ok">OK</label>
+                          <input type="radio" class="btn-check" name="parachoque_delantero"
+                            id="parachoque_delantero_neg" autocomplete="off">
+                          <label class="btn btn-outline-danger" for="parachoque_delantero_neg">Negativo</label>
+                          <input type="radio" class="btn-check" name="parachoque_delantero" id="parachoque_delantero_na"
+                            autocomplete="off">
+                          <label class="btn btn-outline-secondary" for="parachoque_delantero_na">N/A</label>
+                        </div>
+                      </div>
+
+                      <div class="col-lg-6 mb-3">
+                        <label class="form-label">Parachoques Trasero</label>
+                        <div class="btn-group w-100" role="group">
+                          <input type="radio" class="btn-check" name="parachoque_trasero" id="parachoque_trasero_ok"
+                            autocomplete="off">
+                          <label class="btn btn-outline-success" for="parachoque_trasero_ok">OK</label>
+                          <input type="radio" class="btn-check" name="parachoque_trasero" id="parachoque_trasero_neg"
+                            autocomplete="off">
+                          <label class="btn btn-outline-danger" for="parachoque_trasero_neg">Negativo</label>
+                          <input type="radio" class="btn-check" name="parachoque_trasero" id="parachoque_trasero_na"
+                            autocomplete="off">
+                          <label class="btn btn-outline-secondary" for="parachoque_trasero_na">N/A</label>
+                        </div>
+                      </div>
+
+                      <div class="col-lg-6 mb-3">
+                        <label class="form-label">Estado general vidrios de seguridad</label>
+                        <div class="btn-group w-100" role="group">
+                          <input type="radio" class="btn-check" name="vidrios_seguridad" id="vidrios_seguridad_ok"
+                            autocomplete="off">
+                          <label class="btn btn-outline-success" for="vidrios_seguridad_ok">OK</label>
+                          <input type="radio" class="btn-check" name="vidrios_seguridad" id="vidrios_seguridad_neg"
+                            autocomplete="off">
+                          <label class="btn btn-outline-danger" for="vidrios_seguridad_neg">Negativo</label>
+                          <input type="radio" class="btn-check" name="vidrios_seguridad" id="vidrios_seguridad_na"
+                            autocomplete="off">
+                          <label class="btn btn-outline-secondary" for="vidrios_seguridad_na">N/A</label>
+                        </div>
+                      </div>
+
+                      <div class="col-lg-6 mb-3">
+                        <label class="form-label">Vidrios laterales de las puertas LD Y LI</label>
+                        <div class="btn-group w-100" role="group">
+                          <input type="radio" class="btn-check" name="vidrios_laterales" id="vidrios_laterales_ok"
+                            autocomplete="off">
+                          <label class="btn btn-outline-success" for="vidrios_laterales_ok">OK</label>
+                          <input type="radio" class="btn-check" name="vidrios_laterales" id="vidrios_laterales_neg"
+                            autocomplete="off">
+                          <label class="btn btn-outline-danger" for="vidrios_laterales_neg">Negativo</label>
+                          <input type="radio" class="btn-check" name="vidrios_laterales" id="vidrios_laterales_na"
+                            autocomplete="off">
+                          <label class="btn btn-outline-secondary" for="vidrios_laterales_na">N/A</label>
+                        </div>
+                      </div>
+
+                      <div class="col-lg-6 mb-3">
+                        <label class="form-label">Limpia brisas (brazos y plumillas)</label>
+                        <div class="btn-group w-100" role="group">
+                          <input type="radio" class="btn-check" name="limpia_brisas" id="limpia_brisas_ok"
+                            autocomplete="off">
+                          <label class="btn btn-outline-success" for="limpia_brisas_ok">OK</label>
+                          <input type="radio" class="btn-check" name="limpia_brisas" id="limpia_brisas_neg"
+                            autocomplete="off">
+                          <label class="btn btn-outline-danger" for="limpia_brisas_neg">Negativo</label>
+                          <input type="radio" class="btn-check" name="limpia_brisas" id="limpia_brisas_na"
+                            autocomplete="off">
+                          <label class="btn btn-outline-secondary" for="limpia_brisas_na">N/A</label>
+                        </div>
+                      </div>
+
+                      <div class="col-lg-6 mb-3">
+                        <label class="form-label">Guardabarros LD y Li</label>
+                        <div class="btn-group w-100" role="group">
+                          <input type="radio" class="btn-check" name="guardabarros" id="guardabarros_ok"
+                            autocomplete="off">
+                          <label class="btn btn-outline-success" for="guardabarros_ok">OK</label>
+                          <input type="radio" class="btn-check" name="guardabarros" id="guardabarros_neg"
+                            autocomplete="off">
+                          <label class="btn btn-outline-danger" for="guardabarros_neg">Negativo</label>
+                          <input type="radio" class="btn-check" name="guardabarros" id="guardabarros_na"
+                            autocomplete="off">
+                          <label class="btn btn-outline-secondary" for="guardabarros_na">N/A</label>
+                        </div>
+                      </div>
+
+                      <div class="col-lg-6 mb-3">
+                        <label class="form-label">Estribos laterales LD y Li</label>
+                        <div class="btn-group w-100" role="group">
+                          <input type="radio" class="btn-check" name="estribos_laterales" id="estribos_laterales_ok"
+                            autocomplete="off">
+                          <label class="btn btn-outline-success" for="estribos_laterales_ok">OK</label>
+                          <input type="radio" class="btn-check" name="estribos_laterales" id="estribos_laterales_neg"
+                            autocomplete="off">
+                          <label class="btn btn-outline-danger" for="estribos_laterales_neg">Negativo</label>
+                          <input type="radio" class="btn-check" name="estribos_laterales" id="estribos_laterales_na"
+                            autocomplete="off">
+                          <label class="btn btn-outline-secondary" for="estribos_laterales_na">N/A</label>
+                        </div>
+                      </div>
+
+                      <div class="col-lg-6 mb-3">
+                        <label class="form-label">Placa del vehículo en adhesivo</label>
+                        <div class="btn-group w-100" role="group">
+                          <input type="radio" class="btn-check" name="placa_adhesivo" id="placa_adhesivo_ok"
+                            autocomplete="off">
+                          <label class="btn btn-outline-success" for="placa_adhesivo_ok">OK</label>
+                          <input type="radio" class="btn-check" name="placa_adhesivo" id="placa_adhesivo_neg"
+                            autocomplete="off">
+                          <label class="btn btn-outline-danger" for="placa_adhesivo_neg">Negativo</label>
+                          <input type="radio" class="btn-check" name="placa_adhesivo" id="placa_adhesivo_na"
+                            autocomplete="off">
+                          <label class="btn btn-outline-secondary" for="placa_adhesivo_na">N/A</label>
+                        </div>
+                      </div>
+
+                      <div class="col-lg-6 mb-3">
+                        <label class="form-label">Chapa compuerta / bodega</label>
+                        <div class="btn-group w-100" role="group">
+                          <input type="radio" class="btn-check" name="chapa_compuerta" id="chapa_compuerta_ok"
+                            autocomplete="off">
+                          <label class="btn btn-outline-success" for="chapa_compuerta_ok">OK</label>
+                          <input type="radio" class="btn-check" name="chapa_compuerta" id="chapa_compuerta_neg"
+                            autocomplete="off">
+                          <label class="btn btn-outline-danger" for="chapa_compuerta_neg">Negativo</label>
+                          <input type="radio" class="btn-check" name="chapa_compuerta" id="chapa_compuerta_na"
+                            autocomplete="off">
+                          <label class="btn btn-outline-secondary" for="chapa_compuerta_na">N/A</label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="tab-pane fade" id="cabina" role="tabpanel" aria-labelledby="cabina-tabPillsFill"
+                      tabindex="0">
+
+                      <div class="col-lg-6 mb-3">
+                        <label class="form-label">Estado de la tapicería</label>
+                        <div class="btn-group w-100" role="group">
+                          <input type="radio" class="btn-check" name="tapiceria" id="tapiceria_ok" autocomplete="off">
+                          <label class="btn btn-outline-success" for="tapiceria_ok">OK</label>
+                          <input type="radio" class="btn-check" name="tapiceria" id="tapiceria_neg" autocomplete="off">
+                          <label class="btn btn-outline-danger" for="tapiceria_neg">Negativo</label>
+                          <input type="radio" class="btn-check" name="tapiceria" id="tapiceria_na" autocomplete="off">
+                          <label class="btn btn-outline-secondary" for="tapiceria_na">N/A</label>
+                        </div>
+                      </div>
+
+                      <div class="col-lg-6 mb-3">
+                        <label class="form-label">Manijas, seguros y pasamanos</label>
+                        <div class="btn-group w-100" role="group">
+                          <input type="radio" class="btn-check" name="manijas_seguros" id="manijas_seguros_ok"
+                            autocomplete="off">
+                          <label class="btn btn-outline-success" for="manijas_seguros_ok">OK</label>
+                          <input type="radio" class="btn-check" name="manijas_seguros" id="manijas_seguros_neg"
+                            autocomplete="off">
+                          <label class="btn btn-outline-danger" for="manijas_seguros_neg">Negativo</label>
+                          <input type="radio" class="btn-check" name="manijas_seguros" id="manijas_seguros_na"
+                            autocomplete="off">
+                          <label class="btn btn-outline-secondary" for="manijas_seguros_na">N/A</label>
+                        </div>
+                      </div>
+
+                      <div class="col-lg-6 mb-3">
+                        <label class="form-label">Vidrios Eléctricos</label>
+                        <div class="btn-group w-100" role="group">
+                          <input type="radio" class="btn-check" name="vidrios_electricos" id="vidrios_electricos_ok"
+                            autocomplete="off">
+                          <label class="btn btn-outline-success" for="vidrios_electricos_ok">OK</label>
+                          <input type="radio" class="btn-check" name="vidrios_electricos" id="vidrios_electricos_neg"
+                            autocomplete="off">
+                          <label class="btn btn-outline-danger" for="vidrios_electricos_neg">Negativo</label>
+                          <input type="radio" class="btn-check" name="vidrios_electricos" id="vidrios_electricos_na"
+                            autocomplete="off">
+                          <label class="btn btn-outline-secondary" for="vidrios_electricos_na">N/A</label>
+                        </div>
+                      </div>
+
+                      <div class="col-lg-6 mb-3">
+                        <label class="form-label">Antideslizantes de pedales</label>
+                        <div class="btn-group w-100" role="group">
+                          <input type="radio" class="btn-check" name="antideslizantes_pedales"
+                            id="antideslizantes_pedales_ok" autocomplete="off">
+                          <label class="btn btn-outline-success" for="antideslizantes_pedales_ok">OK</label>
+                          <input type="radio" class="btn-check" name="antideslizantes_pedales"
+                            id="antideslizantes_pedales_neg" autocomplete="off">
+                          <label class="btn btn-outline-danger" for="antideslizantes_pedales_neg">Negativo</label>
+                          <input type="radio" class="btn-check" name="antideslizantes_pedales"
+                            id="antideslizantes_pedales_na" autocomplete="off">
+                          <label class="btn btn-outline-secondary" for="antideslizantes_pedales_na">N/A</label>
+                        </div>
+                      </div>
+
+                      <div class="col-lg-6 mb-3">
+                        <label class="form-label">Freno de seguridad de mano (parqueo)</label>
+                        <div class="btn-group w-100" role="group">
+                          <input type="radio" class="btn-check" name="freno_mano" id="freno_mano_ok" autocomplete="off">
+                          <label class="btn btn-outline-success" for="freno_mano_ok">OK</label>
+                          <input type="radio" class="btn-check" name="freno_mano" id="freno_mano_neg"
+                            autocomplete="off">
+                          <label class="btn btn-outline-danger" for="freno_mano_neg">Negativo</label>
+                          <input type="radio" class="btn-check" name="freno_mano" id="freno_mano_na" autocomplete="off">
+                          <label class="btn btn-outline-secondary" for="freno_mano_na">N/A</label>
+                        </div>
+                      </div>
+
+                      <div class="col-lg-6 mb-3">
+                        <label class="form-label">Tablero de instrumentos</label>
+                        <div class="btn-group w-100" role="group">
+                          <input type="radio" class="btn-check" name="tablero_instrumentos_interno"
+                            id="tablero_instrumentos_interno_ok" autocomplete="off">
+                          <label class="btn btn-outline-success" for="tablero_instrumentos_interno_ok">OK</label>
+                          <input type="radio" class="btn-check" name="tablero_instrumentos_interno"
+                            id="tablero_instrumentos_interno_neg" autocomplete="off">
+                          <label class="btn btn-outline-danger" for="tablero_instrumentos_interno_neg">Negativo</label>
+                          <input type="radio" class="btn-check" name="tablero_instrumentos_interno"
+                            id="tablero_instrumentos_interno_na" autocomplete="off">
+                          <label class="btn btn-outline-secondary" for="tablero_instrumentos_interno_na">N/A</label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="tab-pane fade" id="seguridadActiva" role="tabpanel"
+                      aria-labelledby="seguridadActiva-tabPillsFill" tabindex="0">
+                      <div class="col-lg-6 mb-3">
+                        <label class="form-label">Sistema de frenos</label>
+                        <div class="btn-group w-100" role="group">
+                          <input type="radio" class="btn-check" name="sistema_frenos" id="sistema_frenos_ok"
+                            autocomplete="off">
+                          <label class="btn btn-outline-success" for="sistema_frenos_ok">OK</label>
+                          <input type="radio" class="btn-check" name="sistema_frenos" id="sistema_frenos_neg"
+                            autocomplete="off">
+                          <label class="btn btn-outline-danger" for="sistema_frenos_neg">Negativo</label>
+                          <input type="radio" class="btn-check" name="sistema_frenos" id="sistema_frenos_na"
+                            autocomplete="off">
+                          <label class="btn btn-outline-secondary" for="sistema_frenos_na">N/A</label>
+                        </div>
+                      </div>
+
+                      <div class="col-lg-6 mb-3">
+                        <label class="form-label">Sistema ABS (anti-block sistema)</label>
+                        <div class="btn-group w-100" role="group">
+                          <input type="radio" class="btn-check" name="abs" id="abs_ok" autocomplete="off">
+                          <label class="btn btn-outline-success" for="abs_ok">OK</label>
+                          <input type="radio" class="btn-check" name="abs" id="abs_neg" autocomplete="off">
+                          <label class="btn btn-outline-danger" for="abs_neg">Negativo</label>
+                          <input type="radio" class="btn-check" name="abs" id="abs_na" autocomplete="off">
+                          <label class="btn btn-outline-secondary" for="abs_na">N/A</label>
+                        </div>
+                      </div>
+
+                      <div class="col-lg-6 mb-3">
+                        <label class="form-label">Sistema de dirección</label>
+                        <div class="btn-group w-100" role="group">
+                          <input type="radio" class="btn-check" name="sistema_direccion" id="sistema_direccion_ok"
+                            autocomplete="off">
+                          <label class="btn btn-outline-success" for="sistema_direccion_ok">OK</label>
+                          <input type="radio" class="btn-check" name="sistema_direccion" id="sistema_direccion_neg"
+                            autocomplete="off">
+                          <label class="btn btn-outline-danger" for="sistema_direccion_neg">Negativo</label>
+                          <input type="radio" class="btn-check" name="sistema_direccion" id="sistema_direccion_na"
+                            autocomplete="off">
+                          <label class="btn btn-outline-secondary" for="sistema_direccion_na">N/A</label>
+                        </div>
+                      </div>
+
+                      <div class="col-lg-6 mb-3">
+                        <label class="form-label">Espejos retrovisores laterales</label>
+                        <div class="btn-group w-100" role="group">
+                          <input type="radio" class="btn-check" name="espejos_laterales" id="espejos_laterales_ok"
+                            autocomplete="off">
+                          <label class="btn btn-outline-success" for="espejos_laterales_ok">OK</label>
+                          <input type="radio" class="btn-check" name="espejos_laterales" id="espejos_laterales_neg"
+                            autocomplete="off">
+                          <label class="btn btn-outline-danger" for="espejos_laterales_neg">Negativo</label>
+                          <input type="radio" class="btn-check" name="espejos_laterales" id="espejos_laterales_na"
+                            autocomplete="off">
+                          <label class="btn btn-outline-secondary" for="espejos_laterales_na">N/A</label>
+                        </div>
+                      </div>
+
+                      <div class="col-lg-6 mb-3">
+                        <label class="form-label">Espejo retrovisor interno</label>
+                        <div class="btn-group w-100" role="group">
+                          <input type="radio" class="btn-check" name="espejo_interno" id="espejo_interno_ok"
+                            autocomplete="off">
+                          <label class="btn btn-outline-success" for="espejo_interno_ok">OK</label>
+                          <input type="radio" class="btn-check" name="espejo_interno" id="espejo_interno_neg"
+                            autocomplete="off">
+                          <label class="btn btn-outline-danger" for="espejo_interno_neg">Negativo</label>
+                          <input type="radio" class="btn-check" name="espejo_interno" id="espejo_interno_na"
+                            autocomplete="off">
+                          <label class="btn btn-outline-secondary" for="espejo_interno_na">N/A</label>
+                        </div>
+                      </div>
+
+                      <div class="col-lg-6 mb-3">
+                        <label class="form-label">Freno de seguridad de mano (parqueo)</label>
+                        <div class="btn-group w-100" role="group">
+                          <input type="radio" class="btn-check" name="freno_mano_seguridad" id="freno_mano_seguridad_ok"
+                            autocomplete="off">
+                          <label class="btn btn-outline-success" for="freno_mano_seguridad_ok">OK</label>
+                          <input type="radio" class="btn-check" name="freno_mano_seguridad"
+                            id="freno_mano_seguridad_neg" autocomplete="off">
+                          <label class="btn btn-outline-danger" for="freno_mano_seguridad_neg">Negativo</label>
+                          <input type="radio" class="btn-check" name="freno_mano_seguridad" id="freno_mano_seguridad_na"
+                            autocomplete="off">
+                          <label class="btn btn-outline-secondary" for="freno_mano_seguridad_na">N/A</label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="tab-pane fade" id="seguridadPasiva" role="tabpanel"
+                      aria-labelledby="seguridadPasiva-tabPillsFill" tabindex="0">
+
+
+                      <div class="col-lg-6 mb-3">
+                        <label class="form-label">Cinturones de Seguridad (3 puntos)</label>
+                        <div class="btn-group w-100" role="group">
+                          <input type="radio" class="btn-check" name="cinturones_seguridad" id="cinturones_seguridad_ok"
+                            autocomplete="off">
+                          <label class="btn btn-outline-success" for="cinturones_seguridad_ok">OK</label>
+                          <input type="radio" class="btn-check" name="cinturones_seguridad"
+                            id="cinturones_seguridad_neg" autocomplete="off">
+                          <label class="btn btn-outline-danger" for="cinturones_seguridad_neg">Negativo</label>
+                          <input type="radio" class="btn-check" name="cinturones_seguridad" id="cinturones_seguridad_na"
+                            autocomplete="off">
+                          <label class="btn btn-outline-secondary" for="cinturones_seguridad_na">N/A</label>
+                        </div>
+                      </div>
+
+                      <div class="col-lg-6 mb-3">
+                        <label class="form-label">Airbags (conductor - copiloto)</label>
+                        <div class="btn-group w-100" role="group">
+                          <input type="radio" class="btn-check" name="airbags" id="airbags_ok" autocomplete="off">
+                          <label class="btn btn-outline-success" for="airbags_ok">OK</label>
+                          <input type="radio" class="btn-check" name="airbags" id="airbags_neg" autocomplete="off">
+                          <label class="btn btn-outline-danger" for="airbags_neg">Negativo</label>
+                          <input type="radio" class="btn-check" name="airbags" id="airbags_na" autocomplete="off">
+                          <label class="btn btn-outline-secondary" for="airbags_na">N/A</label>
+                        </div>
+                      </div>
+
+                      <div class="col-lg-6 mb-3">
+                        <label class="form-label">Cadena de sujeción cardán</label>
+                        <div class="btn-group w-100" role="group">
+                          <input type="radio" class="btn-check" name="cadena_sujecion" id="cadena_sujecion_ok"
+                            autocomplete="off">
+                          <label class="btn btn-outline-success" for="cadena_sujecion_ok">OK</label>
+                          <input type="radio" class="btn-check" name="cadena_sujecion" id="cadena_sujecion_neg"
+                            autocomplete="off">
+                          <label class="btn btn-outline-danger" for="cadena_sujecion_neg">Negativo</label>
+                          <input type="radio" class="btn-check" name="cadena_sujecion" id="cadena_sujecion_na"
+                            autocomplete="off">
+                          <label class="btn btn-outline-secondary" for="cadena_sujecion_na">N/A</label>
+                        </div>
+                      </div>
+
+                      <div class="col-lg-6 mb-3">
+                        <label class="form-label">Columna de dirección</label>
+                        <div class="btn-group w-100" role="group">
+                          <input type="radio" class="btn-check" name="columna_direccion" id="columna_direccion_ok"
+                            autocomplete="off">
+                          <label class="btn btn-outline-success" for="columna_direccion_ok">OK</label>
+                          <input type="radio" class="btn-check" name="columna_direccion" id="columna_direccion_neg"
+                            autocomplete="off">
+                          <label class="btn btn-outline-danger" for="columna_direccion_neg">Negativo</label>
+                          <input type="radio" class="btn-check" name="columna_direccion" id="columna_direccion_na"
+                            autocomplete="off">
+                          <label class="btn btn-outline-secondary" for="columna_direccion_na">N/A</label>
+                        </div>
+                      </div>
+
+                      <div class="col-lg-6 mb-3">
+                        <label class="form-label">Apoyacabezas (todas las sillas)</label>
+                        <div class="btn-group w-100" role="group">
+                          <input type="radio" class="btn-check" name="apoyacabezas" id="apoyacabezas_ok"
+                            autocomplete="off">
+                          <label class="btn btn-outline-success" for="apoyacabezas_ok">OK</label>
+                          <input type="radio" class="btn-check" name="apoyacabezas" id="apoyacabezas_neg"
+                            autocomplete="off">
+                          <label class="btn btn-outline-danger" for="apoyacabezas_neg">Negativo</label>
+                          <input type="radio" class="btn-check" name="apoyacabezas" id="apoyacabezas_na"
+                            autocomplete="off">
+                          <label class="btn btn-outline-secondary" for="apoyacabezas_na">N/A</label>
+                        </div>
+                      </div>
+
+                      <div class="col-lg-6 mb-3">
+                        <label class="form-label">Barra antivuelco (anclada al chasis)</label>
+                        <div class="btn-group w-100" role="group">
+                          <input type="radio" class="btn-check" name="barra_antivuelco" id="barra_antivuelco_ok"
+                            autocomplete="off">
+                          <label class="btn btn-outline-success" for="barra_antivuelco_ok">OK</label>
+                          <input type="radio" class="btn-check" name="barra_antivuelco" id="barra_antivuelco_neg"
+                            autocomplete="off">
+                          <label class="btn btn-outline-danger" for="barra_antivuelco_neg">Negativo</label>
+                          <input type="radio" class="btn-check" name="barra_antivuelco" id="barra_antivuelco_na"
+                            autocomplete="off">
+                          <label class="btn btn-outline-secondary" for="barra_antivuelco_na">N/A</label>
+                        </div>
+                      </div>
+
+                      <div class="col-lg-6 mb-3">
+                        <label class="form-label">Rejilla de protección vidrio trasero</label>
+                        <div class="btn-group w-100" role="group">
+                          <input type="radio" class="btn-check" name="rejilla_vidrio_trasero"
+                            id="rejilla_vidrio_trasero_ok" autocomplete="off">
+                          <label class="btn btn-outline-success" for="rejilla_vidrio_trasero_ok">OK</label>
+                          <input type="radio" class="btn-check" name="rejilla_vidrio_trasero"
+                            id="rejilla_vidrio_trasero_neg" autocomplete="off">
+                          <label class="btn btn-outline-danger" for="rejilla_vidrio_trasero_neg">Negativo</label>
+                          <input type="radio" class="btn-check" name="rejilla_vidrio_trasero"
+                            id="rejilla_vidrio_trasero_na" autocomplete="off">
+                          <label class="btn btn-outline-secondary" for="rejilla_vidrio_trasero_na">N/A</label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="tab-pane fade" id="kit" role="tabpanel" aria-labelledby="kit-tabPillsFill" tabindex="0">
+
+                      <div class="col-lg-6 mb-3">
+                        <label class="form-label">Conos o triángulos reflectivos</label>
+                        <div class="btn-group w-100" role="group">
+                          <input type="radio" class="btn-check" name="conos_triangular" id="conos_triangular_ok"
+                            autocomplete="off">
+                          <label class="btn btn-outline-success" for="conos_triangular_ok">OK</label>
+                          <input type="radio" class="btn-check" name="conos_triangular" id="conos_triangular_neg"
+                            autocomplete="off">
+                          <label class="btn btn-outline-danger" for="conos_triangular_neg">Negativo</label>
+                          <input type="radio" class="btn-check" name="conos_triangular" id="conos_triangular_na"
+                            autocomplete="off">
+                          <label class="btn btn-outline-secondary" for="conos_triangular_na">N/A</label>
+                        </div>
+                      </div>
+
+                      <div class="col-lg-6 mb-3">
+                        <label class="form-label">Botiquín de primeros auxilios</label>
+                        <div class="btn-group w-100" role="group">
+                          <input type="radio" class="btn-check" name="botiquin" id="botiquin_ok" autocomplete="off">
+                          <label class="btn btn-outline-success" for="botiquin_ok">OK</label>
+                          <input type="radio" class="btn-check" name="botiquin" id="botiquin_neg" autocomplete="off">
+                          <label class="btn btn-outline-danger" for="botiquin_neg">Negativo</label>
+                          <input type="radio" class="btn-check" name="botiquin" id="botiquin_na" autocomplete="off">
+                          <label class="btn btn-outline-secondary" for="botiquin_na">N/A</label>
+                        </div>
+                      </div>
+
+                      <div class="col-lg-6 mb-3">
+                        <label class="form-label">Extintor ABC (10 Lb)</label>
+                        <div class="btn-group w-100" role="group">
+                          <input type="radio" class="btn-check" name="extintor" id="extintor_ok" autocomplete="off">
+                          <label class="btn btn-outline-success" for="extintor_ok">OK</label>
+                          <input type="radio" class="btn-check" name="extintor" id="extintor_neg" autocomplete="off">
+                          <label class="btn btn-outline-danger" for="extintor_neg">Negativo</label>
+                          <input type="radio" class="btn-check" name="extintor" id="extintor_na" autocomplete="off">
+                          <label class="btn btn-outline-secondary" for="extintor_na">N/A</label>
+                        </div>
+                      </div>
+
+                      <div class="col-lg-6 mb-3">
+                        <label class="form-label">Cuñas de bloqueo (2 Ud)</label>
+                        <div class="btn-group w-100" role="group">
+                          <input type="radio" class="btn-check" name="cunas" id="cuñas_ok" autocomplete="off">
+                          <label class="btn btn-outline-success" for="cuñas_ok">OK</label>
+                          <input type="radio" class="btn-check" name="cunas" id="cuñas_neg" autocomplete="off">
+                          <label class="btn btn-outline-danger" for="cuñas_neg">Negativo</label>
+                          <input type="radio" class="btn-check" name="cunas" id="cuñas_na" autocomplete="off">
+                          <label class="btn btn-outline-secondary" for="cuñas_na">N/A</label>
+                        </div>
+                      </div>
+
+                      <div class="col-lg-6 mb-3">
+                        <label class="form-label">Llanta de repuesto/ cruzeta</label>
+                        <div class="btn-group w-100" role="group">
+                          <input type="radio" class="btn-check" name="llanta_repuesto" id="llanta_repuesto_ok"
+                            autocomplete="off">
+                          <label class="btn btn-outline-success" for="llanta_repuesto_ok">OK</label>
+                          <input type="radio" class="btn-check" name="llanta_repuesto" id="llanta_repuesto_neg"
+                            autocomplete="off">
+                          <label class="btn btn-outline-danger" for="llanta_repuesto_neg">Negativo</label>
+                          <input type="radio" class="btn-check" name="llanta_repuesto" id="llanta_repuesto_na"
+                            autocomplete="off">
+                          <label class="btn btn-outline-secondary" for="llanta_repuesto_na">N/A</label>
+                        </div>
+                      </div>
+
+                      <div class="col-lg-6 mb-3">
+                        <label class="form-label">Caja de Herramientas</label>
+                        <div class="btn-group w-100" role="group">
+                          <input type="radio" class="btn-check" name="caja_herramientas" id="caja_herramientas_ok"
+                            autocomplete="off">
+                          <label class="btn btn-outline-success" for="caja_herramientas_ok">OK</label>
+                          <input type="radio" class="btn-check" name="caja_herramientas" id="caja_herramientas_neg"
+                            autocomplete="off">
+                          <label class="btn btn-outline-danger" for="caja_herramientas_neg">Negativo</label>
+                          <input type="radio" class="btn-check" name="caja_herramientas" id="caja_herramientas_na"
+                            autocomplete="off">
+                          <label class="btn btn-outline-secondary" for="caja_herramientas_na">N/A</label>
+                        </div>
+                      </div>
+
+                      <div class="col-lg-6 mb-3">
+                        <label class="form-label">Linterna (con pilas y/o recargable)</label>
+                        <div class="btn-group w-100" role="group">
+                          <input type="radio" class="btn-check" name="linterna" id="linterna_ok" autocomplete="off">
+                          <label class="btn btn-outline-success" for="linterna_ok">OK</label>
+                          <input type="radio" class="btn-check" name="linterna" id="linterna_neg" autocomplete="off">
+                          <label class="btn btn-outline-danger" for="linterna_neg">Negativo</label>
+                          <input type="radio" class="btn-check" name="linterna" id="linterna_na" autocomplete="off">
+                          <label class="btn btn-outline-secondary" for="linterna_na">N/A</label>
+                        </div>
+                      </div>
+
+                      <div class="col-lg-6 mb-3">
+                        <label class="form-label">Gato con capacidad de subir el vehículo</label>
+                        <div class="btn-group w-100" role="group">
+                          <input type="radio" class="btn-check" name="gato" id="gato_ok" autocomplete="off">
+                          <label class="btn btn-outline-success" for="gato_ok">OK</label>
+                          <input type="radio" class="btn-check" name="gato" id="gato_neg" autocomplete="off">
+                          <label class="btn btn-outline-danger" for="gato_neg">Negativo</label>
+                          <input type="radio" class="btn-check" name="gato" id="gato_na" autocomplete="off">
+                          <label class="btn btn-outline-secondary" for="gato_na">N/A</label>
+                        </div>
+                      </div>
+
+                    </div>
+                    <div class="tab-pane fade" id="parteBaja" role="tabpanel" aria-labelledby="parteBaja-tabPillsFill"
+                      tabindex="0">
+
+                      <div class="col-lg-6 mb-3">
+                        <label class="form-label">Buies barra estabilizadora</label>
+                        <div class="btn-group w-100" role="group">
+                          <input type="radio" class="btn-check" name="buies_barra" id="buies_barra_ok"
+                            autocomplete="off">
+                          <label class="btn btn-outline-success" for="buies_barra_ok">OK</label>
+                          <input type="radio" class="btn-check" name="buies_barra" id="buies_barra_neg"
+                            autocomplete="off">
+                          <label class="btn btn-outline-danger" for="buies_barra_neg">Negativo</label>
+                          <input type="radio" class="btn-check" name="buies_barra" id="buies_barra_na"
+                            autocomplete="off">
+                          <label class="btn btn-outline-secondary" for="buies_barra_na">N/A</label>
+                        </div>
+                      </div>
+
+                      <div class="col-lg-6 mb-3">
+                        <label class="form-label">Buies de tiera y general</label>
+                        <div class="btn-group w-100" role="group">
+                          <input type="radio" class="btn-check" name="buies_tiera" id="buies_tiera_ok"
+                            autocomplete="off">
+                          <label class="btn btn-outline-success" for="buies_tiera_ok">OK</label>
+                          <input type="radio" class="btn-check" name="buies_tiera" id="buies_tiera_neg"
+                            autocomplete="off">
+                          <label class="btn btn-outline-danger" for="buies_tiera_neg">Negativo</label>
+                          <input type="radio" class="btn-check" name="buies_tiera" id="buies_tiera_na"
+                            autocomplete="off">
+                          <label class="btn btn-outline-secondary" for="buies_tiera_na">N/A</label>
+                        </div>
+                      </div>
+
+                      <div class="col-lg-6 mb-3">
+                        <label class="form-label">Cuna de motor</label>
+                        <div class="btn-group w-100" role="group">
+                          <input type="radio" class="btn-check" name="cuna_motor" id="cuna_motor_ok" autocomplete="off">
+                          <label class="btn btn-outline-success" for="cuna_motor_ok">OK</label>
+                          <input type="radio" class="btn-check" name="cuna_motor" id="cuna_motor_neg"
+                            autocomplete="off">
+                          <label class="btn btn-outline-danger" for="cuna_motor_neg">Negativo</label>
+                          <input type="radio" class="btn-check" name="cuna_motor" id="cuna_motor_na" autocomplete="off">
+                          <label class="btn btn-outline-secondary" for="cuna_motor_na">N/A</label>
+                        </div>
+                      </div>
+
+                      <div class="col-lg-6 mb-3">
+                        <label class="form-label">Guardapolvo Brazos Axiales</label>
+                        <div class="btn-group w-100" role="group">
+                          <input type="radio" class="btn-check" name="guardapolvo_axiales" id="guardapolvo_axiales_ok"
+                            autocomplete="off">
+                          <label class="btn btn-outline-success" for="guardapolvo_axiales_ok">OK</label>
+                          <input type="radio" class="btn-check" name="guardapolvo_axiales" id="guardapolvo_axiales_neg"
+                            autocomplete="off">
+                          <label class="btn btn-outline-danger" for="guardapolvo_axiales_neg">Negativo</label>
+                          <input type="radio" class="btn-check" name="guardapolvo_axiales" id="guardapolvo_axiales_na"
+                            autocomplete="off">
+                          <label class="btn btn-outline-secondary" for="guardapolvo_axiales_na">N/A</label>
+                        </div>
+                      </div>
+
+                      <div class="col-lg-6 mb-3">
+                        <label class="form-label">Amortiguadores</label>
+                        <div class="btn-group w-100" role="group">
+                          <input type="radio" class="btn-check" name="amortiguadores" id="amortiguadores_ok"
+                            autocomplete="off">
+                          <label class="btn btn-outline-success" for="amortiguadores_ok">OK</label>
+                          <input type="radio" class="btn-check" name="amortiguadores" id="amortiguadores_neg"
+                            autocomplete="off">
+                          <label class="btn btn-outline-danger" for="amortiguadores_neg">Negativo</label>
+                          <input type="radio" class="btn-check" name="amortiguadores" id="amortiguadores_na"
+                            autocomplete="off">
+                          <label class="btn btn-outline-secondary" for="amortiguadores_na">N/A</label>
+                        </div>
+                      </div>
+
+                      <div class="col-lg-6 mb-3">
+                        <label class="form-label">Hojas de los muelles</label>
+                        <div class="btn-group w-100" role="group">
+                          <input type="radio" class="btn-check" name="hojas_muelles" id="hojas_muelles_ok"
+                            autocomplete="off">
+                          <label class="btn btn-outline-success" for="hojas_muelles_ok">OK</label>
+                          <input type="radio" class="btn-check" name="hojas_muelles" id="hojas_muelles_neg"
+                            autocomplete="off">
+                          <label class="btn btn-outline-danger" for="hojas_muelles_neg">Negativo</label>
+                          <input type="radio" class="btn-check" name="hojas_muelles" id="hojas_muelles_na"
+                            autocomplete="off">
+                          <label class="btn btn-outline-secondary" for="hojas_muelles_na">N/A</label>
+                        </div>
+                      </div>
+
+                      <div class="col-lg-6 mb-3">
+                        <label class="form-label">Silenciadores</label>
+                        <div class="btn-group w-100" role="group">
+                          <input type="radio" class="btn-check" name="silenciadores" id="silenciadores_ok"
+                            autocomplete="off">
+                          <label class="btn btn-outline-success" for="silenciadores_ok">OK</label>
+                          <input type="radio" class="btn-check" name="silenciadores" id="silenciadores_neg"
+                            autocomplete="off">
+                          <label class="btn btn-outline-danger" for="silenciadores_neg">Negativo</label>
+                          <input type="radio" class="btn-check" name="silenciadores" id="silenciadores_na"
+                            autocomplete="off">
+                          <label class="btn btn-outline-secondary" for="silenciadores_na">N/A</label>
+                        </div>
+                      </div>
+
+                      <div class="col-lg-6 mb-3">
+                        <label class="form-label">Tanques Compresor</label>
+                        <div class="btn-group w-100" role="group">
+                          <input type="radio" class="btn-check" name="tanques_compresor" id="tanques_compresor_ok"
+                            autocomplete="off">
+                          <label class="btn btn-outline-success" for="tanques_compresor_ok">OK</label>
+                          <input type="radio" class="btn-check" name="tanques_compresor" id="tanques_compresor_neg"
+                            autocomplete="off">
+                          <label class="btn btn-outline-danger" for="tanques_compresor_neg">Negativo</label>
+                          <input type="radio" class="btn-check" name="tanques_compresor" id="tanques_compresor_na"
+                            autocomplete="off">
+                          <label class="btn btn-outline-secondary" for="tanques_compresor_na">N/A</label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="tab-pane fade" id="profundidad" role="tabpanel"
+                      aria-labelledby="profundidad-tabPillsFill" tabindex="0">
+                      <div class="row">
+                        <div class="col-lg-6 mb-3">
+                          <label class="form-label">Llanta D LD /</label>
+                          <input type="text" class="form-control" placeholder="Ej: 2,3 mm">
+                        </div>
+
+                        <div class="col-lg-6 mb-3">
+                          <label class="form-label">Llanta T LIE /</label>
+                          <input type="text" class="form-control" placeholder="Ej: 3,4 mm">
+                        </div>
+
+                        <div class="col-lg-6 mb-3">
+                          <label class="form-label">Llanta T LII /</label>
+                          <input type="text" class="form-control" placeholder="Ej: 2,8 mm">
+                        </div>
+
+                        <div class="col-lg-6 mb-3">
+                          <label class="form-label">Llanta T LID /</label>
+                          <input type="text" class="form-control" placeholder="Ej: 3,1 mm">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>

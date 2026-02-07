@@ -1,0 +1,272 @@
+<main class="app-wrapper">
+  <div class="container-fluid">
+    <!-- Breadcrumb y botones de navegación -->
+    <div class="app-page-head d-flex justify-content-between align-items-center mb-4">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb mb-0">
+          <li class="breadcrumb-item">
+            <a routerLink="/inspecciones">
+              <i class="fi fi-rr-home"></i> Inicio
+            </a>
+          </li>
+          <li class="breadcrumb-item active" aria-current="page">Nueva Inspección</li>
+        </ol>
+      </nav>
+      <div class="d-flex gap-2">
+        <button type="button" class="btn btn-outline-secondary" 
+                [disabled]="currentStep === 1" 
+                (click)="previousStep()">
+          <i class="fi fi-rr-arrow-left me-2"></i>Anterior
+        </button>
+        <button *ngIf="currentStep < 4" type="button" class="btn btn-primary" 
+                (click)="nextStep()">
+          Siguiente<i class="fi fi-rr-arrow-right ms-2"></i>
+        </button>
+        <button *ngIf="currentStep === 4" type="submit" class="btn btn-success" 
+                [disabled]="!inspectionForm.valid" (click)="submitForm()">
+          <i class="fi fi-rr-check me-2"></i>Finalizar Inspección
+        </button>
+      </div>
+    </div>
+
+    <!-- Indicador de pasos -->
+    <div class="card mb-4">
+      <div class="card-body">
+        <div class="steps">
+          <div class="step-item" [class.active]="currentStep === 1" [class.completed]="currentStep > 1">
+            <div class="step-number">1</div>
+            <div class="step-label">Datos Generales</div>
+          </div>
+          <div class="step-connector" [class.active]="currentStep > 1"></div>
+          
+          <div class="step-item" [class.active]="currentStep === 2" [class.completed]="currentStep > 2">
+            <div class="step-number">2</div>
+            <div class="step-label">Datos del Conductor</div>
+          </div>
+          <div class="step-connector" [class.active]="currentStep > 2"></div>
+          
+          <div class="step-item" [class.active]="currentStep === 3" [class.completed]="currentStep > 3">
+            <div class="step-number">3</div>
+            <div class="step-label">Datos del Vehículo</div>
+          </div>
+          <div class="step-connector" [class.active]="currentStep > 3"></div>
+          
+          <div class="step-item" [class.active]="currentStep === 4">
+            <div class="step-number">4</div>
+            <div class="step-label">Inspección</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Contenido del formulario -->
+    <div class="card">
+      <div class="card-body">
+        <form [formGroup]="inspectionForm" (ngSubmit)="onSubmit()">
+          <!-- Paso 1: Datos Generales -->
+          <div class="step-content" *ngIf="currentStep === 1">
+            <h5 class="mb-4"><i class="fi fi-rr-document-signed text-primary me-2"></i>Datos Generales</h5>
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label for="fechaInspeccion" class="form-label">Fecha de Inspección</label>
+                <input type="date" class="form-control" id="fechaInspeccion" formControlName="fecha_inspeccion" required>
+              </div>
+              <div class="col-md-6">
+                <label for="tipoVehiculo" class="form-label">Tipo de Vehículo</label>
+                <select class="form-select" id="tipoVehiculo" formControlName="tipo_vehiculo" required>
+                  <option value="">Seleccione un tipo</option>
+                  <option value="camioneta">Camioneta</option>
+                  <option value="buseta">Buseta</option>
+                  <option value="pesado">Pesado</option>
+                </select>
+              </div>
+              <div class="col-12">
+                <label for="observaciones" class="form-label">Observaciones Generales</label>
+                <textarea class="form-control" id="observaciones" rows="3" formControlName="observaciones"></textarea>
+              </div>
+            </div>
+          </div>
+
+          <!-- Paso 2: Datos del Conductor -->
+          <div class="step-content" *ngIf="currentStep === 2">
+            <h5 class="mb-4"><i class="fi fi-rr-user text-primary me-2"></i>Datos del Conductor</h5>
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label for="nombresConductor" class="form-label">Nombres Completos</label>
+                <input type="text" class="form-control" id="nombresConductor" 
+                       formControlName="nombres_conductor" required>
+              </div>
+              <div class="col-md-6">
+                <label for="identificacion" class="form-label">Documento de Identidad</label>
+                <input type="text" class="form-control" id="identificacion" 
+                       formControlName="identificacion" required>
+              </div>
+              <div class="col-md-6">
+                <label for="telefono" class="form-label">Teléfono</label>
+                <input type="tel" class="form-control" id="telefono" 
+                       formControlName="telefono" required>
+              </div>
+              <div class="col-md-6">
+                <label for="fechaLicencia" class="form-label">Vencimiento de Licencia</label>
+                <input #fechaLicenciaInput type="text" class="form-control" id="fechaLicencia" 
+                       (change)="onFechaLicenciaChange($event)" placeholder="DD/MM/YYYY">
+              </div>
+            </div>
+          </div>
+
+          <!-- Paso 3: Datos del Vehículo -->
+          <div class="step-content" *ngIf="currentStep === 3">
+            <h5 class="mb-4"><i class="fi fi-rr-car text-primary me-2"></i>Datos del Vehículo</h5>
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label for="placa" class="form-label">Placa</label>
+                <input type="text" class="form-control" id="placa" 
+                       formControlName="placa" required>
+              </div>
+              <div class="col-md-6">
+                <label for="marca" class="form-label">Marca</label>
+                <input type="text" class="form-control" id="marca" 
+                       formControlName="marca" required>
+              </div>
+              <div class="col-md-6">
+                <label for="modelo" class="form-label">Modelo</label>
+                <input type="text" class="form-control" id="modelo" 
+                       formControlName="modelo" required>
+              </div>
+              <div class="col-md-6">
+                <label for="color" class="form-label">Color</label>
+                <input type="text" class="form-control" id="color" 
+                       formControlName="color">
+              </div>
+              <div class="col-12">
+                <label for="descripcion" class="form-label">Descripción Adicional</label>
+                <textarea class="form-control" id="descripcion" rows="2" 
+                          formControlName="descripcion"></textarea>
+              </div>
+            </div>
+          </div>
+
+          <!-- Paso 4: Inspección -->
+          <div class="step-content" *ngIf="currentStep === 4">
+            <h5 class="mb-4"><i class="fi fi-rr-clipboard-list-check text-primary me-2"></i>Inspección del Vehículo</h5>
+            <div class="inspection-list">
+              <div class="inspection-item mb-3" *ngFor="let item of itemsInspeccion">
+                <div class="d-flex justify-content-between align-items-center p-3 border rounded">
+                  <div>
+                    <h6 class="mb-1">{{item.nombre}}</h6>
+                    <p class="mb-0 text-muted small">{{item.descripcion}}</p>
+                  </div>
+                  <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" role="switch" 
+                           [id]="'check-' + item.id" [formControlName]="'item' + item.id">
+                    <label class="form-check-label" [for]="'check-' + item.id">
+                      {{inspectionForm.get('item' + item.id)?.value ? 'Aprobado' : 'Rechazado'}}
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <div class="mt-4">
+                <label for="observacionesInspeccion" class="form-label">Observaciones de la Inspección</label>
+                <textarea class="form-control" id="observacionesInspeccion" rows="3" 
+                          formControlName="observaciones"></textarea>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    /* Estilos para la barra de progreso */
+    .steps {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 0;
+    }
+    
+    .step-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      z-index: 1;
+      flex: 1;
+    }
+    
+    .step-number {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: #e9ecef;
+      color: #6c757d;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      border: 2px solid #e9ecef;
+      transition: all 0.3s ease;
+    }
+    
+    .step-label {
+      font-size: 0.8rem;
+      color: #6c757d;
+      text-align: center;
+      white-space: nowrap;
+    }
+    
+    .step-connector {
+      flex: 1;
+      height: 2px;
+      background-color: #e9ecef;
+      position: relative;
+      top: -10px;
+      transition: all 0.3s ease;
+    }
+    
+    .step-connector.active {
+      background-color: var(--bs-primary);
+    }
+    
+    .step-item.active .step-number {
+      background-color: var(--bs-primary);
+      color: white;
+      border-color: var(--bs-primary);
+    }
+    
+    .step-item.completed .step-number {
+      background-color: var(--bs-success);
+      color: white;
+      border-color: var(--bs-success);
+    }
+    
+    .step-item.completed .step-label,
+    .step-item.active .step-label {
+      color: var(--bs-primary);
+      font-weight: 500;
+    }
+    
+    /* Estilos para los items de inspección */
+    .inspection-item .form-switch .form-check-input {
+      width: 3em;
+      height: 1.5em;
+    }
+    
+    .inspection-item .form-switch .form-check-input:checked {
+      background-color: var(--bs-success);
+      border-color: var(--bs-success);
+    }
+    
+    /* Animación para el cambio de pasos */
+    .step-content {
+      animation: fadeIn 0.3s ease-in-out;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</main>

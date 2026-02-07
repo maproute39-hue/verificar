@@ -1,0 +1,40 @@
+// Estilos para las filas de inspección en la página de inicio
+.inspection-row {
+  transition: all 0.3s ease;
+  cursor: pointer;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1;
+    position: relative;
+  }
+
+  // Asegurar que las celdas tengan un fondo blanco para el efecto de elevación
+  td {
+    background-color: #fff;
+    transition: background-color 0.3s ease;
+  }
+
+  &:hover td {
+    background-color: #f8f9fa;
+  }
+}
+
+// Asegurar que los botones dentro de la fila no afecten el cursor
+.btn {
+  cursor: pointer;
+}
+
+// Estilos para el badge de estado
+.badge {
+  padding: 0.5em 0.8em;
+  font-size: 0.85em;
+  font-weight: 500;
+  border-radius: 0.25rem;
+  
+  &.bg-soft-primary {
+    background-color: rgba(13, 110, 253, 0.1);
+    color: #0d6efd;
+  }
+}

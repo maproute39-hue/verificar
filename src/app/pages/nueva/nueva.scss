@@ -1,0 +1,107 @@
+/* Estilos para el formulario de nueva inspección */
+
+// Estilos para los datepickers
+.date-picker {
+  cursor: pointer;
+  background-color: white;
+}
+
+// Estilos para los mensajes de validación
+.text-danger.small {
+  font-size: 0.75rem;
+  margin-top: 0.25rem;
+}
+
+// Estilos para los botones de radio
+.btn-group {
+  .btn {
+    flex: 1;
+  }
+  
+  .btn-outline-success, 
+  .btn-outline-danger, 
+  .btn-outline-secondary {
+    &.active {
+      color: white;
+    }
+  }
+  
+  .btn-outline-success.active {
+    background-color: #198754;
+    border-color: #198754;
+  }
+  
+  .btn-outline-danger.active {
+    background-color: #dc3545;
+    border-color: #dc3545;
+  }
+  
+  .btn-outline-secondary.active {
+    background-color: #6c757d;
+    border-color: #6c757d;
+  }
+}
+
+// Estilos para los campos de formulario
+.form-label {
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+// Estilos para las pestañas de navegación
+.nav-tabs {
+  border-bottom: 2px solid #dee2e6;
+  margin-bottom: 1.5rem;
+  
+  .nav-link {
+    border: none;
+    color: #6c757d;
+    font-weight: 500;
+    padding: 0.75rem 1.25rem;
+    margin-right: 0.5rem;
+    border-radius: 0.25rem 0.25rem 0 0;
+    
+    &:hover {
+      border-color: transparent;
+      color: #0d6efd;
+    }
+    
+    &.active {
+      color: #0d6efd;
+      background-color: #f8f9fa;
+      border-bottom: 2px solid #0d6efd;
+    }
+  }
+}
+
+// Estilos para los campos de entrada
+textarea.form-control {
+  min-height: 100px;
+}
+
+// Estilos para dispositivos móviles
+@media (max-width: 767.98px) {
+  .btn-group {
+    flex-direction: column;
+    width: 100%;
+    
+    .btn {
+      border-radius: 0;
+      margin-bottom: -1px;
+      
+      &:first-child {
+        border-top-left-radius: 0.25rem;
+        border-top-right-radius: 0.25rem;
+      }
+      
+      &:last-child {
+        border-bottom-left-radius: 0.25rem;
+        border-bottom-right-radius: 0.25rem;
+      }
+    }
+  }
+  
+  .form-label {
+    margin-top: 1rem;
+  }
+}

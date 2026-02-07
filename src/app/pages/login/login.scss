@@ -1,0 +1,152 @@
+/* ==========================================
+   SweetAlert2 - Estilos personalizados
+   ========================================== */
+
+/* Estilos principales del popup */
+.swal2-popup {
+  font-family: 'Roboto', sans-serif !important;
+  border-radius: 12px !important;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15) !important;
+  overflow: hidden !important;
+  padding: 2rem !important;
+
+  /* Título */
+  .swal2-title {
+    font-size: 1.5rem !important;
+    font-weight: 600 !important;
+    color: #333 !important;
+    margin-bottom: 1rem !important;
+    padding: 0 !important;
+  }
+
+  /* Texto del mensaje */
+  .swal2-html-container {
+    font-size: 1rem !important;
+    color: #555 !important;
+    line-height: 1.5 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* Contenedor de acciones (botones) */
+  .swal2-actions {
+    margin: 1.5rem auto 0.5rem !important;
+    padding: 0 !important;
+
+    /* Botón de confirmación - ESTILO MORADO CON GRADIENTE */
+    .swal2-confirm {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+      color: white !important;
+      border: none !important;
+      border-radius: 6px !important;
+      padding: 0.75rem 2rem !important;
+      font-size: 0.95rem !important;
+      font-weight: 600 !important;
+      cursor: pointer !important;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3) !important;
+      min-width: 120px !important;
+
+      &:hover {
+        transform: translateY(-2px) !important;
+        box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4) !important;
+      }
+
+      &:active {
+        transform: translateY(0) !important;
+        box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3) !important;
+      }
+
+      &:focus-visible {
+        outline: 2px solid #667eea !important;
+        outline-offset: 2px !important;
+      }
+    }
+
+    /* Botón de cancelar (si existe) */
+    .swal2-cancel {
+      background-color: #f5f5f5 !important;
+      color: #333 !important;
+      border: none !important;
+      border-radius: 6px !important;
+      padding: 0.75rem 2rem !important;
+      font-size: 0.95rem !important;
+      font-weight: 500 !important;
+      cursor: pointer !important;
+      margin-left: 0.5rem !important;
+      transition: all 0.3s ease !important;
+
+      &:hover {
+        background-color: #e0e0e0 !important;
+        transform: translateY(-1px) !important;
+      }
+
+      &:active {
+        transform: translateY(0) !important;
+      }
+    }
+  }
+
+  /* Iconos */
+  .swal2-icon {
+    margin: 1rem auto 1rem !important;
+    border-width: 3px !important;
+
+    &.swal2-success {
+      border-color: #667eea !important;
+      color: #667eea !important;
+
+      .swal2-success-ring {
+        border-color: #667eea !important;
+      }
+    }
+
+    &.swal2-error {
+      border-color: #ff6b6b !important;
+      color: #ff6b6b !important;
+
+      [class^='swal2-x-mark-line'] {
+        background-color: #ff6b6b !important;
+      }
+    }
+
+    &.swal2-warning {
+      border-color: #ff9800 !important;
+      color: #ff9800 !important;
+    }
+
+    &.swal2-info {
+      border-color: #2196f3 !important;
+      color: #2196f3 !important;
+    }
+
+    &.swal2-question {
+      border-color: #9c27b0 !important;
+      color: #9c27b0 !important;
+    }
+  }
+}
+
+/* Soporte para modo oscuro */
+@media (prefers-color-scheme: dark) {
+  .swal2-popup {
+    background-color: #2d2d2d !important;
+
+    .swal2-title {
+      color: #f5f5f5 !important;
+    }
+
+    .swal2-html-container {
+      color: #e0e0e0 !important;
+    }
+
+    .swal2-cancel {
+      background-color: #424242 !important;
+      color: #fff !important;
+
+      &:hover {
+        background-color: #555 !important;
+      }
+    }
+  }
+}
