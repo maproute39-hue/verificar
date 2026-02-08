@@ -177,7 +177,7 @@ export class Detail implements OnInit, AfterViewInit {
       conos_triangular: [''],
       botiquin: [''],
       extintor: [''],
-      cuñas: [''],
+      cunas: [''],
       llanta_repuesto: [''],
       caja_herramientas: [''],
       linterna: [''],

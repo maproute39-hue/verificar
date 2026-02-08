@@ -206,7 +206,7 @@
           </div>
 
           <!-- Botón de envío -->
-          <div class="col-12 mt-4">
+          <!-- <div class="col-12 mt-4">
             <button type="submit" class="btn btn-primary" [disabled]="isLoading">
               <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2" role="status"
                 aria-hidden="true"></span>
@@ -215,24 +215,20 @@
             <button type="button" class="btn btn-outline-secondary ms-2" routerLink="/inspecciones">
               Cancelar
             </button>
-          </div>
+          </div> -->
         </div>
         <!-- INSPECCIÓN DEL VEHÍCULO -->
 
       </div>
       <!-- columna derecha -->
-      <div class="col-lg-7 mb-3">
-        <div class="col-12 mb-3">
-          <h6 class="fw-bold border-bottom pb-2">INSPECCIÓN DEL VEHÍCULO</h6>
-          <p class="small text-muted">Marque con una ✓ según el estado del ítem verificado: Estado OK (verde),
-            Estado Negativo (rojo), No Aplica (blanco).</p>
-        </div>
-        <div class="">
-
-          <div class="y">
-
-            <div class="d-flex">
-              <div class="nav flex-column nav-pills border-end p-2" id="v-pills-tab" role="tablist"
+   <div class="col-lg-7 mb-3">
+  <h6 class="fw-bold border-bottom pb-2">INSPECCIÓN DEL VEHÍCULO</h6>
+  <p class="small text-muted">Marque con una ✓ según el estado del ítem verificado: Estado OK (verde), Estado N/C (rojo), No Aplica (blanco).</p>
+  
+  <div class="card">
+    <div class="card-body p-0">
+      <div class="d-flex">
+              <div class="nav flex-column nav-pills border-end " style="padding-right: 2px;" id="v-pills-tab" role="tablist"
                 aria-orientation="vertical">
                 <button class="nav-link active" id="v-pills-home-tab" data-bs-toggle="pill" data-bs-target="#electrico"
                   type="button" role="tab" aria-controls="electrico" aria-selected="true">SISTEMA ELÉCTRICO</button>
@@ -260,7 +256,7 @@
                   LABRADO DE LLANTAS</button>
               </div>
 
-              <div class="tab-content" style="flex: 1;">
+              <div class="tab-content" >
 
                 <div class="tab-pane fade show active" id="electrico" role="tabpanel"
                   aria-labelledby="electrico-tabPillsFill" tabindex="0">
@@ -269,10 +265,10 @@
                     <div class="btn-group w-100" role="group">
                       <input type="radio" class="btn-check" name="luces_navegacion" id="luces_navegacion_ok"
                         [value]="'ok'" formControlName="luces_navegacion" autocomplete="off">
-                      <label class="btn btn-outline-success" for="luces_navegacion_ok">OK</label>
+                      <label class="btn btn-outline-success" for="luces_navegacion_ok">C</label>
                       <input type="radio" class="btn-check" name="luces_navegacion" id="luces_navegacion_neg"
                         [value]="'negativo'" formControlName="luces_navegacion" autocomplete="off">
-                      <label class="btn btn-outline-danger" for="luces_navegacion_neg">Negativo</label>
+                      <label class="btn btn-outline-danger" for="luces_navegacion_neg">N/C</label>
                       <input type="radio" class="btn-check" name="luces_navegacion" id="luces_navegacion_na"
                         [value]="'na'" formControlName="luces_navegacion" autocomplete="off">
                       <label class="btn btn-outline-secondary" for="luces_navegacion_na">N/A</label>
@@ -284,10 +280,10 @@
                     <div class="btn-group w-100" role="group">
                       <input type="radio" class="btn-check" name="luces_frenado" id="luces_frenado_ok" [value]="'ok'"
                         formControlName="luces_frenado" autocomplete="off">
-                      <label class="btn btn-outline-success" for="luces_frenado_ok">OK</label>
+                      <label class="btn btn-outline-success" for="luces_frenado_ok">C</label>
                       <input type="radio" class="btn-check" name="luces_frenado" id="luces_frenado_neg"
                         [value]="'negativo'" formControlName="luces_frenado" autocomplete="off">
-                      <label class="btn btn-outline-danger" for="luces_frenado_neg">Negativo</label>
+                      <label class="btn btn-outline-danger" for="luces_frenado_neg">N/C</label>
                       <input type="radio" class="btn-check" name="luces_frenado" id="luces_frenado_na" [value]="'na'"
                         formControlName="luces_frenado" autocomplete="off">
                       <label class="btn btn-outline-secondary" for="luces_frenado_na">N/A</label>
@@ -299,10 +295,10 @@
                     <div class="btn-group w-100" role="group">
                       <input type="radio" class="btn-check" name="luces_direccionales" id="luces_direccionales_ok"
                         [value]="'ok'" formControlName="luces_direccionales" autocomplete="off">
-                      <label class="btn btn-outline-success" for="luces_direccionales_ok">OK</label>
+                      <label class="btn btn-outline-success" for="luces_direccionales_ok">C</label>
                       <input type="radio" class="btn-check" name="luces_direccionales" id="luces_direccionales_neg"
                         [value]="'negativo'" formControlName="luces_direccionales" autocomplete="off">
-                      <label class="btn btn-outline-danger" for="luces_direccionales_neg">Negativo</label>
+                      <label class="btn btn-outline-danger" for="luces_direccionales_neg">N/C</label>
                       <input type="radio" class="btn-check" name="luces_direccionales" id="luces_direccionales_na"
                         [value]="'na'" formControlName="luces_direccionales" autocomplete="off">
                       <label class="btn btn-outline-secondary" for="luces_direccionales_na">N/A</label>
@@ -314,10 +310,10 @@
                     <div class="btn-group w-100" role="group">
                       <input type="radio" class="btn-check" name="luz_reversa" id="luz_reversa_ok" [value]="'ok'"
                         formControlName="luz_reversa" autocomplete="off">
-                      <label class="btn btn-outline-success" for="luz_reversa_ok">OK</label>
+                      <label class="btn btn-outline-success" for="luz_reversa_ok">C</label>
                       <input type="radio" class="btn-check" name="luz_reversa" id="luz_reversa_neg" [value]="'negativo'"
                         formControlName="luz_reversa" autocomplete="off">
-                      <label class="btn btn-outline-danger" for="luz_reversa_neg">Negativo</label>
+                      <label class="btn btn-outline-danger" for="luz_reversa_neg">N/C</label>
                       <input type="radio" class="btn-check" name="luz_reversa" id="luz_reversa_na" [value]="'na'"
                         formControlName="luz_reversa" autocomplete="off">
                       <label class="btn btn-outline-secondary" for="luz_reversa_na">N/A</label>
@@ -329,10 +325,10 @@
                     <div class="btn-group w-100" role="group">
                       <input type="radio" class="btn-check" name="luces_estacionamiento" id="luces_estacionamiento_ok"
                         [value]="'ok'" formControlName="luces_estacionamiento" autocomplete="off">
-                      <label class="btn btn-outline-success" for="luces_estacionamiento_ok">OK</label>
+                      <label class="btn btn-outline-success" for="luces_estacionamiento_ok">C</label>
                       <input type="radio" class="btn-check" name="luces_estacionamiento" id="luces_estacionamiento_neg"
                         [value]="'negativo'" formControlName="luces_estacionamiento" autocomplete="off">
-                      <label class="btn btn-outline-danger" for="luces_estacionamiento_neg">Negativo</label>
+                      <label class="btn btn-outline-danger" for="luces_estacionamiento_neg">N/C</label>
                       <input type="radio" class="btn-check" name="luces_estacionamiento" id="luces_estacionamiento_na"
                         [value]="'na'" formControlName="luces_estacionamiento" autocomplete="off">
                       <label class="btn btn-outline-secondary" for="luces_estacionamiento_na">N/A</label>
@@ -344,10 +340,10 @@
                     <div class="btn-group w-100" role="group">
                       <input type="radio" class="btn-check" name="luces_posicion" id="luces_posicion_ok" [value]="'ok'"
                         formControlName="luces_posicion" autocomplete="off">
-                      <label class="btn btn-outline-success" for="luces_posicion_ok">OK</label>
+                      <label class="btn btn-outline-success" for="luces_posicion_ok">C</label>
                       <input type="radio" class="btn-check" name="luces_posicion" id="luces_posicion_neg"
                         [value]="'negativo'" formControlName="luces_posicion" autocomplete="off">
-                      <label class="btn btn-outline-danger" for="luces_posicion_neg">Negativo</label>
+                      <label class="btn btn-outline-danger" for="luces_posicion_neg">N/C</label>
                       <input type="radio" class="btn-check" name="luces_posicion" id="luces_posicion_na" [value]="'na'"
                         formControlName="luces_posicion" autocomplete="off">
                       <label class="btn btn-outline-secondary" for="luces_posicion_na">N/A</label>
@@ -359,10 +355,10 @@
                     <div class="btn-group w-100" role="group">
                       <input type="radio" class="btn-check" name="luz_antineblina" id="luz_antineblina_ok"
                         [value]="'ok'" formControlName="luz_antineblina" autocomplete="off">
-                      <label class="btn btn-outline-success" for="luz_antineblina_ok">OK</label>
+                      <label class="btn btn-outline-success" for="luz_antineblina_ok">C</label>
                       <input type="radio" class="btn-check" name="luz_antineblina" id="luz_antineblina_neg"
                         [value]="'negativo'" formControlName="luz_antineblina" autocomplete="off">
-                      <label class="btn btn-outline-danger" for="luz_antineblina_neg">Negativo</label>
+                      <label class="btn btn-outline-danger" for="luz_antineblina_neg">N/C</label>
                       <input type="radio" class="btn-check" name="luz_antineblina" id="luz_antineblina_na"
                         [value]="'na'" formControlName="luz_antineblina" autocomplete="off">
                       <label class="btn btn-outline-secondary" for="luz_antineblina_na">N/A</label>
@@ -374,10 +370,10 @@
                     <div class="btn-group w-100" role="group">
                       <input type="radio" class="btn-check" name="luz_placa" id="luz_placa_ok" [value]="'ok'"
                         formControlName="luz_placa" autocomplete="off">
-                      <label class="btn btn-outline-success" for="luz_placa_ok">OK</label>
+                      <label class="btn btn-outline-success" for="luz_placa_ok">C</label>
                       <input type="radio" class="btn-check" name="luz_placa" id="luz_placa_neg" [value]="'negativo'"
                         formControlName="luz_placa" autocomplete="off">
-                      <label class="btn btn-outline-danger" for="luz_placa_neg">Negativo</label>
+                      <label class="btn btn-outline-danger" for="luz_placa_neg">N/C</label>
                       <input type="radio" class="btn-check" name="luz_placa" id="luz_placa_na" [value]="'na'"
                         formControlName="luz_placa" autocomplete="off">
                       <label class="btn btn-outline-secondary" for="luz_placa_na">N/A</label>
@@ -389,10 +385,10 @@
                     <div class="btn-group w-100" role="group">
                       <input type="radio" class="btn-check" name="tablero_instrumentos" id="tablero_instrumentos_ok"
                         [value]="'ok'" formControlName="tablero_instrumentos" autocomplete="off">
-                      <label class="btn btn-outline-success" for="tablero_instrumentos_ok">OK</label>
+                      <label class="btn btn-outline-success" for="tablero_instrumentos_ok">C</label>
                       <input type="radio" class="btn-check" name="tablero_instrumentos" id="tablero_instrumentos_neg"
                         [value]="'negativo'" formControlName="tablero_instrumentos" autocomplete="off">
-                      <label class="btn btn-outline-danger" for="tablero_instrumentos_neg">Negativo</label>
+                      <label class="btn btn-outline-danger" for="tablero_instrumentos_neg">N/C</label>
                       <input type="radio" class="btn-check" name="tablero_instrumentos" id="tablero_instrumentos_na"
                         [value]="'na'" formControlName="tablero_instrumentos" autocomplete="off">
                       <label class="btn btn-outline-secondary" for="tablero_instrumentos_na">N/A</label>
@@ -404,10 +400,10 @@
                     <div class="btn-group w-100" role="group">
                       <input type="radio" class="btn-check" name="bocina" id="bocina_ok" [value]="'ok'"
                         formControlName="bocina" autocomplete="off">
-                      <label class="btn btn-outline-success" for="bocina_ok">OK</label>
+                      <label class="btn btn-outline-success" for="bocina_ok">C</label>
                       <input type="radio" class="btn-check" name="bocina" id="bocina_neg" [value]="'negativo'"
                         formControlName="bocina" autocomplete="off">
-                      <label class="btn btn-outline-danger" for="bocina_neg">Negativo</label>
+                      <label class="btn btn-outline-danger" for="bocina_neg">N/C</label>
                       <input type="radio" class="btn-check" name="bocina" id="bocina_na" [value]="'na'"
                         formControlName="bocina" autocomplete="off">
                       <label class="btn btn-outline-secondary" for="bocina_na">N/A</label>
@@ -419,10 +415,10 @@
                     <div class="btn-group w-100" role="group">
                       <input type="radio" class="btn-check" name="bateria" id="bateria_ok" [value]="'ok'"
                         formControlName="bateria" autocomplete="off">
-                      <label class="btn btn-outline-success" for="bateria_ok">OK</label>
+                      <label class="btn btn-outline-success" for="bateria_ok">C</label>
                       <input type="radio" class="btn-check" name="bateria" id="bateria_neg" [value]="'negativo'"
                         formControlName="bateria" autocomplete="off">
-                      <label class="btn btn-outline-danger" for="bateria_neg">Negativo</label>
+                      <label class="btn btn-outline-danger" for="bateria_neg">N/C</label>
                       <input type="radio" class="btn-check" name="bateria" id="bateria_na" [value]="'na'"
                         formControlName="bateria" autocomplete="off">
                       <label class="btn btn-outline-secondary" for="bateria_na">N/A</label>
@@ -434,10 +430,10 @@
                     <div class="btn-group w-100" role="group">
                       <input type="radio" class="btn-check" name="aire_acondicionado" id="aire_acondicionado_ok"
                         [value]="'ok'" formControlName="aire_acondicionado" autocomplete="off">
-                      <label class="btn btn-outline-success" for="aire_acondicionado_ok">OK</label>
+                      <label class="btn btn-outline-success" for="aire_acondicionado_ok">C</label>
                       <input type="radio" class="btn-check" name="aire_acondicionado" id="aire_acondicionado_neg"
                         [value]="'negativo'" formControlName="aire_acondicionado" autocomplete="off">
-                      <label class="btn btn-outline-danger" for="aire_acondicionado_neg">Negativo</label>
+                      <label class="btn btn-outline-danger" for="aire_acondicionado_neg">N/C</label>
                       <input type="radio" class="btn-check" name="aire_acondicionado" id="aire_acondicionado_na"
                         [value]="'na'" formControlName="aire_acondicionado" autocomplete="off">
                       <label class="btn btn-outline-secondary" for="aire_acondicionado_na">N/A</label>
@@ -450,10 +446,10 @@
                     <div class="btn-group w-100" role="group">
                       <input type="radio" class="btn-check" name="aceite_motor" id="aceite_motor_ok" [value]="'ok'"
                         formControlName="aceite_motor" autocomplete="off">
-                      <label class="btn btn-outline-success" for="aceite_motor_ok">OK</label>
+                      <label class="btn btn-outline-success" for="aceite_motor_ok">C</label>
                       <input type="radio" class="btn-check" name="aceite_motor" id="aceite_motor_neg"
                         [value]="'negativo'" formControlName="aceite_motor" autocomplete="off">
-                      <label class="btn btn-outline-danger" for="aceite_motor_neg">Negativo</label>
+                      <label class="btn btn-outline-danger" for="aceite_motor_neg">N/C</label>
                       <input type="radio" class="btn-check" name="aceite_motor" id="aceite_motor_na" [value]="'na'"
                         formControlName="aceite_motor" autocomplete="off">
                       <label class="btn btn-outline-secondary" for="aceite_motor_na">N/A</label>
@@ -465,10 +461,10 @@
                     <div class="btn-group w-100" role="group">
                       <input type="radio" class="btn-check" name="aceite_transmision" id="aceite_transmision_ok"
                         [value]="'ok'" formControlName="aceite_transmision" autocomplete="off">
-                      <label class="btn btn-outline-success" for="aceite_transmision_ok">OK</label>
+                      <label class="btn btn-outline-success" for="aceite_transmision_ok">C</label>
                       <input type="radio" class="btn-check" name="aceite_transmision" id="aceite_transmision_neg"
                         [value]="'negativo'" formControlName="aceite_transmision" autocomplete="off">
-                      <label class="btn btn-outline-danger" for="aceite_transmision_neg">Negativo</label>
+                      <label class="btn btn-outline-danger" for="aceite_transmision_neg">N/C</label>
                       <input type="radio" class="btn-check" name="aceite_transmision" id="aceite_transmision_na"
                         [value]="'na'" formControlName="aceite_transmision" autocomplete="off">
                       <label class="btn btn-outline-secondary" for="aceite_transmision_na">N/A</label>
@@ -480,10 +476,10 @@
                     <div class="btn-group w-100" role="group">
                       <input type="radio" class="btn-check" name="liquido_refrigerante" id="liquido_refrigerante_ok"
                         [value]="'ok'" formControlName="liquido_refrigerante" autocomplete="off">
-                      <label class="btn btn-outline-success" for="liquido_refrigerante_ok">OK</label>
+                      <label class="btn btn-outline-success" for="liquido_refrigerante_ok">C</label>
                       <input type="radio" class="btn-check" name="liquido_refrigerante" id="liquido_refrigerante_neg"
                         [value]="'negativo'" formControlName="liquido_refrigerante" autocomplete="off">
-                      <label class="btn btn-outline-danger" for="liquido_refrigerante_neg">Negativo</label>
+                      <label class="btn btn-outline-danger" for="liquido_refrigerante_neg">N/C</label>
                       <input type="radio" class="btn-check" name="liquido_refrigerante" id="liquido_refrigerante_na"
                         [value]="'na'" formControlName="liquido_refrigerante" autocomplete="off">
                       <label class="btn btn-outline-secondary" for="liquido_refrigerante_na">N/A</label>
@@ -495,10 +491,10 @@
                     <div class="btn-group w-100" role="group">
                       <input type="radio" class="btn-check" name="liquido_frenos" id="liquido_frenos_ok" [value]="'ok'"
                         formControlName="liquido_frenos" autocomplete="off">
-                      <label class="btn btn-outline-success" for="liquido_frenos_ok">OK</label>
+                      <label class="btn btn-outline-success" for="liquido_frenos_ok">C</label>
                       <input type="radio" class="btn-check" name="liquido_frenos" id="liquido_frenos_neg"
                         [value]="'negativo'" formControlName="liquido_frenos" autocomplete="off">
-                      <label class="btn btn-outline-danger" for="liquido_frenos_neg">Negativo</label>
+                      <label class="btn btn-outline-danger" for="liquido_frenos_neg">N/C</label>
                       <input type="radio" class="btn-check" name="liquido_frenos" id="liquido_frenos_na" [value]="'na'"
                         formControlName="liquido_frenos" autocomplete="off">
                       <label class="btn btn-outline-secondary" for="liquido_frenos_na">N/A</label>
@@ -510,10 +506,10 @@
                     <div class="btn-group w-100" role="group">
                       <input type="radio" class="btn-check" name="filtro_aire" id="filtro_aire_ok" [value]="'ok'"
                         formControlName="filtro_aire" autocomplete="off">
-                      <label class="btn btn-outline-success" for="filtro_aire_ok">OK</label>
+                      <label class="btn btn-outline-success" for="filtro_aire_ok">C</label>
                       <input type="radio" class="btn-check" name="filtro_aire" id="filtro_aire_neg" [value]="'negativo'"
                         formControlName="filtro_aire" autocomplete="off">
-                      <label class="btn btn-outline-danger" for="filtro_aire_neg">Negativo</label>
+                      <label class="btn btn-outline-danger" for="filtro_aire_neg">N/C</label>
                       <input type="radio" class="btn-check" name="filtro_aire" id="filtro_aire_na" [value]="'na'"
                         formControlName="filtro_aire" autocomplete="off">
                       <label class="btn btn-outline-secondary" for="filtro_aire_na">N/A</label>
@@ -525,10 +521,10 @@
                     <div class="btn-group w-100" role="group">
                       <input type="radio" class="btn-check" name="hidraulico_direccion" id="hidraulico_direccion_ok"
                         [value]="'ok'" formControlName="hidraulico_direccion" autocomplete="off">
-                      <label class="btn btn-outline-success" for="hidraulico_direccion_ok">OK</label>
+                      <label class="btn btn-outline-success" for="hidraulico_direccion_ok">C</label>
                       <input type="radio" class="btn-check" name="hidraulico_direccion" id="hidraulico_direccion_neg"
                         [value]="'negativo'" formControlName="hidraulico_direccion" autocomplete="off">
-                      <label class="btn btn-outline-danger" for="hidraulico_direccion_neg">Negativo</label>
+                      <label class="btn btn-outline-danger" for="hidraulico_direccion_neg">N/C</label>
                       <input type="radio" class="btn-check" name="hidraulico_direccion" id="hidraulico_direccion_na"
                         [value]="'na'" formControlName="hidraulico_direccion" autocomplete="off">
                       <label class="btn btn-outline-secondary" for="hidraulico_direccion_na">N/A</label>
@@ -540,10 +536,10 @@
                     <div class="btn-group w-100" role="group">
                       <input type="radio" class="btn-check" name="tension_correas" id="tension_correas_ok"
                         [value]="'ok'" formControlName="tension_correas" autocomplete="off">
-                      <label class="btn btn-outline-success" for="tension_correas_ok">OK</label>
+                      <label class="btn btn-outline-success" for="tension_correas_ok">C</label>
                       <input type="radio" class="btn-check" name="tension_correas" id="tension_correas_neg"
                         [value]="'negativo'" formControlName="tension_correas" autocomplete="off">
-                      <label class="btn btn-outline-danger" for="tension_correas_neg">Negativo</label>
+                      <label class="btn btn-outline-danger" for="tension_correas_neg">N/C</label>
                       <input type="radio" class="btn-check" name="tension_correas" id="tension_correas_na"
                         [value]="'na'" formControlName="tension_correas" autocomplete="off">
                       <label class="btn btn-outline-secondary" for="tension_correas_na">N/A</label>
@@ -557,10 +553,10 @@
                     <div class="btn-group w-100" role="group">
                       <input type="radio" class="btn-check" name="parachoque_delantero" id="parachoque_delantero_ok"
                         [value]="'ok'" formControlName="parachoque_delantero" autocomplete="off">
-                      <label class="btn btn-outline-success" for="parachoque_delantero_ok">OK</label>
+                      <label class="btn btn-outline-success" for="parachoque_delantero_ok">C</label>
                       <input type="radio" class="btn-check" name="parachoque_delantero" id="parachoque_delantero_neg"
                         [value]="'negativo'" formControlName="parachoque_delantero" autocomplete="off">
-                      <label class="btn btn-outline-danger" for="parachoque_delantero_neg">Negativo</label>
+                      <label class="btn btn-outline-danger" for="parachoque_delantero_neg">N/C</label>
                       <input type="radio" class="btn-check" name="parachoque_delantero" id="parachoque_delantero_na"
                         [value]="'na'" formControlName="parachoque_delantero" autocomplete="off">
                       <label class="btn btn-outline-secondary" for="parachoque_delantero_na">N/A</label>
@@ -572,10 +568,10 @@
                     <div class="btn-group w-100" role="group">
                       <input type="radio" class="btn-check" name="parachoque_trasero" id="parachoque_trasero_ok"
                         [value]="'ok'" formControlName="parachoque_trasero" autocomplete="off">
-                      <label class="btn btn-outline-success" for="parachoque_trasero_ok">OK</label>
+                      <label class="btn btn-outline-success" for="parachoque_trasero_ok">C</label>
                       <input type="radio" class="btn-check" name="parachoque_trasero" id="parachoque_trasero_neg"
                         [value]="'negativo'" formControlName="parachoque_trasero" autocomplete="off">
-                      <label class="btn btn-outline-danger" for="parachoque_trasero_neg">Negativo</label>
+                      <label class="btn btn-outline-danger" for="parachoque_trasero_neg">N/C</label>
                       <input type="radio" class="btn-check" name="parachoque_trasero" id="parachoque_trasero_na"
                         [value]="'na'" formControlName="parachoque_trasero" autocomplete="off">
                       <label class="btn btn-outline-secondary" for="parachoque_trasero_na">N/A</label>
@@ -587,10 +583,10 @@
                     <div class="btn-group w-100" role="group">
                       <input type="radio" class="btn-check" name="vidrios_seguridad" id="vidrios_seguridad_ok"
                         [value]="'ok'" formControlName="vidrios_seguridad" autocomplete="off">
-                      <label class="btn btn-outline-success" for="vidrios_seguridad_ok">OK</label>
+                      <label class="btn btn-outline-success" for="vidrios_seguridad_ok">C</label>
                       <input type="radio" class="btn-check" name="vidrios_seguridad" id="vidrios_seguridad_neg"
                         [value]="'negativo'" formControlName="vidrios_seguridad" autocomplete="off">
-                      <label class="btn btn-outline-danger" for="vidrios_seguridad_neg">Negativo</label>
+                      <label class="btn btn-outline-danger" for="vidrios_seguridad_neg">N/C</label>
                       <input type="radio" class="btn-check" name="vidrios_seguridad" id="vidrios_seguridad_na"
                         [value]="'na'" formControlName="vidrios_seguridad" autocomplete="off">
                       <label class="btn btn-outline-secondary" for="vidrios_seguridad_na">N/A</label>
@@ -602,10 +598,10 @@
                     <div class="btn-group w-100" role="group">
                       <input type="radio" class="btn-check" name="vidrios_laterales" id="vidrios_laterales_ok"
                         [value]="'ok'" formControlName="vidrios_laterales" autocomplete="off">
-                      <label class="btn btn-outline-success" for="vidrios_laterales_ok">OK</label>
+                      <label class="btn btn-outline-success" for="vidrios_laterales_ok">C</label>
                       <input type="radio" class="btn-check" name="vidrios_laterales" id="vidrios_laterales_neg"
                         [value]="'negativo'" formControlName="vidrios_laterales" autocomplete="off">
-                      <label class="btn btn-outline-danger" for="vidrios_laterales_neg">Negativo</label>
+                      <label class="btn btn-outline-danger" for="vidrios_laterales_neg">N/C</label>
                       <input type="radio" class="btn-check" name="vidrios_laterales" id="vidrios_laterales_na"
                         [value]="'na'" formControlName="vidrios_laterales" autocomplete="off">
                       <label class="btn btn-outline-secondary" for="vidrios_laterales_na">N/A</label>
@@ -617,10 +613,10 @@
                     <div class="btn-group w-100" role="group">
                       <input type="radio" class="btn-check" name="limpia_brisas" id="limpia_brisas_ok" [value]="'ok'"
                         formControlName="limpia_brisas" autocomplete="off">
-                      <label class="btn btn-outline-success" for="limpia_brisas_ok">OK</label>
+                      <label class="btn btn-outline-success" for="limpia_brisas_ok">C</label>
                       <input type="radio" class="btn-check" name="limpia_brisas" id="limpia_brisas_neg"
                         [value]="'negativo'" formControlName="limpia_brisas" autocomplete="off">
-                      <label class="btn btn-outline-danger" for="limpia_brisas_neg">Negativo</label>
+                      <label class="btn btn-outline-danger" for="limpia_brisas_neg">N/C</label>
                       <input type="radio" class="btn-check" name="limpia_brisas" id="limpia_brisas_na" [value]="'na'"
                         formControlName="limpia_brisas" autocomplete="off">
                       <label class="btn btn-outline-secondary" for="limpia_brisas_na">N/A</label>
@@ -632,10 +628,10 @@
                     <div class="btn-group w-100" role="group">
                       <input type="radio" class="btn-check" name="guardabarros" id="guardabarros_ok" [value]="'ok'"
                         formControlName="guardabarros" autocomplete="off">
-                      <label class="btn btn-outline-success" for="guardabarros_ok">OK</label>
+                      <label class="btn btn-outline-success" for="guardabarros_ok">C</label>
                       <input type="radio" class="btn-check" name="guardabarros" id="guardabarros_neg"
                         [value]="'negativo'" formControlName="guardabarros" autocomplete="off">
-                      <label class="btn btn-outline-danger" for="guardabarros_neg">Negativo</label>
+                      <label class="btn btn-outline-danger" for="guardabarros_neg">N/C</label>
                       <input type="radio" class="btn-check" name="guardabarros" id="guardabarros_na" [value]="'na'"
                         formControlName="guardabarros" autocomplete="off">
                       <label class="btn btn-outline-secondary" for="guardabarros_na">N/A</label>
@@ -647,10 +643,10 @@
                     <div class="btn-group w-100" role="group">
                       <input type="radio" class="btn-check" name="estribos_laterales" id="estribos_laterales_ok"
                         [value]="'ok'" formControlName="estribos_laterales" autocomplete="off">
-                      <label class="btn btn-outline-success" for="estribos_laterales_ok">OK</label>
+                      <label class="btn btn-outline-success" for="estribos_laterales_ok">C</label>
                       <input type="radio" class="btn-check" name="estribos_laterales" id="estribos_laterales_neg"
                         [value]="'negativo'" formControlName="estribos_laterales" autocomplete="off">
-                      <label class="btn btn-outline-danger" for="estribos_laterales_neg">Negativo</label>
+                      <label class="btn btn-outline-danger" for="estribos_laterales_neg">N/C</label>
                       <input type="radio" class="btn-check" name="estribos_laterales" id="estribos_laterales_na"
                         [value]="'na'" formControlName="estribos_laterales" autocomplete="off">
                       <label class="btn btn-outline-secondary" for="estribos_laterales_na">N/A</label>
@@ -662,10 +658,10 @@
                     <div class="btn-group w-100" role="group">
                       <input type="radio" class="btn-check" name="placa_adhesivo" id="placa_adhesivo_ok" [value]="'ok'"
                         formControlName="placa_adhesivo" autocomplete="off">
-                      <label class="btn btn-outline-success" for="placa_adhesivo_ok">OK</label>
+                      <label class="btn btn-outline-success" for="placa_adhesivo_ok">C</label>
                       <input type="radio" class="btn-check" name="placa_adhesivo" id="placa_adhesivo_neg"
                         [value]="'negativo'" formControlName="placa_adhesivo" autocomplete="off">
-                      <label class="btn btn-outline-danger" for="placa_adhesivo_neg">Negativo</label>
+                      <label class="btn btn-outline-danger" for="placa_adhesivo_neg">N/C</label>
                       <input type="radio" class="btn-check" name="placa_adhesivo" id="placa_adhesivo_na" [value]="'na'"
                         formControlName="placa_adhesivo" autocomplete="off">
                       <label class="btn btn-outline-secondary" for="placa_adhesivo_na">N/A</label>
@@ -677,10 +673,10 @@
                     <div class="btn-group w-100" role="group">
                       <input type="radio" class="btn-check" name="chapa_compuerta" id="chapa_compuerta_ok"
                         [value]="'ok'" formControlName="chapa_compuerta" autocomplete="off">
-                      <label class="btn btn-outline-success" for="chapa_compuerta_ok">OK</label>
+                      <label class="btn btn-outline-success" for="chapa_compuerta_ok">C</label>
                       <input type="radio" class="btn-check" name="chapa_compuerta" id="chapa_compuerta_neg"
                         [value]="'negativo'" formControlName="chapa_compuerta" autocomplete="off">
-                      <label class="btn btn-outline-danger" for="chapa_compuerta_neg">Negativo</label>
+                      <label class="btn btn-outline-danger" for="chapa_compuerta_neg">N/C</label>
                       <input type="radio" class="btn-check" name="chapa_compuerta" id="chapa_compuerta_na"
                         [value]="'na'" formControlName="chapa_compuerta" autocomplete="off">
                       <label class="btn btn-outline-secondary" for="chapa_compuerta_na">N/A</label>
@@ -694,10 +690,10 @@
                     <div class="btn-group w-100" role="group">
                       <input type="radio" class="btn-check" name="tapiceria" id="tapiceria_ok" [value]="'ok'"
                         formControlName="tapiceria" autocomplete="off">
-                      <label class="btn btn-outline-success" for="tapiceria_ok">OK</label>
+                      <label class="btn btn-outline-success" for="tapiceria_ok">C</label>
                       <input type="radio" class="btn-check" name="tapiceria" id="tapiceria_neg" [value]="'negativo'"
                         formControlName="tapiceria" autocomplete="off">
-                      <label class="btn btn-outline-danger" for="tapiceria_neg">Negativo</label>
+                      <label class="btn btn-outline-danger" for="tapiceria_neg">N/C</label>
                       <input type="radio" class="btn-check" name="tapiceria" id="tapiceria_na" [value]="'na'"
                         formControlName="tapiceria" autocomplete="off">
                       <label class="btn btn-outline-secondary" for="tapiceria_na">N/A</label>
@@ -709,10 +705,10 @@
                     <div class="btn-group w-100" role="group">
                       <input type="radio" class="btn-check" name="manijas_seguros" id="manijas_seguros_ok"
                         [value]="'ok'" formControlName="manijas_seguros" autocomplete="off">
-                      <label class="btn btn-outline-success" for="manijas_seguros_ok">OK</label>
+                      <label class="btn btn-outline-success" for="manijas_seguros_ok">C</label>
                       <input type="radio" class="btn-check" name="manijas_seguros" id="manijas_seguros_neg"
                         [value]="'negativo'" formControlName="manijas_seguros" autocomplete="off">
-                      <label class="btn btn-outline-danger" for="manijas_seguros_neg">Negativo</label>
+                      <label class="btn btn-outline-danger" for="manijas_seguros_neg">N/C</label>
                       <input type="radio" class="btn-check" name="manijas_seguros" id="manijas_seguros_na"
                         [value]="'na'" formControlName="manijas_seguros" autocomplete="off">
                       <label class="btn btn-outline-secondary" for="manijas_seguros_na">N/A</label>
@@ -724,10 +720,10 @@
                     <div class="btn-group w-100" role="group">
                       <input type="radio" class="btn-check" name="vidrios_electricos" id="vidrios_electricos_ok"
                         [value]="'ok'" formControlName="vidrios_electricos" autocomplete="off">
-                      <label class="btn btn-outline-success" for="vidrios_electricos_ok">OK</label>
+                      <label class="btn btn-outline-success" for="vidrios_electricos_ok">C</label>
                       <input type="radio" class="btn-check" name="vidrios_electricos" id="vidrios_electricos_neg"
                         [value]="'negativo'" formControlName="vidrios_electricos" autocomplete="off">
-                      <label class="btn btn-outline-danger" for="vidrios_electricos_neg">Negativo</label>
+                      <label class="btn btn-outline-danger" for="vidrios_electricos_neg">N/C</label>
                       <input type="radio" class="btn-check" name="vidrios_electricos" id="vidrios_electricos_na"
                         [value]="'na'" formControlName="vidrios_electricos" autocomplete="off">
                       <label class="btn btn-outline-secondary" for="vidrios_electricos_na">N/A</label>
@@ -740,11 +736,11 @@
                       <input type="radio" class="btn-check" name="antideslizantes_pedales"
                         id="antideslizantes_pedales_ok" [value]="'ok'" formControlName="antideslizantes_pedales"
                         autocomplete="off">
-                      <label class="btn btn-outline-success" for="antideslizantes_pedales_ok">OK</label>
+                      <label class="btn btn-outline-success" for="antideslizantes_pedales_ok">C</label>
                       <input type="radio" class="btn-check" name="antideslizantes_pedales"
                         id="antideslizantes_pedales_neg" [value]="'negativo'" formControlName="antideslizantes_pedales"
                         autocomplete="off">
-                      <label class="btn btn-outline-danger" for="antideslizantes_pedales_neg">Negativo</label>
+                      <label class="btn btn-outline-danger" for="antideslizantes_pedales_neg">N/C</label>
                       <input type="radio" class="btn-check" name="antideslizantes_pedales"
                         id="antideslizantes_pedales_na" [value]="'na'" formControlName="antideslizantes_pedales"
                         autocomplete="off">
@@ -757,10 +753,10 @@
                     <div class="btn-group w-100" role="group">
                       <input type="radio" class="btn-check" name="freno_mano" id="freno_mano_ok" [value]="'ok'"
                         formControlName="freno_mano" autocomplete="off">
-                      <label class="btn btn-outline-success" for="freno_mano_ok">OK</label>
+                      <label class="btn btn-outline-success" for="freno_mano_ok">C</label>
                       <input type="radio" class="btn-check" name="freno_mano" id="freno_mano_neg" [value]="'negativo'"
                         formControlName="freno_mano" autocomplete="off">
-                      <label class="btn btn-outline-danger" for="freno_mano_neg">Negativo</label>
+                      <label class="btn btn-outline-danger" for="freno_mano_neg">N/C</label>
                       <input type="radio" class="btn-check" name="freno_mano" id="freno_mano_na" [value]="'na'"
                         formControlName="freno_mano" autocomplete="off">
                       <label class="btn btn-outline-secondary" for="freno_mano_na">N/A</label>
@@ -773,11 +769,11 @@
                       <input type="radio" class="btn-check" name="tablero_instrumentos_interno"
                         id="tablero_instrumentos_interno_ok" [value]="'ok'"
                         formControlName="tablero_instrumentos_interno" autocomplete="off">
-                      <label class="btn btn-outline-success" for="tablero_instrumentos_interno_ok">OK</label>
+                      <label class="btn btn-outline-success" for="tablero_instrumentos_interno_ok">C</label>
                       <input type="radio" class="btn-check" name="tablero_instrumentos_interno"
                         id="tablero_instrumentos_interno_neg" [value]="'negativo'"
                         formControlName="tablero_instrumentos_interno" autocomplete="off">
-                      <label class="btn btn-outline-danger" for="tablero_instrumentos_interno_neg">Negativo</label>
+                      <label class="btn btn-outline-danger" for="tablero_instrumentos_interno_neg">N/C</label>
                       <input type="radio" class="btn-check" name="tablero_instrumentos_interno"
                         id="tablero_instrumentos_interno_na" [value]="'na'"
                         formControlName="tablero_instrumentos_interno" autocomplete="off">
@@ -792,10 +788,10 @@
                     <div class="btn-group w-100" role="group">
                       <input type="radio" class="btn-check" name="sistema_frenos" id="sistema_frenos_ok" [value]="'ok'"
                         formControlName="sistema_frenos" autocomplete="off">
-                      <label class="btn btn-outline-success" for="sistema_frenos_ok">OK</label>
+                      <label class="btn btn-outline-success" for="sistema_frenos_ok">C</label>
                       <input type="radio" class="btn-check" name="sistema_frenos" id="sistema_frenos_neg"
                         [value]="'negativo'" formControlName="sistema_frenos" autocomplete="off">
-                      <label class="btn btn-outline-danger" for="sistema_frenos_neg">Negativo</label>
+                      <label class="btn btn-outline-danger" for="sistema_frenos_neg">N/C</label>
                       <input type="radio" class="btn-check" name="sistema_frenos" id="sistema_frenos_na" [value]="'na'"
                         formControlName="sistema_frenos" autocomplete="off">
                       <label class="btn btn-outline-secondary" for="sistema_frenos_na">N/A</label>
@@ -807,10 +803,10 @@
                     <div class="btn-group w-100" role="group">
                       <input type="radio" class="btn-check" name="abs" id="abs_ok" [value]="'ok'" formControlName="abs"
                         autocomplete="off">
-                      <label class="btn btn-outline-success" for="abs_ok">OK</label>
+                      <label class="btn btn-outline-success" for="abs_ok">C</label>
                       <input type="radio" class="btn-check" name="abs" id="abs_neg" [value]="'negativo'"
                         formControlName="abs" autocomplete="off">
-                      <label class="btn btn-outline-danger" for="abs_neg">Negativo</label>
+                      <label class="btn btn-outline-danger" for="abs_neg">N/C</label>
                       <input type="radio" class="btn-check" name="abs" id="abs_na" [value]="'na'" formControlName="abs"
                         autocomplete="off">
                       <label class="btn btn-outline-secondary" for="abs_na">N/A</label>
@@ -822,10 +818,10 @@
                     <div class="btn-group w-100" role="group">
                       <input type="radio" class="btn-check" name="sistema_direccion" id="sistema_direccion_ok"
                         [value]="'ok'" formControlName="sistema_direccion" autocomplete="off">
-                      <label class="btn btn-outline-success" for="sistema_direccion_ok">OK</label>
+                      <label class="btn btn-outline-success" for="sistema_direccion_ok">C</label>
                       <input type="radio" class="btn-check" name="sistema_direccion" id="sistema_direccion_neg"
                         [value]="'negativo'" formControlName="sistema_direccion" autocomplete="off">
-                      <label class="btn btn-outline-danger" for="sistema_direccion_neg">Negativo</label>
+                      <label class="btn btn-outline-danger" for="sistema_direccion_neg">N/C</label>
                       <input type="radio" class="btn-check" name="sistema_direccion" id="sistema_direccion_na"
                         [value]="'na'" formControlName="sistema_direccion" autocomplete="off">
                       <label class="btn btn-outline-secondary" for="sistema_direccion_na">N/A</label>
@@ -837,10 +833,10 @@
                     <div class="btn-group w-100" role="group">
                       <input type="radio" class="btn-check" name="espejos_laterales" id="espejos_laterales_ok"
                         [value]="'ok'" formControlName="espejos_laterales" autocomplete="off">
-                      <label class="btn btn-outline-success" for="espejos_laterales_ok">OK</label>
+                      <label class="btn btn-outline-success" for="espejos_laterales_ok">C</label>
                       <input type="radio" class="btn-check" name="espejos_laterales" id="espejos_laterales_neg"
                         [value]="'negativo'" formControlName="espejos_laterales" autocomplete="off">
-                      <label class="btn btn-outline-danger" for="espejos_laterales_neg">Negativo</label>
+                      <label class="btn btn-outline-danger" for="espejos_laterales_neg">N/C</label>
                       <input type="radio" class="btn-check" name="espejos_laterales" id="espejos_laterales_na"
                         [value]="'na'" formControlName="espejos_laterales" autocomplete="off">
                       <label class="btn btn-outline-secondary" for="espejos_laterales_na">N/A</label>
@@ -852,10 +848,10 @@
                     <div class="btn-group w-100" role="group">
                       <input type="radio" class="btn-check" name="espejo_interno" id="espejo_interno_ok" [value]="'ok'"
                         formControlName="espejo_interno" autocomplete="off">
-                      <label class="btn btn-outline-success" for="espejo_interno_ok">OK</label>
+                      <label class="btn btn-outline-success" for="espejo_interno_ok">C</label>
                       <input type="radio" class="btn-check" name="espejo_interno" id="espejo_interno_neg"
                         [value]="'negativo'" formControlName="espejo_interno" autocomplete="off">
-                      <label class="btn btn-outline-danger" for="espejo_interno_neg">Negativo</label>
+                      <label class="btn btn-outline-danger" for="espejo_interno_neg">N/C</label>
                       <input type="radio" class="btn-check" name="espejo_interno" id="espejo_interno_na" [value]="'na'"
                         formControlName="espejo_interno" autocomplete="off">
                       <label class="btn btn-outline-secondary" for="espejo_interno_na">N/A</label>
@@ -867,10 +863,10 @@
                     <div class="btn-group w-100" role="group">
                       <input type="radio" class="btn-check" name="freno_mano_seguridad" id="freno_mano_seguridad_ok"
                         [value]="'ok'" formControlName="freno_mano_seguridad" autocomplete="off">
-                      <label class="btn btn-outline-success" for="freno_mano_seguridad_ok">OK</label>
+                      <label class="btn btn-outline-success" for="freno_mano_seguridad_ok">C</label>
                       <input type="radio" class="btn-check" name="freno_mano_seguridad" id="freno_mano_seguridad_neg"
                         [value]="'negativo'" formControlName="freno_mano_seguridad" autocomplete="off">
-                      <label class="btn btn-outline-danger" for="freno_mano_seguridad_neg">Negativo</label>
+                      <label class="btn btn-outline-danger" for="freno_mano_seguridad_neg">N/C</label>
                       <input type="radio" class="btn-check" name="freno_mano_seguridad" id="freno_mano_seguridad_na"
                         [value]="'na'" formControlName="freno_mano_seguridad" autocomplete="off">
                       <label class="btn btn-outline-secondary" for="freno_mano_seguridad_na">N/A</label>
@@ -884,10 +880,10 @@
                     <div class="btn-group w-100" role="group">
                       <input type="radio" class="btn-check" name="cinturones_seguridad" id="cinturones_seguridad_ok"
                         [value]="'ok'" formControlName="cinturones_seguridad" autocomplete="off">
-                      <label class="btn btn-outline-success" for="cinturones_seguridad_ok">OK</label>
+                      <label class="btn btn-outline-success" for="cinturones_seguridad_ok">C</label>
                       <input type="radio" class="btn-check" name="cinturones_seguridad" id="cinturones_seguridad_neg"
                         [value]="'negativo'" formControlName="cinturones_seguridad" autocomplete="off">
-                      <label class="btn btn-outline-danger" for="cinturones_seguridad_neg">Negativo</label>
+                      <label class="btn btn-outline-danger" for="cinturones_seguridad_neg">N/C</label>
                       <input type="radio" class="btn-check" name="cinturones_seguridad" id="cinturones_seguridad_na"
                         [value]="'na'" formControlName="cinturones_seguridad" autocomplete="off">
                       <label class="btn btn-outline-secondary" for="cinturones_seguridad_na">N/A</label>
@@ -899,10 +895,10 @@
                     <div class="btn-group w-100" role="group">
                       <input type="radio" class="btn-check" name="airbags" id="airbags_ok" [value]="'ok'"
                         formControlName="airbags" autocomplete="off">
-                      <label class="btn btn-outline-success" for="airbags_ok">OK</label>
+                      <label class="btn btn-outline-success" for="airbags_ok">C</label>
                       <input type="radio" class="btn-check" name="airbags" id="airbags_neg" [value]="'negativo'"
                         formControlName="airbags" autocomplete="off">
-                      <label class="btn btn-outline-danger" for="airbags_neg">Negativo</label>
+                      <label class="btn btn-outline-danger" for="airbags_neg">N/C</label>
                       <input type="radio" class="btn-check" name="airbags" id="airbags_na" [value]="'na'"
                         formControlName="airbags" autocomplete="off">
                       <label class="btn btn-outline-secondary" for="airbags_na">N/A</label>
@@ -914,10 +910,10 @@
                     <div class="btn-group w-100" role="group">
                       <input type="radio" class="btn-check" name="cadena_sujecion" id="cadena_sujecion_ok"
                         [value]="'ok'" formControlName="cadena_sujecion" autocomplete="off">
-                      <label class="btn btn-outline-success" for="cadena_sujecion_ok">OK</label>
+                      <label class="btn btn-outline-success" for="cadena_sujecion_ok">C</label>
                       <input type="radio" class="btn-check" name="cadena_sujecion" id="cadena_sujecion_neg"
                         [value]="'negativo'" formControlName="cadena_sujecion" autocomplete="off">
-                      <label class="btn btn-outline-danger" for="cadena_sujecion_neg">Negativo</label>
+                      <label class="btn btn-outline-danger" for="cadena_sujecion_neg">N/C</label>
                       <input type="radio" class="btn-check" name="cadena_sujecion" id="cadena_sujecion_na"
                         [value]="'na'" formControlName="cadena_sujecion" autocomplete="off">
                       <label class="btn btn-outline-secondary" for="cadena_sujecion_na">N/A</label>
@@ -929,10 +925,10 @@
                     <div class="btn-group w-100" role="group">
                       <input type="radio" class="btn-check" name="columna_direccion" id="columna_direccion_ok"
                         [value]="'ok'" formControlName="columna_direccion" autocomplete="off">
-                      <label class="btn btn-outline-success" for="columna_direccion_ok">OK</label>
+                      <label class="btn btn-outline-success" for="columna_direccion_ok">C</label>
                       <input type="radio" class="btn-check" name="columna_direccion" id="columna_direccion_neg"
                         [value]="'negativo'" formControlName="columna_direccion" autocomplete="off">
-                      <label class="btn btn-outline-danger" for="columna_direccion_neg">Negativo</label>
+                      <label class="btn btn-outline-danger" for="columna_direccion_neg">N/C</label>
                       <input type="radio" class="btn-check" name="columna_direccion" id="columna_direccion_na"
                         [value]="'na'" formControlName="columna_direccion" autocomplete="off">
                       <label class="btn btn-outline-secondary" for="columna_direccion_na">N/A</label>
@@ -944,10 +940,10 @@
                     <div class="btn-group w-100" role="group">
                       <input type="radio" class="btn-check" name="apoyacabezas" id="apoyacabezas_ok" [value]="'ok'"
                         formControlName="apoyacabezas" autocomplete="off">
-                      <label class="btn btn-outline-success" for="apoyacabezas_ok">OK</label>
+                      <label class="btn btn-outline-success" for="apoyacabezas_ok">C</label>
                       <input type="radio" class="btn-check" name="apoyacabezas" id="apoyacabezas_neg"
                         [value]="'negativo'" formControlName="apoyacabezas" autocomplete="off">
-                      <label class="btn btn-outline-danger" for="apoyacabezas_neg">Negativo</label>
+                      <label class="btn btn-outline-danger" for="apoyacabezas_neg">N/C</label>
                       <input type="radio" class="btn-check" name="apoyacabezas" id="apoyacabezas_na" [value]="'na'"
                         formControlName="apoyacabezas" autocomplete="off">
                       <label class="btn btn-outline-secondary" for="apoyacabezas_na">N/A</label>
@@ -959,10 +955,10 @@
                     <div class="btn-group w-100" role="group">
                       <input type="radio" class="btn-check" name="barra_antivuelco" id="barra_antivuelco_ok"
                         [value]="'ok'" formControlName="barra_antivuelco" autocomplete="off">
-                      <label class="btn btn-outline-success" for="barra_antivuelco_ok">OK</label>
+                      <label class="btn btn-outline-success" for="barra_antivuelco_ok">C</label>
                       <input type="radio" class="btn-check" name="barra_antivuelco" id="barra_antivuelco_neg"
                         [value]="'negativo'" formControlName="barra_antivuelco" autocomplete="off">
-                      <label class="btn btn-outline-danger" for="barra_antivuelco_neg">Negativo</label>
+                      <label class="btn btn-outline-danger" for="barra_antivuelco_neg">N/C</label>
                       <input type="radio" class="btn-check" name="barra_antivuelco" id="barra_antivuelco_na"
                         [value]="'na'" formControlName="barra_antivuelco" autocomplete="off">
                       <label class="btn btn-outline-secondary" for="barra_antivuelco_na">N/A</label>
@@ -974,11 +970,11 @@
                     <div class="btn-group w-100" role="group">
                       <input type="radio" class="btn-check" name="rejilla_vidrio_trasero" id="rejilla_vidrio_trasero_ok"
                         [value]="'ok'" formControlName="rejilla_vidrio_trasero" autocomplete="off">
-                      <label class="btn btn-outline-success" for="rejilla_vidrio_trasero_ok">OK</label>
+                      <label class="btn btn-outline-success" for="rejilla_vidrio_trasero_ok">C</label>
                       <input type="radio" class="btn-check" name="rejilla_vidrio_trasero"
                         id="rejilla_vidrio_trasero_neg" [value]="'negativo'" formControlName="rejilla_vidrio_trasero"
                         autocomplete="off">
-                      <label class="btn btn-outline-danger" for="rejilla_vidrio_trasero_neg">Negativo</label>
+                      <label class="btn btn-outline-danger" for="rejilla_vidrio_trasero_neg">N/C</label>
                       <input type="radio" class="btn-check" name="rejilla_vidrio_trasero" id="rejilla_vidrio_trasero_na"
                         [value]="'na'" formControlName="rejilla_vidrio_trasero" autocomplete="off">
                       <label class="btn btn-outline-secondary" for="rejilla_vidrio_trasero_na">N/A</label>
@@ -991,10 +987,10 @@
                     <div class="btn-group w-100" role="group">
                       <input type="radio" class="btn-check" name="conos_triangular" id="conos_triangular_ok"
                         [value]="'ok'" formControlName="conos_triangular" autocomplete="off">
-                      <label class="btn btn-outline-success" for="conos_triangular_ok">OK</label>
+                      <label class="btn btn-outline-success" for="conos_triangular_ok">C</label>
                       <input type="radio" class="btn-check" name="conos_triangular" id="conos_triangular_neg"
                         [value]="'negativo'" formControlName="conos_triangular" autocomplete="off">
-                      <label class="btn btn-outline-danger" for="conos_triangular_neg">Negativo</label>
+                      <label class="btn btn-outline-danger" for="conos_triangular_neg">N/C</label>
                       <input type="radio" class="btn-check" name="conos_triangular" id="conos_triangular_na"
                         [value]="'na'" formControlName="conos_triangular" autocomplete="off">
                       <label class="btn btn-outline-secondary" for="conos_triangular_na">N/A</label>
@@ -1006,10 +1002,10 @@
                     <div class="btn-group w-100" role="group">
                       <input type="radio" class="btn-check" name="botiquin" id="botiquin_ok" [value]="'ok'"
                         formControlName="botiquin" autocomplete="off">
-                      <label class="btn btn-outline-success" for="botiquin_ok">OK</label>
+                      <label class="btn btn-outline-success" for="botiquin_ok">C</label>
                       <input type="radio" class="btn-check" name="botiquin" id="botiquin_neg" [value]="'negativo'"
                         formControlName="botiquin" autocomplete="off">
-                      <label class="btn btn-outline-danger" for="botiquin_neg">Negativo</label>
+                      <label class="btn btn-outline-danger" for="botiquin_neg">N/C</label>
                       <input type="radio" class="btn-check" name="botiquin" id="botiquin_na" [value]="'na'"
                         formControlName="botiquin" autocomplete="off">
                       <label class="btn btn-outline-secondary" for="botiquin_na">N/A</label>
@@ -1021,10 +1017,10 @@
                     <div class="btn-group w-100" role="group">
                       <input type="radio" class="btn-check" name="extintor" id="extintor_ok" [value]="'ok'"
                         formControlName="extintor" autocomplete="off">
-                      <label class="btn btn-outline-success" for="extintor_ok">OK</label>
+                      <label class="btn btn-outline-success" for="extintor_ok">C</label>
                       <input type="radio" class="btn-check" name="extintor" id="extintor_neg" [value]="'negativo'"
                         formControlName="extintor" autocomplete="off">
-                      <label class="btn btn-outline-danger" for="extintor_neg">Negativo</label>
+                      <label class="btn btn-outline-danger" for="extintor_neg">N/C</label>
                       <input type="radio" class="btn-check" name="extintor" id="extintor_na" [value]="'na'"
                         formControlName="extintor" autocomplete="off">
                       <label class="btn btn-outline-secondary" for="extintor_na">N/A</label>
@@ -1036,10 +1032,10 @@
                     <div class="btn-group w-100" role="group">
                       <input type="radio" class="btn-check" name="cunas" id="cunas_ok" [value]="'ok'"
                         formControlName="cunas" autocomplete="off">
-                      <label class="btn btn-outline-success" for="cunas_ok">OK</label>
+                      <label class="btn btn-outline-success" for="cunas_ok">C</label>
                       <input type="radio" class="btn-check" name="cunas" id="cunas_neg" [value]="'negativo'"
                         formControlName="cunas" autocomplete="off">
-                      <label class="btn btn-outline-danger" for="cunas_neg">Negativo</label>
+                      <label class="btn btn-outline-danger" for="cunas_neg">N/C</label>
                       <input type="radio" class="btn-check" name="cunas" id="cunas_na" [value]="'na'"
                         formControlName="cunas" autocomplete="off">
                       <label class="btn btn-outline-secondary" for="cunas_na">N/A</label>
@@ -1051,10 +1047,10 @@
                     <div class="btn-group w-100" role="group">
                       <input type="radio" class="btn-check" name="llanta_repuesto" id="llanta_repuesto_ok"
                         [value]="'ok'" formControlName="llanta_repuesto" autocomplete="off">
-                      <label class="btn btn-outline-success" for="llanta_repuesto_ok">OK</label>
+                      <label class="btn btn-outline-success" for="llanta_repuesto_ok">C</label>
                       <input type="radio" class="btn-check" name="llanta_repuesto" id="llanta_repuesto_neg"
                         [value]="'negativo'" formControlName="llanta_repuesto" autocomplete="off">
-                      <label class="btn btn-outline-danger" for="llanta_repuesto_neg">Negativo</label>
+                      <label class="btn btn-outline-danger" for="llanta_repuesto_neg">N/C</label>
                       <input type="radio" class="btn-check" name="llanta_repuesto" id="llanta_repuesto_na"
                         [value]="'na'" formControlName="llanta_repuesto" autocomplete="off">
                       <label class="btn btn-outline-secondary" for="llanta_repuesto_na">N/A</label>
@@ -1066,10 +1062,10 @@
                     <div class="btn-group w-100" role="group">
                       <input type="radio" class="btn-check" name="caja_herramientas" id="caja_herramientas_ok"
                         [value]="'ok'" formControlName="caja_herramientas" autocomplete="off">
-                      <label class="btn btn-outline-success" for="caja_herramientas_ok">OK</label>
+                      <label class="btn btn-outline-success" for="caja_herramientas_ok">C</label>
                       <input type="radio" class="btn-check" name="caja_herramientas" id="caja_herramientas_neg"
                         [value]="'negativo'" formControlName="caja_herramientas" autocomplete="off">
-                      <label class="btn btn-outline-danger" for="caja_herramientas_neg">Negativo</label>
+                      <label class="btn btn-outline-danger" for="caja_herramientas_neg">N/C</label>
                       <input type="radio" class="btn-check" name="caja_herramientas" id="caja_herramientas_na"
                         [value]="'na'" formControlName="caja_herramientas" autocomplete="off">
                       <label class="btn btn-outline-secondary" for="caja_herramientas_na">N/A</label>
@@ -1081,10 +1077,10 @@
                     <div class="btn-group w-100" role="group">
                       <input type="radio" class="btn-check" name="linterna" id="linterna_ok" [value]="'ok'"
                         formControlName="linterna" autocomplete="off">
-                      <label class="btn btn-outline-success" for="linterna_ok">OK</label>
+                      <label class="btn btn-outline-success" for="linterna_ok">C</label>
                       <input type="radio" class="btn-check" name="linterna" id="linterna_neg" [value]="'negativo'"
                         formControlName="linterna" autocomplete="off">
-                      <label class="btn btn-outline-danger" for="linterna_neg">Negativo</label>
+                      <label class="btn btn-outline-danger" for="linterna_neg">N/C</label>
                       <input type="radio" class="btn-check" name="linterna" id="linterna_na" [value]="'na'"
                         formControlName="linterna" autocomplete="off">
                       <label class="btn btn-outline-secondary" for="linterna_na">N/A</label>
@@ -1096,10 +1092,10 @@
                     <div class="btn-group w-100" role="group">
                       <input type="radio" class="btn-check" name="gato" id="gato_ok" [value]="'ok'"
                         formControlName="gato" autocomplete="off">
-                      <label class="btn btn-outline-success" for="gato_ok">OK</label>
+                      <label class="btn btn-outline-success" for="gato_ok">C</label>
                       <input type="radio" class="btn-check" name="gato" id="gato_neg" [value]="'negativo'"
                         formControlName="gato" autocomplete="off">
-                      <label class="btn btn-outline-danger" for="gato_neg">Negativo</label>
+                      <label class="btn btn-outline-danger" for="gato_neg">N/C</label>
                       <input type="radio" class="btn-check" name="gato" id="gato_na" [value]="'na'"
                         formControlName="gato" autocomplete="off">
                       <label class="btn btn-outline-secondary" for="gato_na">N/A</label>
@@ -1113,10 +1109,10 @@
                     <div class="btn-group w-100" role="group">
                       <input type="radio" class="btn-check" name="buies_barra" id="buies_barra_ok" [value]="'ok'"
                         formControlName="buies_barra" autocomplete="off">
-                      <label class="btn btn-outline-success" for="buies_barra_ok">OK</label>
+                      <label class="btn btn-outline-success" for="buies_barra_ok">C</label>
                       <input type="radio" class="btn-check" name="buies_barra" id="buies_barra_neg" [value]="'negativo'"
                         formControlName="buies_barra" autocomplete="off">
-                      <label class="btn btn-outline-danger" for="buies_barra_neg">Negativo</label>
+                      <label class="btn btn-outline-danger" for="buies_barra_neg">N/C</label>
                       <input type="radio" class="btn-check" name="buies_barra" id="buies_barra_na" [value]="'na'"
                         formControlName="buies_barra" autocomplete="off">
                       <label class="btn btn-outline-secondary" for="buies_barra_na">N/A</label>
@@ -1128,10 +1124,10 @@
                     <div class="btn-group w-100" role="group">
                       <input type="radio" class="btn-check" name="buies_tiera" id="buies_tiera_ok" [value]="'ok'"
                         formControlName="buies_tiera" autocomplete="off">
-                      <label class="btn btn-outline-success" for="buies_tiera_ok">OK</label>
+                      <label class="btn btn-outline-success" for="buies_tiera_ok">C</label>
                       <input type="radio" class="btn-check" name="buies_tiera" id="buies_tiera_neg" [value]="'negativo'"
                         formControlName="buies_tiera" autocomplete="off">
-                      <label class="btn btn-outline-danger" for="buies_tiera_neg">Negativo</label>
+                      <label class="btn btn-outline-danger" for="buies_tiera_neg">N/C</label>
                       <input type="radio" class="btn-check" name="buies_tiera" id="buies_tiera_na" [value]="'na'"
                         formControlName="buies_tiera" autocomplete="off">
                       <label class="btn btn-outline-secondary" for="buies_tiera_na">N/A</label>
@@ -1143,10 +1139,10 @@
                     <div class="btn-group w-100" role="group">
                       <input type="radio" class="btn-check" name="cuna_motor" id="cuna_motor_ok" [value]="'ok'"
                         formControlName="cuna_motor" autocomplete="off">
-                      <label class="btn btn-outline-success" for="cuna_motor_ok">OK</label>
+                      <label class="btn btn-outline-success" for="cuna_motor_ok">C</label>
                       <input type="radio" class="btn-check" name="cuna_motor" id="cuna_motor_neg" [value]="'negativo'"
                         formControlName="cuna_motor" autocomplete="off">
-                      <label class="btn btn-outline-danger" for="cuna_motor_neg">Negativo</label>
+                      <label class="btn btn-outline-danger" for="cuna_motor_neg">N/C</label>
                       <input type="radio" class="btn-check" name="cuna_motor" id="cuna_motor_na" [value]="'na'"
                         formControlName="cuna_motor" autocomplete="off">
                       <label class="btn btn-outline-secondary" for="cuna_motor_na">N/A</label>
@@ -1158,10 +1154,10 @@
                     <div class="btn-group w-100" role="group">
                       <input type="radio" class="btn-check" name="guardapolvo_axiales" id="guardapolvo_axiales_ok"
                         [value]="'ok'" formControlName="guardapolvo_axiales" autocomplete="off">
-                      <label class="btn btn-outline-success" for="guardapolvo_axiales_ok">OK</label>
+                      <label class="btn btn-outline-success" for="guardapolvo_axiales_ok">C</label>
                       <input type="radio" class="btn-check" name="guardapolvo_axiales" id="guardapolvo_axiales_neg"
                         [value]="'negativo'" formControlName="guardapolvo_axiales" autocomplete="off">
-                      <label class="btn btn-outline-danger" for="guardapolvo_axiales_neg">Negativo</label>
+                      <label class="btn btn-outline-danger" for="guardapolvo_axiales_neg">N/C</label>
                       <input type="radio" class="btn-check" name="guardapolvo_axiales" id="guardapolvo_axiales_na"
                         [value]="'na'" formControlName="guardapolvo_axiales" autocomplete="off">
                       <label class="btn btn-outline-secondary" for="guardapolvo_axiales_na">N/A</label>
@@ -1173,10 +1169,10 @@
                     <div class="btn-group w-100" role="group">
                       <input type="radio" class="btn-check" name="amortiguadores" id="amortiguadores_ok" [value]="'ok'"
                         formControlName="amortiguadores" autocomplete="off">
-                      <label class="btn btn-outline-success" for="amortiguadores_ok">OK</label>
+                      <label class="btn btn-outline-success" for="amortiguadores_ok">C</label>
                       <input type="radio" class="btn-check" name="amortiguadores" id="amortiguadores_neg"
                         [value]="'negativo'" formControlName="amortiguadores" autocomplete="off">
-                      <label class="btn btn-outline-danger" for="amortiguadores_neg">Negativo</label>
+                      <label class="btn btn-outline-danger" for="amortiguadores_neg">N/C</label>
                       <input type="radio" class="btn-check" name="amortiguadores" id="amortiguadores_na" [value]="'na'"
                         formControlName="amortiguadores" autocomplete="off">
                       <label class="btn btn-outline-secondary" for="amortiguadores_na">N/A</label>
@@ -1188,10 +1184,10 @@
                     <div class="btn-group w-100" role="group">
                       <input type="radio" class="btn-check" name="hojas_muelles" id="hojas_muelles_ok" [value]="'ok'"
                         formControlName="hojas_muelles" autocomplete="off">
-                      <label class="btn btn-outline-success" for="hojas_muelles_ok">OK</label>
+                      <label class="btn btn-outline-success" for="hojas_muelles_ok">C</label>
                       <input type="radio" class="btn-check" name="hojas_muelles" id="hojas_muelles_neg"
                         [value]="'negativo'" formControlName="hojas_muelles" autocomplete="off">
-                      <label class="btn btn-outline-danger" for="hojas_muelles_neg">Negativo</label>
+                      <label class="btn btn-outline-danger" for="hojas_muelles_neg">N/C</label>
                       <input type="radio" class="btn-check" name="hojas_muelles" id="hojas_muelles_na" [value]="'na'"
                         formControlName="hojas_muelles" autocomplete="off">
                       <label class="btn btn-outline-secondary" for="hojas_muelles_na">N/A</label>
@@ -1203,10 +1199,10 @@
                     <div class="btn-group w-100" role="group">
                       <input type="radio" class="btn-check" name="silenciadores" id="silenciadores_ok" [value]="'ok'"
                         formControlName="silenciadores" autocomplete="off">
-                      <label class="btn btn-outline-success" for="silenciadores_ok">OK</label>
+                      <label class="btn btn-outline-success" for="silenciadores_ok">C</label>
                       <input type="radio" class="btn-check" name="silenciadores" id="silenciadores_neg"
                         [value]="'negativo'" formControlName="silenciadores" autocomplete="off">
-                      <label class="btn btn-outline-danger" for="silenciadores_neg">Negativo</label>
+                      <label class="btn btn-outline-danger" for="silenciadores_neg">N/C</label>
                       <input type="radio" class="btn-check" name="silenciadores" id="silenciadores_na" [value]="'na'"
                         formControlName="silenciadores" autocomplete="off">
                       <label class="btn btn-outline-secondary" for="silenciadores_na">N/A</label>
@@ -1218,37 +1214,40 @@
                     <div class="btn-group w-100" role="group">
                       <input type="radio" class="btn-check" name="tanques_compresor" id="tanques_compresor_ok"
                         [value]="'ok'" formControlName="tanques_compresor" autocomplete="off">
-                      <label class="btn btn-outline-success" for="tanques_compresor_ok">OK</label>
+                      <label class="btn btn-outline-success" for="tanques_compresor_ok">C</label>
                       <input type="radio" class="btn-check" name="tanques_compresor" id="tanques_compresor_neg"
                         [value]="'negativo'" formControlName="tanques_compresor" autocomplete="off">
-                      <label class="btn btn-outline-danger" for="tanques_compresor_neg">Negativo</label>
+                      <label class="btn btn-outline-danger" for="tanques_compresor_neg">N/C</label>
                       <input type="radio" class="btn-check" name="tanques_compresor" id="tanques_compresor_na"
                         [value]="'na'" formControlName="tanques_compresor" autocomplete="off">
                       <label class="btn btn-outline-secondary" for="tanques_compresor_na">N/A</label>
                     </div>
                   </div>
                 </div>
-                <div class="tab-pane fade" id="profundidad" role="tabpanel" aria-labelledby="profundidad-tabPillsFill"
-                  tabindex="0">
-                  <div class="">
-                    <div class="col-lg- mb-3">
-                      <label class="form-label">Llanta D LD /</label>
-                      <input type="text" class="form-control" formControlName="llanta_d_ld" placeholder="Ej: 2,3 mm">
-                    </div>
-                    <div class="col-lg- mb-3">
-                      <label class="form-label">Llanta T LIE /</label>
-                      <input type="text" class="form-control" formControlName="llanta_t_lie" placeholder="Ej: 3,4 mm">
-                    </div>
-                    <div class="col-lg- mb-3">
-                      <label class="form-label">Llanta T LII /</label>
-                      <input type="text" class="form-control" formControlName="llanta_t_lii" placeholder="Ej: 2,8 mm">
-                    </div>
-                    <div class="col-lg- mb-3">
-                      <label class="form-label">Llanta T LID /</label>
-                      <input type="text" class="form-control" formControlName="llanta_t_lid" placeholder="Ej: 3,1 mm">
-                    </div>
-                  </div>
-                </div>
+               <div class="tab-pane fade" id="profundidad" role="tabpanel"
+  aria-labelledby="profundidad-tabPillsFill" tabindex="0">
+  <div class="row">
+    <div class="col-lg-6 mb-3">
+      <label class="form-label">Llanta D LD / Ej: 2,3 mm</label>
+      <input type="number" class="form-control" inputmode="decimal" pattern="[0-9,.]*" placeholder="0 ">
+    </div>
+
+    <div class="col-lg-6 mb-3">
+      <label class="form-label">Llanta T LIE / Ej: 3,4 mm</label>
+      <input type="number" class="form-control" inputmode="decimal" pattern="[0-9,.]*" placeholder="0 ">
+    </div>
+
+    <div class="col-lg-6 mb-3">
+      <label class="form-label">Llanta T LII / Ej: 2,8 mm</label>
+      <input type="number" class="form-control" inputmode="decimal" pattern="[0-9,.]*" placeholder="0 ">
+    </div>
+
+    <div class="col-lg-6 mb-3">
+      <label class="form-label">Llanta T LID / Ej: 3,1 mm</label>
+      <input type="number" class="form-control" inputmode="decimal" pattern="[0-9,.]*" placeholder="0 ">
+    </div>
+  </div>
+</div>
               </div>
             </div>
           </div>
