@@ -82,4 +82,47 @@ pending(){
     }
     this.router.navigate(['/detail', id]);
   }
+
+  async deleteInspection(event: Event, id: string | undefined): Promise<void> {
+    event.stopPropagation();
+    
+    if (!id) {
+      console.error('No se pudo obtener el ID de la inspección');
+      return;
+    }
+
+    const result = await Swal.fire({
+      title: '¿Estás seguro?',
+      text: 'Esta acción no se puede deshacer',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar'
+    });
+
+    if (result.isConfirmed) {
+      try {
+        await this.realtimeInspectionsService.deleteInspection(id);
+        
+        Swal.fire({
+          title: 'Eliminada',
+          text: 'La inspección ha sido eliminada',
+          icon: 'success',
+          confirmButtonText: 'Aceptar'
+        });
+        
+        // La lista se actualizará automáticamente gracias a la suscripción
+      } catch (error) {
+        console.error('Error al eliminar la inspección:', error);
+        Swal.fire({
+          title: 'Error',
+          text: 'No se pudo eliminar la inspección',
+          icon: 'error',
+          confirmButtonText: 'Aceptar'
+        });
+      }
+    }
+  }
 }

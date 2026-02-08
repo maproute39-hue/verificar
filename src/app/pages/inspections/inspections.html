@@ -114,7 +114,8 @@
                         title="Editar">
                         <i class="fi fi-rr-edit"></i>
                       </button>
-                      <button class="btn btn-sm btn-icon btn-soft-danger" (click)="$event.stopPropagation();"
+                      <button class="btn btn-sm btn-icon btn-soft-danger" 
+                        (click)="deleteInspection($event, inspection.id)" 
                         title="Eliminar">
                         <i class="fi fi-rr-trash"></i>
                       </button>
