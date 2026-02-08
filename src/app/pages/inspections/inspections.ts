@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { Inspection } from '../../models/inspection.model';
-
+import Swal from 'sweetalert2';
 @Component({
   selector: 'app-inspections',
   standalone: true,
@@ -27,7 +27,14 @@ export class Inspections implements OnInit {
   ngOnInit(): void {
     this.initializeData();
   }
+pending(){
+  Swal.fire({
+    title: 'Opcion por implementar',
+    text: 'Se implementara en el despliegue final',
+    icon: 'warning',
 
+  })
+}
   private initializeData(): void {
     this.realtimeInspectionsService.inspections$.subscribe({
       next: (data) => {

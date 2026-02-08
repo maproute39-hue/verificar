@@ -33,16 +33,16 @@
                   <div class="fab-options d-flex flex-column"
                     style="bottom: auto; top: 100%; right: 0; left: auto; transform-origin: top right; z-index: 1050;">
 
-                    <a routerLink="/nueva" class="fab-option">
-                      <span class="fab-label">Buseta</span>
+                    <a (click)="pending()"  class="fab-option">
+                      <span class="fab-label text-warning">Buseta</span>
                       <span class="fab-option-icon">1</span>
                     </a>
                     <a routerLink="/nueva" class="fab-option">
                       <span class="fab-label">Camioneta</span>
                       <span class="fab-option-icon">2</span>
                     </a>
-                    <a routerLink="/nueva" class="fab-option">
-                      <span class="fab-label">Pesados</span>
+                    <a (click)="pending()" class="fab-option">
+                      <span class="fab-label text-warning">Pesados</span>
                       <span class="fab-option-icon">3</span>
                     </a>
                   </div>
@@ -298,16 +298,16 @@
     </label>
     <div class="fab-options">
 
-      <a routerLink="/inspections" class="fab-option">
-        <span class="fab-label">Busetas</span>
-        <span class="fab-option-icon">1</span>
+      <a (click)="pending()" class="fab-option">
+        <span class="fab-label text-warning">Busetas</span>
+        <span class="fab-option-icon ">1</span>
       </a>
       <a routerLink="/nueva" class="fab-option">
         <span class="fab-label">Camioneta</span>
         <span class="fab-option-icon">2</span>
       </a>
-      <a href="#" class="fab-option">
-        <span class="fab-label">Pesados</span>
+      <a (click)="pending()" class="fab-option">
+        <span class="fab-label text-warning">Pesados</span>
         <span class="fab-option-icon">3</span>
       </a>
     </div>
