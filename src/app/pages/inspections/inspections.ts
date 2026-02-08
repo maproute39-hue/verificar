@@ -27,6 +27,7 @@ export class Inspections implements OnInit {
   ngOnInit(): void {
     this.initializeData();
   }
+  
 pending(){
   Swal.fire({
     title: 'Opcion por implementar',

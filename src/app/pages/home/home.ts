@@ -35,14 +35,14 @@ export class Home implements OnInit {
     }
     this.router.navigate(['/detail', id]);
   }
-pending(){
-  Swal.fire({
-    title: 'Opcion por implementar',
-    text: 'Se implementara en el despliegue final',
-    icon: 'warning',
+  pending() {
+    Swal.fire({
+      title: 'Opcion por implementar',
+      text: 'Se implementara en el despliegue final',
+      icon: 'warning',
 
-  })
-}
+    })
+  }
 
   /**
    * Elimina una inspección después de confirmación

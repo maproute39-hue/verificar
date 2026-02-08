@@ -7,7 +7,7 @@ import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-sidebar',
-  standalone:true,
+  standalone: true,
   imports: [CommonModule, RouterLink],
   templateUrl: './sidebar.html',
   styleUrl: './sidebar.scss',
@@ -17,15 +17,24 @@ export class Sidebar {
   constructor(
     private router: Router,
     private authService: AuthService
-  ) {}
+  ) { }
 
   toggle() {
     this.collapsed.update(c => !c);
   }
 
+  pending() {
+    Swal.fire({
+      title: 'Opcion por implementar',
+      text: 'Se implementara en el despliegue final',
+      icon: 'warning',
+
+    })
+  }
+
   async logout(event: Event) {
     event.preventDefault();
-    
+
     // Mostrar confirmación antes de cerrar sesión
     const result = await Swal.fire({
       title: '¿Estás seguro?',
@@ -43,7 +52,7 @@ export class Sidebar {
       try {
         // Llamar al servicio de autenticación para cerrar sesión
         this.authService.logout();
-        
+
         // Mostrar confirmación de cierre de sesión exitoso
         await Swal.fire({
           title: 'Sesión cerrada',
@@ -52,7 +61,7 @@ export class Sidebar {
           confirmButtonColor: '#3f51b5',
           confirmButtonText: 'Aceptar'
         });
-        
+
         // Redirigir a la página de login
         this.router.navigate(['/login']);
       } catch (error) {
