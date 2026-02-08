@@ -1,11 +1,18 @@
 <header class="app-header">
       <div class="app-header-inner">
-        <button class="app-toggler" type="button" aria-label="app toggler">
+        <!-- Desktop back button (visible only on desktop) -->
+        <button class="app-toggler desktop-only" type="button" aria-label="app toggler">
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M7.66699 12.6668L3.66699 8.00016L7.66699 3.3335" stroke="#1C274C" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" />
             <path opacity="0.5" d="M12.667 12.6668L8.66699 8.00016L12.667 3.3335" stroke="#1C274C" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" />
           </svg>
         </button>
+        
+        <!-- Mobile home button (visible only on mobile/tablet) -->
+        <a routerLink="/" class="mobile-home-btn" style="padding-left: 30px;" aria-label="Ir al inicio">
+          <i class="fi fi-rr-home"></i>
+        </a>
+        
       <div class="app-header-start d-none d-md-flex">
           <form class="d-flex align-items-center h-100 w-lg-250px w-xxl-300px position-relative" >
             <button type="button" class="btn btn-sm border-0 position-absolute start-0 ms-3 p-0">

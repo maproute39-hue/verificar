@@ -12,6 +12,8 @@ import { Inspection } from '../../models/inspection.model';
   styleUrl: './home.scss',
 })
 export class Home implements OnInit {
+  approvedCount: number = 0;
+  rejectedCount: number = 0;
   inspections: Inspection[] = [];
   totalInspections: number = 0;
   currentMonthInspections: number = 0;

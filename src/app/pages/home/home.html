@@ -17,18 +17,33 @@
 
     <div class="row">
 
-      <div class="col-xxl-8 col-lg-8">
+      <div class="col-xxl-6 col-lg-6  col-6"> 
         <div class="row">
-          <div class="col-xxl-4 col-md-6">
+          <div class=" ">
             <div class="card">
               <div class="card-header d-flex align-items-center justify-content-between border-0 pb-0">
                 <div class="clearfix">
                   <h6>TOTAL REVISIONES</h6>
                 </div>
-                <div class="d-flex align-items-center gap-2">
-                  <button type="button" class="btn btn-primary waves-effect waves-light" routerLink="/nueva">
+                <div class="d-none d-lg-flex align-items-center gap-2 position-relative">
+                  <input type="checkbox" id="desktop-fab-check" class="fab-check">
+                  <label class="btn btn-primary waves-effect waves-light" for="desktop-fab-check">
                     <i class="fi fi-rr-plus me-1"></i> Nueva inspeccion
-                  </button>
+                  </label>
+                  <div class="fab-options d-flex flex-column" style="bottom: auto; top: 100%; right: 0; left: auto; transform-origin: top right; z-index: 1050;">
+                    <a routerLink="/nueva" class="fab-option">
+                      <span class="fab-label">Camioneta</span>
+                      <span class="fab-option-icon">1</span>
+                    </a>
+                    <a routerLink="/nueva" class="fab-option">
+                      <span class="fab-label">Moto</span>
+                      <span class="fab-option-icon">2</span>
+                    </a>
+                    <a routerLink="/nueva" class="fab-option">
+                      <span class="fab-label">Bicicleta</span>
+                      <span class="fab-option-icon">3</span>
+                    </a>
+                  </div>
                 </div>
               </div>
 
@@ -60,8 +75,8 @@
 
 
 
-          <div class="col-xxl-4 col-md-6">
-            <div class="card">
+          <!-- <div class="col-6 col-xxl-4 col-md-6">
+            <div class="card h-100">
               <div class="card-body">
                 <div class="mb-4">
                   <div class="d-flex justify-content-between mb-2">
@@ -94,11 +109,11 @@
             </div>
           </div>
 
-          <div class="col-xxl-4 col-md-6">
-            <div class="card">
+          <div class="col-6 col-xxl-4 col-md-6">
+            <div class="card h-100">
               <div class="card-header d-flex align-items-center justify-content-between border-0 pb-0">
                 <div class="clearfix">
-                  <h6>RECHAZADAS</h6>
+                  <h6 class="mb-0">RECHAZADAS</h6>
                 </div>
                 <div class="btn-group">
                   <button class="btn btn-action-primary btn-sm btn-icon waves-effect dropdown-toggle" type="button"
@@ -111,16 +126,16 @@
                   </ul>
                 </div>
               </div>
-              <div class="card-body pt-0">
+              <div class="card-body pt-0 d-flex flex-column">
                 <div class="d-flex align-items-center gap-2">
                   <h2 class="mb-0">0</h2>
                   <span class="badge badge-sm bg-success-subtle text-success">0</span>
                 </div>
               </div>
-              <div class="card-footer border-0 pt-0">
+              <div class="card-footer border-0 pt-0 mt-auto">
                 <div class="border-top pb-2"></div>
                 <div class="d-flex align-items-center justify-content-between">
-                  <p class="mb-0">Vs mes anterior: 1,195</p>
+                  <p class="mb-0 small">Vs mes anterior: 1,195</p>
                   <a href="javascript:void(0);" class="btn-link">
                     <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path opacity="0.5"
@@ -133,93 +148,44 @@
                 </div>
               </div>
             </div>
-          </div>
+          </div> -->
         </div>
       </div>
-      <div class="col-xxl-4 col-lg-4">
+      <div class="col-xxl-6 col-lg-6 col-6">
         <div class="row">
           <div class="col-12">
             <div class="card overflow-hidden bg-primary border-0 ovarlay-primary-gradient"
-              style="background-image: url(assets/images/auth/auth-frame.webp); background-position: center; background-size: cover;">
-              <div
-                class="card-header pb-0 border-0 d-flex align-items-center justify-content-between z-1 position-relative">
-                <h6 class="card-title mb-0 text-white">Total Earning</h6>
-                <div class="btn-group">
-                  <button class="btn btn-sm btn-icon text-white waves-effect dropdown-toggle" type="button"
-                    data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="fi fi-bs-menu-dots"></i>
-                  </button>
-                  <ul class="dropdown-menu dropdown-menu-end">
-                    <li>
-                      <a class="dropdown-item" href="javascript:void(0);">Editar</a>
-                    </li>
-                    <li>
-                      <a class="dropdown-item" href="javascript:void(0);">Eliminar</a>
-                    </li>
-                  </ul>
+              style="background-image: url(assets/images/auth/auth-frame.webp); background-position: center; background-size: cover; min-height: 200px;">
+              <div class="card-header pb-3 border-0 d-flex align-items-center justify-content-between z-1 position-relative">
+                <h6 class="card-title mb-0 text-white d-none d-lg-block">Distribución</h6>
+                <!-- Versión móvil/tablet -->
+                <div class="d-flex d-lg-none gap-4 align-items-center h-100">
+                  <div class="d-flex flex-column align-items-center">
+                    <span class="text-white fw-bold fs-3">1</span>
+                    <span class="badge bg-white text-primary rounded-pill px-3 py-1">A</span>
+                  </div>
+                  <div class="d-flex flex-column align-items-center">
+                    <span class="text-white fw-bold fs-3">0</span>
+                    <span class="badge bg-white text-primary rounded-pill px-3 py-1">R</span>
+                  </div>
                 </div>
               </div>
-              <div class="card-body pt-0 border-light border-bottom border-opacity-10">
+              <!-- Versión escritorio -->
+              <div class="card-body pt-0 border-light border-bottom border-opacity-10 d-none d-lg-block">
                 <div class="mb-5 mt-n3 z-n1 position-relative">
                   <div id="statusChart"></div>
-                  <div class="text-white mt-n5 text-center">{{ totalInspections | number:'1.0-0' }} Inspecciones</div>
                 </div>
                 <div class="px-4 mb-3 d-flex align-items-start justify-content-between">
-                  <div class="d-flex align-items-start gap-2">
-                    <div class="py-1">
-                      <i class="text-white fa-solid fa-square"></i>
-                    </div>
-                    <div class="clearfix">
-                      <h3 class="mb-0 text-white">1</h3>
-                      <p class="text-white text-opacity-50 mb-0">Aprobadas</p>
-                    </div>
+                  <div class="d-flex flex-column align-items-center">
+                    <h3 class="mb-0 text-white">1</h3>
+                    <p class="text-white text-opacity-50 mb-0">Aprobadas</p>
                   </div>
-                  <div class="d-flex align-items-start gap-2">
-                    <div class="p-1">
-                      <i class="text-white text-opacity-50 fa-solid fa-square"></i>
-                    </div>
-                    <div class="clearfix">
-                      <h3 class="mb-0 text-white">0</h3>
-                      <p class="text-white text-opacity-50 mb-0">Rechazadas</p>
-                    </div>
+                  <div class="d-flex flex-column align-items-center">
+                    <h3 class="mb-0 text-white">0</h3>
+                    <p class="text-white text-opacity-50 mb-0">Rechazadas</p>
                   </div>
                 </div>
               </div>
-              <!-- <div class="card-footer border-0">
-                    <h6 class="card-title mb-3 text-white">Orders Status</h6>
-                    <div class="progress-stacked bg-transparent mb-4">
-                      <div class="progress bg-transparent" role="progressbar" aria-label="Segment one" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100" style="width: 70%">
-                        <div class="progress-bar bg-white"></div>
-                      </div>
-                      <div class="progress bg-transparent" role="progressbar" aria-label="Segment two" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" style="width: 25%">
-                        <div class="progress-bar bg-white bg-opacity-50"></div>
-                      </div>
-                      <div class="progress bg-transparent" role="progressbar" aria-label="Segment three" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 5%">
-                        <div class="progress-bar bg-white bg-opacity-25"></div>
-                      </div>
-                    </div>
-                    <div class="d-flex align-items-center justify-content-between mb-2">
-                      <div class="d-flex align-items-center gap-2">
-                        <i class="text-white fa-solid fa-square"></i>
-                        <h6 class="fw-light text-white mb-0">Paid</h6>
-                      </div>
-                      <strong class="text-white fw-semibold">70%</strong>
-                    </div>
-                    <div class="d-flex align-items-center justify-content-between mb-2">
-                      <div class="d-flex align-items-center gap-2">
-                        <i class="text-white text-opacity-50 fa-solid fa-square"></i>
-                        <h6 class="fw-light text-white mb-0">Cancelled</h6>
-                      </div>
-                      <strong class="text-white fw-semibold">25%</strong>
-                    </div>
-                    <div class="d-flex align-items-center justify-content-between mb-2">
-                      <div class="d-flex align-items-center gap-2">
-                        <i class="text-white text-opacity-25 fa-solid fa-square"></i>
-                        <h6 class="fw-light text-white mb-0">Refunded</h6>
-                      </div>
-                      <strong class="text-white fw-semibold">5%</strong>
-                    </div>
-                  </div> -->
             </div>
           </div>
 
@@ -326,11 +292,11 @@
       <span class="fab-icon-close">×</span>
     </label>
     <div class="fab-options">
-      <a href="#" class="fab-option">
+      <a routerLink="/nueva" class="fab-option">
         <span class="fab-label">Camioneta</span>
         <span class="fab-option-icon">1</span>
       </a>
-      <a href="#" class="fab-option">
+      <a routerLink="/inspections" class="fab-option">
         <span class="fab-label">Busetas</span>
         <span class="fab-option-icon">2</span>
       </a>
