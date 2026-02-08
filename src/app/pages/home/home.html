@@ -17,7 +17,7 @@
 
     <div class="row">
 
-      <div class="col-xxl-6 col-lg-6  col-6"> 
+      <div class="col-xxl-6 col-lg-6  col-6">
         <div class="row">
           <div class=" ">
             <div class="card">
@@ -30,17 +30,19 @@
                   <label class="btn btn-primary waves-effect waves-light" for="desktop-fab-check">
                     <i class="fi fi-rr-plus me-1"></i> Nueva inspeccion
                   </label>
-                  <div class="fab-options d-flex flex-column" style="bottom: auto; top: 100%; right: 0; left: auto; transform-origin: top right; z-index: 1050;">
+                  <div class="fab-options d-flex flex-column"
+                    style="bottom: auto; top: 100%; right: 0; left: auto; transform-origin: top right; z-index: 1050;">
+
                     <a routerLink="/nueva" class="fab-option">
-                      <span class="fab-label">Camioneta</span>
+                      <span class="fab-label">Buseta</span>
                       <span class="fab-option-icon">1</span>
                     </a>
                     <a routerLink="/nueva" class="fab-option">
-                      <span class="fab-label">Moto</span>
+                      <span class="fab-label">Camioneta</span>
                       <span class="fab-option-icon">2</span>
                     </a>
                     <a routerLink="/nueva" class="fab-option">
-                      <span class="fab-label">Bicicleta</span>
+                      <span class="fab-label">Pesados</span>
                       <span class="fab-option-icon">3</span>
                     </a>
                   </div>
@@ -156,7 +158,8 @@
           <div class="col-12">
             <div class="card overflow-hidden bg-primary border-0 ovarlay-primary-gradient"
               style="background-image: url(assets/images/auth/auth-frame.webp); background-position: center; background-size: cover; min-height: 200px;">
-              <div class="card-header pb-3 border-0 d-flex align-items-center justify-content-between z-1 position-relative">
+              <div
+                class="card-header pb-3 border-0 d-flex align-items-center justify-content-between z-1 position-relative">
                 <h6 class="card-title mb-0 text-white d-none d-lg-block">Distribución</h6>
                 <!-- Versión móvil/tablet -->
                 <div class="d-flex d-lg-none gap-4 align-items-center h-100">
@@ -222,18 +225,19 @@
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let inspection of RealtimeInspectionsService.inspections$ | async" 
-                    (click)="viewInspection(inspection.id)"
-                    class="inspection-row">
+                <tr *ngFor="let inspection of RealtimeInspectionsService.inspections$ | async"
+                  (click)="viewInspection(inspection.id)" class="inspection-row">
                   <td class="pe-0" (click)="$event.stopPropagation()">
                     <div class="form-check p-0 w-auto d-inline-block mb-0 mb-n1">
-                      <input class="form-check-input m-0" data-checkbox="" type="checkbox" (click)="$event.stopPropagation()">
+                      <input class="form-check-input m-0" data-checkbox="" type="checkbox"
+                        (click)="$event.stopPropagation()">
                     </div>
                   </td>
                   <td>
                     <div class="d-flex align-items-center">
                       <div class="avatar avatar-xxs rounded-circle me-2">
-                        <img [src]="inspection.foto_conductor || 'assets/images/avatar/avatar1.webp'" alt="Foto del conductor" class="img-fluid">
+                        <img [src]="inspection.foto_conductor || 'assets/images/avatar/avatar1.webp'"
+                          alt="Foto del conductor" class="img-fluid">
                       </div>
                       {{ inspection.nombres_conductor || 'Sin nombre' }}
                     </div>
@@ -242,8 +246,7 @@
                   <td>{{ inspection.telefono || 'Sin teléfono' }}</td>
                   <td>{{ (inspection.fecha_inspeccion | date: 'dd/MM/yyyy') || 'Sin fecha' }}</td>
                   <td>
-                    <span class="badge badge-lg" 
-                          [ngClass]="{
+                    <span class="badge badge-lg" [ngClass]="{
                             'bg-success-subtle text-success': inspection.estado === 'aprobada',
                             'bg-warning-subtle text-warning': inspection.estado === 'pendiente',
                             'bg-danger-subtle text-danger': inspection.estado === 'rechazada',
@@ -260,13 +263,15 @@
                       </button>
                       <ul class="dropdown-menu dropdown-menu-end">
                         <li>
-                          <a class="dropdown-item" [routerLink]="['/detail', inspection.id]" (click)="$event.stopPropagation()">
+                          <a class="dropdown-item" [routerLink]="['/detail', inspection.id]"
+                            (click)="$event.stopPropagation()">
                             <i class="fi fi-rr-edit me-2"></i>Editar
                           </a>
                         </li>
-                        <li><a class="dropdown-item text-danger" href="javascript:void(0);" (click)="$event.stopPropagation(); deleteInspection(inspection.id)">
-                          <i class="fi fi-rr-trash me-2"></i>Eliminar
-                        </a></li>
+                        <li><a class="dropdown-item text-danger" href="javascript:void(0);"
+                            (click)="$event.stopPropagation(); deleteInspection(inspection.id)">
+                            <i class="fi fi-rr-trash me-2"></i>Eliminar
+                          </a></li>
                       </ul>
                     </div>
                   </td>
@@ -292,12 +297,13 @@
       <span class="fab-icon-close">×</span>
     </label>
     <div class="fab-options">
-      <a routerLink="/nueva" class="fab-option">
-        <span class="fab-label">Camioneta</span>
-        <span class="fab-option-icon">1</span>
-      </a>
+
       <a routerLink="/inspections" class="fab-option">
         <span class="fab-label">Busetas</span>
+        <span class="fab-option-icon">1</span>
+      </a>
+      <a routerLink="/nueva" class="fab-option">
+        <span class="fab-label">Camioneta</span>
         <span class="fab-option-icon">2</span>
       </a>
       <a href="#" class="fab-option">
@@ -345,21 +351,21 @@
       transition: all 0.3s ease;
     }
 
-    .fab-check:checked + .fab .fab-icon {
+    .fab-check:checked+.fab .fab-icon {
       opacity: 0;
       transform: rotate(45deg);
     }
 
-    .fab-check:checked + .fab .fab-icon-close {
+    .fab-check:checked+.fab .fab-icon-close {
       opacity: 1;
       transform: rotate(0);
     }
 
-    .fab-check:checked + .fab {
+    .fab-check:checked+.fab {
       background-color: var(--bs-primary);
     }
 
-    .fab-check:checked + .fab:hover {
+    .fab-check:checked+.fab:hover {
       background-color: var(--bs-primary);
     }
 
@@ -380,7 +386,7 @@
       gap: 10px;
     }
 
-    .fab-check:checked ~ .fab-options {
+    .fab-check:checked~.fab-options {
       opacity: 1;
       transform: scale(1);
     }
