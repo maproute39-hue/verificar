@@ -1,3 +1,89 @@
+// FAB Menu Styles
+.fab-check {
+  display: none;
+  
+  &:checked ~ .fab-options {
+    opacity: 1;
+    visibility: visible;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.fab-options {
+  position: absolute;
+  min-width: 200px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  opacity: 0;
+  visibility: hidden;
+  transform: scale(0.95) translateY(-10px);
+  transform-origin: top right;
+  transition: all 0.2s ease-in-out;
+  z-index: 1000;
+  padding: 0.5rem 0;
+  margin-top: 0.5rem;
+  right: 0;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: -8px;
+    right: 16px;
+    width: 16px;
+    height: 16px;
+    background: #fff;
+    transform: rotate(45deg);
+    box-shadow: -2px -2px 5px rgba(0, 0, 0, 0.05);
+  }
+}
+
+.fab-option {
+  display: flex;
+  align-items: center;
+  padding: 0.6rem 1.25rem;
+  color: #495057;
+  text-decoration: none;
+  transition: all 0.2s;
+  position: relative;
+  z-index: 1;
+  
+  &:hover {
+    background-color: #f8f9fa;
+    color: green;
+    transform: translateX(3px);
+    
+    .fab-label {
+      color: green;
+    }
+    
+    .fab-option-icon {
+      background-color: green;
+      color: #fff;
+    }
+  }
+  
+  .fab-label {
+    flex: 1;
+    font-size: 0.875rem;
+    transition: color 0.2s;
+  }
+  
+  .fab-option-icon {
+    width: 24px;
+    height: 24px;
+    border-radius: 4px;
+    background-color: #f8f9fa;
+    color: #6c757d;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    font-weight: 600;
+    transition: all 0.2s;
+  }
+}
+
 // Estilos para las filas de la tabla
 .table {
   tbody {
@@ -39,6 +125,6 @@
   
   &.bg-soft-primary {
     background-color: rgba(13, 110, 253, 0.1);
-    color: #0d6efd;
+    color: green;
   }
 }
