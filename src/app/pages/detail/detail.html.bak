@@ -1,5 +1,7 @@
 <main class="app-wrapper">
+
   <div class="container-fluid">
+
     <div class="app-page-head">
       <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
@@ -8,26 +10,29 @@
               <i class="fi fi-rr-home"></i> Inspecciones
             </a>
           </li>
-          <li class="breadcrumb-item active" aria-current="page">Detalle de inspeccion</li>
+          <li class="breadcrumb-item active2" aria-current="page">Detalle de inspeccion</li>
         </ol>
       </nav>
     </div>
     <form [formGroup]="inspectionForm" class="row">
       <!-- columna izquierda -->
-      <div class="col-lg-7 mb-3">
+      <div class="col-lg-6 mb-3">
         <!-- Encabezado General -->
+
+
+        
         <div class="col-12 mb-3">
           <h6 class="fw-bold border-bottom pb-2">DATOS GENERALES</h6>
         </div>
 
         <div class="row">
-          <div class="col-lg-4 mb-3">
+          <div class="col-lg-6 mb-3">
             <label class="form-label">Fecha de Inspección <span class="text-danger">*</span></label>
             <input #fechaInspeccion type="text" class="form-control date-picker" formControlName="fecha_inspeccion"
               placeholder="Seleccione fecha" readonly>
           </div>
 
-          <div class="col-lg-4 mb-3">
+          <div class="col-lg-6 mb-3">
             <label class="form-label">Vigencia Hasta <span class="text-danger">*</span></label>
             <input #fechaVigencia type="text" class="form-control date-picker" formControlName="fecha_vigencia"
               placeholder="Seleccione fecha" readonly>
@@ -39,7 +44,8 @@
           <h6 class="fw-bold border-bottom pb-2">DATOS DEL CONDUCTOR</h6>
         </div>
         <div class="row">
-          <div class="col-lg-4 mb-3">
+          
+          <div class="col-lg-6 mb-3">
             <label class="form-label">Nombre Transportadora <span class="text-danger">*</span></label>
             <input type="text" formControlName="nombre_transportadora" class="form-control"
               placeholder="Nombre transportadora">
@@ -50,7 +56,7 @@
             </div>
           </div>
 
-          <div class="col-lg-4 mb-3">
+          <div class="col-lg-6 mb-3">
             <label class="form-label">Nombres Conductor <span class="text-danger">*</span></label>
             <input type="text" formControlName="nombres_conductor" class="form-control" placeholder="Nombres conductor">
             <div
@@ -107,7 +113,7 @@
           <h6 class="fw-bold border-bottom pb-2">DATOS DEL VEHÍCULO</h6>
         </div>
         <div class="row">
-          <div class="col-lg-3 mb-3">
+          <div class="col-lg-4 mb-3">
             <label class="form-label">Placa <span class="text-danger">*</span></label>
             <input type="text" formControlName="placa" class="form-control" placeholder="Placa del vehículo">
             <div *ngIf="inspectionForm.get('placa')?.touched && inspectionForm.get('placa')?.errors?.['required']"
@@ -116,7 +122,7 @@
             </div>
           </div>
 
-          <div class="col-lg-3 mb-3">
+          <div class="col-lg-4 mb-3">
             <label class="form-label">Marca <span class="text-danger">*</span></label>
             <input type="text" formControlName="marca" class="form-control" placeholder="Marca">
             <div *ngIf="inspectionForm.get('marca')?.touched && inspectionForm.get('marca')?.errors?.['required']"
@@ -125,7 +131,7 @@
             </div>
           </div>
 
-          <div class="col-lg-3 mb-3">
+          <div class="col-lg-4 mb-3">
             <label class="form-label">Modelo <span class="text-danger">*</span></label>
             <input type="text" formControlName="modelo" class="form-control" placeholder="Modelo">
             <div *ngIf="inspectionForm.get('modelo')?.touched && inspectionForm.get('modelo')?.errors?.['required']"
@@ -134,7 +140,7 @@
             </div>
           </div>
 
-          <div class="col-lg-3 mb-3">
+          <div class="col-lg-4 mb-3">
             <label class="form-label">Kilometraje actual <span class="text-danger">*</span></label>
             <input type="number" formControlName="kilometraje" class="form-control" placeholder="Kilometraje">
             <div
@@ -144,91 +150,81 @@
             </div>
           </div>
 
-          <div class="col-lg-3 mb-3">
+          <div class="col-lg-4 mb-3">
             <label class="form-label">SOAT</label>
             <input type="text" formControlName="soat" class="form-control" placeholder="Número SOAT">
           </div>
-          <div class="col-lg-3 mb-3">
+          <div class="col-lg-4 mb-3">
             <label class="form-label">V /de SOAT <span class="text-danger">*</span></label>
             <input #fechaVencimientoSoat type="text" class="form-control date-picker"
               formControlName="fecha_vencimiento_soat" placeholder="Seleccione fecha" readonly>
           </div>
 
 
-          <div class="col-lg-3 mb-3">
+          <div class="col-lg-4 mb-3">
             <label class="form-label">Licencia Transito</label>
             <input type="text" formControlName="licencia_transito" class="form-control" placeholder="Licencia transito">
           </div>
 
-          <div class="col-lg-3 mb-3">
+          <div class="col-lg-4 mb-3">
             <label class="form-label">R. Tecnicomecánica</label>
             <input type="text" formControlName="revision_tecnomecanica" class="form-control"
               placeholder="Número R. Tecnicomecánica">
           </div>
-          <div class="col-lg-3 mb-3">
+          <div class="col-lg-4 mb-3">
             <label class="form-label">V / R. Técnicomecánica <span class="text-danger">*</span></label>
             <input #fechaVencimientoRevisionTecnomecanica type="text" class="form-control date-picker"
               formControlName="fecha_vencimiento_revision_tecnomecanica" placeholder="Seleccione fecha" readonly>
           </div>
 
-          <div class="col-lg-3 mb-3">
+          <div class="col-lg-4 mb-3">
             <label class="form-label">Clase de vehículo</label>
             <input type="text" formControlName="clase_vehiculo" class="form-control" placeholder="Clase de vehículo">
           </div>
 
-          <div class="col-lg-3 mb-3">
+          <div class="col-lg-4 mb-3">
             <label class="form-label">Tarjeta de Operación</label>
             <input type="text" formControlName="tarjeta_operacion" class="form-control"
               placeholder="Tarjeta de operación">
           </div>
-          <div class="col-lg-3 mb-3">
+          <div class="col-lg-4 mb-3">
             <label class="form-label">V / Tarjeta de Operación <span class="text-danger">*</span></label>
             <input #fechaVencimientoTarjetaOperacion type="text" class="form-control date-picker"
               formControlName="fecha_vencimiento_tarjeta_operacion" placeholder="Seleccione fecha" readonly>
           </div>
 
-          <div class="col-lg-3 mb-3">
+          <div class="col-lg-4 mb-3">
             <label class="form-label">Color</label>
             <input type="text" formControlName="color" class="form-control" placeholder="Color">
           </div>
 
-          <div class="col-lg-3 mb-3">
+          <div class="col-lg-4 mb-3">
             <label class="form-label">Código del Vehículo</label>
             <input type="text" formControlName="codigo_vehiculo" class="form-control" placeholder="Código del vehículo">
           </div>
 
-          <div class="col-lg-3 mb-3">
+          <div class="col-lg-4 mb-3">
             <label class="form-label">Capacidad de pasajeros</label>
             <input type="number" formControlName="capacidad_pasajeros" class="form-control"
               placeholder="Cantidad de pasajeros">
           </div>
 
-          <!-- Botón de envío -->
-          <!-- <div class="col-12 mt-4">
-            <button type="submit" class="btn btn-primary" [disabled]="isLoading">
-              <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2" role="status"
-                aria-hidden="true"></span>
-              {{ isLoading ? 'Guardando...' : 'Guardar Inspección' }}
-            </button>
-            <button type="button" class="btn btn-outline-secondary ms-2" routerLink="/inspecciones">
-              Cancelar
-            </button>
-          </div> -->
         </div>
         <!-- INSPECCIÓN DEL VEHÍCULO -->
 
       </div>
       <!-- columna derecha -->
-      <div class="col-lg-5 mb-3">
+      <div class="col-lg-6 mb-3">
         <h6 class="fw-bold border-bottom pb-2">INSPECCIÓN DEL VEHÍCULO</h6>
-        <p class="medium text-muted fw-bold">Indique según el estado del ítem verificado:
-
-
-          <span class="text-success">CUMPLE</span>(verde),
-          <span class="text-danger">NO CUMPLE</span>(rojo),
+        <p class="medium text-muted fw-bold">Indique según el estado del ítem verificado: 
+      
+      
+          <span class="text-success">CUMPLE</span>(verde), 
+          <span class="text-danger">NO CUMPLE</span>(rojo), 
           <span class="noaplica">NO APLICA</span>(azul).
-
+          
         </p>
+
         <div class="">
           <div class="">
             <div class="d-flex">
@@ -1292,14 +1288,9 @@
       <!-- Botón de envío -->
       <div class="row mt-4">
         <div class="col-12 text-end">
-          <button type="button" class="btn btn-primary" (click)="onSubmit()">
-            <i class="fa fa-save"></i> Guardar
+          <button type="button" class="btn btn-primary" (click)="imprimirInspeccion()">
+            <i class="fi fi-rr-print"></i> Imprimir
           </button>
-          <button type="button" style="margin-left: 10px;" class="btn btn-secondary" disabled="true"
-            (click)="onSubmit()">
-            <i class="fa fa-print"></i> Imprimir
-          </button>
-
         </div>
       </div>
     </form>
