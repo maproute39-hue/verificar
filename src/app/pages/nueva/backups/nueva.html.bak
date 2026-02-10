@@ -3,329 +3,233 @@
     <div class="app-page-head">
       <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
-          <!-- <li class="breadcrumb-item">
+          <li class="breadcrumb-item">
             <a routerLink="/inspecciones">
               <i class="fi fi-rr-home"></i> Inspecciones
             </a>
-          </li> -->
-          <li class="text-dark" aria-current="page">Inspeccion CAMIONETA - 
-            
-            Paso
-          <span class="text-primary font-weight-bold text-uppercase" style="font-size: 18px;">  
-            {{currentStep}} 
-            </span> 
-            de 
-          <span class="text-primary font-weight-bold text-uppercase" style="font-size: 18px;">  
-            {{totalSteps}}
-          </span>
           </li>
+          <li class="breadcrumb-item active" aria-current="page">Detalle de inspeccion</li>
         </ol>
       </nav>
     </div>
-
     <form [formGroup]="inspectionForm" class="row">
-      <!-- PROGRESS BAR -->
-      <div class="col-12 mb-4">
-        <div class="card">
-          <div class="card-body">
-            <div class="progress" style="height: 25px;">
-              <div 
-                class="progress-bar progress-bar-striped progress-bar-animated bg-success" 
-                role="progressbar" 
-                [style.width.%]="getProgressPercentage()"
-                [attr.aria-valuenow]="getProgressPercentage()"
-                aria-valuemin="0" 
-                aria-valuemax="100">
-                {{getProgressPercentage() | number:'1.0-0'}}%
-              </div>
-            </div>
-            <!-- <div class="mt-3 text-center">
-              <h6 class="mb-0">{{getStepName(currentStep)}}</h6>
-            </div> -->
+      <!-- columna izquierda -->
+      <div class="col-lg-7 mb-3">
+        <!-- Encabezado General -->
+        <div class="col-12 mb-3">
+          <h6 class="fw-bold border-bottom pb-2">DATOS GENERALES</h6>
+        </div>
+
+        <div class="row">
+          <div class="col-lg-4 mb-3">
+            <label class="form-label">Fecha de Inspección <span class="text-danger">*</span></label>
+            <input #fechaInspeccion type="text" class="form-control date-picker" formControlName="fecha_inspeccion"
+              placeholder="Seleccione fecha" readonly>
+          </div>
+
+          <div class="col-lg-4 mb-3">
+            <label class="form-label">Vigencia Hasta <span class="text-danger">*</span></label>
+            <input #fechaVigencia type="text" class="form-control date-picker" formControlName="fecha_vigencia"
+              placeholder="Seleccione fecha" readonly>
           </div>
         </div>
-      </div>
 
-      <!-- STEP INDICATORS -->
-      <!-- <div class="col-12 mb-4">
-        <ul class="nav nav-pills nav-justified mb-3" role="tablist">
-          <li class="nav-item" role="presentation">
-            <button 
-              class="nav-link" 
-              [class.active]="currentStep === 1" 
-              [class.disabled]="currentStep < 1"
-              type="button"
-              (click)="currentStep = 1">
-              <i class="fi fi-rr-calendar-check me-1"></i>
-              <small>Datos Generales</small>
-            </button>
-          </li>
-          <li class="nav-item" role="presentation">
-            <button 
-              class="nav-link" 
-              [class.active]="currentStep === 2" 
-              [class.disabled]="currentStep < 2"
-              type="button"
-              (click)="currentStep >= 2 ? currentStep = 2 : null">
-              <i class="fi fi-rr-user me-2"></i>
-              <small>Datos del Conductor</small>
-            </button>
-          </li>
-          <li class="nav-item" role="presentation">
-            <button 
-              class="nav-link" 
-              [class.active]="currentStep === 3" 
-              [class.disabled]="currentStep < 3"
-              type="button"
-              (click)="currentStep >= 3 ? currentStep = 3 : null">
-               <i class="fi fi-rr-car me-2"></i>
-              <small>Datos del Vehículo</small>
-            </button>
-          </li>
-          <li class="nav-item" role="presentation">
-            <button 
-              class="nav-link" 
-              [class.active]="currentStep === 4" 
-              [class.disabled]="currentStep < 4"
-              type="button"
-              (click)="currentStep >= 4 ? currentStep = 4 : null">
-              <i class="fi fi-rr-clipboard-list-check me-2"></i>
-              <small>Inspección Vehicular</small>
-            </button>
-          </li>
-        </ul>
-      </div> -->
-
-      <!-- STEP 1: DATOS GENERALES -->
-      <div *ngIf="currentStep === 1" class="col-12 mb-3">
-        <div class="card">
-          <div class="card-header text-white">
-            <h5 class="mb-0">
-              <i class="fi fi-rr-calendar me-2"></i>
-              <small>Datos Generales</small>
-            </h5>
+        <!-- DATOS DEL CONDUCTOR -->
+        <div class="col-12 mb-3">
+          <h6 class="fw-bold border-bottom pb-2">DATOS DEL CONDUCTOR</h6>
+        </div>
+        <div class="row">
+          <div class="col-lg-4 mb-3">
+            <label class="form-label">Nombre Transportadora <span class="text-danger">*</span></label>
+            <input type="text" formControlName="nombre_transportadora" class="form-control"
+              placeholder="Nombre transportadora">
+            <div
+              *ngIf="inspectionForm.get('nombre_transportadora')?.touched && inspectionForm.get('nombre_transportadora')?.errors?.['required']"
+              class="text-danger small">
+              Este campo es requerido
+            </div>
           </div>
-          <div class="card-body">
-            <div class="row">
-              <div class="col-lg-4 mb-3">
-                <label class="form-label">Fecha de Inspección <span class="text-danger">*</span></label>
-                <input #fechaInspeccion type="text" class="form-control date-picker" formControlName="fecha_inspeccion"
-                  placeholder="Seleccione fecha" readonly>
-                <div *ngIf="inspectionForm.get('fecha_inspeccion')?.touched && inspectionForm.get('fecha_inspeccion')?.errors?.['required']"
-                  class="text-danger small">
-                  Este campo es requerido
-                </div>
+
+          <div class="col-lg-4 mb-3">
+            <label class="form-label">Nombres Conductor <span class="text-danger">*</span></label>
+            <input type="text" formControlName="nombres_conductor" class="form-control" placeholder="Nombres conductor">
+            <div
+              *ngIf="inspectionForm.get('nombres_conductor')?.touched && inspectionForm.get('nombres_conductor')?.errors?.['required']"
+              class="text-danger small">
+              Este campo es requerido
+            </div>
+          </div>
+
+          <div class="col-lg-4 mb-3">
+            <label class="form-label">No. Identificación <span class="text-danger">*</span></label>
+            <input type="text" formControlName="identificacion" class="form-control"
+              placeholder="Número de identificación">
+            <div
+              *ngIf="inspectionForm.get('identificacion')?.touched && inspectionForm.get('identificacion')?.errors?.['required']"
+              class="text-danger small">
+              Este campo es requerido
+            </div>
+          </div>
+
+          <div class="col-lg-4 mb-3">
+            <label class="form-label">Teléfono <span class="text-danger">*</span></label>
+            <div [formGroup]="phoneForm">
+              <div class="input-group">
+                <span class="input-group-text">+57</span>
+                <input type="tel" class="form-control" formControlName="localNumber" placeholder="3001234567"
+                  maxlength="10" />
               </div>
-              <div class="col-lg-4 mb-3">
-                <label class="form-label">Vigencia Hasta <span class="text-danger">*</span></label>
-                <input #fechaVigencia type="text" class="form-control date-picker" formControlName="fecha_vigencia"
-                  placeholder="Seleccione fecha" readonly>
-                <div *ngIf="inspectionForm.get('fecha_vigencia')?.touched && inspectionForm.get('fecha_vigencia')?.errors?.['required']"
-                  class="text-danger small">
-                  Este campo es requerido
+              <div *ngIf="phoneForm.get('localNumber')?.errors && phoneForm.get('localNumber')?.touched"
+                class="text-danger small">
+                <div *ngIf="phoneForm.get('localNumber')?.hasError('required')">
+                  El número de teléfono es obligatorio.
+                </div>
+                <div *ngIf="phoneForm.get('localNumber')?.hasError('pattern')">
+                  Ingrese 10 dígitos válidos (ej: 3001234567).
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      </div>
 
-      <!-- STEP 2: DATOS DEL CONDUCTOR -->
-      <div *ngIf="currentStep === 2" class="col-12 mb-3">
-        <div class="card">
-          <!-- <div class="card-header bg-info text-white">
-            <h5 class="mb-0 text-white"><i class="fi fi-rr-user me-2"></i>Datos del Conductor</h5>
+          <div class="col-lg-4 mb-3">
+            <label class="form-label">V / Licencia conducción <span class="text-danger">*</span></label>
+            <input #fechaLicencia type="text" class="form-control date-picker"
+              formControlName="fecha_vencimiento_licencia" placeholder="Fecha vencimiento licencia" readonly>
+            <div
+              *ngIf="inspectionForm.get('fecha_vencimiento_licencia')?.touched && inspectionForm.get('fecha_vencimiento_licencia')?.errors?.['required']"
+              class="text-danger small">
+              Este campo es requerido
+            </div>
+          </div>
+        </div>
+        <!-- DATOS DEL VEHÍCULO -->
+        <div class="col-12 mb-3">
+          <h6 class="fw-bold border-bottom pb-2">DATOS DEL VEHÍCULO</h6>
+        </div>
+        <div class="row">
+          <div class="col-lg-3 mb-3">
+            <label class="form-label">Placa <span class="text-danger">*</span></label>
+            <input type="text" formControlName="placa" class="form-control" placeholder="Placa del vehículo">
+            <div *ngIf="inspectionForm.get('placa')?.touched && inspectionForm.get('placa')?.errors?.['required']"
+              class="text-danger small">
+              Este campo es requerido
+            </div>
+          </div>
+
+          <div class="col-lg-3 mb-3">
+            <label class="form-label">Marca <span class="text-danger">*</span></label>
+            <input type="text" formControlName="marca" class="form-control" placeholder="Marca">
+            <div *ngIf="inspectionForm.get('marca')?.touched && inspectionForm.get('marca')?.errors?.['required']"
+              class="text-danger small">
+              Este campo es requerido
+            </div>
+          </div>
+
+          <div class="col-lg-3 mb-3">
+            <label class="form-label">Modelo <span class="text-danger">*</span></label>
+            <input type="text" formControlName="modelo" class="form-control" placeholder="Modelo">
+            <div *ngIf="inspectionForm.get('modelo')?.touched && inspectionForm.get('modelo')?.errors?.['required']"
+              class="text-danger small">
+              Este campo es requerido
+            </div>
+          </div>
+
+          <div class="col-lg-3 mb-3">
+            <label class="form-label">Kilometraje actual <span class="text-danger">*</span></label>
+            <input type="number" formControlName="kilometraje" class="form-control" placeholder="Kilometraje">
+            <div
+              *ngIf="inspectionForm.get('kilometraje')?.touched && inspectionForm.get('kilometraje')?.errors?.['required']"
+              class="text-danger small">
+              Este campo es requerido
+            </div>
+          </div>
+
+          <div class="col-lg-3 mb-3">
+            <label class="form-label">SOAT</label>
+            <input type="text" formControlName="soat" class="form-control" placeholder="Número SOAT">
+          </div>
+          <div class="col-lg-3 mb-3">
+            <label class="form-label">V /de SOAT <span class="text-danger">*</span></label>
+            <input #fechaVencimientoSoat type="text" class="form-control date-picker"
+              formControlName="fecha_vencimiento_soat" placeholder="Seleccione fecha" readonly>
+          </div>
+
+
+          <div class="col-lg-3 mb-3">
+            <label class="form-label">Licencia Transito</label>
+            <input type="text" formControlName="licencia_transito" class="form-control" placeholder="Licencia transito">
+          </div>
+
+          <div class="col-lg-3 mb-3">
+            <label class="form-label">R. Tecnicomecánica</label>
+            <input type="text" formControlName="revision_tecnomecanica" class="form-control"
+              placeholder="Número R. Tecnicomecánica">
+          </div>
+          <div class="col-lg-3 mb-3">
+            <label class="form-label">V / R. Técnicomecánica <span class="text-danger">*</span></label>
+            <input #fechaVencimientoRevisionTecnomecanica type="text" class="form-control date-picker"
+              formControlName="fecha_vencimiento_revision_tecnomecanica" placeholder="Seleccione fecha" readonly>
+          </div>
+
+          <div class="col-lg-3 mb-3">
+            <label class="form-label">Clase de vehículo</label>
+            <input type="text" formControlName="clase_vehiculo" class="form-control" placeholder="Clase de vehículo">
+          </div>
+
+          <div class="col-lg-3 mb-3">
+            <label class="form-label">Tarjeta de Operación</label>
+            <input type="text" formControlName="tarjeta_operacion" class="form-control"
+              placeholder="Tarjeta de operación">
+          </div>
+          <div class="col-lg-3 mb-3">
+            <label class="form-label">V / Tarjeta de Operación <span class="text-danger">*</span></label>
+            <input #fechaVencimientoTarjetaOperacion type="text" class="form-control date-picker"
+              formControlName="fecha_vencimiento_tarjeta_operacion" placeholder="Seleccione fecha" readonly>
+          </div>
+
+          <div class="col-lg-3 mb-3">
+            <label class="form-label">Color</label>
+            <input type="text" formControlName="color" class="form-control" placeholder="Color">
+          </div>
+
+          <div class="col-lg-3 mb-3">
+            <label class="form-label">Código del Vehículo</label>
+            <input type="text" formControlName="codigo_vehiculo" class="form-control" placeholder="Código del vehículo">
+          </div>
+
+          <div class="col-lg-3 mb-3">
+            <label class="form-label">Capacidad de pasajeros</label>
+            <input type="number" formControlName="capacidad_pasajeros" class="form-control"
+              placeholder="Cantidad de pasajeros">
+          </div>
+
+          <!-- Botón de envío -->
+          <!-- <div class="col-12 mt-4">
+            <button type="submit" class="btn btn-primary" [disabled]="isLoading">
+              <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2" role="status"
+                aria-hidden="true"></span>
+              {{ isLoading ? 'Guardando...' : 'Guardar Inspección' }}
+            </button>
+            <button type="button" class="btn btn-outline-secondary ms-2" routerLink="/inspecciones">
+              Cancelar
+            </button>
           </div> -->
-          <div class="card-body">
-            <div class="row">
-              <div class="col-lg-4 mb-3">
-                <label class="form-label">Nombre Transportadora <span class="text-danger">*</span></label>
-                <input type="text" formControlName="nombre_transportadora" class="form-control"
-                  placeholder="Nombre transportadora">
-                <div
-                  *ngIf="inspectionForm.get('nombre_transportadora')?.touched && inspectionForm.get('nombre_transportadora')?.errors?.['required']"
-                  class="text-danger small">
-                  Este campo es requerido
-                </div>
-              </div>
-              <div class="col-lg-4 mb-3">
-                <label class="form-label">Nombres Conductor <span class="text-danger">*</span></label>
-                <input type="text" formControlName="nombres_conductor" class="form-control" placeholder="Nombres conductor">
-                <div
-                  *ngIf="inspectionForm.get('nombres_conductor')?.touched && inspectionForm.get('nombres_conductor')?.errors?.['required']"
-                  class="text-danger small">
-                  Este campo es requerido
-                </div>
-              </div>
-              <div class="col-lg-4 mb-3">
-                <label class="form-label">No. Identificación <span class="text-danger">*</span></label>
-                <input type="text" formControlName="identificacion" class="form-control"
-                  placeholder="Número de identificación">
-                <div
-                  *ngIf="inspectionForm.get('identificacion')?.touched && inspectionForm.get('identificacion')?.errors?.['required']"
-                  class="text-danger small">
-                  Este campo es requerido
-                </div>
-              </div>
-              <div class="col-lg-4 mb-3">
-                <label class="form-label">Teléfono <span class="text-danger">*</span></label>
-                <div [formGroup]="phoneForm">
-                  <div class="input-group">
-                    <span class="input-group-text">+57</span>
-                    <input type="tel" class="form-control" formControlName="localNumber" placeholder="3001234567"
-                      maxlength="10" />
-                  </div>
-                  <div *ngIf="phoneForm.get('localNumber')?.errors && phoneForm.get('localNumber')?.touched"
-                    class="text-danger small">
-                    <div *ngIf="phoneForm.get('localNumber')?.hasError('required')">
-                      El número de teléfono es obligatorio.
-                    </div>
-                    <div *ngIf="phoneForm.get('localNumber')?.hasError('pattern')">
-                      Ingrese 10 dígitos válidos (ej: 3001234567).
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-lg-4 mb-3">
-                <label class="form-label">V / Licencia conducción <span class="text-danger">*</span></label>
-                <input #fechaLicencia type="text" class="form-control date-picker"
-                  formControlName="fecha_vencimiento_licencia" placeholder="Fecha vencimiento licencia" readonly>
-                <div
-                  *ngIf="inspectionForm.get('fecha_vencimiento_licencia')?.touched && inspectionForm.get('fecha_vencimiento_licencia')?.errors?.['required']"
-                  class="text-danger small">
-                  Este campo es requerido
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
-      </div>
+        <!-- INSPECCIÓN DEL VEHÍCULO -->
 
-      <!-- STEP 3: DATOS DEL VEHÍCULO -->
-      <div *ngIf="currentStep === 3" class="col-12 mb-3">
-        <div class="card">
-          <!-- <div class="card-header bg-warning text-dark">
-            <h5 class="mb-0"><i class="fi fi-rr-car me-2"></i>Datos del Vehículo</h5>
-          </div> -->
-          <div class="card-body">
-            <div class="row">
-              <div class="col-lg-3 mb-3">
-                <label class="form-label">Placa <span class="text-danger">*</span></label>
-                <input type="text" formControlName="placa" class="form-control" placeholder="Placa del vehículo">
-                <div *ngIf="inspectionForm.get('placa')?.touched && inspectionForm.get('placa')?.errors?.['required']"
-                  class="text-danger small">
-                  Este campo es requerido
-                </div>
-              </div>
-              <div class="col-lg-3 mb-3">
-                <label class="form-label">Marca <span class="text-danger">*</span></label>
-                <input type="text" formControlName="marca" class="form-control" placeholder="Marca">
-                <div *ngIf="inspectionForm.get('marca')?.touched && inspectionForm.get('marca')?.errors?.['required']"
-                  class="text-danger small">
-                  Este campo es requerido
-                </div>
-              </div>
-              <div class="col-lg-3 mb-3">
-                <label class="form-label">Modelo <span class="text-danger">*</span></label>
-                <input type="text" formControlName="modelo" class="form-control" placeholder="Modelo">
-                <div *ngIf="inspectionForm.get('modelo')?.touched && inspectionForm.get('modelo')?.errors?.['required']"
-                  class="text-danger small">
-                  Este campo es requerido
-                </div>
-              </div>
-              <div class="col-lg-3 mb-3">
-                <label class="form-label">Kilometraje actual <span class="text-danger">*</span></label>
-                <input type="number" formControlName="kilometraje" class="form-control" placeholder="Kilometraje">
-                <div
-                  *ngIf="inspectionForm.get('kilometraje')?.touched && inspectionForm.get('kilometraje')?.errors?.['required']"
-                  class="text-danger small">
-                  Este campo es requerido
-                </div>
-              </div>
-              <div class="col-lg-3 mb-3">
-                <label class="form-label">SOAT</label>
-                <input type="text" formControlName="soat" class="form-control" placeholder="Número SOAT">
-              </div>
-              <div class="col-lg-3 mb-3">
-                <label class="form-label">V /de SOAT <span class="text-danger">*</span></label>
-                <input #fechaVencimientoSoat type="text" class="form-control date-picker"
-                  formControlName="fecha_vencimiento_soat" placeholder="Seleccione fecha" readonly>
-                <div
-                  *ngIf="inspectionForm.get('fecha_vencimiento_soat')?.touched && inspectionForm.get('fecha_vencimiento_soat')?.errors?.['required']"
-                  class="text-danger small">
-                  Este campo es requerido
-                </div>
-              </div>
-              <div class="col-lg-3 mb-3">
-                <label class="form-label">Licencia Transito</label>
-                <input type="text" formControlName="licencia_transito" class="form-control" placeholder="Licencia transito">
-              </div>
-              <div class="col-lg-3 mb-3">
-                <label class="form-label">R. Tecnicomecánica</label>
-                <input type="text" formControlName="revision_tecnomecanica" class="form-control"
-                  placeholder="Número R. Tecnicomecánica">
-              </div>
-              <div class="col-lg-3 mb-3">
-                <label class="form-label">V / R. Técnicomecánica <span class="text-danger">*</span></label>
-                <input #fechaVencimientoRevisionTecnomecanica type="text" class="form-control date-picker"
-                  formControlName="fecha_vencimiento_revision_tecnomecanica" placeholder="Seleccione fecha" readonly>
-                <div
-                  *ngIf="inspectionForm.get('fecha_vencimiento_revision_tecnomecanica')?.touched && inspectionForm.get('fecha_vencimiento_revision_tecnomecanica')?.errors?.['required']"
-                  class="text-danger small">
-                  Este campo es requerido
-                </div>
-              </div>
-              <div class="col-lg-3 mb-3">
-                <label class="form-label">Clase de vehículo</label>
-                <input type="text" formControlName="clase_vehiculo" class="form-control" placeholder="Clase de vehículo">
-              </div>
-              <div class="col-lg-3 mb-3">
-                <label class="form-label">Tarjeta de Operación</label>
-                <input type="text" formControlName="tarjeta_operacion" class="form-control"
-                  placeholder="Tarjeta de operación">
-              </div>
-              <div class="col-lg-3 mb-3">
-                <label class="form-label">V / Tarjeta de Operación <span class="text-danger">*</span></label>
-                <input #fechaVencimientoTarjetaOperacion type="text" class="form-control date-picker"
-                  formControlName="fecha_vencimiento_tarjeta_operacion" placeholder="Seleccione fecha" readonly>
-                <div
-                  *ngIf="inspectionForm.get('fecha_vencimiento_tarjeta_operacion')?.touched && inspectionForm.get('fecha_vencimiento_tarjeta_operacion')?.errors?.['required']"
-                  class="text-danger small">
-                  Este campo es requerido
-                </div>
-              </div>
-              <div class="col-lg-3 mb-3">
-                <label class="form-label">Color</label>
-                <input type="text" formControlName="color" class="form-control" placeholder="Color">
-              </div>
-              <div class="col-lg-3 mb-3">
-                <label class="form-label">Código del Vehículo</label>
-                <input type="text" formControlName="codigo_vehiculo" class="form-control" placeholder="Código del vehículo">
-              </div>
-              <div class="col-lg-3 mb-3">
-                <label class="form-label">Capacidad de pasajeros</label>
-                <input type="number" formControlName="capacidad_pasajeros" class="form-control"
-                  placeholder="Cantidad de pasajeros">
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
+      <!-- columna derecha -->
+      <div class="col-lg-5 mb-3">
+        <h6 class="fw-bold border-bottom pb-2">INSPECCIÓN DEL VEHÍCULO</h6>
+        <p class="medium text-muted fw-bold">Indique según el estado del ítem verificado:
 
-      <!-- STEP 4: INSPECCIÓN DEL VEHÍCULO -->
-      <div *ngIf="currentStep === 4" class="col-12 mb-3">
-        <div class="card">
-          <!-- <div class="card-header bg-success text-white">
-            <h5 class="mb-0"><i class="fi fi-rr-clipboard-list-check me-2"></i>Inspección del Vehículo</h5>
-          </div> -->
-          <div class="card-body">
-            <p class="medium text-muted fw-bold mb-3">Indique según el estado del ítem verificado:
-              <span class="text-success">CUMPLE</span>(verde),
-              <span class="text-danger">NO CUMPLE</span>(rojo),
-              <span class="noaplica">NO APLICA</span>(azul).
-            </p>
-            
-             <div class="">
+
+          <span class="text-success">CUMPLE</span>(verde),
+          <span class="text-danger">NO CUMPLE</span>(rojo),
+          <span class="noaplica">NO APLICA</span>(azul).
+
+        </p>
+        <div class="">
           <div class="">
             <div class="d-flex">
               <div class="nav flex-column nav-pills border-end " style="padding-right: 2px;" id="v-pills-tab"
@@ -1383,233 +1287,21 @@
             </div>
           </div>
         </div>
-          </div>
-        </div>
       </div>
 
-      <!-- NAVIGATION BUTTONS -->
-      <div class="col-12 mt-4">
-        <div class="d-flex justify-content-between">
-          <button 
-            type="button" 
-            class="btn btn-secondary"
-            *ngIf="!isFirstStep()"
-            (click)="prevStep()">
-            <i class="fi fi-rr-arrow-left me-1"></i> Anterior
+      <!-- Botón de envío -->
+      <div class="row mt-4">
+        <div class="col-12 text-end">
+          <button type="button" class="btn btn-primary" (click)="onSubmit()">
+            <i class="fa fa-save"></i> Guardar
           </button>
-          
-          <button 
-            type="button" 
-            class="btn btn-outline-secondary"
-            routerLink="/inspecciones">
-            Cancelar
+          <button type="button" style="margin-left: 10px;" class="btn btn-secondary" disabled="true"
+            (click)="onSubmit()">
+            <i class="fa fa-print"></i> Imprimir
           </button>
-          
-          <button 
-            type="button" 
-            class="btn btn-primary"
-            *ngIf="!isLastStep()"
-            (click)="nextStep()">
-            Siguiente <i class="fi fi-rr-arrow-right ms-1"></i>
-          </button>
-          
-          <button 
-            type="button" 
-            class="btn btn-success"
-            *ngIf="isLastStep()"
-            (click)="onSubmit()"
-            [disabled]="isLoading">
-            <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
-            <i class="fi fi-rr-save me-1"></i>
-            {{ isLoading ? 'Guardando...' : 'Guardar Inspección' }}
-          </button>
+
         </div>
       </div>
     </form>
   </div>
 </main>
-<!-- <style>
-  /* Estilos mejorados para las píldoras de navegación */
-  .nav-pills {
-    gap: 8px;
-  }
-  
-  .nav-pills .nav-link {
-    color: #495057;
-    border-radius: 50px;
-    border: 2px solid #dee2e6;
-    margin-bottom: 8px;
-    padding: 10px 20px;
-    font-weight: 500;
-    transition: all 0.3s ease;
-    background-color: #f8f9fa;
-    text-align: center;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 100px;
-  }
-  
-  .nav-pills .nav-link:hover:not(.active) {
-    background-color: #e9ecef;
-    border-color: #ced4da;
-    transform: translateY(-2px);
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  }
-  
-  .nav-pills .nav-link.active {
-    color: #fff;
-    background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%);
-    border-color: #0a58ca;
-    box-shadow: 0 2px 8px rgba(13, 110, 253, 0.3);
-    font-weight: 600;
-  }
-  
-  .nav-pills .nav-link.disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-    background-color: #e9ecef;
-  }
-  
-  /* Estilos para los botones de opción */
-  .btn-group {
-    gap: 8px;
-    flex-wrap: wrap;
-  }
-  
-  .btn-group .btn {
-    border-radius: 50px;
-    padding: 10px 20px;
-    font-weight: 500;
-    transition: all 0.3s ease;
-    position: relative;
-    overflow: hidden;
-  }
-  
-  .btn-group .btn::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(255, 255, 255, 0.1);
-    opacity: 0;
-    transition: opacity 0.3s ease;
-  }
-  
-  .btn-group .btn:hover::before {
-    opacity: 1;
-  }
-  
-  /* Estilos para los botones de opción seleccionados */
-  .btn-check:checked + .btn-outline-success {
-    background: linear-gradient(135deg, #198754 0%, #157347 100%);
-    border-color: #198754;
-    color: white;
-    box-shadow: 0 2px 8px rgba(25, 135, 84, 0.3);
-  }
-  
-  .btn-check:checked + .btn-outline-danger {
-    background: linear-gradient(135deg, #dc3545 0%, #b02a37 100%);
-    border-color: #dc3545;
-    color: white;
-    box-shadow: 0 2px 8px rgba(220, 53, 69, 0.3);
-  }
-  
-  .btn-check:checked + .btn-outline-secondary {
-    background: linear-gradient(135deg, #6c757d 0%, #5a6268 100%);
-    border-color: #6c757d;
-    color: white;
-    box-shadow: 0 2px 8px rgba(108, 117, 125, 0.3);
-  }
-  
-  /* Efecto de pulso para opciones seleccionadas */
-  @keyframes pulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.05); }
-    100% { transform: scale(1); }
-  }
-  
-  .btn-check:checked + .btn {
-    animation: pulse 0.5s ease;
-  }
-  
-  /* Estilos para el texto "NO APLICA" */
-  .noaplica {
-    color: #0d6efd;
-    font-weight: 600;
-    position: relative;
-    padding-left: 24px;
-  }
-  
-  .noaplica::before {
-    content: '→';
-    position: absolute;
-    left: 0;
-    animation: bounce 1s infinite;
-  }
-  
-  @keyframes bounce {
-    0%, 100% { transform: translateX(0); }
-    50% { transform: translateX(5px); }
-  }
-  
-  /* Efecto hover mejorado para los botones */
-  .btn-outline-success:hover {
-    background-color: rgba(25, 135, 84, 0.1);
-    color: #198754;
-  }
-  
-  .btn-outline-danger:hover {
-    background-color: rgba(220, 53, 69, 0.1);
-    color: #dc3545;
-  }
-  
-  .btn-outline-secondary:hover {
-    background-color: rgba(108, 117, 125, 0.1);
-    color: #6c757d;
-  }
-</style> -->
-<!-- <style>
-  .nav-pills .nav-link {
-    color: #495057;
-    border-radius: 0;
-    border-left: 3px solid transparent;
-    margin-bottom: 5px;
-  }
-  
-  .nav-pills .nav-link.active {
-    color: #fff;
-    background-color: #0d6efd;
-    border-left-color: #0d6efd;
-  }
-  
-  .nav-pills .nav-link.disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
-  
-  .btn-check:checked + .btn-outline-success {
-    background-color: #198754;
-    border-color: #198754;
-    color: white;
-  }
-  
-  .btn-check:checked + .btn-outline-danger {
-    background-color: #dc3545;
-    border-color: #dc3545;
-    color: white;
-  }
-  
-  .btn-check:checked + .btn-outline-secondary {
-    background-color: #6c757d;
-    border-color: #6c757d;
-    color: white;
-  }
-  
-  .noaplica {
-    color: #0d6efd;
-    font-weight: bold;
-  }
-</style> -->

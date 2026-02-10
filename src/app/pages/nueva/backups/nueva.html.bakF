@@ -3,329 +3,254 @@
     <div class="app-page-head">
       <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
-          <!-- <li class="breadcrumb-item">
+          <li class="breadcrumb-item">
             <a routerLink="/inspecciones">
               <i class="fi fi-rr-home"></i> Inspecciones
             </a>
-          </li> -->
-          <li class="text-dark" aria-current="page">Inspeccion CAMIONETA - 
-            
-            Paso
-          <span class="text-primary font-weight-bold text-uppercase" style="font-size: 18px;">  
-            {{currentStep}} 
-            </span> 
-            de 
-          <span class="text-primary font-weight-bold text-uppercase" style="font-size: 18px;">  
-            {{totalSteps}}
-          </span>
           </li>
+          <li class="breadcrumb-item active" aria-current="page">Nueva Inspección</li>
         </ol>
       </nav>
     </div>
 
+    <!-- WIZARD PROGRESS BAR (Solo Móvil/Tablet) -->
+    <div class="wizard-progress-container d-lg-none mb-4">
+      <div class="wizard-header">
+        <h5 class="wizard-title">Nueva Inspección Vehicular</h5>
+        <div class="wizard-steps-indicator">
+          <span class="current-step">{{currentStep}}</span> / <span class="total-steps">{{totalSteps}}</span>
+        </div>
+      </div>
+      <div class="progress">
+        <div 
+          class="progress-bar progress-bar-striped progress-bar-animated bg-success" 
+          role="progressbar" 
+          [style.width.%]="getProgressPercentage()">
+          {{getProgressPercentage()}}%
+        </div>
+      </div>
+      <div class="wizard-steps mt-3">
+        <div 
+          class="wizard-step" 
+          [class.active]="currentStep === 1" 
+          [class.completed]="isStepCompleted(1)">
+          <div class="step-number">1</div>
+          <div class="step-label">Datos Generales</div>
+        </div>
+        <div class="wizard-divider"></div>
+        <div 
+          class="wizard-step" 
+          [class.active]="currentStep === 2" 
+          [class.completed]="isStepCompleted(2)">
+          <div class="step-number">2</div>
+          <div class="step-label">Conductor</div>
+        </div>
+        <div class="wizard-divider"></div>
+        <div 
+          class="wizard-step" 
+          [class.active]="currentStep === 3" 
+          [class.completed]="isStepCompleted(3)">
+          <div class="step-number">3</div>
+          <div class="step-label">Vehículo</div>
+        </div>
+        <div class="wizard-divider"></div>
+        <div 
+          class="wizard-step" 
+          [class.active]="currentStep === 4" 
+          [class.completed]="isStepCompleted(4)">
+          <div class="step-number">4</div>
+          <div class="step-label">Inspección</div>
+        </div>
+      </div>
+    </div>
+
     <form [formGroup]="inspectionForm" class="row">
-      <!-- PROGRESS BAR -->
-      <div class="col-12 mb-4">
-        <div class="card">
-          <div class="card-body">
-            <div class="progress" style="height: 25px;">
-              <div 
-                class="progress-bar progress-bar-striped progress-bar-animated bg-success" 
-                role="progressbar" 
-                [style.width.%]="getProgressPercentage()"
-                [attr.aria-valuenow]="getProgressPercentage()"
-                aria-valuemin="0" 
-                aria-valuemax="100">
-                {{getProgressPercentage() | number:'1.0-0'}}%
-              </div>
-            </div>
-            <!-- <div class="mt-3 text-center">
-              <h6 class="mb-0">{{getStepName(currentStep)}}</h6>
-            </div> -->
+      <!-- VISTA ESCRITORIO (Original) -->
+      <div class="d-none d-lg-block col-lg-7 mb-3">
+        <!-- Encabezado General -->
+        <div class="col-12 mb-3">
+          <h6 class="fw-bold border-bottom pb-2">DATOS GENERALES</h6>
+        </div>
+        <div class="row">
+          <div class="col-lg-4 mb-3">
+            <label class="form-label">Fecha de Inspección <span class="text-danger">*</span></label>
+            <input #fechaInspeccion type="text" class="form-control date-picker" formControlName="fecha_inspeccion"
+              placeholder="Seleccione fecha" readonly>
+          </div>
+          <div class="col-lg-4 mb-3">
+            <label class="form-label">Vigencia Hasta <span class="text-danger">*</span></label>
+            <input #fechaVigencia type="text" class="form-control date-picker" formControlName="fecha_vigencia"
+              placeholder="Seleccione fecha" readonly>
           </div>
         </div>
-      </div>
 
-      <!-- STEP INDICATORS -->
-      <!-- <div class="col-12 mb-4">
-        <ul class="nav nav-pills nav-justified mb-3" role="tablist">
-          <li class="nav-item" role="presentation">
-            <button 
-              class="nav-link" 
-              [class.active]="currentStep === 1" 
-              [class.disabled]="currentStep < 1"
-              type="button"
-              (click)="currentStep = 1">
-              <i class="fi fi-rr-calendar-check me-1"></i>
-              <small>Datos Generales</small>
-            </button>
-          </li>
-          <li class="nav-item" role="presentation">
-            <button 
-              class="nav-link" 
-              [class.active]="currentStep === 2" 
-              [class.disabled]="currentStep < 2"
-              type="button"
-              (click)="currentStep >= 2 ? currentStep = 2 : null">
-              <i class="fi fi-rr-user me-2"></i>
-              <small>Datos del Conductor</small>
-            </button>
-          </li>
-          <li class="nav-item" role="presentation">
-            <button 
-              class="nav-link" 
-              [class.active]="currentStep === 3" 
-              [class.disabled]="currentStep < 3"
-              type="button"
-              (click)="currentStep >= 3 ? currentStep = 3 : null">
-               <i class="fi fi-rr-car me-2"></i>
-              <small>Datos del Vehículo</small>
-            </button>
-          </li>
-          <li class="nav-item" role="presentation">
-            <button 
-              class="nav-link" 
-              [class.active]="currentStep === 4" 
-              [class.disabled]="currentStep < 4"
-              type="button"
-              (click)="currentStep >= 4 ? currentStep = 4 : null">
-              <i class="fi fi-rr-clipboard-list-check me-2"></i>
-              <small>Inspección Vehicular</small>
-            </button>
-          </li>
-        </ul>
-      </div> -->
-
-      <!-- STEP 1: DATOS GENERALES -->
-      <div *ngIf="currentStep === 1" class="col-12 mb-3">
-        <div class="card">
-          <div class="card-header text-white">
-            <h5 class="mb-0">
-              <i class="fi fi-rr-calendar me-2"></i>
-              <small>Datos Generales</small>
-            </h5>
+        <!-- DATOS DEL CONDUCTOR -->
+        <div class="col-12 mb-3">
+          <h6 class="fw-bold border-bottom pb-2">DATOS DEL CONDUCTOR</h6>
+        </div>
+        <div class="row">
+          <div class="col-lg-4 mb-3">
+            <label class="form-label">Nombre Transportadora <span class="text-danger">*</span></label>
+            <input type="text" formControlName="nombre_transportadora" class="form-control"
+              placeholder="Nombre transportadora">
+            <div
+              *ngIf="inspectionForm.get('nombre_transportadora')?.touched && inspectionForm.get('nombre_transportadora')?.errors?.['required']"
+              class="text-danger small">
+              Este campo es requerido
+            </div>
           </div>
-          <div class="card-body">
-            <div class="row">
-              <div class="col-lg-4 mb-3">
-                <label class="form-label">Fecha de Inspección <span class="text-danger">*</span></label>
-                <input #fechaInspeccion type="text" class="form-control date-picker" formControlName="fecha_inspeccion"
-                  placeholder="Seleccione fecha" readonly>
-                <div *ngIf="inspectionForm.get('fecha_inspeccion')?.touched && inspectionForm.get('fecha_inspeccion')?.errors?.['required']"
-                  class="text-danger small">
-                  Este campo es requerido
-                </div>
+          <div class="col-lg-4 mb-3">
+            <label class="form-label">Nombres Conductor <span class="text-danger">*</span></label>
+            <input type="text" formControlName="nombres_conductor" class="form-control" placeholder="Nombres conductor">
+            <div
+              *ngIf="inspectionForm.get('nombres_conductor')?.touched && inspectionForm.get('nombres_conductor')?.errors?.['required']"
+              class="text-danger small">
+              Este campo es requerido
+            </div>
+          </div>
+          <div class="col-lg-4 mb-3">
+            <label class="form-label">No. Identificación <span class="text-danger">*</span></label>
+            <input type="text" formControlName="identificacion" class="form-control"
+              placeholder="Número de identificación">
+            <div
+              *ngIf="inspectionForm.get('identificacion')?.touched && inspectionForm.get('identificacion')?.errors?.['required']"
+              class="text-danger small">
+              Este campo es requerido
+            </div>
+          </div>
+          <div class="col-lg-4 mb-3">
+            <label class="form-label">Teléfono <span class="text-danger">*</span></label>
+            <div [formGroup]="phoneForm">
+              <div class="input-group">
+                <span class="input-group-text">+57</span>
+                <input type="tel" class="form-control" formControlName="localNumber" placeholder="3001234567"
+                  maxlength="10" />
               </div>
-              <div class="col-lg-4 mb-3">
-                <label class="form-label">Vigencia Hasta <span class="text-danger">*</span></label>
-                <input #fechaVigencia type="text" class="form-control date-picker" formControlName="fecha_vigencia"
-                  placeholder="Seleccione fecha" readonly>
-                <div *ngIf="inspectionForm.get('fecha_vigencia')?.touched && inspectionForm.get('fecha_vigencia')?.errors?.['required']"
-                  class="text-danger small">
-                  Este campo es requerido
+              <div *ngIf="phoneForm.get('localNumber')?.errors && phoneForm.get('localNumber')?.touched"
+                class="text-danger small">
+                <div *ngIf="phoneForm.get('localNumber')?.hasError('required')">
+                  El número de teléfono es obligatorio.
+                </div>
+                <div *ngIf="phoneForm.get('localNumber')?.hasError('pattern')">
+                  Ingrese 10 dígitos válidos (ej: 3001234567).
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      </div>
-
-      <!-- STEP 2: DATOS DEL CONDUCTOR -->
-      <div *ngIf="currentStep === 2" class="col-12 mb-3">
-        <div class="card">
-          <!-- <div class="card-header bg-info text-white">
-            <h5 class="mb-0 text-white"><i class="fi fi-rr-user me-2"></i>Datos del Conductor</h5>
-          </div> -->
-          <div class="card-body">
-            <div class="row">
-              <div class="col-lg-4 mb-3">
-                <label class="form-label">Nombre Transportadora <span class="text-danger">*</span></label>
-                <input type="text" formControlName="nombre_transportadora" class="form-control"
-                  placeholder="Nombre transportadora">
-                <div
-                  *ngIf="inspectionForm.get('nombre_transportadora')?.touched && inspectionForm.get('nombre_transportadora')?.errors?.['required']"
-                  class="text-danger small">
-                  Este campo es requerido
-                </div>
-              </div>
-              <div class="col-lg-4 mb-3">
-                <label class="form-label">Nombres Conductor <span class="text-danger">*</span></label>
-                <input type="text" formControlName="nombres_conductor" class="form-control" placeholder="Nombres conductor">
-                <div
-                  *ngIf="inspectionForm.get('nombres_conductor')?.touched && inspectionForm.get('nombres_conductor')?.errors?.['required']"
-                  class="text-danger small">
-                  Este campo es requerido
-                </div>
-              </div>
-              <div class="col-lg-4 mb-3">
-                <label class="form-label">No. Identificación <span class="text-danger">*</span></label>
-                <input type="text" formControlName="identificacion" class="form-control"
-                  placeholder="Número de identificación">
-                <div
-                  *ngIf="inspectionForm.get('identificacion')?.touched && inspectionForm.get('identificacion')?.errors?.['required']"
-                  class="text-danger small">
-                  Este campo es requerido
-                </div>
-              </div>
-              <div class="col-lg-4 mb-3">
-                <label class="form-label">Teléfono <span class="text-danger">*</span></label>
-                <div [formGroup]="phoneForm">
-                  <div class="input-group">
-                    <span class="input-group-text">+57</span>
-                    <input type="tel" class="form-control" formControlName="localNumber" placeholder="3001234567"
-                      maxlength="10" />
-                  </div>
-                  <div *ngIf="phoneForm.get('localNumber')?.errors && phoneForm.get('localNumber')?.touched"
-                    class="text-danger small">
-                    <div *ngIf="phoneForm.get('localNumber')?.hasError('required')">
-                      El número de teléfono es obligatorio.
-                    </div>
-                    <div *ngIf="phoneForm.get('localNumber')?.hasError('pattern')">
-                      Ingrese 10 dígitos válidos (ej: 3001234567).
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-lg-4 mb-3">
-                <label class="form-label">V / Licencia conducción <span class="text-danger">*</span></label>
-                <input #fechaLicencia type="text" class="form-control date-picker"
-                  formControlName="fecha_vencimiento_licencia" placeholder="Fecha vencimiento licencia" readonly>
-                <div
-                  *ngIf="inspectionForm.get('fecha_vencimiento_licencia')?.touched && inspectionForm.get('fecha_vencimiento_licencia')?.errors?.['required']"
-                  class="text-danger small">
-                  Este campo es requerido
-                </div>
-              </div>
+          <div class="col-lg-4 mb-3">
+            <label class="form-label">V / Licencia conducción <span class="text-danger">*</span></label>
+            <input #fechaLicencia type="text" class="form-control date-picker"
+              formControlName="fecha_vencimiento_licencia" placeholder="Fecha vencimiento licencia" readonly>
+            <div
+              *ngIf="inspectionForm.get('fecha_vencimiento_licencia')?.touched && inspectionForm.get('fecha_vencimiento_licencia')?.errors?.['required']"
+              class="text-danger small">
+              Este campo es requerido
             </div>
           </div>
         </div>
-      </div>
 
-      <!-- STEP 3: DATOS DEL VEHÍCULO -->
-      <div *ngIf="currentStep === 3" class="col-12 mb-3">
-        <div class="card">
-          <!-- <div class="card-header bg-warning text-dark">
-            <h5 class="mb-0"><i class="fi fi-rr-car me-2"></i>Datos del Vehículo</h5>
-          </div> -->
-          <div class="card-body">
-            <div class="row">
-              <div class="col-lg-3 mb-3">
-                <label class="form-label">Placa <span class="text-danger">*</span></label>
-                <input type="text" formControlName="placa" class="form-control" placeholder="Placa del vehículo">
-                <div *ngIf="inspectionForm.get('placa')?.touched && inspectionForm.get('placa')?.errors?.['required']"
-                  class="text-danger small">
-                  Este campo es requerido
-                </div>
-              </div>
-              <div class="col-lg-3 mb-3">
-                <label class="form-label">Marca <span class="text-danger">*</span></label>
-                <input type="text" formControlName="marca" class="form-control" placeholder="Marca">
-                <div *ngIf="inspectionForm.get('marca')?.touched && inspectionForm.get('marca')?.errors?.['required']"
-                  class="text-danger small">
-                  Este campo es requerido
-                </div>
-              </div>
-              <div class="col-lg-3 mb-3">
-                <label class="form-label">Modelo <span class="text-danger">*</span></label>
-                <input type="text" formControlName="modelo" class="form-control" placeholder="Modelo">
-                <div *ngIf="inspectionForm.get('modelo')?.touched && inspectionForm.get('modelo')?.errors?.['required']"
-                  class="text-danger small">
-                  Este campo es requerido
-                </div>
-              </div>
-              <div class="col-lg-3 mb-3">
-                <label class="form-label">Kilometraje actual <span class="text-danger">*</span></label>
-                <input type="number" formControlName="kilometraje" class="form-control" placeholder="Kilometraje">
-                <div
-                  *ngIf="inspectionForm.get('kilometraje')?.touched && inspectionForm.get('kilometraje')?.errors?.['required']"
-                  class="text-danger small">
-                  Este campo es requerido
-                </div>
-              </div>
-              <div class="col-lg-3 mb-3">
-                <label class="form-label">SOAT</label>
-                <input type="text" formControlName="soat" class="form-control" placeholder="Número SOAT">
-              </div>
-              <div class="col-lg-3 mb-3">
-                <label class="form-label">V /de SOAT <span class="text-danger">*</span></label>
-                <input #fechaVencimientoSoat type="text" class="form-control date-picker"
-                  formControlName="fecha_vencimiento_soat" placeholder="Seleccione fecha" readonly>
-                <div
-                  *ngIf="inspectionForm.get('fecha_vencimiento_soat')?.touched && inspectionForm.get('fecha_vencimiento_soat')?.errors?.['required']"
-                  class="text-danger small">
-                  Este campo es requerido
-                </div>
-              </div>
-              <div class="col-lg-3 mb-3">
-                <label class="form-label">Licencia Transito</label>
-                <input type="text" formControlName="licencia_transito" class="form-control" placeholder="Licencia transito">
-              </div>
-              <div class="col-lg-3 mb-3">
-                <label class="form-label">R. Tecnicomecánica</label>
-                <input type="text" formControlName="revision_tecnomecanica" class="form-control"
-                  placeholder="Número R. Tecnicomecánica">
-              </div>
-              <div class="col-lg-3 mb-3">
-                <label class="form-label">V / R. Técnicomecánica <span class="text-danger">*</span></label>
-                <input #fechaVencimientoRevisionTecnomecanica type="text" class="form-control date-picker"
-                  formControlName="fecha_vencimiento_revision_tecnomecanica" placeholder="Seleccione fecha" readonly>
-                <div
-                  *ngIf="inspectionForm.get('fecha_vencimiento_revision_tecnomecanica')?.touched && inspectionForm.get('fecha_vencimiento_revision_tecnomecanica')?.errors?.['required']"
-                  class="text-danger small">
-                  Este campo es requerido
-                </div>
-              </div>
-              <div class="col-lg-3 mb-3">
-                <label class="form-label">Clase de vehículo</label>
-                <input type="text" formControlName="clase_vehiculo" class="form-control" placeholder="Clase de vehículo">
-              </div>
-              <div class="col-lg-3 mb-3">
-                <label class="form-label">Tarjeta de Operación</label>
-                <input type="text" formControlName="tarjeta_operacion" class="form-control"
-                  placeholder="Tarjeta de operación">
-              </div>
-              <div class="col-lg-3 mb-3">
-                <label class="form-label">V / Tarjeta de Operación <span class="text-danger">*</span></label>
-                <input #fechaVencimientoTarjetaOperacion type="text" class="form-control date-picker"
-                  formControlName="fecha_vencimiento_tarjeta_operacion" placeholder="Seleccione fecha" readonly>
-                <div
-                  *ngIf="inspectionForm.get('fecha_vencimiento_tarjeta_operacion')?.touched && inspectionForm.get('fecha_vencimiento_tarjeta_operacion')?.errors?.['required']"
-                  class="text-danger small">
-                  Este campo es requerido
-                </div>
-              </div>
-              <div class="col-lg-3 mb-3">
-                <label class="form-label">Color</label>
-                <input type="text" formControlName="color" class="form-control" placeholder="Color">
-              </div>
-              <div class="col-lg-3 mb-3">
-                <label class="form-label">Código del Vehículo</label>
-                <input type="text" formControlName="codigo_vehiculo" class="form-control" placeholder="Código del vehículo">
-              </div>
-              <div class="col-lg-3 mb-3">
-                <label class="form-label">Capacidad de pasajeros</label>
-                <input type="number" formControlName="capacidad_pasajeros" class="form-control"
-                  placeholder="Cantidad de pasajeros">
-              </div>
+        <!-- DATOS DEL VEHÍCULO -->
+        <div class="col-12 mb-3">
+          <h6 class="fw-bold border-bottom pb-2">DATOS DEL VEHÍCULO</h6>
+        </div>
+        <div class="row">
+          <div class="col-lg-3 mb-3">
+            <label class="form-label">Placa <span class="text-danger">*</span></label>
+            <input type="text" formControlName="placa" class="form-control" placeholder="Placa del vehículo">
+            <div *ngIf="inspectionForm.get('placa')?.touched && inspectionForm.get('placa')?.errors?.['required']"
+              class="text-danger small">
+              Este campo es requerido
             </div>
+          </div>
+          <div class="col-lg-3 mb-3">
+            <label class="form-label">Marca <span class="text-danger">*</span></label>
+            <input type="text" formControlName="marca" class="form-control" placeholder="Marca">
+            <div *ngIf="inspectionForm.get('marca')?.touched && inspectionForm.get('marca')?.errors?.['required']"
+              class="text-danger small">
+              Este campo es requerido
+            </div>
+          </div>
+          <div class="col-lg-3 mb-3">
+            <label class="form-label">Modelo <span class="text-danger">*</span></label>
+            <input type="text" formControlName="modelo" class="form-control" placeholder="Modelo">
+            <div *ngIf="inspectionForm.get('modelo')?.touched && inspectionForm.get('modelo')?.errors?.['required']"
+              class="text-danger small">
+              Este campo es requerido
+            </div>
+          </div>
+          <div class="col-lg-3 mb-3">
+            <label class="form-label">Kilometraje actual <span class="text-danger">*</span></label>
+            <input type="number" formControlName="kilometraje" class="form-control" placeholder="Kilometraje">
+            <div
+              *ngIf="inspectionForm.get('kilometraje')?.touched && inspectionForm.get('kilometraje')?.errors?.['required']"
+              class="text-danger small">
+              Este campo es requerido
+            </div>
+          </div>
+          <div class="col-lg-3 mb-3">
+            <label class="form-label">SOAT</label>
+            <input type="text" formControlName="soat" class="form-control" placeholder="Número SOAT">
+          </div>
+          <div class="col-lg-3 mb-3">
+            <label class="form-label">V /de SOAT <span class="text-danger">*</span></label>
+            <input #fechaVencimientoSoat type="text" class="form-control date-picker"
+              formControlName="fecha_vencimiento_soat" placeholder="Seleccione fecha" readonly>
+          </div>
+          <div class="col-lg-3 mb-3">
+            <label class="form-label">Licencia Transito</label>
+            <input type="text" formControlName="licencia_transito" class="form-control" placeholder="Licencia transito">
+          </div>
+          <div class="col-lg-3 mb-3">
+            <label class="form-label">R. Tecnicomecánica</label>
+            <input type="text" formControlName="revision_tecnomecanica" class="form-control"
+              placeholder="Número R. Tecnicomecánica">
+          </div>
+          <div class="col-lg-3 mb-3">
+            <label class="form-label">V / R. Técnicomecánica <span class="text-danger">*</span></label>
+            <input #fechaVencimientoRevisionTecnomecanica type="text" class="form-control date-picker"
+              formControlName="fecha_vencimiento_revision_tecnomecanica" placeholder="Seleccione fecha" readonly>
+          </div>
+          <div class="col-lg-3 mb-3">
+            <label class="form-label">Clase de vehículo</label>
+            <input type="text" formControlName="clase_vehiculo" class="form-control" placeholder="Clase de vehículo">
+          </div>
+          <div class="col-lg-3 mb-3">
+            <label class="form-label">Tarjeta de Operación</label>
+            <input type="text" formControlName="tarjeta_operacion" class="form-control"
+              placeholder="Tarjeta de operación">
+          </div>
+          <div class="col-lg-3 mb-3">
+            <label class="form-label">V / Tarjeta de Operación <span class="text-danger">*</span></label>
+            <input #fechaVencimientoTarjetaOperacion type="text" class="form-control date-picker"
+              formControlName="fecha_vencimiento_tarjeta_operacion" placeholder="Seleccione fecha" readonly>
+          </div>
+          <div class="col-lg-3 mb-3">
+            <label class="form-label">Color</label>
+            <input type="text" formControlName="color" class="form-control" placeholder="Color">
+          </div>
+          <div class="col-lg-3 mb-3">
+            <label class="form-label">Código del Vehículo</label>
+            <input type="text" formControlName="codigo_vehiculo" class="form-control" placeholder="Código del vehículo">
+          </div>
+          <div class="col-lg-3 mb-3">
+            <label class="form-label">Capacidad de pasajeros</label>
+            <input type="number" formControlName="capacidad_pasajeros" class="form-control"
+              placeholder="Cantidad de pasajeros">
           </div>
         </div>
       </div>
-
-      <!-- STEP 4: INSPECCIÓN DEL VEHÍCULO -->
-      <div *ngIf="currentStep === 4" class="col-12 mb-3">
-        <div class="card">
-          <!-- <div class="card-header bg-success text-white">
-            <h5 class="mb-0"><i class="fi fi-rr-clipboard-list-check me-2"></i>Inspección del Vehículo</h5>
-          </div> -->
-          <div class="card-body">
-            <p class="medium text-muted fw-bold mb-3">Indique según el estado del ítem verificado:
-              <span class="text-success">CUMPLE</span>(verde),
-              <span class="text-danger">NO CUMPLE</span>(rojo),
-              <span class="noaplica">NO APLICA</span>(azul).
-            </p>
-            
-             <div class="">
+      
+      <!-- VISTA ESCRITORIO - COLUMNA DERECHA (Inspección) -->
+      <div class="d-none d-lg-block col-lg-5 mb-3">
+        <h6 class="fw-bold border-bottom pb-2">INSPECCIÓN DEL VEHÍCULO</h6>
+        <p class="medium text-muted fw-bold">Indique según el estado del ítem verificado:
+          <span class="text-success">CUMPLE</span>(verde),
+          <span class="text-danger">NO CUMPLE</span>(rojo),
+          <span class="noaplica">NO APLICA</span>(azul).
+        </p>
+        
+        <!-- Todo el contenido original de la inspección -->
+        <div class="">
           <div class="">
             <div class="d-flex">
               <div class="nav flex-column nav-pills border-end " style="padding-right: 2px;" id="v-pills-tab"
@@ -355,7 +280,6 @@
                   <br />
                   LABRADO DE LLANTAS</button>
               </div>
-
               <div class="tab-content">
 
                 <div class="tab-pane fade show active" id="electrico" role="tabpanel"
@@ -1383,233 +1307,405 @@
             </div>
           </div>
         </div>
-          </div>
-        </div>
       </div>
 
-      <!-- NAVIGATION BUTTONS -->
-      <div class="col-12 mt-4">
-        <div class="d-flex justify-content-between">
-          <button 
-            type="button" 
-            class="btn btn-secondary"
-            *ngIf="!isFirstStep()"
-            (click)="prevStep()">
-            <i class="fi fi-rr-arrow-left me-1"></i> Anterior
-          </button>
-          
-          <button 
-            type="button" 
-            class="btn btn-outline-secondary"
-            routerLink="/inspecciones">
-            Cancelar
-          </button>
-          
-          <button 
-            type="button" 
-            class="btn btn-primary"
-            *ngIf="!isLastStep()"
-            (click)="nextStep()">
-            Siguiente <i class="fi fi-rr-arrow-right ms-1"></i>
-          </button>
-          
-          <button 
-            type="button" 
-            class="btn btn-success"
-            *ngIf="isLastStep()"
-            (click)="onSubmit()"
-            [disabled]="isLoading">
-            <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
-            <i class="fi fi-rr-save me-1"></i>
-            {{ isLoading ? 'Guardando...' : 'Guardar Inspección' }}
-          </button>
+      <!-- VISTA MÓVIL/TABLET (Wizard de 4 Pasos) -->
+      <div class="d-lg-none col-12">
+        <!-- =================================== -->
+        <!-- PASO 1: DATOS GENERALES (Fechas) -->
+        <!-- =================================== -->
+        <div *ngIf="currentStep === 1" class="wizard-step-content">
+          <div class="step-section">
+            <h6 class="fw-bold border-bottom pb-2">PASO 1/4 - DATOS GENERALES</h6>
+            
+            <div class="row">
+              <div class="col-12 mb-3">
+                <label class="form-label">Fecha de Inspección <span class="text-danger">*</span></label>
+                <input #fechaInspeccion type="text" class="form-control date-picker" formControlName="fecha_inspeccion"
+                  placeholder="Seleccione fecha" readonly>
+                <div *ngIf="inspectionForm.get('fecha_inspeccion')?.touched && inspectionForm.get('fecha_inspeccion')?.errors?.['required']"
+                  class="text-danger small">
+                  Este campo es requerido
+                </div>
+              </div>
+              <div class="col-12 mb-3">
+                <label class="form-label">Vigencia Hasta <span class="text-danger">*</span></label>
+                <input #fechaVigencia type="text" class="form-control date-picker" formControlName="fecha_vigencia"
+                  placeholder="Seleccione fecha" readonly>
+                <div *ngIf="inspectionForm.get('fecha_vigencia')?.touched && inspectionForm.get('fecha_vigencia')?.errors?.['required']"
+                  class="text-danger small">
+                  Este campo es requerido
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- =================================== -->
+        <!-- PASO 2: DATOS DEL CONDUCTOR -->
+        <!-- =================================== -->
+        <div *ngIf="currentStep === 2" class="wizard-step-content">
+          <div class="step-section">
+            <h6 class="fw-bold border-bottom pb-2">PASO 2/4 - DATOS DEL CONDUCTOR</h6>
+            
+            <div class="row">
+              <div class="col-12 mb-3">
+                <label class="form-label">Nombre Transportadora <span class="text-danger">*</span></label>
+                <input type="text" formControlName="nombre_transportadora" class="form-control"
+                  placeholder="Nombre transportadora">
+                <div
+                  *ngIf="inspectionForm.get('nombre_transportadora')?.touched && inspectionForm.get('nombre_transportadora')?.errors?.['required']"
+                  class="text-danger small">
+                  Este campo es requerido
+                </div>
+              </div>
+              <div class="col-12 mb-3">
+                <label class="form-label">Nombres Conductor <span class="text-danger">*</span></label>
+                <input type="text" formControlName="nombres_conductor" class="form-control" placeholder="Nombres conductor">
+                <div
+                  *ngIf="inspectionForm.get('nombres_conductor')?.touched && inspectionForm.get('nombres_conductor')?.errors?.['required']"
+                  class="text-danger small">
+                  Este campo es requerido
+                </div>
+              </div>
+              <div class="col-12 mb-3">
+                <label class="form-label">No. Identificación <span class="text-danger">*</span></label>
+                <input type="text" formControlName="identificacion" class="form-control"
+                  placeholder="Número de identificación">
+                <div
+                  *ngIf="inspectionForm.get('identificacion')?.touched && inspectionForm.get('identificacion')?.errors?.['required']"
+                  class="text-danger small">
+                  Este campo es requerido
+                </div>
+              </div>
+              <div class="col-12 mb-3">
+                <label class="form-label">Teléfono <span class="text-danger">*</span></label>
+                <div [formGroup]="phoneForm">
+                  <div class="input-group">
+                    <span class="input-group-text">+57</span>
+                    <input type="tel" class="form-control" formControlName="localNumber" placeholder="3001234567"
+                      maxlength="10" />
+                  </div>
+                  <div *ngIf="phoneForm.get('localNumber')?.errors && phoneForm.get('localNumber')?.touched"
+                    class="text-danger small">
+                    <div *ngIf="phoneForm.get('localNumber')?.hasError('required')">
+                      El número de teléfono es obligatorio.
+                    </div>
+                    <div *ngIf="phoneForm.get('localNumber')?.hasError('pattern')">
+                      Ingrese 10 dígitos válidos (ej: 3001234567).
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-12 mb-3">
+                <label class="form-label">V / Licencia conducción <span class="text-danger">*</span></label>
+                <input #fechaLicencia type="text" class="form-control date-picker"
+                  formControlName="fecha_vencimiento_licencia" placeholder="Fecha vencimiento licencia" readonly>
+                <div
+                  *ngIf="inspectionForm.get('fecha_vencimiento_licencia')?.touched && inspectionForm.get('fecha_vencimiento_licencia')?.errors?.['required']"
+                  class="text-danger small">
+                  Este campo es requerido
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- =================================== -->
+        <!-- PASO 3: DATOS DEL VEHÍCULO -->
+        <!-- =================================== -->
+        <div *ngIf="currentStep === 3" class="wizard-step-content">
+          <div class="step-section">
+            <h6 class="fw-bold border-bottom pb-2">PASO 3/4 - DATOS DEL VEHÍCULO</h6>
+            
+            <div class="row">
+              <div class="col-12 col-md-6 mb-3">
+                <label class="form-label">Placa <span class="text-danger">*</span></label>
+                <input type="text" formControlName="placa" class="form-control" placeholder="Placa del vehículo">
+                <div *ngIf="inspectionForm.get('placa')?.touched && inspectionForm.get('placa')?.errors?.['required']"
+                  class="text-danger small">
+                  Este campo es requerido
+                </div>
+              </div>
+              <div class="col-12 col-md-6 mb-3">
+                <label class="form-label">Marca <span class="text-danger">*</span></label>
+                <input type="text" formControlName="marca" class="form-control" placeholder="Marca">
+                <div *ngIf="inspectionForm.get('marca')?.touched && inspectionForm.get('marca')?.errors?.['required']"
+                  class="text-danger small">
+                  Este campo es requerido
+                </div>
+              </div>
+              <div class="col-12 col-md-6 mb-3">
+                <label class="form-label">Modelo <span class="text-danger">*</span></label>
+                <input type="text" formControlName="modelo" class="form-control" placeholder="Modelo">
+                <div *ngIf="inspectionForm.get('modelo')?.touched && inspectionForm.get('modelo')?.errors?.['required']"
+                  class="text-danger small">
+                  Este campo es requerido
+                </div>
+              </div>
+              <div class="col-12 col-md-6 mb-3">
+                <label class="form-label">Kilometraje actual <span class="text-danger">*</span></label>
+                <input type="number" formControlName="kilometraje" class="form-control" placeholder="Kilometraje">
+                <div
+                  *ngIf="inspectionForm.get('kilometraje')?.touched && inspectionForm.get('kilometraje')?.errors?.['required']"
+                  class="text-danger small">
+                  Este campo es requerido
+                </div>
+              </div>
+              <div class="col-12 col-md-6 mb-3">
+                <label class="form-label">SOAT</label>
+                <input type="text" formControlName="soat" class="form-control" placeholder="Número SOAT">
+              </div>
+              <div class="col-12 col-md-6 mb-3">
+                <label class="form-label">V /de SOAT <span class="text-danger">*</span></label>
+                <input #fechaVencimientoSoat type="text" class="form-control date-picker"
+                  formControlName="fecha_vencimiento_soat" placeholder="Seleccione fecha" readonly>
+                <div *ngIf="inspectionForm.get('fecha_vencimiento_soat')?.touched && inspectionForm.get('fecha_vencimiento_soat')?.errors?.['required']"
+                  class="text-danger small">
+                  Este campo es requerido
+                </div>
+              </div>
+              <div class="col-12 col-md-6 mb-3">
+                <label class="form-label">Licencia Transito</label>
+                <input type="text" formControlName="licencia_transito" class="form-control" placeholder="Licencia transito">
+              </div>
+              <div class="col-12 col-md-6 mb-3">
+                <label class="form-label">R. Tecnicomecánica</label>
+                <input type="text" formControlName="revision_tecnomecanica" class="form-control"
+                  placeholder="Número R. Tecnicomecánica">
+              </div>
+              <div class="col-12 col-md-6 mb-3">
+                <label class="form-label">V / R. Técnicomecánica <span class="text-danger">*</span></label>
+                <input #fechaVencimientoRevisionTecnomecanica type="text" class="form-control date-picker"
+                  formControlName="fecha_vencimiento_revision_tecnomecanica" placeholder="Seleccione fecha" readonly>
+                <div *ngIf="inspectionForm.get('fecha_vencimiento_revision_tecnomecanica')?.touched && inspectionForm.get('fecha_vencimiento_revision_tecnomecanica')?.errors?.['required']"
+                  class="text-danger small">
+                  Este campo es requerido
+                </div>
+              </div>
+              <div class="col-12 col-md-6 mb-3">
+                <label class="form-label">Clase de vehículo</label>
+                <input type="text" formControlName="clase_vehiculo" class="form-control" placeholder="Clase de vehículo">
+              </div>
+              <div class="col-12 col-md-6 mb-3">
+                <label class="form-label">Tarjeta de Operación</label>
+                <input type="text" formControlName="tarjeta_operacion" class="form-control"
+                  placeholder="Tarjeta de operación">
+              </div>
+              <div class="col-12 col-md-6 mb-3">
+                <label class="form-label">V / Tarjeta de Operación <span class="text-danger">*</span></label>
+                <input #fechaVencimientoTarjetaOperacion type="text" class="form-control date-picker"
+                  formControlName="fecha_vencimiento_tarjeta_operacion" placeholder="Seleccione fecha" readonly>
+                <div *ngIf="inspectionForm.get('fecha_vencimiento_tarjeta_operacion')?.touched && inspectionForm.get('fecha_vencimiento_tarjeta_operacion')?.errors?.['required']"
+                  class="text-danger small">
+                  Este campo es requerido
+                </div>
+              </div>
+              <div class="col-12 col-md-6 mb-3">
+                <label class="form-label">Color</label>
+                <input type="text" formControlName="color" class="form-control" placeholder="Color">
+              </div>
+              <div class="col-12 col-md-6 mb-3">
+                <label class="form-label">Código del Vehículo</label>
+                <input type="text" formControlName="codigo_vehiculo" class="form-control" placeholder="Código del vehículo">
+              </div>
+              <div class="col-12 col-md-6 mb-3">
+                <label class="form-label">Capacidad de pasajeros</label>
+                <input type="number" formControlName="capacidad_pasajeros" class="form-control"
+                  placeholder="Cantidad de pasajeros">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- =================================== -->
+        <!-- PASO 4: INSPECCIÓN DEL VEHÍCULO -->
+        <!-- =================================== -->
+        <div *ngIf="currentStep === 4" class="wizard-step-content">
+          <div class="step-section">
+            <h6 class="fw-bold border-bottom pb-2">PASO 4/4 - INSPECCIÓN DEL VEHÍCULO</h6>
+            <p class="medium text-muted fw-bold mb-3">Indique según el estado del ítem verificado:
+              <span class="text-success">CUMPLE</span>(verde),
+              <span class="text-danger">NO CUMPLE</span>(rojo),
+              <span class="noaplica">NO APLICA</span>(azul).
+            </p>
+
+            <!-- Sistema Eléctrico -->
+            <div class="inspection-section mb-4">
+              <h6 class="fw-bold mb-3">SISTEMA ELÉCTRICO</h6>
+              <div class="row">
+                <div class="col-12 mb-3">
+                  <label class="form-label">Luces de navegación: altas - bajas</label>
+                  <div class="btn-group w-100" role="group">
+                    <input type="radio" class="btn-check" name="luces_navegacion" id="luces_navegacion_ok"
+                      [value]="'ok'" formControlName="luces_navegacion" autocomplete="off">
+                    <label class="btn btn-outline-success" for="luces_navegacion_ok">C</label>
+                    <input type="radio" class="btn-check" name="luces_navegacion" id="luces_navegacion_neg"
+                      [value]="'negativo'" formControlName="luces_navegacion" autocomplete="off">
+                    <label class="btn btn-outline-danger" for="luces_navegacion_neg">N/C</label>
+                    <input type="radio" class="btn-check" name="luces_navegacion" id="luces_navegacion_na"
+                      [value]="'na'" formControlName="luces_navegacion" autocomplete="off">
+                    <label class="btn btn-outline-secondary" for="luces_navegacion_na">N/A</label>
+                  </div>
+                </div>
+                <div class="col-12 mb-3">
+                  <label class="form-label">Luces de frenado</label>
+                  <div class="btn-group w-100" role="group">
+                    <input type="radio" class="btn-check" name="luces_frenado" id="luces_frenado_ok" [value]="'ok'"
+                      formControlName="luces_frenado" autocomplete="off">
+                    <label class="btn btn-outline-success" for="luces_frenado_ok">C</label>
+                    <input type="radio" class="btn-check" name="luces_frenado" id="luces_frenado_neg"
+                      [value]="'negativo'" formControlName="luces_frenado" autocomplete="off">
+                    <label class="btn btn-outline-danger" for="luces_frenado_neg">N/C</label>
+                    <input type="radio" class="btn-check" name="luces_frenado" id="luces_frenado_na" [value]="'na'"
+                      formControlName="luces_frenado" autocomplete="off">
+                    <label class="btn btn-outline-secondary" for="luces_frenado_na">N/A</label>
+                  </div>
+                </div>
+                <!-- ... (continuar con todos los campos del sistema eléctrico) ... -->
+              </div>
+            </div>
+
+            <!-- Sistema Motor -->
+            <div class="inspection-section mb-4">
+              <h6 class="fw-bold mb-3">SISTEMA DE MOTOR</h6>
+              <div class="row">
+                <div class="col-12 mb-3">
+                  <label class="form-label">Nivel de aceite del motor</label>
+                  <div class="btn-group w-100" role="group">
+                    <input type="radio" class="btn-check" name="aceite_motor" id="aceite_motor_ok" [value]="'ok'"
+                      formControlName="aceite_motor" autocomplete="off">
+                    <label class="btn btn-outline-success" for="aceite_motor_ok">C</label>
+                    <input type="radio" class="btn-check" name="aceite_motor" id="aceite_motor_neg"
+                      [value]="'negativo'" formControlName="aceite_motor" autocomplete="off">
+                    <label class="btn btn-outline-danger" for="aceite_motor_neg">N/C</label>
+                    <input type="radio" class="btn-check" name="aceite_motor" id="aceite_motor_na" [value]="'na'"
+                      formControlName="aceite_motor" autocomplete="off">
+                    <label class="btn btn-outline-secondary" for="aceite_motor_na">N/A</label>
+                  </div>
+                </div>
+                <!-- ... (continuar con todos los campos del sistema motor) ... -->
+              </div>
+            </div>
+
+            <!-- Carrocería -->
+            <div class="inspection-section mb-4">
+              <h6 class="fw-bold mb-3">CARROCERÍA / PARTE EXTERNA</h6>
+              <div class="row">
+                <div class="col-12 mb-3">
+                  <label class="form-label">Parachoques Delantero</label>
+                  <div class="btn-group w-100" role="group">
+                    <input type="radio" class="btn-check" name="parachoque_delantero" id="parachoque_delantero_ok"
+                      [value]="'ok'" formControlName="parachoque_delantero" autocomplete="off">
+                    <label class="btn btn-outline-success" for="parachoque_delantero_ok">C</label>
+                    <input type="radio" class="btn-check" name="parachoque_delantero" id="parachoque_delantero_neg"
+                      [value]="'negativo'" formControlName="parachoque_delantero" autocomplete="off">
+                    <label class="btn btn-outline-danger" for="parachoque_delantero_neg">N/C</label>
+                    <input type="radio" class="btn-check" name="parachoque_delantero" id="parachoque_delantero_na"
+                      [value]="'na'" formControlName="parachoque_delantero" autocomplete="off">
+                    <label class="btn btn-outline-secondary" for="parachoque_delantero_na">N/A</label>
+                  </div>
+                </div>
+                <!-- ... (continuar con todos los campos de carrocería) ... -->
+              </div>
+            </div>
+
+            <!-- Cabina -->
+            <div class="inspection-section mb-4">
+              <h6 class="fw-bold mb-3">CABINA Y MANDOS / PARTE INTERNA</h6>
+              <div class="row">
+                <!-- ... (continuar con todos los campos de cabina) ... -->
+              </div>
+            </div>
+
+            <!-- Seguridad Activa -->
+            <div class="inspection-section mb-4">
+              <h6 class="fw-bold mb-3">SEGURIDAD ACTIVA</h6>
+              <div class="row">
+                <!-- ... (continuar con todos los campos de seguridad activa) ... -->
+              </div>
+            </div>
+
+            <!-- Seguridad Pasiva -->
+            <div class="inspection-section mb-4">
+              <h6 class="fw-bold mb-3">SISTEMA DE SEGURIDAD PASIVA</h6>
+              <div class="row">
+                <!-- ... (continuar con todos los campos de seguridad pasiva) ... -->
+              </div>
+            </div>
+
+            <!-- Kit de Carretera -->
+            <div class="inspection-section mb-4">
+              <h6 class="fw-bold mb-3">KIT DE CARRETERA</h6>
+              <div class="row">
+                <!-- ... (continuar con todos los campos de kit de carretera) ... -->
+              </div>
+            </div>
+
+            <!-- Parte Baja -->
+            <div class="inspection-section mb-4">
+              <h6 class="fw-bold mb-3">PARTE BAJA</h6>
+              <div class="row">
+                <!-- ... (continuar con todos los campos de parte baja) ... -->
+              </div>
+            </div>
+
+            <!-- Profundidad de Labrado -->
+            <div class="inspection-section mb-4">
+              <h6 class="fw-bold mb-3">PROFUNDIDAD DE LABRADO DE LLANTAS</h6>
+              <div class="row">
+                <div class="col-12 mb-3">
+                  <label class="form-label">Llanta D LD / Ej: 2,3 mm</label>
+                  <input type="number" class="form-control" formControlName="llanta_d_ld" inputmode="decimal" pattern="[0-9,.]*" placeholder="0">
+                </div>
+                <div class="col-12 mb-3">
+                  <label class="form-label">Llanta T LIE / Ej: 3,4 mm</label>
+                  <input type="number" class="form-control" formControlName="llanta_t_lie" inputmode="decimal" pattern="[0-9,.]*" placeholder="0">
+                </div>
+                <div class="col-12 mb-3">
+                  <label class="form-label">Llanta T LII / Ej: 2,8 mm</label>
+                  <input type="number" class="form-control" formControlName="llanta_t_lii" inputmode="decimal" pattern="[0-9,.]*" placeholder="0">
+                </div>
+                <div class="col-12 mb-3">
+                  <label class="form-label">Llanta T LID / Ej: 3,1 mm</label>
+                  <input type="number" class="form-control" formControlName="llanta_t_lid" inputmode="decimal" pattern="[0-9,.]*" placeholder="0">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- BOTONES DE NAVEGACIÓN DEL WIZARD -->
+        <div class="wizard-navigation mt-4">
+          <div class="row">
+            <div class="col-6">
+              <button 
+                *ngIf="currentStep > 1" 
+                type="button" 
+                class="btn btn-outline-secondary w-100" 
+                (click)="previousStep()">
+                <i class="fa fa-arrow-left"></i> Anterior
+              </button>
+            </div>
+            <div class="col-6">
+              <button 
+                *ngIf="currentStep < totalSteps" 
+                type="button" 
+                class="btn btn-primary w-100" 
+                (click)="nextStep()">
+                Siguiente <i class="fa fa-arrow-right"></i>
+              </button>
+              <button 
+                *ngIf="currentStep === totalSteps" 
+                type="button" 
+                class="btn btn-success w-100" 
+                (click)="onSubmit()">
+                <i class="fa fa-save"></i> Guardar Inspección
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </form>
   </div>
 </main>
-<!-- <style>
-  /* Estilos mejorados para las píldoras de navegación */
-  .nav-pills {
-    gap: 8px;
-  }
-  
-  .nav-pills .nav-link {
-    color: #495057;
-    border-radius: 50px;
-    border: 2px solid #dee2e6;
-    margin-bottom: 8px;
-    padding: 10px 20px;
-    font-weight: 500;
-    transition: all 0.3s ease;
-    background-color: #f8f9fa;
-    text-align: center;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 100px;
-  }
-  
-  .nav-pills .nav-link:hover:not(.active) {
-    background-color: #e9ecef;
-    border-color: #ced4da;
-    transform: translateY(-2px);
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  }
-  
-  .nav-pills .nav-link.active {
-    color: #fff;
-    background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%);
-    border-color: #0a58ca;
-    box-shadow: 0 2px 8px rgba(13, 110, 253, 0.3);
-    font-weight: 600;
-  }
-  
-  .nav-pills .nav-link.disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-    background-color: #e9ecef;
-  }
-  
-  /* Estilos para los botones de opción */
-  .btn-group {
-    gap: 8px;
-    flex-wrap: wrap;
-  }
-  
-  .btn-group .btn {
-    border-radius: 50px;
-    padding: 10px 20px;
-    font-weight: 500;
-    transition: all 0.3s ease;
-    position: relative;
-    overflow: hidden;
-  }
-  
-  .btn-group .btn::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(255, 255, 255, 0.1);
-    opacity: 0;
-    transition: opacity 0.3s ease;
-  }
-  
-  .btn-group .btn:hover::before {
-    opacity: 1;
-  }
-  
-  /* Estilos para los botones de opción seleccionados */
-  .btn-check:checked + .btn-outline-success {
-    background: linear-gradient(135deg, #198754 0%, #157347 100%);
-    border-color: #198754;
-    color: white;
-    box-shadow: 0 2px 8px rgba(25, 135, 84, 0.3);
-  }
-  
-  .btn-check:checked + .btn-outline-danger {
-    background: linear-gradient(135deg, #dc3545 0%, #b02a37 100%);
-    border-color: #dc3545;
-    color: white;
-    box-shadow: 0 2px 8px rgba(220, 53, 69, 0.3);
-  }
-  
-  .btn-check:checked + .btn-outline-secondary {
-    background: linear-gradient(135deg, #6c757d 0%, #5a6268 100%);
-    border-color: #6c757d;
-    color: white;
-    box-shadow: 0 2px 8px rgba(108, 117, 125, 0.3);
-  }
-  
-  /* Efecto de pulso para opciones seleccionadas */
-  @keyframes pulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.05); }
-    100% { transform: scale(1); }
-  }
-  
-  .btn-check:checked + .btn {
-    animation: pulse 0.5s ease;
-  }
-  
-  /* Estilos para el texto "NO APLICA" */
-  .noaplica {
-    color: #0d6efd;
-    font-weight: 600;
-    position: relative;
-    padding-left: 24px;
-  }
-  
-  .noaplica::before {
-    content: '→';
-    position: absolute;
-    left: 0;
-    animation: bounce 1s infinite;
-  }
-  
-  @keyframes bounce {
-    0%, 100% { transform: translateX(0); }
-    50% { transform: translateX(5px); }
-  }
-  
-  /* Efecto hover mejorado para los botones */
-  .btn-outline-success:hover {
-    background-color: rgba(25, 135, 84, 0.1);
-    color: #198754;
-  }
-  
-  .btn-outline-danger:hover {
-    background-color: rgba(220, 53, 69, 0.1);
-    color: #dc3545;
-  }
-  
-  .btn-outline-secondary:hover {
-    background-color: rgba(108, 117, 125, 0.1);
-    color: #6c757d;
-  }
-</style> -->
-<!-- <style>
-  .nav-pills .nav-link {
-    color: #495057;
-    border-radius: 0;
-    border-left: 3px solid transparent;
-    margin-bottom: 5px;
-  }
-  
-  .nav-pills .nav-link.active {
-    color: #fff;
-    background-color: #0d6efd;
-    border-left-color: #0d6efd;
-  }
-  
-  .nav-pills .nav-link.disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
-  
-  .btn-check:checked + .btn-outline-success {
-    background-color: #198754;
-    border-color: #198754;
-    color: white;
-  }
-  
-  .btn-check:checked + .btn-outline-danger {
-    background-color: #dc3545;
-    border-color: #dc3545;
-    color: white;
-  }
-  
-  .btn-check:checked + .btn-outline-secondary {
-    background-color: #6c757d;
-    border-color: #6c757d;
-    color: white;
-  }
-  
-  .noaplica {
-    color: #0d6efd;
-    font-weight: bold;
-  }
-</style> -->

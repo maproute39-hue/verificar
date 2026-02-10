@@ -17,11 +17,6 @@ interface FlatpickrOptions {
   onChange?: (selectedDates: Date[], dateStr: string) => void;
 }
 
-/**
- * Componente para la creación de nuevas inspecciones vehiculares.
- * Permite al usuario registrar todos los detalles de una inspección técnica de vehículos,
- * incluyendo información del conductor, del vehículo y resultados de la inspección.
- */
 @Component({
   selector: 'app-nueva',
   templateUrl: './nueva.html',
@@ -37,10 +32,14 @@ export class Nueva implements AfterViewInit, OnInit {
   @ViewChild('fechaVencimientoSoat') fechaVencimientoSoatInput!: ElementRef<HTMLInputElement>;
   @ViewChild('fechaVencimientoRevisionTecnomecanica') fechaVencimientoRevisionTecnomecanicaInput!: ElementRef<HTMLInputElement>;
   @ViewChild('fechaVencimientoTarjetaOperacion') fechaVencimientoTarjetaOperacionInput!: ElementRef<HTMLInputElement>;
-  // Formulario principal que contiene todos los campos de la inspección
+  
+  // Formulario principal y secundario
   inspectionForm: FormGroup;
-  // Formulario secundario para el manejo específico del teléfono
   phoneForm: FormGroup;
+  
+  // Estado del wizard
+  currentStep: number = 1;
+  totalSteps: number = 4;
   
   // Variables para almacenar fechas formateadas
   fechaInspeccion: string = '';
@@ -51,39 +50,32 @@ export class Nueva implements AfterViewInit, OnInit {
   fechaVencimientoTarjetaOperacion: string = '';
   
   // Almacena las instancias de los selectores de fecha
-  private flatpickrInstances: any[] = [];
+  private flatpickrInstances: { [key: string]: any } = {};
   
   // Control de estado de carga
   isLoading: boolean = false;
   
-  // Usuario actual (por defecto 'admin')
+  // Usuario actual
   currentUser: string = 'admin';
 
-  /**
-   * Constructor del componente.
-   * Inicializa los formularios y sus validaciones.
-   * 
-   * @param fb Servicio para la creación de formularios reactivos
-   * @param inspectionService Servicio para el manejo de operaciones de inspección
-   */
   constructor(
     private fb: FormBuilder,
     private inspectionService: InspectionService
   ) {
-    // Inicialización del formulario principal con todos sus campos y validaciones
+    // Inicialización del formulario principal
     this.inspectionForm = this.fb.group({
-      // Sección: Fechas
+      // Sección: Fechas (Paso 1)
       fecha_inspeccion: ['', Validators.required],
       fecha_vigencia: ['', Validators.required],
-      fecha_vencimiento_licencia: ['', Validators.required],
       
-      // Sección: Información del conductor y transportadora
+      // Sección: Información del conductor (Paso 2)
       nombre_transportadora: ['', [Validators.required, Validators.minLength(3)]],
       nombres_conductor: ['', [Validators.required, Validators.minLength(3)]],
       identificacion: ['', [Validators.required, Validators.pattern(/^\d+$/)]],
       telefono: ['', [Validators.required, Validators.pattern(/^\d{10}$/)]],
+      fecha_vencimiento_licencia: ['', Validators.required],
       
-      // Sección: Información del vehículo
+      // Sección: Información del vehículo (Paso 3)
       placa: ['', [Validators.required, Validators.pattern(/^[A-Z0-9]{6,8}$/)]],
       marca: ['', [Validators.required]],
       modelo: ['', [Validators.required]],
@@ -96,17 +88,15 @@ export class Nueva implements AfterViewInit, OnInit {
       revision_tecnomecanica: [''],
       clase_vehiculo: [''],
       tarjeta_operacion: [''],
+      fecha_vencimiento_soat: ['', Validators.required],
+      fecha_vencimiento_revision_tecnomecanica: ['', Validators.required],
+      fecha_vencimiento_tarjeta_operacion: ['', Validators.required],
       
-
-            fecha_vencimiento_soat: ['', Validators.required],
-            fecha_vencimiento_revision_tecnomecanica: ['', Validators.required],
-            fecha_vencimiento_tarjeta_operacion: ['', Validators.required],
-
       // Sección: Estado y observaciones
       estado: ['borrador'],
       observaciones: [''],
       
-      // === CAMPOS DE INSPECCIÓN DEL VEHÍCULO ===
+      // === CAMPOS DE INSPECCIÓN DEL VEHÍCULO (Paso 4) ===
       
       // Sistema Eléctrico
       luces_navegacion: [''],
@@ -194,16 +184,12 @@ export class Nueva implements AfterViewInit, OnInit {
       llanta_t_lid: ['']
     });
 
-    // Inicialización del formulario del teléfono con sus validaciones
+    // Inicialización del formulario del teléfono
     this.phoneForm = this.fb.group({
       localNumber: ['', [Validators.required, Validators.pattern(/^\d{10}$/)]]
     });
   }
   
-  /**
-   * Inicialización del componente.
-   * Configura la sincronización del campo de teléfono entre formularios.
-   */
   ngOnInit() {
     // Sincronizar teléfono entre formularios
     this.phoneForm.get('localNumber')?.valueChanges.subscribe(value => {
@@ -212,49 +198,118 @@ export class Nueva implements AfterViewInit, OnInit {
       }
     });
   }
-  
-  /**
-   * Maneja el cambio en el campo de fecha de licencia.
-   * Actualiza el valor en el formulario reactivo.
-   * 
-   * @param event Evento de cambio del input
-   */
-  onFechaLicenciaChange(event: Event) {
-    const input = event.target as HTMLInputElement;
-    this.fechaLicencia = input.value;
-    this.inspectionForm.patchValue({
-      fecha_vencimiento_licencia: this.formatDate(this.fechaLicencia)
+    
+  private initStep1DatePickers() {
+    if (this.flatpickrInstances['fecha_inspeccion']) return;
+    
+    const flatpickrOptions = this.getFlatpickrOptions();
+    
+    // Fecha inspección
+    this.flatpickrInstances['fecha_inspeccion'] = flatpickr(this.fechaInspeccionInput.nativeElement, {
+      ...flatpickrOptions,
+      defaultDate: new Date(),
+      onChange: (selectedDates: Date[], dateStr: string) => {
+        this.fechaInspeccion = dateStr;
+        this.inspectionForm.patchValue({ fecha_inspeccion: dateStr });
+        this.inspectionForm.get('fecha_inspeccion')?.markAsTouched();
+      }
+    });
+
+    // Fecha vigencia
+    this.flatpickrInstances['fecha_vigencia'] = flatpickr(this.fechaVigenciaInput.nativeElement, {
+      ...flatpickrOptions,
+      minDate: 'today',
+      onChange: (selectedDates: Date[], dateStr: string) => {
+        this.fechaVigencia = dateStr;
+        this.inspectionForm.patchValue({ fecha_vigencia: dateStr });
+        this.inspectionForm.get('fecha_vigencia')?.markAsTouched();
+      }
     });
   }
 
-  
-  /**
-   * Formatea una fecha de DD/MM/YYYY a YYYY-MM-DDTHH:mm:ss.SSSZ
-   * 
-   * @param dateString Fecha en formato DD/MM/YYYY
-   * @returns Fecha formateada en formato ISO 8601 o cadena vacía si no es válida
-   */
-  formatDate(dateString: string): string {
-    if (!dateString) return '';
-    // Convertir de DD/MM/YYYY a YYYY-MM-DD
-    const [day, month, year] = dateString.split('/');
-    if (day && month && year) {
-      return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}T00:00:00.000Z`;
-    }
-    return '';
+  private initStep2DatePickers() {
+    if (this.flatpickrInstances['fecha_vencimiento_licencia']) return;
+    
+    const flatpickrOptions = this.getFlatpickrOptions();
+    
+    this.flatpickrInstances['fecha_vencimiento_licencia'] = flatpickr(this.fechaLicenciaInput.nativeElement, {
+      ...flatpickrOptions,
+      minDate: 'today',
+      onChange: (selectedDates: Date[], dateStr: string) => {
+        this.fechaLicencia = dateStr;
+        this.inspectionForm.patchValue({ fecha_vencimiento_licencia: dateStr });
+        this.inspectionForm.get('fecha_vencimiento_licencia')?.markAsTouched();
+      }
+    });
   }
-  
-  /**
-   * Inicialización después de la renderización de la vista.
-   * Configura los selectores de fecha con flatpickr.
-   */
+
+  private initStep3DatePickers() {
+    if (this.flatpickrInstances['fecha_vencimiento_soat']) return;
+    if (this.flatpickrInstances['fecha_vencimiento_revision_tecnomecanica']) return;
+    if (this.flatpickrInstances['fecha_vencimiento_tarjeta_operacion']) return;
+    
+    const flatpickrOptions = this.getFlatpickrOptions();
+    
+    this.flatpickrInstances['fecha_vencimiento_soat'] = flatpickr(this.fechaVencimientoSoatInput.nativeElement, {
+      ...flatpickrOptions,
+      minDate: 'today',
+      onChange: (selectedDates: Date[], dateStr: string) => {
+        this.fechaVencimientoSoat = dateStr;
+        this.inspectionForm.patchValue({ fecha_vencimiento_soat: dateStr });
+        this.inspectionForm.get('fecha_vencimiento_soat')?.markAsTouched();
+      }
+    });
+
+    this.flatpickrInstances['fecha_vencimiento_revision_tecnomecanica'] = flatpickr(
+      this.fechaVencimientoRevisionTecnomecanicaInput.nativeElement, {
+        ...flatpickrOptions,
+        minDate: 'today',
+        onChange: (selectedDates: Date[], dateStr: string) => {
+          this.fechaVencimientoRevisionTecnomecanica = dateStr;
+          this.inspectionForm.patchValue({ fecha_vencimiento_revision_tecnomecanica: dateStr });
+          this.inspectionForm.get('fecha_vencimiento_revision_tecnomecanica')?.markAsTouched();
+        }
+      }
+    );
+
+    this.flatpickrInstances['fecha_vencimiento_tarjeta_operacion'] = flatpickr(
+      this.fechaVencimientoTarjetaOperacionInput.nativeElement, {
+        ...flatpickrOptions,
+        minDate: 'today',
+        onChange: (selectedDates: Date[], dateStr: string) => {
+          this.fechaVencimientoTarjetaOperacion = dateStr;
+          this.inspectionForm.patchValue({ fecha_vencimiento_tarjeta_operacion: dateStr });
+          this.inspectionForm.get('fecha_vencimiento_tarjeta_operacion')?.markAsTouched();
+        }
+      }
+    );
+  }
+
+  private getFlatpickrOptions(): any {
+    return {
+      dateFormat: 'd/m/Y',
+      allowInput: true,
+      clickOpens: true,
+      disableMobile: true,
+      locale: {
+        firstDayOfWeek: 1,
+        weekdays: {
+          shorthand: ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'],
+          longhand: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado']
+        },
+        months: {
+          shorthand: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+          longhand: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
+        }
+      }
+    };
+  }
   ngAfterViewInit() {
     if (typeof flatpickr === 'undefined') {
       console.error('Flatpickr no está cargado correctamente');
       return;
     }
-
-    // Configuración común para todos los selectores de fecha
+  this.initStep1DatePickers();
     const flatpickrOptions: FlatpickrOptions = {
       dateFormat: 'd/m/Y',
       allowInput: true,
@@ -273,7 +328,7 @@ export class Nueva implements AfterViewInit, OnInit {
       }
     };
 
-    // Configuración del selector de fecha de inspección
+    // Configuración de los date pickers
     const inspeccionPicker = flatpickr(this.fechaInspeccionInput.nativeElement, {
       ...flatpickrOptions,
       defaultDate: new Date(),
@@ -283,9 +338,7 @@ export class Nueva implements AfterViewInit, OnInit {
         this.inspectionForm.get('fecha_inspeccion')?.markAsTouched();
       }
     });
-    this.flatpickrInstances.push(inspeccionPicker);
-
-    // Configuración del selector de fecha de vigencia
+    this.flatpickrInstances['push'](inspeccionPicker);
     const vigenciaPicker = flatpickr(this.fechaVigenciaInput.nativeElement, {
       ...flatpickrOptions,
       minDate: 'today',
@@ -295,9 +348,8 @@ export class Nueva implements AfterViewInit, OnInit {
         this.inspectionForm.get('fecha_vigencia')?.markAsTouched();
       }
     });
-    this.flatpickrInstances.push(vigenciaPicker);
+    this.flatpickrInstances['push'](vigenciaPicker);
 
-    // Configuración del selector de fecha de vencimiento de licencia
     const licenciaPicker = flatpickr(this.fechaLicenciaInput.nativeElement, {
       ...flatpickrOptions,
       minDate: 'today',
@@ -307,6 +359,8 @@ export class Nueva implements AfterViewInit, OnInit {
         this.inspectionForm.get('fecha_vencimiento_licencia')?.markAsTouched();
       }
     });
+    this.flatpickrInstances['push'](licenciaPicker);
+
     const soatPicker = flatpickr(this.fechaVencimientoSoatInput.nativeElement, {
       ...flatpickrOptions,
       minDate: 'today',
@@ -316,6 +370,8 @@ export class Nueva implements AfterViewInit, OnInit {
         this.inspectionForm.get('fecha_vencimiento_soat')?.markAsTouched();
       }
     });
+    this.flatpickrInstances['push'](soatPicker);
+
     const revisionTecnomecanicaPicker = flatpickr(this.fechaVencimientoRevisionTecnomecanicaInput.nativeElement, {
       ...flatpickrOptions,
       minDate: 'today',
@@ -325,6 +381,8 @@ export class Nueva implements AfterViewInit, OnInit {
         this.inspectionForm.get('fecha_vencimiento_revision_tecnomecanica')?.markAsTouched();
       }
     });
+    this.flatpickrInstances['push'](revisionTecnomecanicaPicker);
+
     const tarjetaOperacionPicker = flatpickr(this.fechaVencimientoTarjetaOperacionInput.nativeElement, {
       ...flatpickrOptions,
       minDate: 'today',
@@ -334,38 +392,230 @@ export class Nueva implements AfterViewInit, OnInit {
         this.inspectionForm.get('fecha_vencimiento_tarjeta_operacion')?.markAsTouched();
       }
     });
-    this.flatpickrInstances.push(licenciaPicker);
-    this.flatpickrInstances.push(soatPicker);
-    this.flatpickrInstances.push(revisionTecnomecanicaPicker);
-    this.flatpickrInstances.push(tarjetaOperacionPicker);
+    this.flatpickrInstances['push'](tarjetaOperacionPicker);
+  }
+
+  ngOnDestroy() {
+    // Destruir todas las instancias de flatpickr
+    Object.keys(this.flatpickrInstances).forEach(key => {
+      if (this.flatpickrInstances[key]?.destroy) {
+        this.flatpickrInstances[key].destroy();
+      }
+    });
+    this.flatpickrInstances = {};
+  }
+
+  // ===== WIZARD NAVIGATION METHODS =====
+  
+  /**
+   * Navega al siguiente paso del wizard
+   */
+  nextStep() {
+    if (this.validateCurrentStep()) {
+      if (this.currentStep < this.totalSteps) {
+        this.currentStep++;
+        setTimeout(() => {
+          this.initDatePickersForCurrentStep();
+        }, 0);
+      }
+    }
   }
 
   /**
-   * Limpieza al destruir el componente.
-   * Elimina las instancias de flatpickr para evitar fugas de memoria.
+   * Navega al paso anterior del wizard
    */
-  ngOnDestroy() {
-    this.flatpickrInstances.forEach(instance => {
-      if (instance && typeof instance.destroy === 'function') {
-        instance.destroy();
+  prevStep() {
+    if (this.currentStep > 1) {
+      this.currentStep--;
+        setTimeout(() => {
+        this.initDatePickersForCurrentStep();
+      }, 0);
+    }
+  }
+    private initDatePickersForCurrentStep() {
+    switch (this.currentStep) {
+      case 1:
+        this.initStep1DatePickers();
+        break;
+      case 2:
+        this.initStep2DatePickers();
+        break;
+      case 3:
+        this.initStep3DatePickers();
+        break;
+      // Paso 4 no tiene date pickers
+    }
+  }
+
+
+  /**
+   * Valida los campos del paso actual
+   */
+  validateCurrentStep(): boolean {
+    switch (this.currentStep) {
+      case 1:
+        return this.validateStep1();
+      case 2:
+        return this.validateStep2();
+      case 3:
+        return this.validateStep3();
+      case 4:
+        return true; // Paso 4 no tiene validación obligatoria
+      default:
+        return true;
+    }
+  }
+
+  /**
+   * Valida el Paso 1: Datos Generales
+   */
+  private validateStep1(): boolean {
+    const fechaInspeccionControl = this.inspectionForm.get('fecha_inspeccion');
+    const fechaVigenciaControl = this.inspectionForm.get('fecha_vigencia');
+    
+    fechaInspeccionControl?.markAsTouched();
+    fechaVigenciaControl?.markAsTouched();
+    
+    if (fechaInspeccionControl?.invalid || fechaVigenciaControl?.invalid) {
+      this.showStepError('Por favor complete todas las fechas requeridas.');
+      return false;
+    }
+    
+    return true;
+  }
+
+  /**
+   * Valida el Paso 2: Datos del Conductor
+   */
+  private validateStep2(): boolean {
+    const controls = [
+      'nombre_transportadora',
+      'nombres_conductor',
+      'identificacion',
+      'telefono',
+      'fecha_vencimiento_licencia'
+    ];
+    
+    let isValid = true;
+    
+    controls.forEach(controlName => {
+      const control = this.inspectionForm.get(controlName);
+      control?.markAsTouched();
+      if (control?.invalid) {
+        isValid = false;
       }
+    });
+    
+    if (!isValid) {
+      this.showStepError('Por favor complete todos los campos del conductor.');
+      return false;
+    }
+    
+    // Validar teléfono desde phoneForm
+    const phoneControl = this.phoneForm.get('localNumber');
+    phoneControl?.markAsTouched();
+    if (phoneControl?.invalid) {
+      this.showStepError('Por favor ingrese un número de teléfono válido de 10 dígitos.');
+      return false;
+    }
+    
+    return true;
+  }
+
+  /**
+   * Valida el Paso 3: Datos del Vehículo
+   */
+  private validateStep3(): boolean {
+    const requiredControls = [
+      // 'placa',
+      // 'marca',
+      // 'modelo',
+      // 'kilometraje',
+      // 'fecha_vencimiento_soat',
+      // 'fecha_vencimiento_revision_tecnomecanica',
+      'fecha_vencimiento_tarjeta_operacion'
+    ];
+    
+    let isValid = true;
+    
+    requiredControls.forEach(controlName => {
+      const control = this.inspectionForm.get(controlName);
+      control?.markAsTouched();
+      if (control?.invalid) {
+        isValid = false;
+      }
+    });
+    
+    if (!isValid) {
+      this.showStepError('Por favor complete todos los campos obligatorios del vehículo.');
+      return false;
+    }
+    
+    return true;
+  }
+
+  /**
+   * Muestra un mensaje de error para el paso actual
+   */
+  private showStepError(message: string) {
+    Swal.fire({
+      title: 'Campos incompletos',
+      text: message,
+      icon: 'warning',
+      confirmButtonText: 'Entendido',
+      confirmButtonColor: '#dc3545'
     });
   }
 
   /**
-   * Maneja el envío del formulario de inspección.
-   * Valida los datos, formatea la información y la envía al servicio de inspecciones.
+   * Verifica si el paso actual es el primero
    */
+  isFirstStep(): boolean {
+    return this.currentStep === 1;
+  }
+
+  /**
+   * Verifica si el paso actual es el último
+   */
+  isLastStep(): boolean {
+    return this.currentStep === this.totalSteps;
+  }
+
+  /**
+   * Obtiene el nombre del paso actual
+   */
+  getStepName(step: number): string {
+    const stepNames = [
+      'Datos Generales',
+      'Datos del Conductor',
+      'Datos del Vehículo',
+      'Inspección Vehicular'
+    ];
+    return stepNames[step - 1] || '';
+  }
+
+  /**
+   * Obtiene el porcentaje de progreso del wizard
+   */
+  getProgressPercentage(): number {
+    return (this.currentStep / this.totalSteps) * 100;
+  }
+
+  // ===== FORM SUBMISSION METHODS =====
+  
   async onSubmit() {
     if (!this.isLoading) {
-      // Mostrar el payload del formulario en consola
+      // Validar todos los pasos antes de enviar
+      if (!this.validateAllSteps()) {
+        return;
+      }
+      
       console.log('=== PAYLOAD DEL FORMULARIO ===');
       console.log(JSON.stringify(this.inspectionForm.value, null, 2));
       console.log('==============================');
       
       this.isLoading = true;
 
-      // Mostrar indicador de carga
       Swal.fire({
         title: 'Procesando...',
         text: 'Guardando la inspección',
@@ -378,7 +628,6 @@ export class Nueva implements AfterViewInit, OnInit {
       try {
         const inspectionData = this.inspectionForm.value;
        
-        // Validar datos del formulario
         const validation = this.inspectionService.validateInspectionData(inspectionData);
         if (!validation.valid) {
           Swal.close();
@@ -392,13 +641,11 @@ export class Nueva implements AfterViewInit, OnInit {
           return;
         }
 
-        // Formatear fechas al formato ISO 8601 para la API
         const formatDateForAPI = (dateStr: string) => {
           const [day, month, year] = dateStr.split('/');
           return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}T00:00:00.000Z`;
         };
 
-        // Preparar datos para enviar a la API
         const formattedData = {
           ...inspectionData,
           fecha_inspeccion: formatDateForAPI(inspectionData.fecha_inspeccion),
@@ -409,14 +656,12 @@ export class Nueva implements AfterViewInit, OnInit {
           fecha_vencimiento_tarjeta_operacion: formatDateForAPI(inspectionData.fecha_vencimiento_tarjeta_operacion),
           created_by: this.currentUser,
           estado: 'borrador',
-          // Asegurarse de que los campos numéricos sean números
           kilometraje: Number(inspectionData.kilometraje),
           capacidad_pasajeros: Number(inspectionData.capacidad_pasajeros)
         };
 
         console.log('Datos a enviar a la API:', JSON.stringify(formattedData, null, 2));
 
-        // Enviar a la API
         try {
           await this.inspectionService.createInspection(formattedData).toPromise();
           console.log('Inspección guardada correctamente');
@@ -427,7 +672,6 @@ export class Nueva implements AfterViewInit, OnInit {
 
         Swal.close();
         
-        // Mostrar mensaje de éxito
         await Swal.fire({
           title: '¡Éxito!',
           text: 'La inspección ha sido creada correctamente',
@@ -436,11 +680,10 @@ export class Nueva implements AfterViewInit, OnInit {
           confirmButtonColor: '#198754'
         });
 
-        // Resetear formularios
         this.resetForms();
+        this.currentStep = 1;
 
       } catch (error: any) {
-        // Manejo de errores
         Swal.close();
         await Swal.fire({
           title: 'Error',
@@ -451,80 +694,38 @@ export class Nueva implements AfterViewInit, OnInit {
       } finally {
         this.isLoading = false;
       }
-    } else {
-      // Mostrar errores de validación del formulario
-      this.handleFormValidationErrors();
     }
   }
 
   /**
-   * Maneja los errores de validación del formulario.
-   * Muestra mensajes de error al usuario para campos requeridos no completados.
+   * Valida todos los pasos antes del envío final
    */
-  private async handleFormValidationErrors() {
-    const errors: string[] = [];
+  private validateAllSteps(): boolean {
+    // Validar paso 1
+    if (!this.validateStep1()) {
+      this.currentStep = 1;
+      return false;
+    }
     
-    if (this.inspectionForm.get('fecha_inspeccion')?.hasError('required')) {
-      errors.push('Fecha de inspección: Campo requerido');
+    // Validar paso 2
+    if (!this.validateStep2()) {
+      this.currentStep = 2;
+      return false;
     }
-    if (this.inspectionForm.get('fecha_vigencia')?.hasError('required')) {
-      errors.push('Fecha de vigencia: Campo requerido');
+    
+    // Validar paso 3
+    if (!this.validateStep3()) {
+      this.currentStep = 3;
+      return false;
     }
-    if (this.inspectionForm.get('telefono')?.hasError('required')) {
-      errors.push('Teléfono: Campo requerido');
-    }
-    if (this.inspectionForm.get('fecha_vencimiento_licencia')?.hasError('required')) {
-      errors.push('Fecha de vencimiento de licencia: Campo requerido');
-    }
-    if (this.inspectionForm.get('fecha_vencimiento_soat')?.hasError('required')) {
-      errors.push('Fecha de vencimiento de SOAT: Campo requerido');
-    }
-    if (this.inspectionForm.get('fecha_vencimiento_revision_tecnomecanica')?.hasError('required')) {
-      errors.push('Fecha de vencimiento de revisión tecnomecánica: Campo requerido');
-    }
-    if (this.inspectionForm.get('fecha_vencimiento_tarjeta_operacion')?.hasError('required')) {
-      errors.push('Fecha de vencimiento de tarjeta de operación: Campo requerido');
-    }
-
-    // Marcar todos los campos como tocados para mostrar errores
-    this.markAllAsTouched();
-
-    // Mostrar mensajes de error
-    if (errors.length > 0) {
-      await Swal.fire({
-        title: 'Formulario incompleto',
-        html: errors.join('<br>'),
-        icon: 'warning',
-        confirmButtonText: 'Entendido'
-      });
-    } else {
-      await Swal.fire({
-        title: 'Formulario incompleto',
-        text: 'Por favor complete todos los campos requeridos',
-        icon: 'warning',
-        confirmButtonText: 'Entendido'
-      });
-    }
+    
+    // Paso 4 no requiere validación obligatoria
+    
+    return true;
   }
 
   /**
-   * Marca todos los controles del formulario como "tocados"
-   * para activar la visualización de mensajes de validación.
-   */
-  private markAllAsTouched() {
-    Object.keys(this.inspectionForm.controls).forEach(field => {
-      const control = this.inspectionForm.get(field);
-      control?.markAsTouched({ onlySelf: true });
-    });
-    
-    Object.keys(this.phoneForm.controls).forEach(field => {
-      const control = this.phoneForm.get(field);
-      control?.markAsTouched({ onlySelf: true });
-    });
-  }
-  
-  /**
-   * Reinicia los formularios a su estado inicial.
+   * Reinicia los formularios a su estado inicial
    */
   private resetForms() {
     this.inspectionForm.reset();
@@ -536,7 +737,6 @@ export class Nueva implements AfterViewInit, OnInit {
     this.fechaVencimientoRevisionTecnomecanica = '';
     this.fechaVencimientoTarjetaOperacion = '';
     
-    // Restablecer fecha de inspección a la fecha actual
     if (this.flatpickrInstances[0]) {
       this.flatpickrInstances[0].setDate(new Date());
     }

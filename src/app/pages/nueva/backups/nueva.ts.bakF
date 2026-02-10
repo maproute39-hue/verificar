@@ -1,0 +1,702 @@
+import { Component, AfterViewInit, ElementRef, ViewChild, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import Swal from 'sweetalert2';
+import { InspectionService } from '../../services/inspection.service';
+
+declare const flatpickr: any;
+
+interface FlatpickrOptions {
+  locale?: any;
+  dateFormat: string;
+  allowInput: boolean;
+  clickOpens: boolean;
+  disableMobile: boolean;
+  defaultDate?: string | Date;
+  minDate?: string | Date;
+  onChange?: (selectedDates: Date[], dateStr: string) => void;
+}
+
+// Interface para tipar el elemento con _flatpickr
+interface FlatpickrElement extends HTMLElement {
+  _flatpickr?: any;
+}
+
+@Component({
+  selector: 'app-nueva',
+  templateUrl: './nueva.html',
+  styleUrls: ['./nueva.scss'],
+  standalone: true,
+  imports: [CommonModule, ReactiveFormsModule]
+})
+export class Nueva implements AfterViewInit, OnInit {
+  // Referencias a los elementos del DOM para los selectores de fecha
+  @ViewChild('fechaInspeccion') fechaInspeccionInput!: ElementRef<HTMLInputElement>;
+  @ViewChild('fechaVigencia') fechaVigenciaInput!: ElementRef<HTMLInputElement>;
+  @ViewChild('fechaLicencia') fechaLicenciaInput!: ElementRef<HTMLInputElement>;
+  @ViewChild('fechaVencimientoSoat') fechaVencimientoSoatInput!: ElementRef<HTMLInputElement>;
+  @ViewChild('fechaVencimientoRevisionTecnomecanica') fechaVencimientoRevisionTecnomecanicaInput!: ElementRef<HTMLInputElement>;
+  @ViewChild('fechaVencimientoTarjetaOperacion') fechaVencimientoTarjetaOperacionInput!: ElementRef<HTMLInputElement>;
+  
+  // Formulario principal
+  inspectionForm: FormGroup;
+  phoneForm: FormGroup;
+  
+  // Variables para fechas
+  fechaInspeccion: string = '';
+  fechaVigencia: string = '';
+  fechaLicencia: string = '';
+  fechaVencimientoSoat: string = '';
+  fechaVencimientoRevisionTecnomecanica: string = '';
+  fechaVencimientoTarjetaOperacion: string = '';
+  
+  // Instancias de flatpickr
+  private flatpickrInstances: any[] = [];
+  
+  isLoading: boolean = false;
+  currentUser: string = 'admin';
+
+  // WIZARD DE 4 PASOS
+  currentStep: number = 1;
+  totalSteps: number = 4;
+  stepValidationErrors: { [key: number]: string[] } = {
+    1: [],
+    2: [],
+    3: [],
+    4: []
+  };
+
+  constructor(
+    private fb: FormBuilder,
+    private inspectionService: InspectionService
+  ) {
+    this.inspectionForm = this.fb.group({
+      // Sección: Fechas
+      fecha_inspeccion: ['', Validators.required],
+      fecha_vigencia: ['', Validators.required],
+      fecha_vencimiento_licencia: ['', Validators.required],
+      
+      // Sección: Información del conductor y transportadora
+      nombre_transportadora: ['', [Validators.required, Validators.minLength(3)]],
+      nombres_conductor: ['', [Validators.required, Validators.minLength(3)]],
+      identificacion: ['', [Validators.required, Validators.pattern(/^\d+$/)]],
+      telefono: ['', [Validators.required, Validators.pattern(/^\d{10}$/)]],
+      
+      // Sección: Información del vehículo
+      placa: ['', [Validators.required, Validators.pattern(/^[A-Z0-9]{6,8}$/)]],
+      marca: ['', [Validators.required]],
+      modelo: ['', [Validators.required]],
+      kilometraje: ['', [Validators.required, Validators.min(0)]],
+      color: [''],
+      codigo_vehiculo: [''],
+      capacidad_pasajeros: ['', [Validators.min(0)]],
+      soat: [''],
+      licencia_transito: [''],
+      revision_tecnomecanica: [''],
+      clase_vehiculo: [''],
+      tarjeta_operacion: [''],
+      fecha_vencimiento_soat: ['', Validators.required],
+      fecha_vencimiento_revision_tecnomecanica: ['', Validators.required],
+      fecha_vencimiento_tarjeta_operacion: ['', Validators.required],
+
+      // Sección: Estado y observaciones
+      estado: ['borrador'],
+      observaciones: [''],
+      
+      // === CAMPOS DE INSPECCIÓN DEL VEHÍCULO ===
+      
+      // Sistema Eléctrico
+      luces_navegacion: [''],
+      luces_frenado: [''],
+      luces_direccionales: [''],
+      luz_reversa: [''],
+      luces_estacionamiento: [''],
+      luces_posicion: [''],
+      luz_antineblina: [''],
+      luz_placa: [''],
+      tablero_instrumentos: [''],
+      bocina: [''],
+      bateria: [''],
+      aire_acondicionado: [''],
+      
+      // Sistema Motor
+      aceite_motor: [''],
+      aceite_transmision: [''],
+      liquido_refrigerante: [''],
+      liquido_frenos: [''],
+      filtro_aire: [''],
+      hidraulico_direccion: [''],
+      tension_correas: [''],
+      
+      // Carrocería
+      parachoque_delantero: [''],
+      parachoque_trasero: [''],
+      vidrios_seguridad: [''],
+      vidrios_laterales: [''],
+      limpia_brisas: [''],
+      guardabarros: [''],
+      estribos_laterales: [''],
+      placa_adhesivo: [''],
+      chapa_compuerta: [''],
+      
+      // Cabina
+      tapiceria: [''],
+      manijas_seguros: [''],
+      vidrios_electricos: [''],
+      antideslizantes_pedales: [''],
+      freno_mano: [''],
+      tablero_instrumentos_interno: [''],
+      
+      // Seguridad Activa
+      sistema_frenos: [''],
+      abs: [''],
+      sistema_direccion: [''],
+      espejos_laterales: [''],
+      espejo_interno: [''],
+      freno_mano_seguridad: [''],
+      
+      // Seguridad Pasiva
+      cinturones_seguridad: [''],
+      airbags: [''],
+      cadena_sujecion: [''],
+      columna_direccion: [''],
+      apoyacabezas: [''],
+      barra_antivuelco: [''],
+      rejilla_vidrio_trasero: [''],
+      
+      // Kit de Carretera
+      conos_triangular: [''],
+      botiquin: [''],
+      extintor: [''],
+      cunas: [''],
+      llanta_repuesto: [''],
+      caja_herramientas: [''],
+      linterna: [''],
+      gato: [''],
+      
+      // Parte Baja
+      buies_barra: [''],
+      buies_tiera: [''],
+      cuna_motor: [''],
+      guardapolvo_axiales: [''],
+      amortiguadores: [''],
+      hojas_muelles: [''],
+      silenciadores: [''],
+      tanques_compresor: [''],
+      
+      // Profundidad de Labrado
+      llanta_d_ld: [''],
+      llanta_t_lie: [''],
+      llanta_t_lii: [''],
+      llanta_t_lid: ['']
+    });
+
+    this.phoneForm = this.fb.group({
+      localNumber: ['', [Validators.required, Validators.pattern(/^\d{10}$/)]]
+    });
+  }
+  
+  ngOnInit() {
+    this.phoneForm.get('localNumber')?.valueChanges.subscribe(value => {
+      if (value) {
+        this.inspectionForm.patchValue({ telefono: value });
+      }
+    });
+  }
+  
+  onFechaLicenciaChange(event: Event) {
+    const input = event.target as HTMLInputElement;
+    this.fechaLicencia = input.value;
+    this.inspectionForm.patchValue({
+      fecha_vencimiento_licencia: this.formatDate(this.fechaLicencia)
+    });
+  }
+
+  formatDate(dateString: string): string {
+    if (!dateString) return '';
+    const [day, month, year] = dateString.split('/');
+    if (day && month && year) {
+      return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}T00:00:00.000Z`;
+    }
+    return '';
+  }
+  
+ngAfterViewInit() {
+  if (typeof flatpickr === 'undefined') {
+    console.error('Flatpickr no está cargado correctamente');
+    return;
+  }
+
+  const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+    navigator.userAgent
+  );
+
+  // Configuración ESPECÍFICA para móviles
+  const flatpickrOptions: FlatpickrOptions = {
+    dateFormat: 'd/m/Y',
+    allowInput: true,
+    clickOpens: true,
+    disableMobile: false,  // ← Mantiene flatpickr en móviles
+    // static: isMobile,      // ← CRUCIAL: Fuerza posición estática en móviles
+    // position: isMobile ? 'below' : undefined,
+    locale: {
+      firstDayOfWeek: 1,
+      weekdays: {
+        shorthand: ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'],
+        longhand: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado']
+      },
+      months: {
+        shorthand: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+        longhand: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
+      }
+    }
+  };
+
+  // Configurar TODOS los pickers
+  this.setupDatePickers(flatpickrOptions, isMobile);
+  
+  // Forzar estilos móviles
+  this.configureMobileDatePicker();
+}
+
+private setupDatePickers(options: FlatpickrOptions, isMobile: boolean) {
+  const inputs = [
+    { ref: this.fechaInspeccionInput, formControl: 'fecha_inspeccion', defaultDate: new Date(), minDate: undefined },
+    { ref: this.fechaVigenciaInput, formControl: 'fecha_vigencia', defaultDate: undefined, minDate: 'today' },
+    { ref: this.fechaLicenciaInput, formControl: 'fecha_vencimiento_licencia', defaultDate: undefined, minDate: 'today' },
+    { ref: this.fechaVencimientoSoatInput, formControl: 'fecha_vencimiento_soat', defaultDate: undefined, minDate: 'today' },
+    { ref: this.fechaVencimientoRevisionTecnomecanicaInput, formControl: 'fecha_vencimiento_revision_tecnomecanica', defaultDate: undefined, minDate: 'today' },
+    { ref: this.fechaVencimientoTarjetaOperacionInput, formControl: 'fecha_vencimiento_tarjeta_operacion', defaultDate: undefined, minDate: 'today' }
+  ];
+
+  inputs.forEach(({ ref, formControl, defaultDate, minDate }) => {
+    if (ref && ref.nativeElement) {
+      const pickerOptions = {
+        ...options,
+        defaultDate: defaultDate,
+        minDate: minDate,
+        onChange: (selectedDates: Date[], dateStr: string) => {
+          this.inspectionForm.patchValue({ [formControl]: dateStr });
+          this.inspectionForm.get(formControl)?.markAsTouched();
+        }
+      };
+
+      const picker = flatpickr(ref.nativeElement, pickerOptions);
+      this.flatpickrInstances.push(picker);
+    }
+  });
+}
+
+  // ✅ FIX CRÍTICO: Configuración adicional para móviles
+  private configureMobileDatePicker(): void {
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+      navigator.userAgent
+    );
+    
+    if (isMobile) {
+      // Asegurar que los inputs sean clickeables
+      const inputs = [
+        this.fechaInspeccionInput,
+        this.fechaVigenciaInput,
+        this.fechaLicenciaInput,
+        this.fechaVencimientoSoatInput,
+        this.fechaVencimientoRevisionTecnomecanicaInput,
+        this.fechaVencimientoTarjetaOperacionInput
+      ];
+      
+      inputs.forEach(input => {
+        if (input && input.nativeElement) {
+          // Eliminar cualquier evento existente
+          input.nativeElement.removeEventListener('click', this.handleMobileClick as EventListener);
+          
+          // Añadir nuevo evento
+          input.nativeElement.addEventListener('click', this.handleMobileClick as EventListener, { 
+            passive: false,
+            capture: true 
+          });
+        }
+      });
+    }
+  }
+  private handleMobileClick = (event: Event) => {
+  event.preventDefault();
+  event.stopPropagation();
+  
+  const target = event.target as HTMLElement;
+  const input = target.closest('input.date-picker') as HTMLInputElement;
+  
+  if (input) {
+    const flatpickrInstance = (input as any)._flatpickr;
+    
+    if (flatpickrInstance && typeof flatpickrInstance.open === 'function') {
+      // Cerrar otros pickers abiertos
+      this.flatpickrInstances.forEach(instance => {
+        if (instance !== flatpickrInstance && instance.isOpen) {
+          instance.close();
+        }
+      });
+      
+      // Abrir este picker
+      flatpickrInstance.open();
+      
+      // Forzar visibilidad después de un breve delay
+      setTimeout(() => {
+        this.forceCalendarVisibility();
+      }, 100);
+    }
+  }
+};
+
+  // ✅ FIX CRÍTICO: Manejador de clic para móviles - CORREGIDO
+private handleMobileTouch = (event: TouchEvent) => {
+  event.preventDefault();
+  event.stopPropagation();
+  
+  const target = event.target as HTMLElement;
+  const input = target.closest('input.date-picker') as HTMLInputElement;
+  
+  if (input) {
+    const flatpickrInstance = (input as any)._flatpickr;
+    
+    if (flatpickrInstance && typeof flatpickrInstance.open === 'function') {
+      flatpickrInstance.open();
+      
+      setTimeout(() => {
+        this.forceCalendarVisibility();
+      }, 100);
+    }
+  }
+};
+private forceCalendarVisibility() {
+  const calendar = document.querySelector('.flatpickr-calendar');
+  
+  if (calendar) {
+    const calendarEl = calendar as HTMLElement;
+    
+    // Estilos críticos para visibilidad
+    calendarEl.style.display = 'block';
+    calendarEl.style.opacity = '1';
+    calendarEl.style.visibility = 'visible';
+    calendarEl.style.zIndex = '999999';
+    
+    // Posicionar en pantalla completa para móviles
+    if (window.innerWidth < 768) {
+      calendarEl.style.position = 'fixed';
+      calendarEl.style.top = '50%';
+      calendarEl.style.left = '50%';
+      calendarEl.style.transform = 'translate(-50%, -50%)';
+      calendarEl.style.width = '95%';
+      calendarEl.style.maxWidth = '400px';
+      calendarEl.style.maxHeight = '85vh';
+      calendarEl.style.overflowY = 'auto';
+      calendarEl.style.borderRadius = '12px';
+      calendarEl.style.boxShadow = '0 10px 40px rgba(0, 0, 0, 0.3)';
+    }
+    
+    // Asegurar que esté en el DOM
+    if (!document.body.contains(calendarEl)) {
+      document.body.appendChild(calendarEl);
+    }
+  }
+}
+  ngOnDestroy() {
+    this.flatpickrInstances.forEach(instance => {
+      if (instance && typeof instance.destroy === 'function') {
+        instance.destroy();
+      }
+    });
+    
+    // Limpiar eventos
+    const inputs = [
+      this.fechaInspeccionInput,
+      this.fechaVigenciaInput,
+      this.fechaLicenciaInput,
+      this.fechaVencimientoSoatInput,
+      this.fechaVencimientoRevisionTecnomecanicaInput,
+      this.fechaVencimientoTarjetaOperacionInput
+    ];
+    
+    inputs.forEach(input => {
+      if (input && input.nativeElement) {
+        input.nativeElement.removeEventListener('click', this.handleMobileClick as EventListener);
+      }
+    });
+  }
+
+  // === MÉTODOS DEL WIZARD ===
+  
+  previousStep(): void {
+    if (this.currentStep > 1) {
+      this.currentStep--;
+      this.stepValidationErrors[this.currentStep] = [];
+    }
+  }
+
+  nextStep(): void {
+    const validation = this.validateCurrentStep();
+    
+    if (validation.valid) {
+      if (this.currentStep < this.totalSteps) {
+        this.currentStep++;
+        this.stepValidationErrors[this.currentStep] = [];
+      }
+    } else {
+      this.stepValidationErrors[this.currentStep] = validation.errors;
+      Swal.fire({
+        title: 'Campos requeridos',
+        html: validation.errors.join('<br>'),
+        icon: 'warning',
+        confirmButtonText: 'Entendido'
+      });
+    }
+  }
+
+  private validateCurrentStep(): { valid: boolean; errors: string[] } {
+    const errors: string[] = [];
+    
+    switch (this.currentStep) {
+      case 1:
+        // Paso 1: Datos Generales (Fechas)
+        if (!this.inspectionForm.get('fecha_inspeccion')?.value) {
+          errors.push('• Fecha de Inspección es requerida');
+        }
+        if (!this.inspectionForm.get('fecha_vigencia')?.value) {
+          errors.push('• Vigencia Hasta es requerida');
+        }
+        break;
+        
+      case 2:
+        // Paso 2: Datos del Conductor
+        if (!this.inspectionForm.get('nombre_transportadora')?.value) {
+          errors.push('• Nombre Transportadora es requerido');
+        }
+        if (!this.inspectionForm.get('nombres_conductor')?.value) {
+          errors.push('• Nombres Conductor es requerido');
+        }
+        if (!this.inspectionForm.get('identificacion')?.value) {
+          errors.push('• No. Identificación es requerido');
+        }
+        if (!this.phoneForm.get('localNumber')?.value) {
+          errors.push('• Teléfono es requerido');
+        }
+        if (!this.inspectionForm.get('fecha_vencimiento_licencia')?.value) {
+          errors.push('• V / Licencia conducción es requerida');
+        }
+        break;
+        
+      case 3:
+        // Paso 3: Datos del Vehículo
+        if (!this.inspectionForm.get('placa')?.value) {
+          errors.push('• Placa es requerida');
+        }
+        if (!this.inspectionForm.get('marca')?.value) {
+          errors.push('• Marca es requerida');
+        }
+        if (!this.inspectionForm.get('modelo')?.value) {
+          errors.push('• Modelo es requerido');
+        }
+        if (!this.inspectionForm.get('kilometraje')?.value) {
+          errors.push('• Kilometraje actual es requerido');
+        }
+        if (!this.inspectionForm.get('fecha_vencimiento_soat')?.value) {
+          errors.push('• V /de SOAT es requerida');
+        }
+        if (!this.inspectionForm.get('fecha_vencimiento_revision_tecnomecanica')?.value) {
+          errors.push('• V / R. Técnicomecánica es requerida');
+        }
+        if (!this.inspectionForm.get('fecha_vencimiento_tarjeta_operacion')?.value) {
+          errors.push('• V / Tarjeta de Operación es requerida');
+        }
+        break;
+        
+      case 4:
+        // Paso 4: Inspección del Vehículo (Opcional - no hay campos requeridos)
+        break;
+    }
+    
+    return {
+      valid: errors.length === 0,
+      errors: errors
+    };
+  }
+
+  isStepCompleted(step: number): boolean {
+    switch (step) {
+      case 1:
+        return !!(
+          this.inspectionForm.get('fecha_inspeccion')?.value &&
+          this.inspectionForm.get('fecha_vigencia')?.value
+        );
+      case 2:
+        return !!(
+          this.inspectionForm.get('nombre_transportadora')?.value &&
+          this.inspectionForm.get('nombres_conductor')?.value &&
+          this.inspectionForm.get('identificacion')?.value &&
+          this.phoneForm.get('localNumber')?.value &&
+          this.inspectionForm.get('fecha_vencimiento_licencia')?.value
+        );
+      case 3:
+        return !!(
+          this.inspectionForm.get('placa')?.value &&
+          this.inspectionForm.get('marca')?.value &&
+          this.inspectionForm.get('modelo')?.value &&
+          this.inspectionForm.get('kilometraje')?.value &&
+          this.inspectionForm.get('fecha_vencimiento_soat')?.value &&
+          this.inspectionForm.get('fecha_vencimiento_revision_tecnomecanica')?.value &&
+          this.inspectionForm.get('fecha_vencimiento_tarjeta_operacion')?.value
+        );
+      case 4:
+        // Verificar si al menos un campo de inspección está lleno
+        const inspectionFields = [
+          'luces_navegacion', 'luces_frenado', 'aceite_motor', 'parachoque_delantero',
+          'tapiceria', 'sistema_frenos', 'cinturones_seguridad', 'conos_triangular',
+          'buies_barra', 'llanta_d_ld'
+        ];
+        return inspectionFields.some(field => this.inspectionForm.get(field)?.value);
+    }
+    return false;
+  }
+
+  getProgressPercentage(): number {
+    const completedSteps = [1, 2, 3, 4].filter(step => this.isStepCompleted(step)).length;
+    return Math.round((completedSteps / this.totalSteps) * 100);
+  }
+
+  async onSubmit() {
+    if (!this.isLoading) {
+      // Validar todos los pasos antes de enviar
+      let allValid = true;
+      const allErrors: string[] = [];
+      
+      for (let step = 1; step <= 3; step++) { // Solo validar pasos 1-3 (paso 4 es opcional)
+        const validation = this.validateCurrentStep();
+        if (!validation.valid) {
+          allValid = false;
+          allErrors.push(...validation.errors);
+        }
+      }
+      
+      if (!allValid) {
+        await Swal.fire({
+          title: 'Formulario incompleto',
+          html: allErrors.join('<br>'),
+          icon: 'warning',
+          confirmButtonText: 'Corregir'
+        });
+        return;
+      }
+
+      console.log('=== PAYLOAD DEL FORMULARIO ===');
+      console.log(JSON.stringify(this.inspectionForm.value, null, 2));
+      console.log('==============================');
+      
+      this.isLoading = true;
+
+      Swal.fire({
+        title: 'Procesando...',
+        text: 'Guardando la inspección',
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        }
+      });
+
+      try {
+        const inspectionData = this.inspectionForm.value;
+       
+        const validation = this.inspectionService.validateInspectionData(inspectionData);
+        if (!validation.valid) {
+          Swal.close();
+          await Swal.fire({
+            title: 'Datos inválidos',
+            html: validation.errors.join('<br>'),
+            icon: 'error',
+            confirmButtonText: 'Corregir'
+          });
+          this.isLoading = false;
+          return;
+        }
+
+        const formatDateForAPI = (dateStr: string) => {
+          const [day, month, year] = dateStr.split('/');
+          return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}T00:00:00.000Z`;
+        };
+
+        const formattedData = {
+          ...inspectionData,
+          fecha_inspeccion: formatDateForAPI(inspectionData.fecha_inspeccion),
+          fecha_vigencia: formatDateForAPI(inspectionData.fecha_vigencia),
+          fecha_vencimiento_licencia: formatDateForAPI(inspectionData.fecha_vencimiento_licencia),
+          fecha_vencimiento_soat: formatDateForAPI(inspectionData.fecha_vencimiento_soat),
+          fecha_vencimiento_revision_tecnomecanica: formatDateForAPI(inspectionData.fecha_vencimiento_revision_tecnomecanica),
+          fecha_vencimiento_tarjeta_operacion: formatDateForAPI(inspectionData.fecha_vencimiento_tarjeta_operacion),
+          created_by: this.currentUser,
+          estado: 'borrador',
+          kilometraje: Number(inspectionData.kilometraje),
+          capacidad_pasajeros: Number(inspectionData.capacidad_pasajeros)
+        };
+
+        console.log('Datos a enviar a la API:', JSON.stringify(formattedData, null, 2));
+
+        try {
+          await this.inspectionService.createInspection(formattedData).toPromise();
+          console.log('Inspección guardada correctamente');
+        } catch (error) {
+          console.error('Error al guardar la inspección:', error);
+          throw error;
+        }
+
+        Swal.close();
+        
+        await Swal.fire({
+          title: '¡Éxito!',
+          text: 'La inspección ha sido creada correctamente',
+          icon: 'success',
+          confirmButtonText: 'Aceptar',
+          confirmButtonColor: '#198754'
+        });
+
+        this.resetForms();
+        this.currentStep = 1;
+
+      } catch (error: any) {
+        Swal.close();
+        await Swal.fire({
+          title: 'Error',
+          text: error.message || 'Ocurrió un error al guardar la inspección',
+          icon: 'error',
+          confirmButtonText: 'Entendido'
+        });
+      } finally {
+        this.isLoading = false;
+      }
+    }
+  }
+
+  private markAllAsTouched() {
+    Object.keys(this.inspectionForm.controls).forEach(field => {
+      const control = this.inspectionForm.get(field);
+      control?.markAsTouched({ onlySelf: true });
+    });
+    
+    Object.keys(this.phoneForm.controls).forEach(field => {
+      const control = this.phoneForm.get(field);
+      control?.markAsTouched({ onlySelf: true });
+    });
+  }
+  
+  private resetForms() {
+    this.inspectionForm.reset();
+    this.phoneForm.reset();
+    this.fechaInspeccion = '';
+    this.fechaVigencia = '';
+    this.fechaLicencia = '';
+    this.fechaVencimientoSoat = '';
+    this.fechaVencimientoRevisionTecnomecanica = '';
+    this.fechaVencimientoTarjetaOperacion = '';
+    
+    if (this.flatpickrInstances[0]) {
+      this.flatpickrInstances[0].setDate(new Date());
+    }
+  }
+}
