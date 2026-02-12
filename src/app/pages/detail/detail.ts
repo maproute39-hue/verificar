@@ -357,83 +357,6 @@ export class Detail implements OnInit, AfterViewInit {
       flatpickr(element.nativeElement, options);
     }
   }
-  // async pruebaExportarConductor(): Promise<void> {
-  //     try {
-  //       // Obtener el nombre del conductor del formulario
-  //       const nombreConductor = this.inspectionForm.get('nombres_conductor')?.value;
-
-  //       if (!nombreConductor) {
-  //         Swal.fire('Advertencia', 'Por favor ingrese el nombre del conductor', 'warning');
-  //         return;
-  //       }
-
-  //       Swal.fire({
-  //         title: 'Exportando...',
-  //         text: 'Generando archivo Excel de prueba',
-  //         allowOutsideClick: false,
-  //         didOpen: () => {
-  //           Swal.showLoading();
-  //         }
-  //       });
-
-  //       // Llamar al servicio de prueba
-  //       await this.excelExportService.exportarNombreConductor(nombreConductor);
-
-  //       Swal.close();
-  //       Swal.fire('¡Éxito!', 'El archivo Excel se ha generado correctamente', 'success');
-
-  //     } catch (error: unknown) {
-  //       console.error('Error en la prueba:', error);
-  //       const errorMessage = error instanceof Error ? error.message : 'No se pudo generar el archivo Excel';
-  //       Swal.fire('Error', errorMessage, 'error');
-  //     }
-  //   }
-  //   async pruebaExportarTransportadora(): Promise<void> {
-  //     try {
-  //       // Obtener el nombre del conductor del formulario
-  //       const nombreTransportadora = this.inspectionForm.get('nombre_transportadora')?.value;
-
-  //       if (!nombreTransportadora) {
-  //         Swal.fire('Advertencia', 'Por favor ingrese el nombre del transportador', 'warning');
-  //         return;
-  //       }
-
-  //       Swal.fire({
-  //         title: 'Exportando...',
-  //         text: 'Generando archivo Excel de prueba',
-  //         allowOutsideClick: false,
-  //         didOpen: () => {
-  //           Swal.showLoading();
-  //         }
-  //       });
-
-  //       // Llamar al servicio de prueba
-  //       await this.excelExportService.exportarTransportadora(nombreTransportadora);
-
-  //       Swal.close();
-  //       Swal.fire('¡Éxito!', 'El archivo Excel se ha generado correctamente', 'success');
-
-  //     } catch (error: unknown) {
-  //       console.error('Error en la prueba:', error);
-  //       const errorMessage = error instanceof Error ? error.message : 'No se pudo generar el archivo Excel';
-  //       Swal.fire('Error', errorMessage, 'error');
-  //     }
-  //   }
-
-  /**
-   * Método de impresión actualizado
-   */
-  // async imprimirInspeccion(): Promise<void> {
-  //   try {
-  //     // Por ahora usamos la prueba
-  //     await this.pruebaExportarConductor();
-  //     await this.pruebaExportarTransportadora();
-  //   } catch (error) {
-  //     console.error('Error al imprimir inspección:', error);
-  //     const errorMessage = error instanceof Error ? error.message : 'Ocurrió un error al procesar la solicitud';
-  //     Swal.fire('Error', errorMessage, 'error');
-  //   }
-  // }
 
   async imprimirInspeccion(): Promise<void> {
     try {
@@ -451,7 +374,31 @@ export class Detail implements OnInit, AfterViewInit {
       await this.excelExportService.exportarDatosConductor({
         nombre_transportadora: this.inspectionForm.get('nombre_transportadora')?.value,
         nombres_conductor: this.inspectionForm.get('nombres_conductor')?.value,
-        telefono_conductor: this.inspectionForm.get('telefono')?.value
+        telefono_conductor: this.inspectionForm.get('telefono')?.value,
+        fecha_inspeccion: this.inspectionForm.get('fecha_inspeccion')?.value,
+        fecha_vigencia: this.inspectionForm.get('fecha_vigencia')?.value,
+        fecha_vencimiento_licencia: this.inspectionForm.get('fecha_vencimiento_licencia')?.value,
+        fecha_vencimiento_soat: this.inspectionForm.get('fecha_vencimiento_soat')?.value,
+        fecha_vencimiento_revision_tecnomecanica: this.inspectionForm.get('fecha_vencimiento_revision_tecnomecanica')?.value,
+        fecha_vencimiento_tarjeta_operacion: this.inspectionForm.get('fecha_vencimiento_tarjeta_operacion')?.value,
+        
+        
+        
+        estado: 'borrador',
+        kilometraje: Number(this.inspectionForm.get('kilometraje')?.value),
+        capacidad_pasajeros: Number(this.inspectionForm.get('capacidad_pasajeros')?.value),
+
+        llanta_di: Number(this.inspectionForm.get('llanta_di')?.value),
+        llanta_dd: Number(this.inspectionForm.get('llanta_dd')?.value),
+        llanta_tie: Number(this.inspectionForm.get('llanta_tie')?.value),
+        llanta_tde: Number(this.inspectionForm.get('llanta_tde')?.value),
+        llanta_tli: Number(this.inspectionForm.get('llanta_tli')?.value),
+        llanta_tlii: Number(this.inspectionForm.get('llanta_tlii')?.value),
+        llanta_tlid: Number(this.inspectionForm.get('llanta_tlid')?.value),
+        llanta_t_lie: Number(this.inspectionForm.get('llanta_t_lie')?.value),
+        llanta_t_lii: Number(this.inspectionForm.get('llanta_t_lii')?.value),
+        llanta_t_lid: Number(this.inspectionForm.get('llanta_t_lid')?.value),
+
       });
 
       // Cerrar el SweetAlert de carga

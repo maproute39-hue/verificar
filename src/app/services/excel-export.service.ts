@@ -24,6 +24,25 @@ export class ExcelExportService {
     nombre_transportadora?: string;
     nombres_conductor?: string;
     telefono_conductor?: string;
+    fecha_inspeccion?: string;
+    fecha_vigencia?: string;
+    fecha_vencimiento_licencia?: string;
+    fecha_vencimiento_soat?: string;
+    fecha_vencimiento_revision_tecnomecanica?: string;
+    fecha_vencimiento_tarjeta_operacion?: string;
+    estado?: string;
+    kilometraje?: number;
+    capacidad_pasajeros?: number;
+    llanta_di?: number;
+    llanta_dd?: number;
+    llanta_tie?: number;
+    llanta_tde?: number;
+    llanta_tli?: number;
+    llanta_tlii?: number;
+    llanta_tlid?: number;
+    llanta_t_lie?: number;
+    llanta_t_lii?: number;
+    llanta_t_lid?: number;
   }): Promise<void> {
     try {
       console.log('🔍 Iniciando exportación con exceljs...');
@@ -129,7 +148,7 @@ export class ExcelExportService {
     // this.setCell(worksheet, 'D4', formData.marca); // Marca
     // this.setCell(worksheet, 'F4', formData.modelo); // Modelo
     // this.setCell(worksheet, 'H4', formData.kilometraje); // Kilometraje
-    // this.setCell(worksheet, 'J4', formData.fecha_inspeccion); // Fecha inspección
+    this.setCell(worksheet, 'E8:M8', formData.fecha_inspeccion); // Fecha inspección
     // this.setCell(worksheet, 'L4', formData.fecha_vigencia); // Vigencia hasta
 
     // this.setCell(worksheet, 'B5', formData.licencia_transito); // Licencia tránsito
@@ -265,7 +284,7 @@ export class ExcelExportService {
       console.log('📂 Cargando plantilla desde assets...');
 
       // ✅ Ruta CORRECTA según tu estructura (verifica en network tab del navegador)
-      const path = '/assets/templates/inspeccion.xlsx';
+      const path = '/assets/templates/camioneta.xlsx';
       console.log('🔍 Cargando:', path);
 
       const response = await fetch(path);

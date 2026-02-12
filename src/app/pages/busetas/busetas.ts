@@ -18,13 +18,13 @@ interface FlatpickrOptions {
 }
 
 @Component({
-  selector: 'app-nueva',
-  templateUrl: './nueva.html',
-  styleUrls: ['./nueva.scss'],
+  selector: 'app-busetas',
+  templateUrl: './busetas.html',
+  styleUrls: ['./busetas.scss'],
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule]
 })
-export class Nueva implements AfterViewInit, OnInit {
+export class Busetas implements AfterViewInit, OnInit {
   // Referencias a los elementos del DOM para los selectores de fecha
   @ViewChild('fechaInspeccion') fechaInspeccionInput!: ElementRef<HTMLInputElement>;
   @ViewChild('fechaVigencia') fechaVigenciaInput!: ElementRef<HTMLInputElement>;

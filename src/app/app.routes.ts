@@ -33,6 +33,17 @@ export const routes: Routes = [
  */    },
   },
   {
+    path: 'busetas',
+    loadComponent: () =>
+      import('./pages/busetas/busetas').then(c => c.Busetas),
+    title: 'Busetas',
+    data: {
+      description: 'Verificar ',
+      canonical: '/',
+/*       canActivate: [authGuard],
+ */    },
+  },
+  {
     path: 'login',
     loadComponent: () =>
       import('./pages/login/login').then(c => c.Login),
