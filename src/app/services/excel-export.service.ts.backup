@@ -1,15 +1,18 @@
+// src/app/services/excel-export.service.ts
+
 import { Injectable } from '@angular/core';
 import * as ExcelJS from 'exceljs';
 import { saveAs } from 'file-saver';
-import { GotenbergService } from './gotenberg.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ExcelExportService {
 
-  constructor(private gotenbergService?: GotenbergService) {}
-
+  /**
+   * Exporta datos a Excel PRESERVANDO 100% de los estilos originales
+   * Incluye: colores, bordes, imágenes, logotipos, tamaños de fuente, etc.
+   */
   /**
    * Exporta datos del conductor a Excel PRESERVANDO 100% de los estilos originales
    * Acepta un objeto con los campos: nombre_transportadora, nombres_conductor, telefono_conductor
@@ -93,137 +96,7 @@ export class ExcelExportService {
     }
   }
 
-  /**
-   * ✨ NUEVO: Genera el XLSX como Blob (sin descargar)
-   * Este método es usado para enviar el archivo a Gotenberg
-   */
-  async generarXlsxConductor(formData: {
-    nombre_transportadora?: string;
-    nombres_conductor?: string;
-    telefono_conductor?: string;
-    fecha_inspeccion?: string;
-    fecha_vigencia?: string;
-    placa?: string;
-    marca?: string;
-    modelo?: string;
-    color?: string;
-    codigo_vehiculo?: string;
-    fecha_vencimiento_licencia?: string;
-    fecha_vencimiento_soat?: string;
-    fecha_vencimiento_revision_tecnomecanica?: string;
-    fecha_vencimiento_tarjeta_operacion?: string;
-    estado?: string;
-    kilometraje?: number;
-    capacidad_pasajeros?: number;
-    llanta_di?: number;
-    llanta_dd?: number;
-    llanta_tie?: number;
-    llanta_tde?: number;
-    llanta_tli?: number;
-    llanta_tlii?: number;
-    llanta_tlid?: number;
-    llanta_t_lie?: number;
-    llanta_t_lii?: number;
-    llanta_t_lid?: number;
-  }): Promise<Blob> {
-    try {
-      console.log('🔍 Generando XLSX en memoria...');
 
-      // 1. Cargar la plantilla Excel
-      const templateFile = await this.loadTemplateFromAssets();
-      const arrayBuffer = await templateFile.arrayBuffer();
-
-      // 2. Crear workbook y cargar plantilla
-      const workbook = new ExcelJS.Workbook();
-      await workbook.xlsx.load(arrayBuffer);
-
-      // ✅ Obtener la hoja POR NOMBRE
-      const worksheet = workbook.getWorksheet('CAMIONETA');
-
-      if (!worksheet) {
-        console.warn('⚠️ Hoja "CAMIONETA" no encontrada por nombre, intentando por índice...');
-        const fallbackSheet = workbook.getWorksheet(2);
-        if (!fallbackSheet) {
-          throw new Error('No se encontró la hoja "CAMIONETA" ni la hoja 2 en el archivo Excel');
-        }
-        this.procesarHoja(fallbackSheet, formData);
-      } else {
-        this.procesarHoja(worksheet, formData);
-      }
-
-      // 3. Generar el buffer
-      const buffer = await workbook.xlsx.writeBuffer();
-      
-      // 4. Devolver como Blob
-      return new Blob([buffer], {
-        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-      });
-
-    } catch (error) {
-      console.error('❌ Error al generar XLSX:', error);
-      throw new Error(`Error al generar el archivo Excel: ${error instanceof Error ? error.message : error}`);
-    }
-  }
-
-  /**
-   * ✨ NUEVO: Exporta datos del conductor como PDF usando Gotenberg
-   * Genera el XLSX con estilos y lo convierte a PDF automáticamente
-   */
-  async exportarDatosConductorComoPdf(formData: {
-    nombre_transportadora?: string;
-    nombres_conductor?: string;
-    telefono_conductor?: string;
-    fecha_inspeccion?: string;
-    fecha_vigencia?: string;
-    placa?: string;
-    marca?: string;
-    modelo?: string;
-    color?: string;
-    codigo_vehiculo?: string;
-    fecha_vencimiento_licencia?: string;
-    fecha_vencimiento_soat?: string;
-    fecha_vencimiento_revision_tecnomecanica?: string;
-    fecha_vencimiento_tarjeta_operacion?: string;
-    estado?: string;
-    kilometraje?: number;
-    capacidad_pasajeros?: number;
-    llanta_di?: number;
-    llanta_dd?: number;
-    llanta_tie?: number;
-    llanta_tde?: number;
-    llanta_tli?: number;
-    llanta_tlii?: number;
-    llanta_tlid?: number;
-    llanta_t_lie?: number;
-    llanta_t_lii?: number;
-    llanta_t_lid?: number;
-  }): Promise<void> {
-    try {
-      // 1. Validar que GotenbergService esté inyectado
-      if (!this.gotenbergService) {
-        throw new Error('GotenbergService no está disponible. Por favor, inyecta el servicio en el constructor.');
-      }
-
-      console.log('🔍 Generando PDF con Gotenberg...');
-
-      // 2. Generar XLSX en memoria
-      const xlsxBlob = await this.generarXlsxConductor(formData);
-
-      // 3. Enviar a Gotenberg y obtener PDF
-      const pdfBlob = await this.gotenbergService.convertXlsxToPdf(xlsxBlob).toPromise();
-
-      // 4. Descargar el PDF
-      const placa = formData.placa || 'inspeccion';
-      const fecha = this.getCurrentDate();
-      this.gotenbergService.downloadBlob(pdfBlob!, `Inspeccion_${placa}_${fecha}.pdf`);
-
-      console.log('✅ PDF generado y descargado exitosamente');
-
-    } catch (error) {
-      console.error('❌ Error al generar PDF:', error);
-      throw new Error(`Error al generar el PDF: ${error instanceof Error ? error.message : error}`);
-    }
-  }
 
   /**
    * Exporta TODOS los datos del formulario a Excel con estilos preservados
