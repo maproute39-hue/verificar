@@ -1,0 +1,12 @@
+{
+  "/gotenberg": {
+    "target": "https://gotenberg.appverificar.online",
+    "secure": false,
+    "changeOrigin": true,
+    "logLevel": "debug",
+    "pathRewrite": { "^/gotenberg": "" },
+    "headers": {
+      "Authorization": "Basic bm9haF9nb3R0bGllYi1iYXJ0b24zODo0ZnJ2Y253dGR4dGt4NHBt"
+    }
+  }
+}

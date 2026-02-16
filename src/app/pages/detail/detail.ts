@@ -71,15 +71,13 @@ export class Detail implements OnInit, AfterViewInit {
    * @param datePipe Servicio para formateo de fechas
    */
   constructor(
-    private fb: FormBuilder,
-    private inspectionService: InspectionService,
-    private route: ActivatedRoute,
-    private router: Router,
-    private gotenbergService: GotenbergService, // ← Añadir este servicio
-
-    private excelExportService: ExcelExportService, // Agregar este servicio
-
-    private datePipe: DatePipe
+   private fb: FormBuilder,
+  private inspectionService: InspectionService,
+  private route: ActivatedRoute,
+  private router: Router,
+  private gotenbergService: GotenbergService,        // ✅ Inyectado
+  private excelExportService: ExcelExportService,    // ✅ Inyectado
+  private datePipe: DatePipe
   ) {
         this.excelExportService = new ExcelExportService(this.gotenbergService);
 
@@ -214,6 +212,18 @@ export class Detail implements OnInit, AfterViewInit {
    * Inicializa el componente y se suscribe a los cambios en los parámetros de la ruta
    * Se ejecuta cuando el componente es inicializado
    */
+  async testGotenberg(): Promise<void> {
+  try {
+    // Crear un blob falso de Excel
+    const testBlob = new Blob(['test'], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+    
+    console.log('🔄 Probando conexión con Gotenberg...');
+    const result = await this.gotenbergService.convertXlsxToPdf(testBlob).toPromise();
+    console.log('✅ Gotenberg responde correctamente', result);
+  } catch (error) {
+    console.error('❌ Error de conexión:', error);
+  }
+}
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
       const id = params.get('id');

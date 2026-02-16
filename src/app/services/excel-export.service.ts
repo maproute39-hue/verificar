@@ -8,7 +8,10 @@ import { GotenbergService } from './gotenberg.service';
 })
 export class ExcelExportService {
 
-  constructor(private gotenbergService?: GotenbergService) {}
+  constructor
+
+    (private gotenbergService: GotenbergService
+  ) {}
 
   /**
    * Exporta datos del conductor a Excel PRESERVANDO 100% de los estilos originales
