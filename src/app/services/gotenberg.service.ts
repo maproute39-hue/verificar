@@ -12,7 +12,7 @@ export class GotenbergService {
   
   // En desarrollo usa el proxy, en producción usa URL directa
   private gotenbergUrl = this.isProduction 
-    ? 'https://gotenberg.appverificar.online/forms/libreoffice/convert'
+    ? 'https://gotenberg.buckapi.online/forms/libreoffice/convert'
     : '/gotenberg/forms/libreoffice/convert';
   
   private username = 'noah_gottlieb-barton38';

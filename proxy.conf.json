@@ -1,6 +1,6 @@
 {
   "/gotenberg": {
-    "target": "https://gotenberg.appverificar.online",
+    "target": "https://gotenberg.buckapi.online",
     "secure": false,
     "changeOrigin": true,
     "logLevel": "debug",
