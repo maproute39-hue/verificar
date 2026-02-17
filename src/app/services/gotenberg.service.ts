@@ -11,10 +11,15 @@ export class GotenbergService {
   private isProduction = window.location.hostname !== 'localhost';
   
   // En desarrollo usa el proxy, en producción usa URL directa
-  private gotenbergUrl = this.isProduction 
-    ? 'https://gotenberg.buckapi.online/forms/libreoffice/convert'
-    : '/gotenberg/forms/libreoffice/convert';
+  // private gotenbergUrl = this.isProduction 
+  //   ? 'https://gotenberg.buckapi.online/forms/libreoffice/convert'
+  //   : '/gotenberg/forms/libreoffice/convert';
   
+  private gotenbergUrl = this.isProduction 
+    ? '/api/gotenberg/convert'           // ← Amplify rewrite (SIN CORS)
+    : '/gotenberg/forms/libreoffice/convert';  // ← proxy.conf.json (local)
+  
+
   private username = 'noah_gottlieb-barton38';
   private password = '4frvcnwtdxtkx4pm';
 
