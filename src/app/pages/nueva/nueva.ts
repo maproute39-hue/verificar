@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { CommonModule } from '@angular/common';
 import Swal from 'sweetalert2';
 import { InspectionService } from '../../services/inspection.service';
+import { RouterModule } from '@angular/router';
 
 declare const flatpickr: any;
 
@@ -22,7 +23,7 @@ interface FlatpickrOptions {
   templateUrl: './nueva.html',
   styleUrls: ['./nueva.scss'],
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule]
+  imports: [CommonModule, ReactiveFormsModule,RouterModule]
 })
 export class Nueva implements AfterViewInit, OnInit {
   // Referencias a los elementos del DOM para los selectores de fecha
@@ -74,6 +75,9 @@ export class Nueva implements AfterViewInit, OnInit {
       identificacion: ['', [Validators.required, Validators.pattern(/^\d+$/)]],
       telefono: ['', [Validators.required, Validators.pattern(/^\d{10}$/)]],
       fecha_vencimiento_licencia: ['', Validators.required],
+      propietario: ['', [Validators.required, Validators.minLength(3)]],
+      documento_propietario: ['', [Validators.required]],
+      tipo_propietario: ['', Validators.required],
 
       // Sección: Información del vehículo (Paso 3)
       placa: ['', [Validators.required, Validators.pattern(/^[A-Z0-9]{6,8}$/)]],

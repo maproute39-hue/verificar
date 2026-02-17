@@ -4,7 +4,7 @@
 import { Component, AfterViewInit, ElementRef, ViewChild, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule, DatePipe } from '@angular/common';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import Swal from 'sweetalert2';
 import { InspectionService } from '../../services/inspection.service';
 import { Inspection } from '../../models/inspection.model';
@@ -36,7 +36,7 @@ interface FlatpickrOptions {
 @Component({
   selector: 'app-detail',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule,RouterModule],
   templateUrl: './detail.html',
   styleUrls: ['./detail.scss'],
   providers: [DatePipe]

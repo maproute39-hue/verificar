@@ -1,8 +1,14 @@
 .nav-link{
 font-size: 13px !important;
 }
+.inactive{
+    font-weight: 500 !important;
+    font-size: 16px !important;
+}
 .active2{
-    color: #1300af !important;
+    color: #0f0175 !important;
+    font-weight: 900 !important;
+    font-size: 16px !important;
 }
 .noaplica{
     color: #0f0369 !important;
@@ -16,3 +22,15 @@ font-size: 13px !important;
 .nav-link:hover{
     color: #1300af !important;
 }
+.titulo{
+    font-size: 16px !important;
+    font-weight: 900 !important;
+    color: white !important;
+    background-color: #0f0369 !important;
+    padding: 0.5rem !important;
+    border-radius: 10px !important;
+}
+.form-label{
+    color:black !important;
+    font-weight: 700 !important;
+}    
