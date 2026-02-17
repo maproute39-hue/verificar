@@ -15,10 +15,11 @@ export class GotenbergService {
   //   ? 'https://gotenberg.buckapi.online/forms/libreoffice/convert'
   //   : '/gotenberg/forms/libreoffice/convert';
   
-  private gotenbergUrl = this.isProduction 
-    ? '/api/gotenberg/convert'           // ← Amplify rewrite (SIN CORS)
-    : '/gotenberg/forms/libreoffice/convert';  // ← proxy.conf.json (local)
-  
+  // private gotenbergUrl = this.isProduction 
+  //   ? '/api/gotenberg/convert'           // ← Amplify rewrite (SIN CORS)
+  //   : '/gotenberg/forms/libreoffice/convert';  // ← proxy.conf.json (local)
+    private gotenbergUrl = 'https://gotenberg.buckapi.online/forms/libreoffice/convert';
+
 
   private username = 'noah_gottlieb-barton38';
   private password = '4frvcnwtdxtkx4pm';
