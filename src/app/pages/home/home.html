@@ -237,7 +237,7 @@
                   <td>
                     <div class="d-flex align-items-center">
                       <div class="avatar avatar-xxs rounded-circle me-2">
-                        <img [src]="inspection.foto_conductor || 'assets/images/avatar/avatar1.webp'"
+                        <img [src]="inspection.foto_conductor || 'assets/images/avatar/avatar2.webp'"
                           alt="Foto del conductor" class="img-fluid">
                       </div>
                       {{ inspection.nombres_conductor || 'Sin nombre' }}
@@ -291,142 +291,142 @@
 
   </div>
 
-  <!-- Floating Action Button for Mobile/Tablet -->
-  <div class="floating-action d-lg-none">
-    <input type="checkbox" id="fab-check" class="fab-check">
-    <label class="fab" for="fab-check">
-      <span class="fab-icon">+</span>
-      <span class="fab-icon-close">×</span>
-    </label>
-    <div class="fab-options">
+    <!-- Floating Action Button for Mobile/Tablet -->
+    <div class="floating-action d-lg-none">
+      <input type="checkbox" id="fab-check" class="fab-check">
+      <label class="fab" for="fab-check">
+        <span class="fab-icon">+</span>
+        <span class="fab-icon-close">×</span>
+      </label>
+      <div class="fab-options">
 
-      <a routerLink="/busetas" class="fab-option">
-        <span class="fab-label ">Busetas</span>
-        <span class="fab-option-icon ">1</span>
-      </a>
-      <a routerLink="/nueva" class="fab-option">
-        <span class="fab-label">Camioneta</span>
-        <span class="fab-option-icon">2</span>
-      </a>
-      <a (click)="pending()" class="fab-option">
-        <span class="fab-label text-warning">Pesados</span>
-        <span class="fab-option-icon">3</span>
-      </a>
+        <a routerLink="/busetas" class="fab-option">
+          <span class="fab-label ">Busetas</span>
+          <span class="fab-option-icon ">1</span>
+        </a>
+        <a routerLink="/nueva" class="fab-option">
+          <span class="fab-label">Camioneta</span>
+          <span class="fab-option-icon">2</span>
+        </a>
+        <a (click)="pending()" class="fab-option">
+          <span class="fab-label text-warning">Pesados</span>
+          <span class="fab-option-icon">3</span>
+        </a>
+      </div>
     </div>
-  </div>
 
-  <style>
-    .floating-action {
-      position: fixed;
-      bottom: 2rem;
-      right: 2rem;
-      z-index: 1000;
-    }
-
-    .fab {
-      width: 56px;
-      height: 56px;
-      background-color: var(--bs-primary);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-size: 2rem;
-      font-weight: 300;
-      cursor: pointer;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-      transition: all 0.3s ease;
-      user-select: none;
-      position: relative;
-    }
-
-    .fab:hover {
-      background-color: var(--bs-primary);
-      transform: scale(1.1);
-    }
-
-    .fab-icon-close {
-      position: absolute;
-      opacity: 0;
-      transform: rotate(-45deg);
-      transition: all 0.3s ease;
-    }
-
-    .fab-check:checked+.fab .fab-icon {
-      opacity: 0;
-      transform: rotate(45deg);
-    }
-
-    .fab-check:checked+.fab .fab-icon-close {
-      opacity: 1;
-      transform: rotate(0);
-    }
-
-    .fab-check:checked+.fab {
-      background-color: var(--bs-primary);
-    }
-
-    .fab-check:checked+.fab:hover {
-      background-color: var(--bs-primary);
-    }
-
-    .fab-check {
-      display: none;
-    }
-
-    .fab-options {
-      position: absolute;
-      bottom: 70px;
-      right: 0;
-      opacity: 0;
-      transform: scale(0);
-      transform-origin: bottom right;
-      transition: all 0.3s ease;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .fab-check:checked~.fab-options {
-      opacity: 1;
-      transform: scale(1);
-    }
-
-    .fab-option {
-      display: flex;
-      align-items: center;
-      justify-content: flex-end;
-      text-decoration: none;
-      color: #333;
-    }
-
-    .fab-label {
-      background: white;
-      padding: 8px 12px;
-      border-radius: 20px;
-      margin-right: 10px;
-      font-size: 0.85rem;
-      white-space: nowrap;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    }
-
-    .fab-option-icon {
-      width: 40px;
-      height: 40px;
-      background-color: var(--bs-primary);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-weight: bold;
-    }
-
-    @media (min-width: 992px) {
+    <style>
       .floating-action {
+        position: fixed;
+        bottom: 2rem;
+        right: 2rem;
+        z-index: 1000;
+      }
+
+      .fab {
+        width: 56px;
+        height: 56px;
+        background-color: var(--bs-primary) ;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 2rem;
+        font-weight: 300;
+        cursor: pointer;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+        user-select: none;
+        position: relative;
+      }
+
+      .fab:hover {
+        background-color: var(--bs-primary);
+        transform: scale(1.1);
+      }
+
+      .fab-icon-close {
+        position: absolute;
+        opacity: 0;
+        transform: rotate(-45deg);
+        transition: all 0.3s ease;
+      }
+
+      .fab-check:checked+.fab .fab-icon {
+        opacity: 0;
+        transform: rotate(45deg);
+      }
+
+      .fab-check:checked+.fab .fab-icon-close {
+        opacity: 1;
+        transform: rotate(0);
+      }
+
+      .fab-check:checked+.fab {
+        background-color: var(--bs-primary);
+      }
+
+      .fab-check:checked+.fab:hover {
+        background-color: var(--bs-primary);
+      }
+
+      .fab-check {
         display: none;
       }
-    }
-  </style>
+
+      .fab-options {
+        position: absolute;
+        bottom: 70px;
+        right: 0;
+        opacity: 0;
+        transform: scale(0);
+        transform-origin: bottom right;
+        transition: all 0.3s ease;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .fab-check:checked~.fab-options {
+        opacity: 1;
+        transform: scale(1);
+      }
+
+      .fab-option {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        text-decoration: none;
+        color: #333;
+      }
+
+      .fab-label {
+        background: white;
+        padding: 8px 12px;
+        border-radius: 20px;
+        margin-right: 10px;
+        font-size: 0.85rem;
+        white-space: nowrap;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+
+      .fab-option-icon {
+        width: 40px;
+        height: 40px;
+        background-color: var(--bs-primary);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: bold;
+      }
+
+      @media (min-width: 992px) {
+        .floating-action {
+          display: none;
+        }
+      }
+    </style>
 </main>

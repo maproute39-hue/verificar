@@ -1,88 +1,88 @@
 // FAB Menu Styles
-.fab-check {
-  display: none;
+// .fab-check {
+//   display: none;
   
-  &:checked ~ .fab-options {
-    opacity: 1;
-    visibility: visible;
-    transform: scale(1) translateY(0);
-  }
-}
+//   &:checked ~ .fab-options {
+//     opacity: 1;
+//     visibility: visible;
+//     transform: scale(1) translateY(0);
+//   }
+// }
 
-.fab-options {
-  position: absolute;
-  min-width: 200px;
-  background: #fff;
-  border-radius: 8px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-  opacity: 0;
-  visibility: hidden;
-  transform: scale(0.95) translateY(-10px);
-  transform-origin: top right;
-  transition: all 0.2s ease-in-out;
-  z-index: 1000;
-  padding: 0.5rem 0;
-  margin-top: 0.5rem;
-  right: 0;
+// .fab-options {
+//   position: absolute;
+//   min-width: 200px;
+//   background: #fff;
+//   border-radius: 8px;
+//   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+//   opacity: 0;
+//   visibility: hidden;
+//   transform: scale(0.95) translateY(-10px);
+//   transform-origin: top right;
+//   transition: all 0.2s ease-in-out;
+//   z-index: 1000;
+//   padding: 0.5rem 0;
+//   margin-top: 0.5rem;
+//   right: 0;
   
-  &::before {
-    content: '';
-    position: absolute;
-    top: -8px;
-    right: 16px;
-    width: 16px;
-    height: 16px;
-    background: #fff;
-    transform: rotate(45deg);
-    box-shadow: -2px -2px 5px rgba(0, 0, 0, 0.05);
-  }
-}
+//   &::before {
+//     content: '';
+//     position: absolute;
+//     top: -8px;
+//     right: 16px;
+//     width: 16px;
+//     height: 16px;
+//     background: #fff;
+//     transform: rotate(45deg);
+//     box-shadow: -2px -2px 5px rgba(0, 0, 0, 0.05);
+//   }
+// }
 
-.fab-option {
-  display: flex;
-  align-items: center;
-  padding: 0.6rem 1.25rem;
-  color: #495057;
-  text-decoration: none;
-  transition: all 0.2s;
-  position: relative;
-  z-index: 1;
+// .fab-option {
+//   display: flex;
+//   align-items: center;
+//   padding: 0.6rem 1.25rem;
+//   color: #495057;
+//   text-decoration: none;
+//   transition: all 0.2s;
+//   position: relative;
+//   z-index: 1;
   
-  &:hover {
-    background-color: #f8f9fa;
-    color: green;
-    transform: translateX(3px);
+//   &:hover {
+//     background-color: #f8f9fa;
+//     color: green;
+//     transform: translateX(3px);
     
-    .fab-label {
-      color: green;
-    }
+//     .fab-label {
+//       color: green;
+//     }
     
-    .fab-option-icon {
-      background-color: green;
-      color: #fff;
-    }
-  }
+//     .fab-option-icon {
+//       background-color: green;
+//       color: #fff;
+//     }
+//   }
   
-  .fab-label {
-    flex: 1;
-    font-size: 0.875rem;
-    transition: color 0.2s;
-  }
+//   .fab-label {
+//     flex: 1;
+//     font-size: 0.875rem;
+//     transition: color 0.2s;
+//   }
   
-  .fab-option-icon {
-    width: 24px;
-    height: 24px;
-    border-radius: 4px;
-    background-color: #f8f9fa;
-    color: #6c757d;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.75rem;
-    font-weight: 600;
-    transition: all 0.2s;
-  }
-}
+//   .fab-option-icon {
+//     width: 24px;
+//     height: 24px;
+//     border-radius: 4px;
+//     background-color: #f8f9fa;
+//     color: #6c757d;
+//     display: flex;
+//     align-items: center;
+//     justify-content: center;
+//     font-size: 0.75rem;
+//     font-weight: 600;
+//     transition: all 0.2s;
+//   }
+// }
 
 // Estilos para las filas de la tabla
 .table {
@@ -148,4 +148,118 @@
   transform: translateY(-50%);
   color: #6c757d;
   pointer-events: none;
+}
+
+// Estilos para el botón de alternar con cambio de ícono y texto
+#inspections-fab-check:checked + label {
+  .fab-icon, .fab-text {
+    display: none;
+  }
+  .fab-close-icon, .close-text {
+    display: inline-block !important;
+  }
+}
+
+.fab-close-icon, .close-text {
+  display: none;
+}
+
+// Asegurar que los elementos estén alineados correctamente
+.btn {
+  gap: 0.5rem;
+  
+  .fab-icon, .fab-close-icon {
+    font-size: 1rem;
+    line-height: 1;
+  }
+  
+  .fab-text, .close-text {
+    font-size: 0.875rem;
+  }
+}
+
+// Asegurar que el botón mantenga su tamaño
+.btn-primary {
+  min-width: 150px;
+  justify-content: center;
+}
+
+// Ajustes para el menú desplegable
+// .fab-options {
+//   position: absolute;
+//   top: 100%;
+//   right: 0;
+//   margin-top: 0.5rem;
+//   background: white;
+//   border-radius: 0.5rem;
+//   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+//   opacity: 0;
+//   visibility: hidden;
+//   transform: translateY(10px);
+//   transition: all 0.2s ease-in-out;
+//   z-index: 1050;
+//   min-width: 200px;
+//   padding: 0.5rem 0;
+// }
+
+#inspections-fab-check:checked ~ .fab-options {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+// Estilos para las opciones del menú
+// .fab-option {
+//   display: flex;
+//   align-items: center;
+//   padding: 0.5rem 1rem;
+//   color: #4a5568;
+//   text-decoration: none;
+//   transition: all 0.2s;
+  
+//   &:hover {
+//     background-color: #f7fafc;
+//     color: #2d3748;
+//   }
+  
+//   .fab-label {
+//     flex: 1;
+//   }
+  
+//   .fab-option-icon {
+//     width: 24px;
+//     height: 24px;
+//     border-radius: 50%;
+//     background-color: #edf2f7;
+//     display: flex;
+//     align-items: center;
+//     justify-content: center;
+//     font-size: 0.75rem;
+//     font-weight: 600;
+//   }
+// }
+
+// Asegurar que el checkbox esté oculto pero accesible
+// .fab-check {
+//   position: absolute;
+//   opacity: 0;
+//   width: 0;
+//   height: 0;
+// }
+
+// Ajustes para el hover en el botón principal
+.btn-primary:hover {
+  .fab-icon, .fab-close-icon {
+    transform: none;
+  }
+}
+
+// Asegurar que el menú no se cierre al hacer clic en él
+.fab-options {
+  pointer-events: auto;
+}
+
+// Asegurar que el botón mantenga su estilo en todos los estados
+.btn:focus, .btn:active {
+  box-shadow: none !important;
 }
