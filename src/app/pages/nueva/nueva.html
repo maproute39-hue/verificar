@@ -125,19 +125,19 @@
               </div>
             </div>
             <div class="row">
-                
+
               <div class="col-lg-4 mb-3">
-              <label class="form-label">Tipo de propietario: </label>
-              <div class="btn-group w-100" role="group">
-                <input type="radio" class="btn-check" name="tipo_propietario" id="empresa"
-                  [value]="'empresa'" formControlName="tipo_propietario" autocomplete="off">
-                <label class="btn btn-outline-secondary" for="empresa">Empresa</label>
-                
-                <input type="radio" class="btn-check" name="tipo_propietario" id="persona"
-                  [value]="'persona'" formControlName="tipo_propietario" autocomplete="off">
-                <label class="btn btn-outline-secondary" for="persona">Persona Natural</label>
+                <label class="form-label">Tipo de propietario: </label>
+                <div class="btn-group w-100" role="group">
+                  <input type="radio" class="btn-check" name="tipo_propietario" id="empresa" [value]="'empresa'"
+                    formControlName="tipo_propietario" autocomplete="off">
+                  <label class="btn btn-outline-secondary" for="empresa">Empresa</label>
+
+                  <input type="radio" class="btn-check" name="tipo_propietario" id="persona" [value]="'persona'"
+                    formControlName="tipo_propietario" autocomplete="off">
+                  <label class="btn btn-outline-secondary" for="persona">Persona Natural</label>
+                </div>
               </div>
-              </div> 
             </div>
             <div class="row" *ngIf="inspectionForm.get('tipo_propietario')?.value">
               <!-- Campo de nombre -->
@@ -148,7 +148,7 @@
                 <label class="form-label" *ngIf="inspectionForm.get('tipo_propietario')?.value === 'persona_natural'">
                   Nombre del propietario <span class="text-danger">*</span>
                 </label>
-                
+
                 <input type="text" formControlName="propietario" class="form-control"
                   [placeholder]="inspectionForm.get('tipo_propietario')?.value === 'empresa' ? 'Nombre de la empresa' : 'Nombre del propietario'">
                 <div
@@ -157,7 +157,7 @@
                   Este campo es requerido
                 </div>
               </div>
-              
+
               <!-- Campo de documento/NIT -->
               <div class="col-lg-4 mb-3">
                 <label class="form-label" *ngIf="inspectionForm.get('tipo_propietario')?.value === 'empresa'">
@@ -166,7 +166,7 @@
                 <label class="form-label" *ngIf="inspectionForm.get('tipo_propietario')?.value === 'persona_natural'">
                   Documento del propietario <span class="text-danger">*</span>
                 </label>
-                
+
                 <input type="text" formControlName="documento_propietario" class="form-control"
                   [placeholder]="inspectionForm.get('tipo_propietario')?.value === 'empresa' ? 'NIT de la empresa' : 'Documento del propietario'">
                 <div
@@ -1452,42 +1452,42 @@
                         <div class="col-lg-6 mb-3">
                           <label class="form-label">Llanta DI / Ej: 2,3 mm</label>
                           <input type="number" class="form-control" inputmode="decimal" pattern="[0-9,.]*"
-                            placeholder="0">
+                            placeholder="0" formControlName="llanta_di">
                         </div>
 
                         <!-- Llanta Delantera Derecha -->
                         <div class="col-lg-6 mb-3">
                           <label class="form-label">Llanta DD / Ej: 2,5 mm</label>
                           <input type="number" class="form-control" inputmode="decimal" pattern="[0-9,.]*"
-                            placeholder="0">
+                            placeholder="0" formControlName="llanta_dd">
                         </div>
 
                         <!-- Llanta Trasera Izquierda Exterior -->
                         <div class="col-lg-6 mb-3">
                           <label class="form-label">Llanta TIE / Ej: 3,4 mm</label>
                           <input type="number" class="form-control" inputmode="decimal" pattern="[0-9,.]*"
-                            placeholder="0">
+                            placeholder="0" formControlName="llanta_tie">
                         </div>
 
                         <!-- Llanta Trasera Derecha Exterior - FALTABA -->
                         <div class="col-lg-6 mb-3">
                           <label class="form-label">Llanta TDE / Ej: 3,2 mm</label>
                           <input type="number" class="form-control" inputmode="decimal" pattern="[0-9,.]*"
-                            placeholder="0">
+                            placeholder="0" formControlName="llanta_tde">
                         </div>
 
                         <!-- Llanta Trasera Izquierda Interior -->
                         <div class="col-lg-6 mb-3">
                           <label class="form-label">Llanta TII / Ej: 2,8 mm</label>
                           <input type="number" class="form-control" inputmode="decimal" pattern="[0-9,.]*"
-                            placeholder="0">
+                            placeholder="0" formControlName="llanta_tii">
                         </div>
 
                         <!-- Llanta Trasera Derecha Interior -->
                         <div class="col-lg-6 mb-3">
                           <label class="form-label">Llanta TDI / Ej: 3,1 mm</label>
                           <input type="number" class="form-control" inputmode="decimal" pattern="[0-9,.]*"
-                            placeholder="0">
+                            placeholder="0" formControlName="llanta_tdi">
                         </div>
                       </div>
                     </div>
@@ -1544,47 +1544,34 @@
               </div>
             </div>
             <!-- Agrega esto en el Paso 4 donde tengas el registro fotográfico -->
-<div class="image-upload-section" *ngIf="currentStep === 4">
-  <h5>Registro Fotográfico</h5>
-  
-  <div class="form-group">
-    <label for="images">Seleccionar imágenes:</label>
-    <input 
-      type="file" 
-      id="images"
-      #fileInput
-      multiple 
-      accept="image/*" 
-      (change)="onFilesSelected($event)"
-      class="form-control"
-      [disabled]="isUploadingImages"
-    />
-    <small class="text-muted">Puedes seleccionar múltiples imágenes (máx 5MB cada una)</small>
-  </div>
-  
-  <!-- Preview de imágenes -->
-  <div class="selected-images" *ngIf="imagePreviews.length > 0">
-    <div *ngFor="let preview of imagePreviews; let i = index" class="image-preview">
-      <img [src]="preview" alt="Preview {{i}}">
-      <button 
-        type="button" 
-        (click)="removeImage(i)" 
-        class="btn-remove"
-        [disabled]="isUploadingImages"
-      >
-        ×
-      </button>
-    </div>
-  </div>
-  
-  <!-- Contador -->
-  <div class="image-count" *ngIf="selectedFiles.length > 0">
-    {{ selectedFiles.length }} imagen(es) seleccionada(s)
-  </div>
-</div>
+            <div class="image-upload-section" *ngIf="currentStep === 4">
+              <h5>Registro Fotográfico</h5>
+
+              <div class="form-group">
+                <label for="images">Seleccionar imágenes:</label>
+                <input type="file" id="images" #fileInput multiple accept="image/*" (change)="onFilesSelected($event)"
+                  class="form-control" [disabled]="isUploadingImages" />
+                <small class="text-muted">Puedes seleccionar múltiples imágenes (máx 5MB cada una)</small>
+              </div>
+
+              <!-- Preview de imágenes -->
+              <div class="selected-images" *ngIf="imagePreviews.length > 0">
+                <div *ngFor="let preview of imagePreviews; let i = index" class="image-preview">
+                  <img [src]="preview" alt="Preview {{i}}">
+                  <button type="button" (click)="removeImage(i)" class="btn-remove" [disabled]="isUploadingImages">
+                    ×
+                  </button>
+                </div>
+              </div>
+
+              <!-- Contador -->
+              <div class="image-count" *ngIf="selectedFiles.length > 0">
+                {{ selectedFiles.length }} imagen(es) seleccionada(s)
+              </div>
+            </div>
           </div>
         </div>
-        
+
       </div>
 
       <!-- NAVIGATION BUTTONS -->
@@ -1645,7 +1632,7 @@
   
   .nav-pills .nav-link.active {
     color: #fff;
-    background: linear-gradient(135deg, #0f0369 0%, #0a58ca 100%);
+    background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%);
     border-color: #0a58ca;
     box-shadow: 0 2px 8px rgba(13, 110, 253, 0.3);
     font-weight: 600;
@@ -1723,7 +1710,7 @@
   
   /* Estilos para el texto "NO APLICA" */
   .noaplica {
-    color: #0f0369;
+    color: #0d6efd;
     font-weight: 600;
     position: relative;
     padding-left: 24px;
@@ -1767,8 +1754,8 @@
   
   .nav-pills .nav-link.active {
     color: #fff;
-    background-color: #0f0369;
-    border-left-color: #0f0369;
+    background-color: #0d6efd;
+    border-left-color: #0d6efd;
   }
   
   .nav-pills .nav-link.disabled {
@@ -1795,7 +1782,7 @@
   }
   
   .noaplica {
-    color: #0f0369;
+    color: #0d6efd;
     font-weight: bold;
   }
 </style> -->

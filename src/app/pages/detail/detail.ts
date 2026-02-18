@@ -88,10 +88,10 @@ export class Detail implements OnInit, AfterViewInit {
     private gotenbergService: GotenbergService,        // ✅ Inyectado
     private excelExportService: ExcelExportService,    // ✅ Inyectado
     private datePipe: DatePipe,
-        private ngZone: NgZone,
+    private ngZone: NgZone,
 
   ) {
-    
+
     this.excelExportService = new ExcelExportService(this.gotenbergService);
 
     // Inicialización del formulario principal con sus validaciones
@@ -210,10 +210,23 @@ export class Detail implements OnInit, AfterViewInit {
       tanques_compresor: [''],
 
       // Profundidad de Labrado
-      llanta_d_ld: [''],
-      llanta_t_lie: [''],
-      llanta_t_lii: [''],
-      llanta_t_lid: ['']
+  
+
+      llanta_di: [''],          // Delantera Izquierda - FALTA
+      llanta_dd: [''],          // Delantera Derecha - FALTA (reemplaza llanta_d_ld)
+      llanta_tie: [''],         // Trasera Izquierda Exterior - FALTA (reemplaza llanta_t_lie)
+      llanta_tde: [''],         // Trasera Derecha Exterior - FALTA
+      llanta_tii: [''],         // Trasera Izquierda Interior - FALTA (reemplaza llanta_t_lii)
+      llanta_tdi: [''],         // Trasera Derecha Interior - FALTA (reemplaza llanta_t_lid)
+
+
+      // === PRESIÓN DE AIRE EN LLANTAS (NUEVOS - TODOS FALTAN) ===
+      presion_llanta_d_li: [''],    // Delantera Izquierda
+      presion_llanta_d_ld: [''],    // Delantera Derecha
+      presion_llanta_t_lie: [''],   // Trasera Izquierda Exterior
+      presion_llanta_t_lde: [''],   // Trasera Derecha Exterior
+      presion_llanta_t_lii: [''],   // Trasera Izquierda Interior
+      presion_llanta_t_ldi: [''],   // Trasera Derecha Interior
     });
 
     this.phoneForm = this.fb.group({
@@ -225,74 +238,74 @@ export class Detail implements OnInit, AfterViewInit {
    * Inicializa el componente y se suscribe a los cambios en los parámetros de la ruta
    * Se ejecuta cuando el componente es inicializado
    */private preloadImage(url: string): Promise<void> {
-  return new Promise((resolve, reject) => {
-    const img = new Image();
-    img.src = url;
-    img.onload = () => resolve();
-    img.onerror = (error) => {
-      console.error('Error al cargar la imagen:', url, error);
-      resolve(); // Resolvemos igualmente para no bloquear el flujo
-    };
-  });
-}
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      img.src = url;
+      img.onload = () => resolve();
+      img.onerror = (error) => {
+        console.error('Error al cargar la imagen:', url, error);
+        resolve(); // Resolvemos igualmente para no bloquear el flujo
+      };
+    });
+  }
 
-async loadInspectionImages(inspectionId: string): Promise<void> {
-  this.isLoadingImages = true;
-  this.album = []; // Limpiar álbum
-  this.inspectionImages = []; // Limpiar imágenes existentes
-  this.cdr.detectChanges();
-  
-  try {
-    const inspection = await this.inspectionService.pb.collection('inspections').getOne(inspectionId);
-    const imageIds = inspection['images'] || [];
-    const collectionId = '5bjt6wpqfj0rnsl';
-    
-    if (imageIds.length > 0) {
-      // Pre-cargar imágenes
-      const imagePromises = imageIds.map(async (imageId: string) => {
-        try {
-          const imageRecord = await this.inspectionService.pb.collection('images').getOne(imageId);
-          const filename = imageRecord['image'];
-          
-          if (filename) {
-            const url = this.inspectionService.getImageUrl(collectionId, imageId, filename);
-            
-            // Pre-cargar la imagen
-            await this.preloadImage(url);
-            
-            return {
-              url,
-              imageRecord
-            };
+  async loadInspectionImages(inspectionId: string): Promise<void> {
+    this.isLoadingImages = true;
+    this.album = []; // Limpiar álbum
+    this.inspectionImages = []; // Limpiar imágenes existentes
+    this.cdr.detectChanges();
+
+    try {
+      const inspection = await this.inspectionService.pb.collection('inspections').getOne(inspectionId);
+      const imageIds = inspection['images'] || [];
+      const collectionId = '5bjt6wpqfj0rnsl';
+
+      if (imageIds.length > 0) {
+        // Pre-cargar imágenes
+        const imagePromises = imageIds.map(async (imageId: string) => {
+          try {
+            const imageRecord = await this.inspectionService.pb.collection('images').getOne(imageId);
+            const filename = imageRecord['image'];
+
+            if (filename) {
+              const url = this.inspectionService.getImageUrl(collectionId, imageId, filename);
+
+              // Pre-cargar la imagen
+              await this.preloadImage(url);
+
+              return {
+                url,
+                imageRecord
+              };
+            }
+            return null;
+          } catch (error) {
+            console.error(`Error al cargar imagen ${imageId}:`, error);
+            return null;
           }
-          return null;
-        } catch (error) {
-          console.error(`Error al cargar imagen ${imageId}:`, error);
-          return null;
-        }
-      });
+        });
 
-      // Esperar a que todas las imágenes se carguen
-      const loadedImages = (await Promise.all(imagePromises)).filter(Boolean);
-      
-      // Actualizar las imágenes y el álbum
-      this.inspectionImages = loadedImages.map(img => img.url);
-      this.album = loadedImages.map((img, index) => ({
-        src: img.url,
-        thumb: img.url,
-        // caption: `Imagen ${index + 1}`
-      }));
+        // Esperar a que todas las imágenes se carguen
+        const loadedImages = (await Promise.all(imagePromises)).filter(Boolean);
 
+        // Actualizar las imágenes y el álbum
+        this.inspectionImages = loadedImages.map(img => img.url);
+        this.album = loadedImages.map((img, index) => ({
+          src: img.url,
+          thumb: img.url,
+          // caption: `Imagen ${index + 1}`
+        }));
+
+        this.cdr.detectChanges();
+      }
+    } catch (error) {
+      console.error('Error al cargar imágenes:', error);
+      Swal.fire('Error', 'No se pudieron cargar las imágenes', 'error');
+    } finally {
+      this.isLoadingImages = false;
       this.cdr.detectChanges();
     }
-  } catch (error) {
-    console.error('Error al cargar imágenes:', error);
-    Swal.fire('Error', 'No se pudieron cargar las imágenes', 'error');
-  } finally {
-    this.isLoadingImages = false;
-    this.cdr.detectChanges();
   }
-}
   async testGotenberg(): Promise<void> {
     try {
       // Crear un blob falso de Excel
@@ -462,39 +475,39 @@ async loadInspectionImages(inspectionId: string): Promise<void> {
   /**
    * Abre el lightbox en una imagen específica
    */
-openImageModal(imageUrl: string, index: number): void {
-  // Crear array de imágenes para navegación
-  const images = this.inspectionImages;
-  
-  let currentIndex = index;
-  
-  const showImage = () => {
-   Swal.fire({
-  title: `Imagen ${currentIndex + 1} de ${images.length}`,
-  imageUrl: images[currentIndex],
-  imageAlt: 'Imagen de inspección',
-  imageWidth: '100%',
-  imageHeight: 'auto',
-  showConfirmButton: true,
-  confirmButtonText: 'Anterior',
-  confirmButtonColor: '#0f0369', // Color azul para el botón Anterior
-  showCancelButton: currentIndex > 0,
-  cancelButtonText: 'Cerrar',
-  cancelButtonColor: '#d33',     // Color rojo para el botón Cerrar
-  showDenyButton: currentIndex < images.length - 1,
-  denyButtonText: 'Siguiente',
-  denyButtonColor: '#5cb85c',    // Color verde para el botón Siguiente
-  background: 'rgba(0,0,0,0.95)',
-  padding: '0',
-  width: '90%',
-  customClass: {
-    container: 'image-modal-fullscreen',
-    image: 'modal-image'
-  },
-  didOpen: () => {
-    // Agregar estilos personalizados
-    const style = document.createElement('style');
-    style.textContent = `
+  openImageModal(imageUrl: string, index: number): void {
+    // Crear array de imágenes para navegación
+    const images = this.inspectionImages;
+
+    let currentIndex = index;
+
+    const showImage = () => {
+      Swal.fire({
+        title: `Imagen ${currentIndex + 1} de ${images.length}`,
+        imageUrl: images[currentIndex],
+        imageAlt: 'Imagen de inspección',
+        imageWidth: '100%',
+        imageHeight: 'auto',
+        showConfirmButton: true,
+        confirmButtonText: 'Anterior',
+        confirmButtonColor: '#0f0369', // Color azul para el botón Anterior
+        showCancelButton: currentIndex > 0,
+        cancelButtonText: 'Cerrar',
+        cancelButtonColor: '#d33',     // Color rojo para el botón Cerrar
+        showDenyButton: currentIndex < images.length - 1,
+        denyButtonText: 'Siguiente',
+        denyButtonColor: '#5cb85c',    // Color verde para el botón Siguiente
+        background: 'rgba(0,0,0,0.95)',
+        padding: '0',
+        width: '90%',
+        customClass: {
+          container: 'image-modal-fullscreen',
+          image: 'modal-image'
+        },
+        didOpen: () => {
+          // Agregar estilos personalizados
+          const style = document.createElement('style');
+          style.textContent = `
       .image-modal-fullscreen {
         z-index: 9999 !important;
       }
@@ -523,25 +536,25 @@ openImageModal(imageUrl: string, index: number): void {
         background-color: #c12e2e !important;
       }
     `;
-    document.head.appendChild(style);
-  },
-  preConfirm: () => {
-    return Swal.getDenyButton() ? 'next' : 'prev';
+          document.head.appendChild(style);
+        },
+        preConfirm: () => {
+          return Swal.getDenyButton() ? 'next' : 'prev';
+        }
+      }).then((result) => {
+        if (result.isDenied && currentIndex < images.length - 1) {
+          currentIndex++;
+          showImage();
+        } else if (result.isConfirmed && currentIndex > 0) {
+          currentIndex--;
+          showImage();
+        }
+      });
+    };
+
+    showImage();
   }
-}).then((result) => {
-      if (result.isDenied && currentIndex < images.length - 1) {
-        currentIndex++;
-        showImage();
-      } else if (result.isConfirmed && currentIndex > 0) {
-        currentIndex--;
-        showImage();
-      }
-    });
-  };
-  
-  showImage();
-}
-  
+
   openLightbox(index: number): void {
     // ✅ Ejecutar fuera de Angular zone y luego volver
     this.ngZone.runOutsideAngular(() => {

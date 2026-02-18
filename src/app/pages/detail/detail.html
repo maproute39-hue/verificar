@@ -232,29 +232,32 @@
               <div class="nav flex-column nav-pills border-end " style="padding-right: 2px;" id="v-pills-tab"
                 role="tablist" aria-orientation="vertical">
                 <button class="nav-link active" id="v-pills-home-tab" data-bs-toggle="pill" data-bs-target="#electrico"
-                  type="button" role="tab" aria-controls="electrico" aria-selected="true">SISTEMA ELÉCTRICO</button>
+                  type="button" role="tab" aria-controls="electrico" aria-selected="true" style="border: 1px solid #02376b;">SISTEMA ELÉCTRICO</button>
                 <button class="nav-link" id="v-pills-profile-tab" data-bs-toggle="pill" data-bs-target="#motor"
-                  type="button" role="tab" aria-controls="motor" aria-selected="false">SISTEMA DE MOTOR</button>
+                  type="button" role="tab" aria-controls="motor" aria-selected="false" style="border: 1px solid #02376b;">SISTEMA DE MOTOR</button>
                 <button class="nav-link" id="v-pills-disabled-tab" data-bs-toggle="pill" data-bs-target="#carroceria"
-                  type="button" role="tab" aria-controls="carroceria" aria-selected="false">CARROCERÍA / PARTE
+                  type="button" role="tab" aria-controls="carroceria" aria-selected="false" style="border: 1px solid #02376b;">CARROCERÍA / PARTE
                   EXTERNA</button>
                 <button class="nav-link" id="v-pills-messages-tab" data-bs-toggle="pill" data-bs-target="#cabina"
-                  type="button" role="tab" aria-controls="cabina" aria-selected="false">CABINA Y MANDOS / PARTE
+                  type="button" role="tab" aria-controls="cabina" aria-selected="false" style="border: 1px solid #02376b;">CABINA Y MANDOS / PARTE
                   INTERNA</button>
                 <button class="nav-link" id="v-pills-settings-tab" data-bs-toggle="pill"
                   data-bs-target="#seguridadActiva" type="button" role="tab" aria-controls="seguridadActiva"
-                  aria-selected="false">SEGURIDAD ACTIVA</button>
+                  aria-selected="false" style="border: 1px solid #02376b;">SEGURIDAD ACTIVA</button>
                 <button class="nav-link" id="v-pills-settings-tab2" data-bs-toggle="pill"
                   data-bs-target="#seguridadPasiva" type="button" role="tab" aria-controls="seguridadPasiva"
-                  aria-selected="false">SISTEMA DE SEGURIDAD PASIVA</button>
+                  aria-selected="false" style="border: 1px solid #02376b;">SISTEMA DE SEGURIDAD PASIVA</button>
                 <button class="nav-link" id="v-pills-settings-tab3" data-bs-toggle="pill" data-bs-target="#kit"
-                  type="button" role="tab" aria-controls="kit" aria-selected="false">KIT DE CARRETERA</button>
+                  type="button" role="tab" aria-controls="kit" aria-selected="false" style="border: 1px solid #02376b;">KIT DE CARRETERA</button>
                 <button class="nav-link" id="v-pills-settings-tab4" data-bs-toggle="pill" data-bs-target="#parteBaja"
-                  type="button" role="tab" aria-controls="parteBaja" aria-selected="false">PARTE BAJA</button>
+                  type="button" role="tab" aria-controls="parteBaja" aria-selected="false" style="border: 1px solid #02376b;">PARTE BAJA</button>
                 <button class="nav-link" id="v-pills-settings-tab5" data-bs-toggle="pill" data-bs-target="#profundidad"
-                  type="button" role="tab" aria-controls="profundidad" aria-selected="false">PROFUNDIDAD DE
+                  type="button" role="tab" aria-controls="profundidad" aria-selected="false" style="border: 1px solid #02376b;">PROFUNDIDAD DE
                   <br />
                   LABRADO DE LLANTAS</button>
+                   <button class="nav-link " id="v-pills-settings-tab5" data-bs-toggle="pill" data-bs-target="#presion"
+                      type="button" role="tab" aria-controls="presion" aria-selected="false"
+                      style="border: 1px solid #02376b;">PRESION DE AIRE DE LLANTAS</button>
               </div>
 
               <div class="tab-content">
@@ -1257,7 +1260,7 @@
                 </div>
 
 
-                <div class="tab-pane fade" id="profundidad" role="tabpanel" aria-labelledby="profundidad-tabPillsFill"
+                <!-- <div class="tab-pane fade" id="profundidad" role="tabpanel" aria-labelledby="profundidad-tabPillsFill"
                   tabindex="0">
                   <div class="row">
                     <div class="col-lg-6 mb-3">
@@ -1280,18 +1283,112 @@
                       <input type="number" class="form-control" inputmode="decimal" pattern="[0-9,.]*" placeholder="0 ">
                     </div>
                   </div>
-                </div>
+                </div> -->
+                   <div class="tab-pane fade" id="profundidad" role="tabpanel"
+                      aria-labelledby="profundidad-tabPillsFill" tabindex="0">
+                      <div class="row">
+                        <!-- Llanta Delantera Izquierda - FALTABA -->
+                        <div class="col-lg-6 mb-3">
+                          <label class="form-label">Llanta DI / Ej: 2,3 mm</label>
+                          <input type="number" class="form-control" inputmode="decimal" pattern="[0-9,.]*"
+                            placeholder="0" formControlName="llanta_di">
+                        </div>
+
+                        <!-- Llanta Delantera Derecha -->
+                        <div class="col-lg-6 mb-3">
+                          <label class="form-label">Llanta DD / Ej: 2,5 mm</label>
+                          <input type="number" class="form-control" inputmode="decimal" pattern="[0-9,.]*"
+                            placeholder="0" formControlName="llanta_dd">
+                        </div>
+
+                        <!-- Llanta Trasera Izquierda Exterior -->
+                        <div class="col-lg-6 mb-3">
+                          <label class="form-label">Llanta TIE / Ej: 3,4 mm</label>
+                          <input type="number" class="form-control" inputmode="decimal" pattern="[0-9,.]*"
+                            placeholder="0" formControlName="llanta_tie">
+                        </div>
+
+                        <!-- Llanta Trasera Derecha Exterior - FALTABA -->
+                        <div class="col-lg-6 mb-3">
+                          <label class="form-label">Llanta TDE / Ej: 3,2 mm</label>
+                          <input type="number" class="form-control" inputmode="decimal" pattern="[0-9,.]*"
+                            placeholder="0" formControlName="llanta_tde">
+                        </div>
+
+                        <!-- Llanta Trasera Izquierda Interior -->
+                        <div class="col-lg-6 mb-3">
+                          <label class="form-label">Llanta TII / Ej: 2,8 mm</label>
+                          <input type="number" class="form-control" inputmode="decimal" pattern="[0-9,.]*"
+                            placeholder="0" formControlName="llanta_tii">
+                        </div>
+
+                        <!-- Llanta Trasera Derecha Interior -->
+                        <div class="col-lg-6 mb-3">
+                          <label class="form-label">Llanta TDI / Ej: 3,1 mm</label>
+                          <input type="number" class="form-control" inputmode="decimal" pattern="[0-9,.]*"
+                            placeholder="0" formControlName="llanta_tdi">
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="tab-pane fade" id="presion" role="tabpanel" aria-labelledby="presion-tabPillsFill"
+                      tabindex="0">
+                      <div class="row">
+                        <!-- Llanta Delantera Izquierda -->
+                        <div class="col-lg-6 mb-3">
+                          <label class="form-label">Llanta D LI / Ej: 32 PSI</label>
+                          <input type="number" class="form-control" inputmode="decimal" pattern="[0-9,.]*"
+                            placeholder="0" formControlName="presion_llanta_d_li">
+                        </div>
+
+                        <!-- Llanta Delantera Derecha -->
+                        <div class="col-lg-6 mb-3">
+                          <label class="form-label">Llanta D LD / Ej: 32 PSI</label>
+                          <input type="number" class="form-control" inputmode="decimal" pattern="[0-9,.]*"
+                            placeholder="0" formControlName="presion_llanta_d_ld">
+                        </div>
+
+                        <!-- Llanta Trasera Izquierda Exterior -->
+                        <div class="col-lg-6 mb-3">
+                          <label class="form-label">Llanta T LIE / Ej: 35 PSI</label>
+                          <input type="number" class="form-control" inputmode="decimal" pattern="[0-9,.]*"
+                            placeholder="0" formControlName="presion_llanta_t_lie">
+                        </div>
+
+                        <!-- Llanta Trasera Derecha Exterior -->
+                        <div class="col-lg-6 mb-3">
+                          <label class="form-label">Llanta T LDE / Ej: 35 PSI</label>
+                          <input type="number" class="form-control" inputmode="decimal" pattern="[0-9,.]*"
+                            placeholder="0" formControlName="presion_llanta_t_lde">
+                        </div>
+
+                        <!-- Llanta Trasera Izquierda Interior -->
+                        <div class="col-lg-6 mb-3">
+                          <label class="form-label">Llanta T LII / Ej: 35 PSI</label>
+                          <input type="number" class="form-control" inputmode="decimal" pattern="[0-9,.]*"
+                            placeholder="0" formControlName="presion_llanta_t_lii">
+                        </div>
+
+                        <!-- Llanta Trasera Derecha Interior -->
+                        <div class="col-lg-6 mb-3">
+                          <label class="form-label">Llanta T LDI / Ej: 35 PSI</label>
+                          <input type="number" class="form-control" inputmode="decimal" pattern="[0-9,.]*"
+                            placeholder="0" formControlName="presion_llanta_t_ldi">
+                        </div>
+                      </div>
+                    </div>
               </div>
 
             </div>
-            <div class="col-12 mb-3" style="margin-top: 10x;">
+            <div class="col-12 mb-3" style="margin-top: 10px;">
               <h6 class="fw-bold border-bottom titulo">REGISTRO FOTOGRÁFICO</h6>
               <!-- Sección de Registro Fotográfico -->
               <div class="image-gallery-section">
                 <h3 class="section-title">
-                
-                  
-                  <span class="badge" *ngIf="inspectionImages.length > 0">{{ inspectionImages.length }}</span>  <i class="fas fa-images"></i> Fotografías
+
+
+                  <span class="badge" *ngIf="inspectionImages.length > 0">{{ inspectionImages.length }}</span> <i
+                    class="fas fa-images"></i> Fotografías
                 </h3>
 
                 <!-- Loading state -->
@@ -1307,14 +1404,12 @@
                   <div *ngFor="let imageUrl of inspectionImages; let i = index" class="image-card"
                     (click)="openImageModal(imageUrl, i)">
                     <div class="image-wrapper">
-                      <img [src]="imageUrl" 
-                      [alt]="'Imagen ' + (i + 1)" 
-                      loading="lazy" (error)="onImageError($event)" />
+                      <img [src]="imageUrl" [alt]="'Imagen ' + (i + 1)" loading="lazy" (error)="onImageError($event)" />
                       <div class="overlay">
                         <i class="fas fa-search-plus"></i>
                         <span>Ver imagen</span>
                       </div>
-                    </div>  
+                    </div>
                     <!-- <div class="image-number">
                       Imagen {{ i + 1 }}
                     </div> -->
