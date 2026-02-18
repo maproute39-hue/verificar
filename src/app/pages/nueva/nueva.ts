@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import Swal from 'sweetalert2';
 import { InspectionService } from '../../services/inspection.service';
 import { RouterModule } from '@angular/router';
+import { Router } from '@angular/router';
 
 declare const flatpickr: any;
 
@@ -23,7 +24,7 @@ interface FlatpickrOptions {
   templateUrl: './nueva.html',
   styleUrls: ['./nueva.scss'],
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule,RouterModule]
+  imports: [CommonModule, ReactiveFormsModule,RouterModule,Router]
 })
 export class Nueva implements AfterViewInit, OnInit {
 
@@ -71,7 +72,8 @@ export class Nueva implements AfterViewInit, OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private inspectionService: InspectionService
+    private inspectionService: InspectionService,
+    private router: Router
   ) {
     // Inicialización del formulario principal
     this.inspectionForm = this.fb.group({
@@ -915,5 +917,6 @@ async uploadImagesToCollection(): Promise<string[]> {
   if (this.flatpickrInstances[0]) {
     this.flatpickrInstances[0].setDate(new Date());
   }
+  this.router.navigate(['/home']);
 }
 }
