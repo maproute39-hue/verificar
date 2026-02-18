@@ -13,6 +13,7 @@ export interface Inspection {
   telefono?: string;
   licencia_vencimiento?: string;
   foto_conductor?: string; // URL de la foto del conductor
+  whatsapp?: boolean;      // Indica si el teléfono es de WhatsApp
   
   // Información del vehículo
   placa?: string;

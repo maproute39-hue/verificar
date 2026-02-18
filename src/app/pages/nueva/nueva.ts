@@ -218,13 +218,13 @@ export class Nueva implements AfterViewInit, OnInit {
       // === REGISTRO DE DAÑOS FÍSICOS ===
       danos_vista_frontal: [''],        // JSON o texto con coordenadas de daños
       danos_vista_lateral: [''],        // JSON o texto con coordenadas de daños
-      danos_vista_trasera: [''],        // JSON o texto con coordenadas de daños
-
+      danos_vista_trasera: ['']         // JSON o texto con coordenadas de daños
     });
 
     // Inicialización del formulario del teléfono
     this.phoneForm = this.fb.group({
-      localNumber: ['', [Validators.required, Validators.pattern(/^\d{10}$/)]]
+      localNumber: ['', [Validators.required, Validators.pattern(/^\d{10}$/)]],
+      whatsapp: [false] // Default to false
     });
   }
 // === MÉTODOS PARA MANEJO DE IMÁGENES ===
@@ -788,6 +788,11 @@ async uploadImagesToCollection(): Promise<string[]> {
     // 4. Preparar datos CON LAS IMÁGENES
     const formattedData = {
       ...inspectionData,
+      // Incluir el valor de whatsapp del phoneForm
+      whatsapp: this.phoneForm.get('whatsapp')?.value || false,
+      // Incluir el teléfono del formulario de teléfono
+      telefono: this.phoneForm.get('localNumber')?.value || inspectionData.telefono,
+      
       fecha_inspeccion: formatDateForAPI(inspectionData.fecha_inspeccion),
       fecha_vigencia: formatDateForAPI(inspectionData.fecha_vigencia),
       fecha_vencimiento_licencia: formatDateForAPI(inspectionData.fecha_vencimiento_licencia),

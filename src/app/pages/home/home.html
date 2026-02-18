@@ -210,75 +210,95 @@
           <div class="card-body px-1 pt-2 pb-2">
             <div class="table-responsive">
               <table id="dt_NewCustomers" class="table table-sm display table-row-rounded data-row-checkbox">
-              <thead class="table-light">
-                <tr>
-                  <th class="pe-0">
-                    <div class="form-check">
-                      <input class="form-check-input" data-row-checkbox type="checkbox">
-                    </div>
-                  </th>
-                  <th class="minw-200px">Conductor</th>
-                  <th class="minw-150px">Placa del vehículo</th>
-                  <th class="minw-150px">Telefono</th>
-                  <th class="minw-125px">Fecha</th>
-                  <th>Status</th>
-                  <th>Accion</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let inspection of RealtimeInspectionsService.inspections$ | async"
-                  (click)="viewInspection(inspection.id)" class="inspection-row">
-                  <td class="pe-0" (click)="$event.stopPropagation()">
-                    <div class="form-check p-0 w-auto d-inline-block mb-0 mb-n1">
-                      <input class="form-check-input m-0" data-checkbox="" type="checkbox"
-                        (click)="$event.stopPropagation()">
-                    </div>
-                  </td>
-                  <td>
-                    <div class="d-flex align-items-center">
-                      <div class="avatar avatar-xxs rounded-circle me-2">
-                        <img [src]="inspection.foto_conductor || 'assets/images/avatar/avatar2.webp'"
-                          alt="Foto del conductor" class="img-fluid">
+                <thead class="table-light">
+                  <tr>
+                    <th class="pe-0">
+                      <div class="form-check">
+                        <input class="form-check-input" data-row-checkbox type="checkbox">
                       </div>
-                      {{ inspection.nombres_conductor || 'Sin nombre' }}
-                    </div>
-                  </td>
-                  <td>{{ inspection.placa || 'Sin placa' }}</td>
-                  <td>{{ inspection.telefono || 'Sin teléfono' }}</td>
-                  <td>{{ (inspection.fecha_inspeccion | date: 'dd/MM/yyyy') || 'Sin fecha' }}</td>
-                  <td>
-                    <span class="badge badge-lg" [ngClass]="{
+                    </th>
+                    <th class="minw-125px">Fecha</th>
+                    <th class="minw-150px">Placa del vehículo</th>
+                    <th class="minw-200px">Conductor</th>
+                    <th class="minw-150px">Telefono</th>
+                    <th>Status</th>
+                    <th>Accion</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let inspection of RealtimeInspectionsService.inspections$ | async"
+                    (click)="viewInspection(inspection.id)" class="inspection-row">
+                    <td class="pe-0" (click)="$event.stopPropagation()">
+                      <div class="form-check p-0 w-auto d-inline-block mb-0 mb-n1">
+                        <input class="form-check-input m-0" data-checkbox="" type="checkbox"
+                          (click)="$event.stopPropagation()">
+                      </div>
+                    </td>
+                    <td>{{ (inspection.fecha_inspeccion | date: 'dd/MM/yyyy') || 'Sin fecha' }}</td>
+                    <td>{{ inspection.placa || 'Sin placa' }}</td>
+
+                    <td>
+                      <div class="d-flex align-items-center">
+                        <div class="avatar avatar-xxs rounded-circle me-2">
+                          <img [src]="inspection.foto_conductor || 'assets/images/avatar/avatar2.webp'"
+                            alt="Foto del conductor" class="img-fluid">
+                        </div>
+                        {{ inspection.nombres_conductor || 'Sin nombre' }}
+                      </div>
+                    </td>
+<td>
+  <div class="phone-cell">
+    <div class="d-flex align-items-center mb-1">
+      <i class="fi fi-rr-phone me-2 text-primary"></i>
+     
+      <span>+57 {{ formatPhone(inspection.telefono) }}</span>
+       <a 
+      *ngIf="inspection.whatsapp"
+      [href]="'https://wa.me/57' + inspection.telefono?.replace(/\D/g, '')" 
+      target="_blank"
+      class="whatsapp-link btn btn-sm btn-success-subtle"
+      title="Contactar por WhatsApp"
+    >
+      <i class="fi fi-brands-whatsapp me-1"></i>
+      
+    </a>
+    </div>
+    
+  </div>
+</td>
+                    <td>
+                      <span class="badge badge-lg" [ngClass]="{
                             'bg-success-subtle text-success': inspection.estado === 'aprobada',
-                            'bg-warning-subtle text-warning': inspection.estado === 'pendiente',
+                            'bg-warning-subtle text-warning': inspection.estado === 'borrador',
                             'bg-danger-subtle text-danger': inspection.estado === 'rechazada',
                             'bg-primary-subtle text-primary': !inspection.estado
                           }">
-                      {{ inspection.estado || 'Pendiente' | titlecase }}
-                    </span>
-                  </td>
-                  <td>
-                    <div class="btn-group float-end" (click)="$event.stopPropagation()">
-                      <button class="btn btn-subtle-primary btn-sm btn-shadow btn-icon waves-effect dropdown-toggle"
-                        type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="fi fi-rr-menu-dots"></i>
-                      </button>
-                      <ul class="dropdown-menu dropdown-menu-end">
-                        <li>
-                          <a class="dropdown-item" [routerLink]="['/detail', inspection.id]"
-                            (click)="$event.stopPropagation()">
-                            <i class="fi fi-rr-edit me-2"></i>Editar
-                          </a>
-                        </li>
-                        <li><a class="dropdown-item text-danger" href="javascript:void(0);"
-                            (click)="$event.stopPropagation(); deleteInspection(inspection.id)">
-                            <i class="fi fi-rr-trash me-2"></i>Eliminar
-                          </a></li>
-                      </ul>
-                    </div>
-                  </td>
-                </tr>
+                        {{ inspection.estado || 'borrador' | titlecase }}
+                      </span>
+                    </td>
+                    <td>
+                      <div class="btn-group float-end" (click)="$event.stopPropagation()">
+                        <button class="btn btn-subtle-primary btn-sm btn-shadow btn-icon waves-effect dropdown-toggle"
+                          type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                          <i class="fi fi-rr-menu-dots"></i>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                          <li>
+                            <a class="dropdown-item" [routerLink]="['/detail', inspection.id]"
+                              (click)="$event.stopPropagation()">
+                              <i class="fi fi-rr-edit me-2"></i>Editar
+                            </a>
+                          </li>
+                          <li><a class="dropdown-item text-danger" href="javascript:void(0);"
+                              (click)="$event.stopPropagation(); deleteInspection(inspection.id)">
+                              <i class="fi fi-rr-trash me-2"></i>Eliminar
+                            </a></li>
+                        </ul>
+                      </div>
+                    </td>
+                  </tr>
 
-              </tbody>
+                </tbody>
               </table>
             </div>
           </div>
@@ -291,142 +311,142 @@
 
   </div>
 
-    <!-- Floating Action Button for Mobile/Tablet -->
-    <div class="floating-action d-lg-none">
-      <input type="checkbox" id="fab-check" class="fab-check">
-      <label class="fab" for="fab-check">
-        <span class="fab-icon">+</span>
-        <span class="fab-icon-close">×</span>
-      </label>
-      <div class="fab-options">
+  <!-- Floating Action Button for Mobile/Tablet -->
+  <div class="floating-action d-lg-none">
+    <input type="checkbox" id="fab-check" class="fab-check">
+    <label class="fab" for="fab-check">
+      <span class="fab-icon">+</span>
+      <span class="fab-icon-close">×</span>
+    </label>
+    <div class="fab-options">
 
-        <a routerLink="/busetas" class="fab-option">
-          <span class="fab-label ">Busetas</span>
-          <span class="fab-option-icon ">1</span>
-        </a>
-        <a routerLink="/nueva" class="fab-option">
-          <span class="fab-label">Camioneta</span>
-          <span class="fab-option-icon">2</span>
-        </a>
-        <a (click)="pending()" class="fab-option">
-          <span class="fab-label text-warning">Pesados</span>
-          <span class="fab-option-icon">3</span>
-        </a>
-      </div>
+      <a routerLink="/busetas" class="fab-option">
+        <span class="fab-label ">Busetas</span>
+        <span class="fab-option-icon ">1</span>
+      </a>
+      <a routerLink="/nueva" class="fab-option">
+        <span class="fab-label">Camioneta</span>
+        <span class="fab-option-icon">2</span>
+      </a>
+      <a (click)="pending()" class="fab-option">
+        <span class="fab-label text-warning">Pesados</span>
+        <span class="fab-option-icon">3</span>
+      </a>
     </div>
+  </div>
 
-    <style>
+  <style>
+    .floating-action {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      z-index: 1000;
+    }
+
+    .fab {
+      width: 56px;
+      height: 56px;
+      background-color: var(--bs-primary);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 2rem;
+      font-weight: 300;
+      cursor: pointer;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+      transition: all 0.3s ease;
+      user-select: none;
+      position: relative;
+    }
+
+    .fab:hover {
+      background-color: var(--bs-primary);
+      transform: scale(1.1);
+    }
+
+    .fab-icon-close {
+      position: absolute;
+      opacity: 0;
+      transform: rotate(-45deg);
+      transition: all 0.3s ease;
+    }
+
+    .fab-check:checked+.fab .fab-icon {
+      opacity: 0;
+      transform: rotate(45deg);
+    }
+
+    .fab-check:checked+.fab .fab-icon-close {
+      opacity: 1;
+      transform: rotate(0);
+    }
+
+    .fab-check:checked+.fab {
+      background-color: var(--bs-primary);
+    }
+
+    .fab-check:checked+.fab:hover {
+      background-color: var(--bs-primary);
+    }
+
+    .fab-check {
+      display: none;
+    }
+
+    .fab-options {
+      position: absolute;
+      bottom: 70px;
+      right: 0;
+      opacity: 0;
+      transform: scale(0);
+      transform-origin: bottom right;
+      transition: all 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .fab-check:checked~.fab-options {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .fab-option {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      text-decoration: none;
+      color: #333;
+    }
+
+    .fab-label {
+      background: white;
+      padding: 8px 12px;
+      border-radius: 20px;
+      margin-right: 10px;
+      font-size: 0.85rem;
+      white-space: nowrap;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .fab-option-icon {
+      width: 40px;
+      height: 40px;
+      background-color: var(--bs-primary);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: bold;
+    }
+
+    @media (min-width: 992px) {
       .floating-action {
-        position: fixed;
-        bottom: 2rem;
-        right: 2rem;
-        z-index: 1000;
-      }
-
-      .fab {
-        width: 56px;
-        height: 56px;
-        background-color: var(--bs-primary) ;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: white;
-        font-size: 2rem;
-        font-weight: 300;
-        cursor: pointer;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-        transition: all 0.3s ease;
-        user-select: none;
-        position: relative;
-      }
-
-      .fab:hover {
-        background-color: var(--bs-primary);
-        transform: scale(1.1);
-      }
-
-      .fab-icon-close {
-        position: absolute;
-        opacity: 0;
-        transform: rotate(-45deg);
-        transition: all 0.3s ease;
-      }
-
-      .fab-check:checked+.fab .fab-icon {
-        opacity: 0;
-        transform: rotate(45deg);
-      }
-
-      .fab-check:checked+.fab .fab-icon-close {
-        opacity: 1;
-        transform: rotate(0);
-      }
-
-      .fab-check:checked+.fab {
-        background-color: var(--bs-primary);
-      }
-
-      .fab-check:checked+.fab:hover {
-        background-color: var(--bs-primary);
-      }
-
-      .fab-check {
         display: none;
       }
-
-      .fab-options {
-        position: absolute;
-        bottom: 70px;
-        right: 0;
-        opacity: 0;
-        transform: scale(0);
-        transform-origin: bottom right;
-        transition: all 0.3s ease;
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-      }
-
-      .fab-check:checked~.fab-options {
-        opacity: 1;
-        transform: scale(1);
-      }
-
-      .fab-option {
-        display: flex;
-        align-items: center;
-        justify-content: flex-end;
-        text-decoration: none;
-        color: #333;
-      }
-
-      .fab-label {
-        background: white;
-        padding: 8px 12px;
-        border-radius: 20px;
-        margin-right: 10px;
-        font-size: 0.85rem;
-        white-space: nowrap;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-      }
-
-      .fab-option-icon {
-        width: 40px;
-        height: 40px;
-        background-color: var(--bs-primary);
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: white;
-        font-weight: bold;
-      }
-
-      @media (min-width: 992px) {
-        .floating-action {
-          display: none;
-        }
-      }
-    </style>
+    }
+  </style>
 </main>

@@ -99,13 +99,14 @@
                         date:'dd/MM/yyyy') : 'N/A' }}</span>
                     </td>
                     <td>
-                      <span class="badge" [ngClass]="{
-                            'bg-success': inspection.status === 'approved',
-                            'bg-warning': inspection.status === 'rejected',
-                            'bg-soft-primary': !['approved', 'rejected'].includes(inspection.status || '')
+                      <span class="badge badge-lg" [ngClass]="{
+                            'bg-success-subtle text-success': inspection.estado === 'aprobada',
+                            'bg-warning-subtle text-warning': inspection.estado === 'borrador',
+                            'bg-danger-subtle text-danger': inspection.estado === 'rechazada',
+                            'bg-primary-subtle text-primary': !inspection.estado
                           }">
-                        {{ inspection.status || 'N/A' }}
-                      </span>
+                      {{ inspection.estado || 'borrador' | titlecase }}
+                    </span>
                     </td>
                     <td class="text-center">
                       <div class="d-flex gap-2 justify-content-center">

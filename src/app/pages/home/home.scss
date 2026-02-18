@@ -38,3 +38,27 @@
     color: #0f0369;
   }
 }
+// En detail.scss
+:host ::ng-deep {
+  .table-responsive {
+    min-height: 250px !important;
+  }
+  
+  .inspection-row {
+    height: 65px !important;
+  }
+  
+  .dropdown-menu {
+    z-index: 9999 !important;
+  }
+}
+td a {
+  color: #25D366; // Color WhatsApp
+  font-weight: 500;
+  transition: all 0.2s;
+  
+  &:hover {
+    color: #128C7E;
+    text-decoration: underline !important;
+  }
+}

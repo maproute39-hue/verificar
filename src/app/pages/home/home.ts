@@ -81,6 +81,39 @@ export class Home implements OnInit {
       }
     });
   }
+  formatPhone(phone: string | undefined | null): string {
+  // ✅ Manejar todos los casos
+  if (!phone || phone.trim() === '') {
+    return 'Sin teléfono';
+  }
+  
+  // Limpiar el número (quitar todo lo que no sea dígito)
+  const clean = phone.replace(/\D/g, '');
+  
+  // Si está vacío después de limpiar
+  if (clean.length === 0) {
+    return 'Sin teléfono';
+  }
+  
+  // Formato colombiano móvil: (300) 123 4567
+  if (clean.length === 10) {
+    return `(${clean.slice(0, 3)}) ${clean.slice(3, 6)} ${clean.slice(6)}`;
+  }
+  
+  // Teléfono fijo: (123) 4567
+  if (clean.length === 7) {
+    return `(${clean.slice(0, 3)}) ${clean.slice(3)}`;
+  }
+  
+  // Si tiene el 57 al inicio (12 dígitos)
+  if (clean.length === 12 && clean.startsWith('57')) {
+    const without57 = clean.slice(2);
+    return `(${without57.slice(0, 3)}) ${without57.slice(3, 6)} ${without57.slice(6)}`;
+  }
+  
+  // Retornar original si no coincide
+  return phone;
+}
 
   /**
    * Detiene la propagación del evento para evitar que se active el click en la fila
