@@ -15100,6 +15100,10 @@ strong {
   min-width: 175px !important;
 }
 
+.minw-180px {
+  min-width: 180px !important;
+}
+
 .maxw-175px {
   max-width: 175px !important;
 }
