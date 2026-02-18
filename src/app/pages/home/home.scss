@@ -11,14 +11,7 @@
   }
 
   // Asegurar que las celdas tengan un fondo blanco para el efecto de elevación
-  td {
-    background-color: #fff;
-    transition: background-color 0.3s ease;
-  }
 
-  &:hover td {
-    background-color: #f8f9fa;
-  }
 }
 
 // Asegurar que los botones dentro de la fila no afecten el cursor
@@ -61,4 +54,8 @@ td a {
     color: #128C7E;
     text-decoration: underline !important;
   }
+}
+.text-blue{
+  color: #1300af !important;
+  font-weight: 900;
 }

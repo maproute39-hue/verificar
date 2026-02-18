@@ -20,10 +20,10 @@
       <div class="col-xxl-6 col-lg-6  col-5">
         <div class="row">
           <div class=" ">
-            <div class="card">
+            <div class="card" style="min-height: 200px;">
               <div class="card-header d-flex align-items-center justify-content-between border-0 pb-0">
                 <div class="clearfix">
-                  <h6>TOTAL REVISIONES</h6>
+                  <h6> REVISIONES, TOTAL:</h6>
                 </div>
                 <div class="d-none d-lg-flex align-items-center gap-2 position-relative">
                   <input type="checkbox" id="desktop-fab-check" class="fab-check">
@@ -51,15 +51,23 @@
 
               <div class="card-body py-0 d-flex align-items-start justify-content-between">
                 <div class="d-flex align-items-center gap-2">
-                  <h2 class="mb-0">{{ totalInspections | number:'1.0-0' }}</h2>
+                  <h2 class="mb-0 text-blue">{{ totalInspections | number:'1.0-0' }}</h2>
 
                 </div>
+                
+                
                 <div id="chartContacts" class="mb-n4 mt-n3"></div>
+                
               </div>
+              
               <div class="card-footer border-0 pt-0 mt-n1">
                 <div class="border-top pb-2"></div>
                 <div class="d-flex align-items-center justify-content-between">
-                  <p class="mb-0">Últimas del mes: {{ currentMonthInspections | number:'1.0-0' }}</p>
+                  <p class="mb-0">Este mes:
+                    <span class="text-blue" style="font-size: 20px;">
+                    {{ currentMonthInspections | number:'1.0-0' }}  
+                    </span></p>
+
 
                   <a class="btn-link">
                     <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -198,7 +206,7 @@
 
       <div class="col-xxl-12">
         <div class="card overflow-hidden">
-          <div class="card-header d-flex flex-wrap gap-3 align-items-center justify-content-between border-0 pb-0">
+          <!-- <div class="card-header d-flex flex-wrap gap-3 align-items-center justify-content-between border-0 pb-0">
             <h6 class="card-title mb-0">Inspecciones recientes</h6>
             <div class="d-flex flex-wrap gap-2">
               <div id="dt_NewCustomers_Search"></div>
@@ -206,15 +214,24 @@
                 <i class="fi fi-rr-eye text-2xs me-1"></i> Ver todas
               </button>
             </div>
-          </div>
+          </div> -->
+          <div class="card-header d-flex align-items-center justify-content-between border-0 pb-0" style="flex-wrap: nowrap;">
+  <h6 class="card-title mb-0">Recientes</h6>
+  <div class="d-flex align-items-center gap-2">
+    <div id="dt_NewCustomers_Search"></div>
+    <button type="button" class="btn btn-primary waves-effect waves-light" routerLink="/inspections">
+      <i class="fi fi-rr-eye text-2xs me-1"></i> Ver todas
+    </button>
+  </div>
+</div>
           <div class="card-body px-1 pt-2 pb-2">
             <div class="table-responsive">
-              <table id="dt_NewCustomers" class="table table-sm display table-row-rounded data-row-checkbox">
-                <thead class="table-light">
+              <table id="dt_NewCustomers" class="table table-border-bottom-0 mb-0">
+                <thead >
                   <tr>
-                    <th class="minw-150px">Placa</th>
+                    <th class="minw-75px">Placa</th>
 
-                    <th class="minw-200px">Teléfono</th>
+                    <th class="minw-175px">Teléfono</th>
                     <th class="minw-200px">Conductor</th>
                     <th class="minw-125px">Fecha</th>
 
