@@ -212,45 +212,35 @@
               <table id="dt_NewCustomers" class="table table-sm display table-row-rounded data-row-checkbox">
                 <thead class="table-light">
                   <tr>
-                
-                     <th class="minw-200px">Teléfono</th>
                     <th class="minw-150px">Placa</th>
+
+                    <th class="minw-200px">Teléfono</th>
                     <th class="minw-200px">Conductor</th>
                     <th class="minw-125px">Fecha</th>
-                   
+
                     <th>Status</th>
                     <th>Accion</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let inspection of RealtimeInspectionsService.inspections$ | async"
-                   class="inspection-row">
-                    <!-- <td class="pe-0" (click)="$event.stopPropagation()">
-                      <div class="form-check p-0 w-auto d-inline-block mb-0 mb-n1">
-                        <input class="form-check-input m-0" data-checkbox="" type="checkbox"
-                          (click)="$event.stopPropagation()">
-                      </div>
-                    </td> --><td>
-  <div class="phone-cell">
-    <div class="d-flex align-items-center mb-1">
-      <i class="fi fi-rr-phone me-2 text-primary"></i>
-     
-      <span>{{ formatPhone(inspection.telefono) }}</span>
-       <a 
-      *ngIf="inspection.whatsapp"
-      [href]="'https://wa.me/57' + inspection.telefono?.replace(/\D/g, '')" 
-      target="_blank"
-      class="whatsapp-link btn btn-sm btn-success-subtle"
-      title="Contactar por WhatsApp"
-    >
-      <i class="fi fi-brands-whatsapp me-1"></i>
-      
-    </a>
-    </div>
-    
-  </div>
-</td>
+                  <tr *ngFor="let inspection of RealtimeInspectionsService.inspections$ | async" class="inspection-row">
                     <td (click)="viewInspection(inspection.id)">{{ inspection.placa || 'Sin placa' }}</td>
+                    <td>
+                      <div class="phone-cell">
+                        <div class="d-flex align-items-center mb-1">
+                          <i class="fi fi-rr-phone me-2 text-primary"></i>
+
+                          <span>{{ formatPhone(inspection.telefono) }}</span>
+                          <a *ngIf="inspection.whatsapp"
+                            [href]="'https://wa.me/57' + inspection.telefono?.replace(/\D/g, '')" target="_blank"
+                            class="whatsapp-link btn btn-sm btn-success-subtle" title="Contactar por WhatsApp">
+                            <i class="fi fi-brands-whatsapp me-1"></i>
+
+                          </a>
+                        </div>
+
+                      </div>
+                    </td>
 
                     <td (click)="viewInspection(inspection.id)">
                       <div class="d-flex align-items-center">
@@ -261,7 +251,8 @@
                         {{ inspection.nombres_conductor || 'Sin nombre' }}
                       </div>
                     </td>
-                    <td  (click)="viewInspection(inspection.id)" >{{ (inspection.fecha_inspeccion | date: 'dd/MM/yyyy') || 'Sin fecha' }}</td>
+                    <td (click)="viewInspection(inspection.id)">{{ (inspection.fecha_inspeccion | date: 'dd/MM/yyyy') ||
+                      'Sin fecha' }}</td>
 
                     <td (click)="viewInspection(inspection.id)">
                       <span class="badge badge-lg" [ngClass]="{
