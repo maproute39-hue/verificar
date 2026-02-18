@@ -14025,7 +14025,7 @@ strong {
   position: absolute;
   top: 0;
   left: 0;
-  background: linear-gradient(180deg, rgba(var(--bs-primary-rgb), 0.85) 0%, rgba(var(--bs-info-rgb), 0.95) 100%);
+  background: linear-gradient(180deg, rgba(var(--bs-primary-rgb), 0.55) 0%, rgba(var(--bs-info-rgb), 0.55) 100%);
 }
 .ovarlay-primary-gradient > * {
   z-index: 1;
