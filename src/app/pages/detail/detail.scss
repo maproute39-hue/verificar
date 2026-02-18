@@ -1,36 +1,172 @@
-.nav-link{
-font-size: 13px !important;
+// === ESTILOS DE NAVEGACIÓN (tus estilos originales) ===
+.nav-link {
+  font-size: 13px !important;
 }
-.inactive{
-    font-weight: 500 !important;
-    font-size: 16px !important;
+.inactive {
+  font-weight: 500 !important;
+  font-size: 16px !important;
 }
-.active2{
-    color: #0f0175 !important;
-    font-weight: 900 !important;
-    font-size: 16px !important;
+.active2 {
+  color: #0f0175 !important;
+  font-weight: 900 !important;
+  font-size: 16px !important;
 }
-.noaplica{
-    color: #0f0369 !important;
+.noaplica {
+  color: #0f0369 !important;
 }
-.nav-link.active{
-    background-color: #5141cc !important;
+.nav-link.active {
+  background-color: #5141cc !important;
 }
-.nav-link.active:hover{
-    color: white !important;
+.nav-link.active:hover {
+  color: white !important;
 }
-.nav-link:hover{
-    color: #1300af !important;
+.nav-link:hover {
+  color: #1300af !important;
 }
-.titulo{
-    font-size: 16px !important;
-    font-weight: 900 !important;
-    color: white !important;
-    background-color: #0f0369 !important;
-    padding: 0.5rem !important;
-    border-radius: 10px !important;
+.titulo {
+  font-size: 16px !important;
+  font-weight: 900 !important;
+  color: white !important;
+  background-color: #0f0369 !important;
+  padding: 0.5rem !important;
+  border-radius: 10px !important;
 }
-.form-label{
-    color:black !important;
-    font-weight: 700 !important;
-}    
+
+// === GALERÍA DE IMÁGENES (versión corregida) ===
+.image-gallery-section {
+  margin: 30px 0;
+  padding: 20px;
+  background: #f8f9fa;
+  border-radius: 12px;
+}
+
+.image-gallery-section .section-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+  color: #333;
+  font-size: 1.5rem;
+}
+
+.image-gallery-section .section-title .badge {
+  background: #0f0369;
+  color: white;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+}
+
+.image-gallery-section .images-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.image-gallery-section .image-card {
+  cursor: pointer;
+  border-radius: 8px;
+  overflow: hidden;
+  background: white;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.image-gallery-section .image-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+.image-gallery-section .image-card:hover .overlay {
+  opacity: 1;
+}
+
+.image-gallery-section .image-wrapper {
+  position: relative;
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+}
+
+.image-gallery-section .image-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.image-gallery-section .overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(7, 52, 119, 0.8);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s;
+  color: white;
+}
+
+.image-gallery-section .overlay i {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+}
+
+.image-gallery-section .overlay span {
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.image-gallery-section .image-number {
+  padding: 10px;
+  text-align: center;
+  background: white;
+  font-size: 0.9rem;
+  color: #666;
+  border-top: 1px solid #e9ecef;
+}
+
+.image-gallery-section .loading-images,
+.image-gallery-section .no-images {
+  text-align: center;
+  padding: 60px 20px;
+  background: #f8f9fa;
+  border-radius: 12px;
+  color: #666;
+}
+
+.image-gallery-section .loading-images i,
+.image-gallery-section .no-images i {
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+
+.image-gallery-section .no-images i {
+  font-size: 4rem;
+  opacity: 0.5;
+}
+:host ::ng-deep .lb-container {
+  z-index: 9999 !important;
+}
+
+:host ::ng-deep .lb-outerContainer {
+  background-color: transparent !important;
+}
+
+:host ::ng-deep .lb-data .lb-close {
+  display: block !important;
+}
+
+:host ::ng-deep .lb-nav a.lb-prev,
+:host ::ng-deep .lb-nav a.lb-next {
+  opacity: 1 !important;
+}
+
+:host ::ng-deep .lb-data .lb-details {
+  width: 100% !important;
+  text-align: center !important;
+}

@@ -23,12 +23,12 @@
 
 
         <div class="col-12 mb-3">
-          <h6 class="fw-bold border-bottom titulo">DATOS GENERALES</h6>
+          <h6 class="fw-bold border-bottom titulo ">DATOS GENERALES</h6>
         </div>
 
         <div class="row">
           <div class="col-lg-6 mb-3">
-            <label class="form-label">Fecha de Inspección <span class="text-danger">*</span></label>
+            <label class="form-label ">Fecha de Inspección <span class="text-danger">*</span></label>
             <input #fechaInspeccion type="text" class="form-control date-picker" formControlName="fecha_inspeccion"
               placeholder="Seleccione fecha" readonly>
           </div>
@@ -1286,26 +1286,67 @@
             </div>
             <div class="col-12 mb-3" style="margin-top: 10x;">
               <h6 class="fw-bold border-bottom titulo">REGISTRO FOTOGRÁFICO</h6>
-            </div>
-             <div class="col-12 text-end">
+              <!-- Sección de Registro Fotográfico -->
+              <div class="image-gallery-section">
+                <h3 class="section-title">
+                
+                  
+                  <span class="badge" *ngIf="inspectionImages.length > 0">{{ inspectionImages.length }}</span>  <i class="fas fa-images"></i> Fotografías
+                </h3>
 
-          <!-- <button type="button" class="btn btn-primary" (click)="testGotenberg()">
+                <!-- Loading state -->
+                <div *ngIf="isLoadingImages" class="text-center py-4">
+                  <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Cargando...</span>
+                  </div>
+                  <p class="mt-2">Cargando imágenes...</p>
+                </div>
+
+                <!-- Images grid -->
+                <div *ngIf="!isLoadingImages && inspectionImages.length > 0" class="images-grid">
+                  <div *ngFor="let imageUrl of inspectionImages; let i = index" class="image-card"
+                    (click)="openImageModal(imageUrl, i)">
+                    <div class="image-wrapper">
+                      <img [src]="imageUrl" 
+                      [alt]="'Imagen ' + (i + 1)" 
+                      loading="lazy" (error)="onImageError($event)" />
+                      <div class="overlay">
+                        <i class="fas fa-search-plus"></i>
+                        <span>Ver imagen</span>
+                      </div>
+                    </div>  
+                    <!-- <div class="image-number">
+                      Imagen {{ i + 1 }}
+                    </div> -->
+                  </div>
+                </div>
+
+                <!-- No images message -->
+                <div *ngIf="!isLoadingImages && inspectionImages.length === 0" class="no-images">
+                  <i class="fas fa-image"></i>
+                  <p>No hay imágenes disponibles para esta inspección</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 text-end">
+
+              <!-- <button type="button" class="btn btn-primary" (click)="testGotenberg()">
             <i class="fi fi-rr-print"></i> Test Gotenberg
           </button> -->
 
-        
-        </div>
+
+            </div>
           </div>
         </div>
       </div>
 
       <!-- Botón de envío -->
-     
+
     </form>
-     <div class="row mt-4">
-         <button type="button" class="btn btn-primary" (click)="imprimirInspeccion()">
-            <i class="fi fi-rr-print"></i> Imprimir
-          </button>
-      </div>
+    <div class="row mt-4">
+      <button type="button" class="btn btn-primary" (click)="imprimirInspeccion()">
+        <i class="fi fi-rr-print"></i> Imprimir
+      </button>
+    </div>
   </div>
 </main>

@@ -10,6 +10,10 @@ import { InspectionService } from '../../services/inspection.service';
 import { Inspection } from '../../models/inspection.model';
 import { ExcelExportService } from '../../services/excel-export.service';
 import { GotenbergService } from '../../services/gotenberg.service';
+import { LightboxModule, Lightbox } from 'ngx-lightbox';
+import { ChangeDetectorRef } from '@angular/core';
+import { NgZone } from '@angular/core';
+
 
 declare const flatpickr: any;
 
@@ -36,7 +40,7 @@ interface FlatpickrOptions {
 @Component({
   selector: 'app-detail',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule,RouterModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule, LightboxModule],
   templateUrl: './detail.html',
   styleUrls: ['./detail.scss'],
   providers: [DatePipe]
@@ -49,6 +53,9 @@ export class Detail implements OnInit, AfterViewInit {
   @ViewChild('fechaVencimientoSoat') fechaVencimientoSoatInput!: ElementRef<HTMLInputElement>;
   @ViewChild('fechaVencimientoRevisionTecnomecanica') fechaVencimientoRevisionTecnomecanicaInput!: ElementRef<HTMLInputElement>;
   @ViewChild('fechaVencimientoTarjetaOperacion') fechaVencimientoTarjetaOperacionInput!: ElementRef<HTMLInputElement>;
+  inspectionImages: string[] = [];
+  isLoadingImages: boolean = false;
+  private album: any[] = []; // Para ngx-lightbox
 
 
   private flatpickrInstances: any[] = [];
@@ -71,15 +78,21 @@ export class Detail implements OnInit, AfterViewInit {
    * @param datePipe Servicio para formateo de fechas
    */
   constructor(
-   private fb: FormBuilder,
-  private inspectionService: InspectionService,
-  private route: ActivatedRoute,
-  private router: Router,
-  private gotenbergService: GotenbergService,        // ✅ Inyectado
-  private excelExportService: ExcelExportService,    // ✅ Inyectado
-  private datePipe: DatePipe
+    private _lightbox: Lightbox, // ✅ Inyectar Lightbox
+    private cdr: ChangeDetectorRef,  // ✅ Inyectar ChangeDetectorRef
+
+    private fb: FormBuilder,
+    public inspectionService: InspectionService,
+    private route: ActivatedRoute,
+    private router: Router,
+    private gotenbergService: GotenbergService,        // ✅ Inyectado
+    private excelExportService: ExcelExportService,    // ✅ Inyectado
+    private datePipe: DatePipe,
+        private ngZone: NgZone,
+
   ) {
-        this.excelExportService = new ExcelExportService(this.gotenbergService);
+    
+    this.excelExportService = new ExcelExportService(this.gotenbergService);
 
     // Inicialización del formulario principal con sus validaciones
     this.inspectionForm = this.fb.group({
@@ -211,19 +224,341 @@ export class Detail implements OnInit, AfterViewInit {
   /**
    * Inicializa el componente y se suscribe a los cambios en los parámetros de la ruta
    * Se ejecuta cuando el componente es inicializado
-   */
-  async testGotenberg(): Promise<void> {
+   */private preloadImage(url: string): Promise<void> {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.src = url;
+    img.onload = () => resolve();
+    img.onerror = (error) => {
+      console.error('Error al cargar la imagen:', url, error);
+      resolve(); // Resolvemos igualmente para no bloquear el flujo
+    };
+  });
+}
+
+async loadInspectionImages(inspectionId: string): Promise<void> {
+  this.isLoadingImages = true;
+  this.album = []; // Limpiar álbum
+  this.inspectionImages = []; // Limpiar imágenes existentes
+  this.cdr.detectChanges();
+  
   try {
-    // Crear un blob falso de Excel
-    const testBlob = new Blob(['test'], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+    const inspection = await this.inspectionService.pb.collection('inspections').getOne(inspectionId);
+    const imageIds = inspection['images'] || [];
+    const collectionId = '5bjt6wpqfj0rnsl';
     
-    console.log('🔄 Probando conexión con Gotenberg...');
-    const result = await this.gotenbergService.convertXlsxToPdf(testBlob).toPromise();
-    console.log('✅ Gotenberg responde correctamente', result);
+    if (imageIds.length > 0) {
+      // Pre-cargar imágenes
+      const imagePromises = imageIds.map(async (imageId: string) => {
+        try {
+          const imageRecord = await this.inspectionService.pb.collection('images').getOne(imageId);
+          const filename = imageRecord['image'];
+          
+          if (filename) {
+            const url = this.inspectionService.getImageUrl(collectionId, imageId, filename);
+            
+            // Pre-cargar la imagen
+            await this.preloadImage(url);
+            
+            return {
+              url,
+              imageRecord
+            };
+          }
+          return null;
+        } catch (error) {
+          console.error(`Error al cargar imagen ${imageId}:`, error);
+          return null;
+        }
+      });
+
+      // Esperar a que todas las imágenes se carguen
+      const loadedImages = (await Promise.all(imagePromises)).filter(Boolean);
+      
+      // Actualizar las imágenes y el álbum
+      this.inspectionImages = loadedImages.map(img => img.url);
+      this.album = loadedImages.map((img, index) => ({
+        src: img.url,
+        thumb: img.url,
+        // caption: `Imagen ${index + 1}`
+      }));
+
+      this.cdr.detectChanges();
+    }
   } catch (error) {
-    console.error('❌ Error de conexión:', error);
+    console.error('Error al cargar imágenes:', error);
+    Swal.fire('Error', 'No se pudieron cargar las imágenes', 'error');
+  } finally {
+    this.isLoadingImages = false;
+    this.cdr.detectChanges();
   }
 }
+  async testGotenberg(): Promise<void> {
+    try {
+      // Crear un blob falso de Excel
+      const testBlob = new Blob(['test'], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+
+      console.log('🔄 Probando conexión con Gotenberg...');
+      const result = await this.gotenbergService.convertXlsxToPdf(testBlob).toPromise();
+      console.log('✅ Gotenberg responde correctamente', result);
+    } catch (error) {
+      console.error('❌ Error de conexión:', error);
+    }
+  }
+  /**
+   * Carga las imágenes de la inspección
+   */
+  /**
+   * Maneja errores al cargar imágenes
+   */
+  onImageError(event: any): void {
+    event.target.src = 'assets/images/placeholder.jpg'; // Imagen placeholder
+    event.target.onerror = null; // Evitar bucle infinito
+  }
+  // async loadInspectionImages(inspectionId: string): Promise<void> {
+  //   this.isLoadingImages = true;
+
+  //   try {
+  //     // Obtener la inspección con imágenes expandidas
+  //     const inspection = await this.inspectionService.pb.collection('inspections').getOne(inspectionId, {
+  //       expand: 'images'
+  //     });
+
+  //     const collectionId = '5bjt6wpqfj0rnsl'; // ID de la colección 'images'
+
+  //     if (inspection.expand?.['images']) {
+  //       const images = Array.isArray(inspection.expand['images']) 
+  //         ? inspection.expand['images'] 
+  //         : [inspection.expand['images']];
+
+  //       // Construir URLs y álbum para lightbox
+  //       this.inspectionImages = images.map((img: any) => {
+  //         const url = this.inspectionService.getImageUrl(collectionId, img.id, img.image);
+
+  //         // Agregar al álbum para lightbox
+  //         this.album.push({
+  //           src: url,
+  //           thumb: url,
+  //           caption: `Imagen de inspección`
+  //         });
+
+  //         return url;
+  //       });
+  //     }
+
+  //     console.log('Imágenes cargadas:', this.inspectionImages.length);
+
+  //   } catch (error) {
+  //     console.error('Error al cargar imágenes:', error);
+  //     Swal.fire('Error', 'No se pudieron cargar las imágenes', 'error');
+  //   } finally {
+  //     this.isLoadingImages = false;
+  //   }
+  // }
+  // async loadInspectionImages(inspectionId: string): Promise<void> {
+  //   this.isLoadingImages = true;
+  //   this.album = []; // Limpiar álbum
+
+  //   try {
+  //     // Obtener la inspección (sin expand, ya tenemos los IDs)
+  //     const inspection = await this.inspectionService.pb.collection('inspections').getOne(inspectionId);
+
+  //     const imageIds = inspection['images'] || [];
+  //     const collectionId = '5bjt6wpqfj0rnsl'; // ID de la colección 'images'
+
+  //     console.log('IDs de imágenes:', imageIds);
+
+  //     if (imageIds.length > 0) {
+  //       // Cargar cada imagen individualmente
+  //       for (const imageId of imageIds) {
+  //         try {
+  //           const imageRecord = await this.inspectionService.pb.collection('images').getOne(imageId);
+
+  //           // El campo 'image' contiene el nombre del archivo
+  //           const filename = imageRecord['image'];
+
+  //           if (filename) {
+  //             const url = this.inspectionService.getImageUrl(collectionId, imageId, filename);
+
+  //             this.inspectionImages.push(url);
+  //             this.album.push({
+  //               src: url,
+  //               thumb: url,
+  //               caption: `Imagen ${this.inspectionImages.length}`
+  //             });
+  //           }
+  //         } catch (error) {
+  //           console.error(`Error al cargar imagen ${imageId}:`, error);
+  //         }
+  //       }
+  //     }
+
+  //     console.log('Imágenes cargadas:', this.inspectionImages.length);
+  //     console.log('Álbum:', this.album);
+
+  //   } catch (error) {
+  //     console.error('Error al cargar imágenes:', error);
+  //     Swal.fire('Error', 'No se pudieron cargar las imágenes', 'error');
+  //   } finally {
+  //     this.isLoadingImages = false;
+  //   }
+  // }
+  // async loadInspectionImages(inspectionId: string): Promise<void> {
+  //   this.isLoadingImages = true;
+  //   this.album = []; // Limpiar álbum
+  //   this.inspectionImages = []; // Limpiar imágenes existentes
+
+  //   // Forzar la detección de cambios
+  //   this.cdr.detectChanges();
+
+  //   try {
+  //     // Obtener la inspección (sin expand, ya tenemos los IDs)
+  //     const inspection = await this.inspectionService.pb.collection('inspections').getOne(inspectionId);
+
+  //     const imageIds = inspection['images'] || [];
+  //     const collectionId = '5bjt6wpqfj0rnsl'; // ID de la colección 'images'
+
+  //     console.log('IDs de imágenes:', imageIds);
+
+  //     if (imageIds.length > 0) {
+  //       // Cargar cada imagen individualmente
+  //       for (const imageId of imageIds) {
+  //         try {
+  //           const imageRecord = await this.inspectionService.pb.collection('images').getOne(imageId);
+
+  //           // El campo 'image' contiene el nombre del archivo
+  //           const filename = imageRecord['image'];
+
+  //           if (filename) {
+  //             const url = this.inspectionService.getImageUrl(collectionId, imageId, filename);
+
+  //             this.inspectionImages = [...this.inspectionImages, url];
+  //             this.album = [...this.album, {
+  //               src: url,
+  //               thumb: url,
+  //               caption: `Imagen ${this.inspectionImages.length}`
+  //             }];
+
+  //             // Forzar la detección de cambios después de cada imagen
+  //             this.cdr.detectChanges();
+  //           }
+  //         } catch (error) {
+  //           console.error(`Error al cargar imagen ${imageId}:`, error);
+  //         }
+  //       }
+  //     }
+
+  //     console.log('Imágenes cargadas:', this.inspectionImages.length);
+
+  //   } catch (error) {
+  //     console.error('Error al cargar imágenes:', error);
+  //     Swal.fire('Error', 'No se pudieron cargar las imágenes', 'error');
+  //   } finally {
+  //     this.isLoadingImages = false;
+  //     // Forzar la detección de cambios final
+  //     this.cdr.detectChanges();
+  //   }
+  // }
+  /**
+   * Abre el lightbox en una imagen específica
+   */
+openImageModal(imageUrl: string, index: number): void {
+  // Crear array de imágenes para navegación
+  const images = this.inspectionImages;
+  
+  let currentIndex = index;
+  
+  const showImage = () => {
+   Swal.fire({
+  title: `Imagen ${currentIndex + 1} de ${images.length}`,
+  imageUrl: images[currentIndex],
+  imageAlt: 'Imagen de inspección',
+  imageWidth: '100%',
+  imageHeight: 'auto',
+  showConfirmButton: true,
+  confirmButtonText: 'Anterior',
+  confirmButtonColor: '#0f0369', // Color azul para el botón Anterior
+  showCancelButton: currentIndex > 0,
+  cancelButtonText: 'Cerrar',
+  cancelButtonColor: '#d33',     // Color rojo para el botón Cerrar
+  showDenyButton: currentIndex < images.length - 1,
+  denyButtonText: 'Siguiente',
+  denyButtonColor: '#5cb85c',    // Color verde para el botón Siguiente
+  background: 'rgba(0,0,0,0.95)',
+  padding: '0',
+  width: '90%',
+  customClass: {
+    container: 'image-modal-fullscreen',
+    image: 'modal-image'
+  },
+  didOpen: () => {
+    // Agregar estilos personalizados
+    const style = document.createElement('style');
+    style.textContent = `
+      .image-modal-fullscreen {
+        z-index: 9999 !important;
+      }
+      .modal-image {
+        max-height: 80vh !important;
+        object-fit: contain !important;
+      }
+      /* Estilos personalizados para los botones */
+      .swal2-styled.swal2-confirm {
+        background-color: #0f0369 !important;
+      }
+      .swal2-styled.swal2-deny {
+        background-color: #5cb85c !important;
+      }
+      .swal2-styled.swal2-cancel {
+        background-color: #d33 !important;
+      }
+      /* Cambiar color al pasar el mouse */
+      .swal2-styled.swal2-confirm:hover {
+        background-color: #0f0369 !important;
+      }
+      .swal2-styled.swal2-deny:hover {
+        background-color: #4cae4c !important;
+      }
+      .swal2-styled.swal2-cancel:hover {
+        background-color: #c12e2e !important;
+      }
+    `;
+    document.head.appendChild(style);
+  },
+  preConfirm: () => {
+    return Swal.getDenyButton() ? 'next' : 'prev';
+  }
+}).then((result) => {
+      if (result.isDenied && currentIndex < images.length - 1) {
+        currentIndex++;
+        showImage();
+      } else if (result.isConfirmed && currentIndex > 0) {
+        currentIndex--;
+        showImage();
+      }
+    });
+  };
+  
+  showImage();
+}
+  
+  openLightbox(index: number): void {
+    // ✅ Ejecutar fuera de Angular zone y luego volver
+    this.ngZone.runOutsideAngular(() => {
+      setTimeout(() => {
+        this.ngZone.run(() => {
+          this._lightbox.open(this.album, index);
+          this.cdr.detectChanges();
+        });
+      }, 10);
+    });
+  }
+  /**
+   * Cierra el lightbox
+   */
+  closeLightbox(): void {
+    this._lightbox.close();
+  }
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
       const id = params.get('id');
@@ -250,20 +585,64 @@ export class Detail implements OnInit, AfterViewInit {
    * Carga los datos de una inspección existente desde el servidor
    * @param id Identificador único de la inspección a cargar
    */
+  // private loadInspection(id: string): void {
+  //   this.isLoading = true;  // Activa el indicador de carga
+  //   this.inspectionService.getInspectionById(id).subscribe({
+  //     next: (data) => {
+  //       // Al recibir los datos, los asigna al formulario
+  //       this.inspectionData = data;
+  //       this.prepareFormData(data);
+  //       this.isLoading = false;  // Desactiva el indicador de carga
+  //     },
+  //     error: (error) => {
+  //       console.error('Error al cargar la inspección:', error);
+  //       // Muestra un mensaje de error al usuario
+  //       Swal.fire('Error', 'No se pudo cargar la inspección', 'error');
+  //       // Redirige al listado de inspecciones
+  //       this.router.navigate(['/inspections']);
+  //     }
+  //   });
+  // }
+  //   private loadInspection(id: string): void {
+  //   this.isLoading = true;
+
+  //   this.inspectionService.getInspectionById(id).subscribe({
+  //     next: (data) => {
+  //       this.inspectionData = data;
+  //       this.prepareFormData(data);
+  //       this.isLoading = false;
+
+  //       // ✅ Cargar imágenes después de cargar la inspección
+  //       this.loadInspectionImages(id);
+  //     },
+  //     error: (error) => {
+  //       console.error('Error al cargar la inspección:', error);
+  //       Swal.fire('Error', 'No se pudo cargar la inspección', 'error');
+  //       this.router.navigate(['/inspections']);
+  //     }
+  //   });
+  // }
   private loadInspection(id: string): void {
-    this.isLoading = true;  // Activa el indicador de carga
+    this.isLoading = true;
+
     this.inspectionService.getInspectionById(id).subscribe({
-      next: (data) => {
-        // Al recibir los datos, los asigna al formulario
+      next: async (data) => {
         this.inspectionData = data;
         this.prepareFormData(data);
-        this.isLoading = false;  // Desactiva el indicador de carga
+        this.isLoading = false;
+
+        // Esperar un pequeño retraso para asegurar que la vista se ha actualizado
+        await new Promise(resolve => setTimeout(resolve, 100));
+
+        // Cargar imágenes después de cargar la inspección
+        await this.loadInspectionImages(id);
+
+        // Forzar la detección de cambios
+        this.cdr.detectChanges();
       },
       error: (error) => {
         console.error('Error al cargar la inspección:', error);
-        // Muestra un mensaje de error al usuario
         Swal.fire('Error', 'No se pudo cargar la inspección', 'error');
-        // Redirige al listado de inspecciones
         this.router.navigate(['/inspections']);
       }
     });
@@ -442,7 +821,7 @@ export class Detail implements OnInit, AfterViewInit {
   // imprimirInspeccion(): void {
   //   window.print();
   // }
- async imprimirInspeccion(): Promise<void> {
+  async imprimirInspeccion(): Promise<void> {
     try {
       // Mostrar SweetAlert de carga
       Swal.fire({
@@ -505,7 +884,7 @@ export class Detail implements OnInit, AfterViewInit {
       Swal.close();
 
       console.error('Error al generar PDF:', error);
-      
+
       // Mostrar mensaje de error al usuario
       const errorMessage = error instanceof Error ? error.message : 'Error al generar el PDF';
       Swal.fire({

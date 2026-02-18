@@ -1543,8 +1543,48 @@
                 </div>
               </div>
             </div>
+            <!-- Agrega esto en el Paso 4 donde tengas el registro fotográfico -->
+<div class="image-upload-section" *ngIf="currentStep === 4">
+  <h5>Registro Fotográfico</h5>
+  
+  <div class="form-group">
+    <label for="images">Seleccionar imágenes:</label>
+    <input 
+      type="file" 
+      id="images"
+      #fileInput
+      multiple 
+      accept="image/*" 
+      (change)="onFilesSelected($event)"
+      class="form-control"
+      [disabled]="isUploadingImages"
+    />
+    <small class="text-muted">Puedes seleccionar múltiples imágenes (máx 5MB cada una)</small>
+  </div>
+  
+  <!-- Preview de imágenes -->
+  <div class="selected-images" *ngIf="imagePreviews.length > 0">
+    <div *ngFor="let preview of imagePreviews; let i = index" class="image-preview">
+      <img [src]="preview" alt="Preview {{i}}">
+      <button 
+        type="button" 
+        (click)="removeImage(i)" 
+        class="btn-remove"
+        [disabled]="isUploadingImages"
+      >
+        ×
+      </button>
+    </div>
+  </div>
+  
+  <!-- Contador -->
+  <div class="image-count" *ngIf="selectedFiles.length > 0">
+    {{ selectedFiles.length }} imagen(es) seleccionada(s)
+  </div>
+</div>
           </div>
         </div>
+        
       </div>
 
       <!-- NAVIGATION BUTTONS -->
@@ -1605,7 +1645,7 @@
   
   .nav-pills .nav-link.active {
     color: #fff;
-    background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%);
+    background: linear-gradient(135deg, #0f0369 0%, #0a58ca 100%);
     border-color: #0a58ca;
     box-shadow: 0 2px 8px rgba(13, 110, 253, 0.3);
     font-weight: 600;
@@ -1683,7 +1723,7 @@
   
   /* Estilos para el texto "NO APLICA" */
   .noaplica {
-    color: #0d6efd;
+    color: #0f0369;
     font-weight: 600;
     position: relative;
     padding-left: 24px;
@@ -1727,8 +1767,8 @@
   
   .nav-pills .nav-link.active {
     color: #fff;
-    background-color: #0d6efd;
-    border-left-color: #0d6efd;
+    background-color: #0f0369;
+    border-left-color: #0f0369;
   }
   
   .nav-pills .nav-link.disabled {
@@ -1755,7 +1795,7 @@
   }
   
   .noaplica {
-    color: #0d6efd;
+    color: #0f0369;
     font-weight: bold;
   }
 </style> -->

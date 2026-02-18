@@ -8,13 +8,80 @@ import PocketBase from 'pocketbase';
   providedIn: 'root'
 })
 export class InspectionService {
-  private pb: PocketBase;
+  public pb: PocketBase;
   private readonly COLLECTION = 'inspections';
   
   constructor() {
     this.pb = new PocketBase('https://db.buckapi.site:8095');
   }
+  // async uploadImage(file: File, metadata?: {
+  //   type?: string;
+  //   inspectionId?: string;
+  //   userId?: string;
+  //   description?: string;
+  // }): Promise<string> {
+  //   try {
+  //     // Preparar datos del record en la colección 'images'
+  //     const formData = new FormData();
+  //     formData.append('image', file); // 'image' debe coincidir con el campo file en PocketBase
+      
+  //     // Campos adicionales opcionales
+  //     if (metadata?.type) formData.append('type', metadata.type);
+  //     if (metadata?.inspectionId) formData.append('inspection_id', metadata.inspectionId);
+  //     // if (metadata?.userId) formData.append('user_id', metadata.userId);
+  //     if (metadata?.description) formData.append('description', metadata.description);
+  //     // formData.append('uploaded_at', new Date().toISOString());
 
+  //     // Crear el record en la colección 'images'
+  //     const record = await this.pb.collection('images').create(formData);
+      
+  //     // Retornar el ID de la imagen subida
+  //     return record.id;
+      
+  //   } catch (error: any) {
+  //     console.error('Error al subir imagen:', error);
+  //     throw new Error(error.message || 'Error al subir la imagen');
+  //   }
+  // }
+async uploadImage(file: File, metadata?: any): Promise<string> {
+  try {
+    const data: any = {
+      image: file, // ← Solo el archivo
+    };
+
+    console.log('📤 Subiendo imagen:', file.name);
+    console.log('📦 Datos:', data);
+
+    const record = await this.pb.collection('images').create(data);
+    
+    console.log('✅ Imagen subida con ID:', record.id);
+    return record.id;
+    
+  } catch (error: any) {
+    console.error('❌ Error al subir imagen:', error);
+    console.error('Response:', error.response);
+    console.error('Data:', error.data);
+    throw new Error(error.message || 'Error al subir la imagen');
+  }
+}
+  // === MÉTODO PARA SUBIR MÚLTIPLES IMÁGENES ===
+  
+  async uploadMultipleImages(files: File[], metadata?: any): Promise<string[]> {
+    const uploadedIds: string[] = [];
+    
+    for (const file of files) {
+      try {
+        const imageId = await this.uploadImage(file, metadata);
+        uploadedIds.push(imageId);
+      } catch (error) {
+        console.warn(`Falló al subir ${file.name}:`, error);
+        // Opcional: decidir si continuar o lanzar error
+        // throw error; // Descomenta si quieres que falle todo si una imagen falla
+      }
+    }
+    
+    return uploadedIds;
+  }
   // CREATE - Crear nueva inspección
   createInspection(data: CreateInspectionDTO): Observable<Inspection> {
     return from(this.pb.collection(this.COLLECTION).create(data)).pipe(
@@ -61,7 +128,51 @@ export class InspectionService {
       map(response => response.items)
     );
   }
+// inspection.service.ts
 
+// // Método para obtener URL de una imagen
+// getImageUrl(collectionId: string, recordId: string, filename: string, thumb: string = '0x0'): string {
+//   // thumb: '0x0' = tamaño original, '100x100' = thumbnail, etc.
+//   return `${this.pb.baseUrl}/api/files/${collectionId}/${recordId}/${filename}?thumb=${thumb}`;
+// }
+// Método para obtener URL de una imagen
+getImageUrl(collectionId: string, recordId: string, filename: string, thumb: string = '0x0'): string {
+  return `${this.pb.baseUrl}/api/files/${collectionId}/${recordId}/${filename}?thumb=${thumb}`;
+}
+
+// Método para obtener inspección con imágenes expandidas
+getInspectionWithImages(id: string): Observable<any> {
+  return from(
+    this.pb.collection(this.COLLECTION).getOne(id, {
+      expand: 'images' // Esto expande la relación
+    })
+  ).pipe(
+    map(record => record as unknown as any),
+    catchError(this.handleError)
+  );
+}
+
+// Método para obtener URLs de imágenes desde un array de IDs
+async getImageUrls(imageIds: string[]): Promise<string[]> {
+  if (!imageIds || imageIds.length === 0) return [];
+  
+  const urls: string[] = [];
+  const collectionId = '5bjt6wpqfj0rnsl'; // ID de la colección 'images'
+  
+  for (const imageId of imageIds) {
+    try {
+      const record = await this.pb.collection('images').getOne(imageId);
+      // El campo 'image' contiene el filename
+      const filename = record['image'];
+      const url = this.getImageUrl(collectionId, imageId, filename);
+      urls.push(url);
+    } catch (error) {
+      console.error(`Error al obtener imagen ${imageId}:`, error);
+    }
+  }
+  
+  return urls;
+}
   // READ - Obtener inspecciones por estado
   getInspectionsByEstado(estado: string): Observable<Inspection[]> {
     return this.getAllInspections(1, 100, '-created', `estado="${estado}"`).pipe(

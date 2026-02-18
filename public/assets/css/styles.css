@@ -33,7 +33,7 @@ body[data-bs-theme=dark] {
  */
 :root,
 [data-bs-theme=light] {
-  --bs-blue: #0d6efd;
+  --bs-blue: #0f0369;
   --bs-indigo: #6610f2;
   --bs-purple: #6f42c1;
   --bs-pink: #d63384;
@@ -2212,6 +2212,14 @@ progress {
 }
 .form-label {
   margin-bottom: 4px;
+}
+.form-label {
+  color: black !important;
+  font-weight: 700 !important;
+  
+  [data-bs-theme="dark"] & {
+    color: white !important;
+  }
 }
 
 .col-form-label {

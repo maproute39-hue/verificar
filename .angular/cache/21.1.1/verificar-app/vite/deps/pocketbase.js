@@ -1,6 +1,6 @@
 import {
   __spreadValues
-} from "./chunk-OCBFZOLU.js";
+} from "./chunk-VL5VAURS.js";
 
 // node_modules/pocketbase/dist/pocketbase.es.mjs
 var ClientResponseError = class _ClientResponseError extends Error {
