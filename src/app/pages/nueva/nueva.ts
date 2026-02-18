@@ -24,7 +24,7 @@ interface FlatpickrOptions {
   templateUrl: './nueva.html',
   styleUrls: ['./nueva.scss'],
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule,RouterModule,Router]
+  imports: [CommonModule, ReactiveFormsModule,RouterModule]
 })
 export class Nueva implements AfterViewInit, OnInit {
 

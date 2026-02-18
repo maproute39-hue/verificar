@@ -212,46 +212,34 @@
               <table id="dt_NewCustomers" class="table table-sm display table-row-rounded data-row-checkbox">
                 <thead class="table-light">
                   <tr>
-                    <th class="pe-0">
+                    <!-- <th class="pe-0">
                       <div class="form-check">
                         <input class="form-check-input" data-row-checkbox type="checkbox">
                       </div>
-                    </th>
-                    <th class="minw-125px">Fecha</th>
+                    </th> -->
+                     <th class="minw-150px">Telefono</th>
                     <th class="minw-150px">Placa del vehículo</th>
                     <th class="minw-200px">Conductor</th>
-                    <th class="minw-150px">Telefono</th>
+                    <th class="minw-125px">Fecha</th>
+                   
                     <th>Status</th>
                     <th>Accion</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr *ngFor="let inspection of RealtimeInspectionsService.inspections$ | async"
-                    (click)="viewInspection(inspection.id)" class="inspection-row">
-                    <td class="pe-0" (click)="$event.stopPropagation()">
+                   class="inspection-row">
+                    <!-- <td class="pe-0" (click)="$event.stopPropagation()">
                       <div class="form-check p-0 w-auto d-inline-block mb-0 mb-n1">
                         <input class="form-check-input m-0" data-checkbox="" type="checkbox"
                           (click)="$event.stopPropagation()">
                       </div>
-                    </td>
-                    <td>{{ (inspection.fecha_inspeccion | date: 'dd/MM/yyyy') || 'Sin fecha' }}</td>
-                    <td>{{ inspection.placa || 'Sin placa' }}</td>
-
-                    <td>
-                      <div class="d-flex align-items-center">
-                        <div class="avatar avatar-xxs rounded-circle me-2">
-                          <img [src]="inspection.foto_conductor || 'assets/images/avatar/avatar2.webp'"
-                            alt="Foto del conductor" class="img-fluid">
-                        </div>
-                        {{ inspection.nombres_conductor || 'Sin nombre' }}
-                      </div>
-                    </td>
-<td>
+                    </td> --><td>
   <div class="phone-cell">
     <div class="d-flex align-items-center mb-1">
       <i class="fi fi-rr-phone me-2 text-primary"></i>
      
-      <span>+57 {{ formatPhone(inspection.telefono) }}</span>
+      <span>{{ formatPhone(inspection.telefono) }}</span>
        <a 
       *ngIf="inspection.whatsapp"
       [href]="'https://wa.me/57' + inspection.telefono?.replace(/\D/g, '')" 
@@ -266,7 +254,20 @@
     
   </div>
 </td>
-                    <td>
+                    <td (click)="viewInspection(inspection.id)">{{ inspection.placa || 'Sin placa' }}</td>
+
+                    <td (click)="viewInspection(inspection.id)">
+                      <div class="d-flex align-items-center">
+                        <div class="avatar avatar-xxs rounded-circle me-2">
+                          <img [src]="inspection.foto_conductor || 'assets/images/avatar/avatar2.webp'"
+                            alt="Foto del conductor" class="img-fluid">
+                        </div>
+                        {{ inspection.nombres_conductor || 'Sin nombre' }}
+                      </div>
+                    </td>
+                    <td  (click)="viewInspection(inspection.id)" >{{ (inspection.fecha_inspeccion | date: 'dd/MM/yyyy') || 'Sin fecha' }}</td>
+
+                    <td (click)="viewInspection(inspection.id)">
                       <span class="badge badge-lg" [ngClass]="{
                             'bg-success-subtle text-success': inspection.estado === 'aprobada',
                             'bg-warning-subtle text-warning': inspection.estado === 'borrador',
