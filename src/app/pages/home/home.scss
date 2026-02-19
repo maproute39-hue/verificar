@@ -59,3 +59,12 @@ td a {
   color: #1300af !important;
   font-weight: 900;
 }
+.bg-blue{    color: #fff   !important;
+background-color: #0f0369 !important;
+  
+  [data-bs-theme="dark"] & {
+    color: white !important;
+    background-color: #0f0369 !important;
+  }
+}
+  
