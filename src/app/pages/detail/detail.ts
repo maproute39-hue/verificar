@@ -834,78 +834,122 @@ export class Detail implements OnInit, AfterViewInit {
   // imprimirInspeccion(): void {
   //   window.print();
   // }
+  // async imprimirInspeccion(): Promise<void> {
+  //   try {
+  //     // Mostrar SweetAlert de carga
+  //     Swal.fire({
+  //       title: 'Generando PDF...',
+  //       html: 'Procesando datos de la inspección<br><small>Esto puede tomar unos segundos</small>',
+  //       allowOutsideClick: false,
+  //       didOpen: () => {
+  //         Swal.showLoading();
+  //       }
+  //     });
+
+  //     // 1. Obtener los datos del formulario
+  //     const formData = {
+  //       nombre_transportadora: this.inspectionForm.get('nombre_transportadora')?.value,
+  //       nombres_conductor: this.inspectionForm.get('nombres_conductor')?.value,
+  //       telefono_conductor: this.inspectionForm.get('telefono')?.value,
+  //       placa: this.inspectionForm.get('placa')?.value,
+  //       marca: this.inspectionForm.get('marca')?.value,
+  //       modelo: this.inspectionForm.get('modelo')?.value,
+  //       color: this.inspectionForm.get('color')?.value,
+  //       codigo_vehiculo: this.inspectionForm.get('codigo_vehiculo')?.value,
+  //       kilometraje: this.inspectionForm.get('kilometraje')?.value,
+  //       fecha_inspeccion: this.inspectionForm.get('fecha_inspeccion')?.value,
+  //       fecha_vigencia: this.inspectionForm.get('fecha_vigencia')?.value,
+  //       fecha_vencimiento_licencia: this.inspectionForm.get('fecha_vencimiento_licencia')?.value,
+  //       fecha_vencimiento_soat: this.inspectionForm.get('fecha_vencimiento_soat')?.value,
+  //       fecha_vencimiento_revision_tecnomecanica: this.inspectionForm.get('fecha_vencimiento_revision_tecnomecanica')?.value,
+  //       fecha_vencimiento_tarjeta_operacion: this.inspectionForm.get('fecha_vencimiento_tarjeta_operacion')?.value,
+  //       estado: 'borrador',
+  //       capacidad_pasajeros: Number(this.inspectionForm.get('capacidad_pasajeros')?.value),
+  //       llanta_di: Number(this.inspectionForm.get('llanta_di')?.value),
+  //       llanta_dd: Number(this.inspectionForm.get('llanta_dd')?.value),
+  //       llanta_tie: Number(this.inspectionForm.get('llanta_tie')?.value),
+  //       llanta_tde: Number(this.inspectionForm.get('llanta_tde')?.value),
+  //       llanta_tli: Number(this.inspectionForm.get('llanta_tli')?.value),
+  //       llanta_tlii: Number(this.inspectionForm.get('llanta_tlii')?.value),
+  //       llanta_tlid: Number(this.inspectionForm.get('llanta_tlid')?.value),
+  //       llanta_t_lie: Number(this.inspectionForm.get('llanta_t_lie')?.value),
+  //       llanta_t_lii: Number(this.inspectionForm.get('llanta_t_lii')?.value),
+  //       llanta_t_lid: Number(this.inspectionForm.get('llanta_t_lid')?.value),
+  //     };
+
+  //     // 2. Generar PDF usando el nuevo método
+  //     await this.excelExportService.exportarDatosConductorComoPdf(formData);
+
+  //     // 3. Cerrar SweetAlert de carga
+  //     Swal.close();
+
+  //     // 4. Mostrar mensaje de éxito
+  //     Swal.fire({
+  //       icon: 'success',
+  //       title: '¡PDF generado!',
+  //       text: 'El documento ha sido descargado correctamente',
+  //       timer: 2000,
+  //       showConfirmButton: false
+  //     });
+
+  //   } catch (error) {
+  //     // Cerrar SweetAlert en caso de error
+  //     Swal.close();
+
+  //     console.error('Error al generar PDF:', error);
+
+  //     // Mostrar mensaje de error al usuario
+  //     const errorMessage = error instanceof Error ? error.message : 'Error al generar el PDF';
+  //     Swal.fire({
+  //       icon: 'error',
+  //       title: 'Error',
+  //       text: errorMessage,
+  //       confirmButtonText: 'Aceptar'
+  //     });
+  //   }
+  // }
+
   async imprimirInspeccion(): Promise<void> {
-    try {
-      // Mostrar SweetAlert de carga
-      Swal.fire({
-        title: 'Generando PDF...',
-        html: 'Procesando datos de la inspección<br><small>Esto puede tomar unos segundos</small>',
-        allowOutsideClick: false,
-        didOpen: () => {
-          Swal.showLoading();
-        }
-      });
+  try {
+    Swal.fire({
+      title: 'Generando PDF...',
+      html: 'Procesando datos e imágenes...',
+      allowOutsideClick: false,
+      didOpen: () => Swal.showLoading()
+    });
 
-      // 1. Obtener los datos del formulario
-      const formData = {
-        nombre_transportadora: this.inspectionForm.get('nombre_transportadora')?.value,
-        nombres_conductor: this.inspectionForm.get('nombres_conductor')?.value,
-        telefono_conductor: this.inspectionForm.get('telefono')?.value,
-        placa: this.inspectionForm.get('placa')?.value,
-        marca: this.inspectionForm.get('marca')?.value,
-        modelo: this.inspectionForm.get('modelo')?.value,
-        color: this.inspectionForm.get('color')?.value,
-        codigo_vehiculo: this.inspectionForm.get('codigo_vehiculo')?.value,
-        kilometraje: this.inspectionForm.get('kilometraje')?.value,
-        fecha_inspeccion: this.inspectionForm.get('fecha_inspeccion')?.value,
-        fecha_vigencia: this.inspectionForm.get('fecha_vigencia')?.value,
-        fecha_vencimiento_licencia: this.inspectionForm.get('fecha_vencimiento_licencia')?.value,
-        fecha_vencimiento_soat: this.inspectionForm.get('fecha_vencimiento_soat')?.value,
-        fecha_vencimiento_revision_tecnomecanica: this.inspectionForm.get('fecha_vencimiento_revision_tecnomecanica')?.value,
-        fecha_vencimiento_tarjeta_operacion: this.inspectionForm.get('fecha_vencimiento_tarjeta_operacion')?.value,
-        estado: 'borrador',
-        capacidad_pasajeros: Number(this.inspectionForm.get('capacidad_pasajeros')?.value),
-        llanta_di: Number(this.inspectionForm.get('llanta_di')?.value),
-        llanta_dd: Number(this.inspectionForm.get('llanta_dd')?.value),
-        llanta_tie: Number(this.inspectionForm.get('llanta_tie')?.value),
-        llanta_tde: Number(this.inspectionForm.get('llanta_tde')?.value),
-        llanta_tli: Number(this.inspectionForm.get('llanta_tli')?.value),
-        llanta_tlii: Number(this.inspectionForm.get('llanta_tlii')?.value),
-        llanta_tlid: Number(this.inspectionForm.get('llanta_tlid')?.value),
-        llanta_t_lie: Number(this.inspectionForm.get('llanta_t_lie')?.value),
-        llanta_t_lii: Number(this.inspectionForm.get('llanta_t_lii')?.value),
-        llanta_t_lid: Number(this.inspectionForm.get('llanta_t_lid')?.value),
-      };
+    // 1. Recolectar datos del formulario
+    const formData = {
+      nombre_transportadora: this.inspectionForm.get('nombre_transportadora')?.value,
+      nombres_conductor: this.inspectionForm.get('nombres_conductor')?.value,
+      telefono_conductor: this.inspectionForm.get('telefono')?.value,
+      placa: this.inspectionForm.get('placa')?.value,
+      marca: this.inspectionForm.get('marca')?.value,
+      modelo: this.inspectionForm.get('modelo')?.value,
+      color: this.inspectionForm.get('color')?.value,
+      codigo_vehiculo: this.inspectionForm.get('codigo_vehiculo')?.value,
+      kilometraje: this.inspectionForm.get('kilometraje')?.value,
+      capacidad_pasajeros: Number(this.inspectionForm.get('capacidad_pasajeros')?.value),
+      fecha_inspeccion: this.inspectionForm.get('fecha_inspeccion')?.value,
+      fecha_vigencia: this.inspectionForm.get('fecha_vigencia')?.value,
+      // ... agrega más campos si los necesitas
+    };
 
-      // 2. Generar PDF usando el nuevo método
-      await this.excelExportService.exportarDatosConductorComoPdf(formData);
+    // 2. ✅ Pasar las URLs de imágenes que ya tienes cargadas
+    const imageUrls = this.inspectionImages; // ← Ya las tienes en el componente
 
-      // 3. Cerrar SweetAlert de carga
-      Swal.close();
+    // 3. ✅ LLAMAR AL NUEVO MÉTODO CON IMÁGENES
+    await this.excelExportService.exportarDatosConductorComoPdfConImagenes(
+      formData, 
+      imageUrls
+    );
 
-      // 4. Mostrar mensaje de éxito
-      Swal.fire({
-        icon: 'success',
-        title: '¡PDF generado!',
-        text: 'El documento ha sido descargado correctamente',
-        timer: 2000,
-        showConfirmButton: false
-      });
+    Swal.close();
+    Swal.fire('Éxito', 'PDF con imágenes generado', 'success');
 
-    } catch (error) {
-      // Cerrar SweetAlert en caso de error
-      Swal.close();
-
-      console.error('Error al generar PDF:', error);
-
-      // Mostrar mensaje de error al usuario
-      const errorMessage = error instanceof Error ? error.message : 'Error al generar el PDF';
-      Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: errorMessage,
-        confirmButtonText: 'Aceptar'
-      });
-    }
+  } catch (error) {
+    Swal.close();
+    Swal.fire('Error', error instanceof Error ? error.message : 'Error al generar PDF', 'error');
   }
+}
 }
