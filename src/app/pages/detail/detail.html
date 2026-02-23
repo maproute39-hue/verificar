@@ -39,6 +39,28 @@
               placeholder="Seleccione fecha" readonly>
           </div>
         </div>
+        <div class="row">
+          <div class="col-lg-6 mb-3">
+            <label class="form-label">Propietario <span class="text-danger">*</span></label>
+            <input type="text" formControlName="propietario" class="form-control" placeholder="Propietario">
+            <div
+              *ngIf="inspectionForm.get('propietario')?.touched && inspectionForm.get('propietario')?.errors?.['required']"
+              class="text-danger small">
+              Este campo es requerido
+            </div>
+          </div>
+
+          <div class="col-lg-6 mb-3">
+            <label class="form-label">Documento Propietario <span class="text-danger">*</span></label>
+            <input type="text" formControlName="documento_propietario" class="form-control"
+              placeholder="Documento propietario">
+            <div
+              *ngIf="inspectionForm.get('documento_propietario')?.touched && inspectionForm.get('documento_propietario')?.errors?.['required']"
+              class="text-danger small">
+              Este campo es requerido
+            </div>
+          </div>
+        </div>
 
         <!-- DATOS DEL CONDUCTOR -->
         <div class="col-12 mb-3">
