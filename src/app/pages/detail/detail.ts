@@ -787,6 +787,8 @@ export class Detail implements OnInit, AfterViewInit {
       marca: this.inspectionForm.get('marca')?.value,
       modelo: this.inspectionForm.get('modelo')?.value,
       color: this.inspectionForm.get('color')?.value,
+      soat: this.inspectionForm.get('soat')?.value,
+      identificacion: this.inspectionForm.get('identificacion')?.value,
       codigo_vehiculo: this.inspectionForm.get('codigo_vehiculo')?.value,
       kilometraje: this.inspectionForm.get('kilometraje')?.value,
       capacidad_pasajeros: Number(this.inspectionForm.get('capacidad_pasajeros')?.value),
@@ -802,7 +804,10 @@ export class Detail implements OnInit, AfterViewInit {
       luces_frenado: this.inspectionForm.get('luces_frenado')?.value,
       luces_direccionales: this.inspectionForm.get('luces_direccionales')?.value,
       luz_reversa: this.inspectionForm.get('luz_reversa')?.value,
-      
+      licencia_transito: this.inspectionForm.get('licencia_transito')?.value,
+      revision_tecnomecanica: this.inspectionForm.get('revision_tecnomecanica')?.value,
+      tarjeta_operacion: this.inspectionForm.get('tarjeta_operacion')?.value,
+     clase_vehiculo: this.inspectionForm.get('clase_vehiculo')?.value,
       // ... agrega más campos si los necesitas
     };
 

@@ -473,17 +473,20 @@ async generarXlsxConductorConImagenes(
     this.setCell(worksheet, 'U14:AA14', formData.fecha_vencimiento_licencia); // Color
     this.setCell(worksheet, 'J24:M24', formData.fecha_vencimiento_revision_tecnomecanica); // Color
     this.setCell(worksheet, 'J25:M25', formData.fecha_vencimiento_tarjeta_operacion); // Color
-    this.setCell(worksheet, 'E10:M10', formData.propietario); // propietario
-    this.setCell(worksheet, 'P10:AA10', formData.documento_propietario); // documento propietario
-    // this.setCell(worksheet, 'B5', formData.licencia_transito); // Licencia tránsito
-    // this.setCell(worksheet, 'D5', formData.revision_tecnomecanica); // R. Tecnomecánica
-    // this.setCell(worksheet, 'F5', formData.tarjeta_operacion); // Tarjeta operación
-    // this.setCell(worksheet, 'H5', formData.color); // Color
-    // this.setCell(worksheet, 'J5', formData.codigo_vehiculo); // Código vehículo
-    // this.setCell(worksheet, 'L5', formData.capacidad_pasajeros); // Capacidad
-
-    // ✅ DATOS DEL CONDUCTOR
+    this.setCell(worksheet, 'E11:M11', formData.propietario); // propietario
+    this.setCell(worksheet, 'P11:AA11', formData.documento_propietario); // documento propietario
+     this.setCell(worksheet, 'V21:AA21', formData.licencia_transito); // Licencia tránsito
+     this.setCell(worksheet, 'E24:H24', formData.revision_tecnomecanica); // R. Tecnomecánica
+     this.setCell(worksheet, 'E25:H25', formData.tarjeta_operacion); // Tarjeta operación
+     this.setCell(worksheet, 'V23:AA23', formData.color); // Color
+     this.setCell(worksheet, 'V24:AA24', formData.codigo_vehiculo); // Código vehículo
+     this.setCell(worksheet, 'V25:AA25', formData.capacidad_pasajeros); // Capacidad
+     this.setCell(worksheet, 'V22:AA22', formData.clase_vehiculo); // Clase vehículo
+     this.setCell(worksheet, 'E23:H23', formData.soat); // Soat
+   
+     // ✅ DATOS DEL CONDUCTOR
     // ✅ DATOS DEL CONDUCTOR// ✅ DATOS DEL CONDUCTOR
+    this.setCell(worksheet, 'E15:M15', formData.identificacion); // Identificación
     this.setCell(worksheet, 'E13:AA13', formData.nombre_transportadora); // Transportadora
     this.setCell(worksheet, 'E14:M14', formData.nombres_conductor); // Nombres conductor    
     this.setCell(worksheet, 'U15:AA15', formData.telefono_conductor); // Identificación
