@@ -100,62 +100,38 @@ export class ExcelExportService {
   /**
    * ✨ Genera XLSX con imágenes embebidas
    */
-//   async generarXlsxConductorConImagenes(
-//   formData: any,
-//   imageUrls: string[] = []
-// ): Promise<Blob> {
-//   try {
-//     console.log(`🔍 Generando XLSX con ${imageUrls.length} imágenes...`);
+  // async generarXlsxConductorConImagenes(
+  //   formData: any,
+  //   imageUrls: string[] = []
+  // ): Promise<Blob> {
+  //   try {
+  //     console.log(`🔍 Generando XLSX con ${imageUrls.length} imágenes...`);
 
-//     const templateFile = await this.loadTemplateFromAssets();
-//     const arrayBuffer = await templateFile.arrayBuffer();
-//     const workbook = new ExcelJS.Workbook();
-//     await workbook.xlsx.load(arrayBuffer);
+  //     const templateFile = await this.loadTemplateFromAssets();
+  //     const arrayBuffer = await templateFile.arrayBuffer();
+  //     const workbook = new ExcelJS.Workbook();
+  //     await workbook.xlsx.load(arrayBuffer);
 
-//     // ✅ 1. Obtener hoja 1 y procesar datos
-//     const worksheet1 = workbook.getWorksheet('CAMIONETA') || workbook.getWorksheet(1);
-//     if (!worksheet1) throw new Error('No se encontró la hoja 1');
-//     this.procesarHoja(worksheet1, formData);
+  //     const worksheet = workbook.getWorksheet('CAMIONETA') || workbook.getWorksheet(2);
+  //     if (!worksheet) throw new Error('No se encontró la hoja de destino');
 
-//     // ✅ 2. Obtener hoja 2 para las imágenes
-//     let worksheet2 = workbook.getWorksheet('IMAGENES'); // Segunda hoja
-    
-//  if (!worksheet2) {
-//   worksheet2 = workbook.addWorksheet('IMAGENES');
-// } else {
-//   // ✅ LIMPIAR filas existentes (1 hasta el final)
-//   const rowCount = worksheet2.rowCount;
-//   if (rowCount > 0) {
-//     worksheet2.spliceRows(1, rowCount);
-//   }
-//   // ✅ Resetear columnas
-//   worksheet2.columns = [];
-// }
+  //     this.procesarHoja(worksheet, formData);
 
-// // ✅ Configurar página
-// worksheet2.pageSetup = {
-//   paperSize: 9,
-//   orientation: 'portrait',
-//   margins: { top: 0.5, bottom: 0.5, left: 0.5, right: 0.5, header: 0.5, footer: 0.5 } 
-// };
+  //     if (imageUrls && imageUrls.length > 0) {
+  //       await this.insertarImagenesEnHoja(worksheet, imageUrls, workbook);
+  //     }
 
-//     // ✅ 3. Insertar imágenes en la hoja 2 (si existen)
-//     if (imageUrls && imageUrls.length > 0) {
-//       await this.insertarImagenesEnHoja2(worksheet2, imageUrls, workbook);
-//     }
+  //     const buffer = await workbook.xlsx.writeBuffer();
+  //     return new Blob([buffer], {
+  //       type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+  //     });
 
-//     const buffer = await workbook.xlsx.writeBuffer();
-//     return new Blob([buffer], {
-//       type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-//     });
-
-//   } catch (error) {
-//     console.error('❌ Error al generar XLSX con imágenes:', error);
-//     throw new Error(`Error: ${error instanceof Error ? error.message : error}`);
-//   }
-// }
-
-async generarXlsxConductorConImagenes(
+  //   } catch (error) {
+  //     console.error('❌ Error al generar XLSX con imágenes:', error);
+  //     throw new Error(`Error: ${error instanceof Error ? error.message : error}`);
+  //   }
+  // }
+  async generarXlsxConductorConImagenes(
   formData: any,
   imageUrls: string[] = []
 ): Promise<Blob> {
@@ -167,222 +143,47 @@ async generarXlsxConductorConImagenes(
     const workbook = new ExcelJS.Workbook();
     await workbook.xlsx.load(arrayBuffer);
 
-    // ✅ 1. Obtener hoja "IMAGENES" - SIN MODIFICAR ESTRUCTURA
-    let worksheet = workbook.getWorksheet('IMAGENES');
+    // ✅ 1. Obtener hoja 1 y procesar datos
+    const worksheet1 = workbook.getWorksheet('CAMIONETA') || workbook.getWorksheet(1);
+    if (!worksheet1) throw new Error('No se encontró la hoja 1');
+    this.procesarHoja(worksheet1, formData);
+
+    // ✅ 2. Obtener hoja 2 para las imágenes
+    let worksheet2 = workbook.getWorksheet(2); // Segunda hoja
     
-    if (!worksheet) {
-      throw new Error('No se encontró la hoja "IMAGENES" en la plantilla');
-    }
+ if (!worksheet2) {
+  worksheet2 = workbook.addWorksheet('IMAGENES');
+} else {
+  // ✅ LIMPIAR filas existentes (1 hasta el final)
+  const rowCount = worksheet2.rowCount;
+  if (rowCount > 0) {
+    worksheet2.spliceRows(1, rowCount);
+  }
+  // ✅ Resetear columnas
+  worksheet2.columns = [];
+}
 
-    console.log('✅ Hoja "IMAGENES" cargada - Preservando formato original');
+// ✅ Configurar página
+worksheet2.pageSetup = {
+  paperSize: 9,
+  orientation: 'portrait',
+  margins: { top: 0.5, bottom: 0.5, left: 0.5, right: 0.5, header: 0.5, footer: 0.5 } 
+};
 
-    // ✅ 2. Insertar imágenes SOLO si existen URLs
+    // ✅ 3. Insertar imágenes en la hoja 2 (si existen)
     if (imageUrls && imageUrls.length > 0) {
-      await this.insertarTresImagenesPosicionesFijas(worksheet, imageUrls, workbook);
-    } else {
-      console.warn('⚠️ No hay imágenes para insertar');
+      await this.insertarImagenesEnHoja2(worksheet2, imageUrls, workbook);
     }
 
-    // ✅ 3. Generar buffer
     const buffer = await workbook.xlsx.writeBuffer();
-    console.log('✅ XLSX generado exitosamente');
-    
     return new Blob([buffer], {
       type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
     });
 
   } catch (error) {
     console.error('❌ Error al generar XLSX con imágenes:', error);
-    throw error;
+    throw new Error(`Error: ${error instanceof Error ? error.message : error}`);
   }
-}
-
-/**
- * ✨ Inserta EXACTAMENTE 3 imágenes en posiciones fijas:
- * - Imagen 1: D6:L8
- * - Imagen 2: N6:AA8
- * - Imagen 3: D10:L17
- * 
- * SIN modificar la estructura ni formato de la hoja
- */
-private async insertarTresImagenesPosicionesFijas(
-  worksheet: ExcelJS.Worksheet,
-  imageUrls: string[],
-  workbook: ExcelJS.Workbook
-): Promise<void> {
-  
-  console.log(`🖼️ Insertando ${Math.min(imageUrls.length, 3)} imágenes en posiciones fijas...`);
-
-  // ✅ Definir las 3 posiciones exactas (rangos de celdas)
-  const posiciones = [
-    { rango: 'D6:L8', descripcion: 'Imagen 1 - Vista frontal/lateral' },
-    { rango: 'N6:AA8', descripcion: 'Imagen 2 - Vista lateral/posterior' },
-    { rango: 'D10:L17', descripcion: 'Imagen 3 - Motor/detalle' }
-  ];
-
-  // ✅ Insertar cada imagen en su posición
-  for (let index = 0; index < Math.min(imageUrls.length, 3); index++) {
-    const imageUrl = imageUrls[index];
-    
-    if (!imageUrl?.trim()) {
-      console.warn(`⚠️ Imagen ${index + 1}: URL vacía`);
-      continue;
-    }
-
-    const posicion = posiciones[index];
-    console.log(`📥 Procesando ${posicion.descripcion}: ${imageUrl}`);
-
-    try {
-      // 1. Descargar imagen
-      const imageData = await this.fetchImageAsBuffer(imageUrl);
-      
-      if (!imageData?.buffer) {
-        console.error(`❌ ${posicion.descripcion}: No se obtuvo buffer`);
-        continue;
-      }
-
-      console.log(`✅ ${posicion.descripcion} descargada (${imageData.buffer.byteLength} bytes)`);
-
-      // 2. Agregar imagen al workbook
-      const imageId = workbook.addImage({
-        buffer: imageData.buffer,
-        extension: 'jpeg'
-      });
-
-      // 3. ✅ Insertar imagen en el RANGO EXACTO de celdas
-      // Esto preserva el formato y ajusta la imagen al rango
-      worksheet.addImage(imageId, posicion.rango);
-
-      console.log(`✅ ${posicion.descripcion} insertada en ${posicion.rango}`);
-
-    } catch (error) {
-      console.error(`❌ Error insertando ${posicion.descripcion}:`, error);
-      // Continuar con la siguiente imagen
-    }
-  }
-
-  console.log('✅ Proceso de inserción de imágenes completado');
-}
-
-/**
- * ✨ Descarga imagen y la convierte a ArrayBuffer
- */
-private async fetchImageAsBuffer(imageUrl: string): Promise<{ buffer: ArrayBuffer, extension: string }> {
-  try {
-    const response = await fetch(imageUrl, { mode: 'cors' });
-    if (!response.ok) throw new Error(`HTTP ${response.status}`);
-    
-    const arrayBuffer = await response.arrayBuffer();
-    
-    // Detectar extensión del contenido
-    let extension = 'jpeg';
-    const contentType = response.headers.get('content-type')?.toLowerCase() || '';
-    const urlLower = imageUrl.toLowerCase();
-    
-    if (urlLower.endsWith('.png') || contentType.includes('image/png')) {
-      extension = 'png';
-    } else if (urlLower.endsWith('.gif') || contentType.includes('image/gif')) {
-      extension = 'gif';
-    } else if (urlLower.endsWith('.bmp') || contentType.includes('image/bmp')) {
-      extension = 'bmp';
-    }
-    
-    return { buffer: arrayBuffer, extension };
-    
-  } catch (error) {
-    console.error('❌ Error al descargar imagen:', imageUrl, error);
-    throw error;
-  }
-}
-// ✅ MÉTODO CORREGIDO PARA INSERTAR IMÁGENES
-private async insertarImagenesEnHoja2Corregido(
-  worksheet: ExcelJS.Worksheet,
-  imageUrls: string[],
-  workbook: ExcelJS.Workbook
-): Promise<void> {
-  
-  const startRow = 3; // Después del título
-  const imageHeightPx = 220;
-  const imageWidthPx = 300;
-  
-  // Posiciones: Columnas B (1), E (4), H (7) - 0-indexed
-  const positions = [
-    { col: 1, row: startRow, colLetter: 'B' },
-    { col: 4, row: startRow, colLetter: 'E' },
-    { col: 7, row: startRow, colLetter: 'H' }
-  ];
-
-  console.log(`🖼️ Iniciando inserción de ${Math.min(imageUrls.length, 3)} imágenes`);
-
-  for (let index = 0; index < Math.min(imageUrls.length, 3); index++) {
-    const imageUrl = imageUrls[index];
-    
-    if (!imageUrl?.trim()) {
-      console.warn(`⚠️ Imagen ${index + 1}: URL vacía o inválida`);
-      continue;
-    }
-
-    console.log(`📥 Descargando imagen ${index + 1}: ${imageUrl}`);
-    const pos = positions[index];
-
-    try {
-      // 1. Descargar imagen con validación
-      const imageData = await this.fetchImageAsBuffer(imageUrl);
-      
-      if (!imageData?.buffer) {
-        console.error(`❌ Imagen ${index + 1}: No se obtuvo buffer válido`);
-        continue;
-      }
-
-      console.log(`✅ Imagen ${index + 1} descargada: ${imageData.buffer.byteLength} bytes`);
-
-      // 2. Agregar imagen al workbook
-      const imageId = workbook.addImage({
-        buffer: imageData.buffer,
-        extension: 'jpeg'
-      });
-
-      console.log(`🆔 Image ID generado: ${imageId}`);
-
-      // 3. Insertar imagen en posición específica
-      // ✅ CORRECCIÓN: Usar coordenadas correctas (0-indexed)
-      worksheet.addImage(imageId, {
-        tl: { 
-          col: pos.col,      // Columna 0-indexed
-          row: pos.row - 1   // Fila 0-indexed (por eso -1)
-        },
-        ext: { 
-          width: imageWidthPx, 
-          height: imageHeightPx 
-        },
-        editAs: 'oneCell'  // La imagen se mueve con la celda
-      });
-
-      console.log(`✅ Imagen ${index + 1} insertada en ${pos.colLetter}${startRow}`);
-
-      // 4. Agregar caption
-      const captionRow = startRow + 16; // 220px / ~14px por fila
-      const captionCell = worksheet.getCell(`${pos.colLetter}${captionRow}`);
-      captionCell.value = `Imagen ${index + 1} de ${imageUrls.length}`;
-      captionCell.font = { 
-        italic: true, 
-        size: 9, 
-        color: { argb: 'FF666666' } 
-      };
-      captionCell.alignment = { horizontal: 'center' };
-
-      // 5. Ajustar altura de filas para la imagen
-      for (let r = startRow; r < captionRow; r++) {
-        worksheet.getRow(r).height = 15;
-      }
-
-    } catch (error) {
-      console.error(`❌ Error insertando imagen ${index + 1}:`, error);
-      // Continuar con la siguiente imagen
-    }
-  }
-
-  console.log('✅ Proceso de inserción de imágenes completado');
 }
 private async insertarImagenesEnHoja2(
   worksheet: ExcelJS.Worksheet,
@@ -561,30 +362,30 @@ private async insertarImagenesEnHoja2Limpia(
   /**
    * ✨ Descarga imagen y la convierte a ArrayBuffer para ExcelJS
    */
-  // private async fetchImageAsBuffer(imageUrl: string): Promise<{ buffer: any, extension: string }> {
-  //   try {
-  //     const response = await fetch(imageUrl, { mode: 'cors' });
-  //     if (!response.ok) throw new Error(`HTTP ${response.status}`);
+  private async fetchImageAsBuffer(imageUrl: string): Promise<{ buffer: any, extension: string }> {
+    try {
+      const response = await fetch(imageUrl, { mode: 'cors' });
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
       
-  //     const arrayBuffer = await response.arrayBuffer();
-  //     const buffer = arrayBuffer;
+      const arrayBuffer = await response.arrayBuffer();
+      const buffer = arrayBuffer;
       
-  //     // Detectar extensión
-  //     let extension = 'jpeg';
-  //     const contentType = response.headers.get('content-type')?.toLowerCase() || '';
-  //     const urlLower = imageUrl.toLowerCase();
+      // Detectar extensión
+      let extension = 'jpeg';
+      const contentType = response.headers.get('content-type')?.toLowerCase() || '';
+      const urlLower = imageUrl.toLowerCase();
       
-  //     if (urlLower.endsWith('.png') || contentType.includes('image/png')) extension = 'png';
-  //     else if (urlLower.endsWith('.gif') || contentType.includes('image/gif')) extension = 'gif';
-  //     else if (urlLower.endsWith('.bmp') || contentType.includes('image/bmp')) extension = 'bmp';
+      if (urlLower.endsWith('.png') || contentType.includes('image/png')) extension = 'png';
+      else if (urlLower.endsWith('.gif') || contentType.includes('image/gif')) extension = 'gif';
+      else if (urlLower.endsWith('.bmp') || contentType.includes('image/bmp')) extension = 'bmp';
       
-  //     return { buffer, extension };
+      return { buffer, extension };
       
-  //   } catch (error) {
-  //     console.error('❌ Error al descargar imagen:', imageUrl, error);
-  //     throw error;
-  //   }
-  // }
+    } catch (error) {
+      console.error('❌ Error al descargar imagen:', imageUrl, error);
+      throw error;
+    }
+  }
 
   /**
    * ✨ Exporta PDF CON imágenes (flujo híbrido: Excel → LibreOffice)
