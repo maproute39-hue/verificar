@@ -100,52 +100,57 @@ export class ExcelExportService {
   /**
    * ✨ Genera XLSX con imágenes embebidas
    */
-async generarXlsxConductorConImagenes(
-  formData: any,
-  imageUrls: string[] = []
-): Promise<Blob> {
-  try {
-    console.log(`🔍 Generando XLSX con datos + ${imageUrls.length} imágenes...`);
+  async generarXlsxConductorConImagenes(
+    formData: any,
+    imageUrls: string[] = []
+  ): Promise<Blob> {
+    try {
+      console.log(`🔍 Generando XLSX con datos + ${imageUrls.length} imágenes...`);
 
-    const templateFile = await this.loadTemplateFromAssets();
-    const arrayBuffer = await templateFile.arrayBuffer();
-    const workbook = new ExcelJS.Workbook();
-    await workbook.xlsx.load(arrayBuffer);
+      const templateFile = await this.loadTemplateFromAssets();
+      const arrayBuffer = await templateFile.arrayBuffer();
+      const workbook = new ExcelJS.Workbook();
+      await workbook.xlsx.load(arrayBuffer);
 
-    // ✅ 1. PROCESAR HOJA "CAMIONETA" CON LOS DATOS DEL FORMULARIO
-    const worksheetCamioneta = workbook.getWorksheet('CAMIONETA');
-    if (!worksheetCamioneta) {
-      throw new Error('No se encontró la hoja "CAMIONETA" en la plantilla');
+      // ✅ 1. PROCESAR HOJA "CAMIONETA" CON LOS DATOS DEL FORMULARIO
+      const worksheetCamioneta = workbook.getWorksheet('CAMIONETA');
+      if (!worksheetCamioneta) {
+        throw new Error('No se encontró la hoja "CAMIONETA" en la plantilla');
+      }
+      console.log('✅ Procesando hoja "CAMIONETA" con datos del formulario...');
+      this.procesarHoja(worksheetCamioneta, formData);
+
+      // ✅ 2. PROCESAR HOJA "IMAGENES" CON LAS FOTOS
+      const worksheetImagenes = workbook.getWorksheet('IMAGENES');
+      if (!worksheetImagenes) {
+        throw new Error('No se encontró la hoja "IMAGENES" en la plantilla');
+      }
+      // console.log('✅ Procesando hoja "IMAGENES" con fotografías...');
+      // ✅ AGREGAR ESTO: Procesar datos de la hoja IMAGENES (estado de aprobación)
+      console.log('✅ Procesando hoja "IMAGENES" con datos del formulario...');
+      this.procesarHoja(worksheetImagenes, formData);  // ← ← ← ¡AGREGAR ESTA LÍNEA!
+
+      console.log('✅ Procesando hoja "IMAGENES" con fotografías...');
+
+      if (imageUrls && imageUrls.length > 0) {
+        await this.insertarTresImagenesPosicionesFijas(worksheetImagenes, imageUrls, workbook);
+      } else {
+        console.warn('⚠️ No hay imágenes para insertar');
+      }
+
+      // ✅ 3. Generar buffer final con AMBAS hojas procesadas
+      const buffer = await workbook.xlsx.writeBuffer();
+      console.log('✅ XLSX generado exitosamente con datos e imágenes');
+
+      return new Blob([buffer], {
+        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+      });
+
+    } catch (error) {
+      console.error('❌ Error al generar XLSX con imágenes:', error);
+      throw error;
     }
-    console.log('✅ Procesando hoja "CAMIONETA" con datos del formulario...');
-    this.procesarHoja(worksheetCamioneta, formData);
-
-    // ✅ 2. PROCESAR HOJA "IMAGENES" CON LAS FOTOS
-    const worksheetImagenes = workbook.getWorksheet('IMAGENES');
-    if (!worksheetImagenes) {
-      throw new Error('No se encontró la hoja "IMAGENES" en la plantilla');
-    }
-    console.log('✅ Procesando hoja "IMAGENES" con fotografías...');
-    
-    if (imageUrls && imageUrls.length > 0) {
-      await this.insertarTresImagenesPosicionesFijas(worksheetImagenes, imageUrls, workbook);
-    } else {
-      console.warn('⚠️ No hay imágenes para insertar');
-    }
-
-    // ✅ 3. Generar buffer final con AMBAS hojas procesadas
-    const buffer = await workbook.xlsx.writeBuffer();
-    console.log('✅ XLSX generado exitosamente con datos e imágenes');
-    
-    return new Blob([buffer], {
-      type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-    });
-
-  } catch (error) {
-    console.error('❌ Error al generar XLSX con imágenes:', error);
-    throw error;
   }
-}
   /**
    * ✨ Inserta EXACTAMENTE 3 imágenes en posiciones fijas:
    * - Imagen 1: D6:L8
@@ -454,13 +459,50 @@ async generarXlsxConductorConImagenes(
       throw error;
     }
   }
+  private procesarHojaImagenes(worksheet: ExcelJS.Worksheet, formData: any): void {
+    console.log('✏️ Procesando hoja IMAGENES...');
 
+    // ✅ Marcar estado de aprobación (F21 = aprobada, H21 = rechazada)
+    if (formData.estado) {
+      this.marcarEstadoAprobacion(worksheet, formData.estado);
+
+      // ✅ Solo agregar nota si el estado es RECHAZADA
+      const estadoLower = formData.estado.toLowerCase().trim();
+      if (estadoLower === 'rechazada' || estadoLower === 'rechazado' || estadoLower === 'no') {
+        this.agregarNotaReinspeccion(worksheet);
+      }
+    }
+
+    // ✅ Aquí puedes agregar más lógica específica para la hoja IMAGENES si la necesitas
+    // Ejemplo: fechas, observaciones, etc.
+    // this.setCell(worksheet, 'A1', formData.observaciones_imagenes);
+
+    console.log('✅ Hoja IMAGENES procesada exitosamente');
+  }
+  private procesarHoja(worksheet: ExcelJS.Worksheet, formData: any): void {
+    console.log('✏️ Escribiendo datos en hoja:', worksheet.name);
+
+    // ✅ Si es la hoja IMAGENES, procesar el estado de aprobación
+    if (worksheet.name === 'IMAGENES') {
+      this.procesarHojaImagenes(worksheet, formData); // ✅ Corregido: llamar al método específico
+      return;
+    }
+
+    // ✅ Si es la hoja CAMIONETA, procesar datos del vehículo
+    if (worksheet.name === 'CAMIONETA') {
+      this.procesarHojaCamioneta(worksheet, formData);
+    }
+  }
   /**
    * Procesa y escribe TODOS los datos en la hoja de Excel
    * ✅ PRESERVA ESTILOS: Solo modificamos .value, NUNCA .style
    */
-  private procesarHoja(worksheet: ExcelJS.Worksheet, formData: any): void {
+  private procesarHojaCamioneta(worksheet: ExcelJS.Worksheet, formData: any): void {
     console.log('✏️ Escribiendo datos en hoja:', worksheet.name);
+
+    // ✅ DATOS DEL PROPIETARIO
+    this.setCell(worksheet, 'E11:M11', formData.propietario); // propietario
+    this.setCell(worksheet, 'P11:AA11', formData.documento_propietario); // documento propietario
 
     // // ✅ DATOS DEL VEHÍCULO (coordenadas verificadas con tu plantilla)
     this.setCell(worksheet, 'E20:M20', formData.placa); // Placa
@@ -470,54 +512,59 @@ async generarXlsxConductorConImagenes(
     this.setCell(worksheet, 'E8:M8', formData.fecha_inspeccion); // Fecha inspección
     this.setCell(worksheet, 'Q8:AA8', formData.fecha_vigencia); // Vigencia hasta
     this.setCell(worksheet, 'J23:M23', formData.fecha_vencimiento_soat); // Color
-    this.setCell(worksheet, 'U14:AA14', formData.fecha_vencimiento_licencia); // Color
     this.setCell(worksheet, 'J24:M24', formData.fecha_vencimiento_revision_tecnomecanica); // Color
     this.setCell(worksheet, 'J25:M25', formData.fecha_vencimiento_tarjeta_operacion); // Color
-    this.setCell(worksheet, 'E11:M11', formData.propietario); // propietario
-    this.setCell(worksheet, 'P11:AA11', formData.documento_propietario); // documento propietario
-     this.setCell(worksheet, 'V21:AA21', formData.licencia_transito); // Licencia tránsito
-     this.setCell(worksheet, 'E24:H24', formData.revision_tecnomecanica); // R. Tecnomecánica
-     this.setCell(worksheet, 'E25:H25', formData.tarjeta_operacion); // Tarjeta operación
-     this.setCell(worksheet, 'V23:AA23', formData.color); // Color
-     this.setCell(worksheet, 'V24:AA24', formData.codigo_vehiculo); // Código vehículo
-     this.setCell(worksheet, 'V25:AA25', formData.capacidad_pasajeros); // Capacidad
-     this.setCell(worksheet, 'V22:AA22', formData.clase_vehiculo); // Clase vehículo
-     this.setCell(worksheet, 'E23:H23', formData.soat); // Soat
-   
-     // ✅ DATOS DEL CONDUCTOR
+    this.setCell(worksheet, 'V21:AA21', formData.licencia_transito); // Licencia tránsito
+    this.setCell(worksheet, 'E24:H24', formData.revision_tecnomecanica); // R. Tecnomecánica
+    this.setCell(worksheet, 'E25:H25', formData.tarjeta_operacion); // Tarjeta operación
+    this.setCell(worksheet, 'V23:AA23', formData.color); // Color
+    this.setCell(worksheet, 'V24:AA24', formData.codigo_vehiculo); // Código vehículo
+    this.setCell(worksheet, 'V25:AA25', formData.capacidad_pasajeros); // Capacidad
+    this.setCell(worksheet, 'V22:AA22', formData.clase_vehiculo); // Clase vehículo
+    this.setCell(worksheet, 'E23:H23', formData.soat); // Soat
+
     // ✅ DATOS DEL CONDUCTOR// ✅ DATOS DEL CONDUCTOR
     this.setCell(worksheet, 'E15:M15', formData.identificacion); // Identificación
     this.setCell(worksheet, 'E13:AA13', formData.nombre_transportadora); // Transportadora
     this.setCell(worksheet, 'E14:M14', formData.nombres_conductor); // Nombres conductor    
     this.setCell(worksheet, 'U15:AA15', formData.telefono_conductor); // Identificación
-    // this.setCell(worksheet, 'H7', formData.fecha_vencimiento_licencia); // V. Licencia
+    this.setCell(worksheet, 'U14:AA14', formData.fecha_vencimiento_licencia); // Color
 
     // // ✅ SISTEMA ELÉCTRICO (Columnas: C=OK, D=Negativo, E=N/A)
-     this.marcarRadio(worksheet, 'H38', 'J38', 'L38', formData.luces_navegacion); // Fila 14 en tu plantilla
-     this.marcarRadio(worksheet, 'H40', 'J40', 'L40', formData.luces_frenado);
-     this.marcarRadio(worksheet, 'H42', 'J42', 'L42', formData.luces_direccionales);
-     this.marcarRadio(worksheet, 'H44', 'J44', 'L44', formData.luz_reversa);
-    // this.marcarRadio(worksheet, 'C18', 'D18', 'E18', formData.luces_estacionamiento);
-    // this.marcarRadio(worksheet, 'C19', 'D19', 'E19', formData.luces_posicion);
-    // this.marcarRadio(worksheet, 'C20', 'D20', 'E20', formData.luz_antineblina);
-    // this.marcarRadio(worksheet, 'C21', 'D21', 'E21', formData.luz_placa);
-    // this.marcarRadio(worksheet, 'C22', 'D22', 'E22', formData.tablero_instrumentos);
-    // this.marcarRadio(worksheet, 'C23', 'D23', 'E23', formData.bocina);
-    // this.marcarRadio(worksheet, 'C24', 'D24', 'E24', formData.bateria);
-    // this.marcarRadio(worksheet, 'C25', 'D25', 'E25', formData.aire_acondicionado);
+    this.marcarRadio(worksheet, 'H38', 'J38', 'L38', formData.luces_navegacion); // Fila 14 en tu plantilla
+    this.marcarRadio(worksheet, 'H40', 'J40', 'L40', formData.luces_frenado);
+    this.marcarRadio(worksheet, 'H42', 'J42', 'L42', formData.luces_direccionales);
+    this.marcarRadio(worksheet, 'H44', 'J44', 'L44', formData.luz_reversa);
+    this.marcarRadio(worksheet, 'H46', 'J46', 'L46', formData.luces_estacionamiento);
+    this.marcarRadio(worksheet, 'H48', 'J48', 'L48', formData.luces_posicion);
+    this.marcarRadio(worksheet, 'H50', 'J50', 'L50', formData.luz_antineblina);
+    this.marcarRadio(worksheet, 'H52', 'J52', 'L52', formData.luz_placa);
+    this.marcarRadio(worksheet, 'H54', 'J54', 'L54', formData.tablero_instrumentos);
+    this.marcarRadio(worksheet, 'H56', 'J56', 'L56', formData.bocina);
+    this.marcarRadio(worksheet, 'H58', 'J58', 'L58', formData.bateria);
+    this.marcarRadio(worksheet, 'H60', 'J60', 'L60', formData.aire_acondicionado);
 
     // // ✅ CARROCERÍA (ajustar filas según tu plantilla real)
-    // this.marcarRadio(worksheet, 'C29', 'D29', 'E29', formData.parachoque_delantero);
-    // this.marcarRadio(worksheet, 'C30', 'D30', 'E30', formData.parachoque_trasero);
-    // this.marcarRadio(worksheet, 'C31', 'D31', 'E31', formData.vidrios_seguridad);
-    // this.marcarRadio(worksheet, 'C32', 'D32', 'E32', formData.chapa_compuerta);
-    // this.marcarRadio(worksheet, 'C33', 'D33', 'E33', formData.guardabarros);
-    // this.marcarRadio(worksheet, 'C34', 'D34', 'E34', formData.estribos_laterales);
-    // this.marcarRadio(worksheet, 'C35', 'D35', 'E35', formData.placa_adhesivo);
+    this.marcarRadio(worksheet, 'H84', 'J84', 'L84', formData.parachoque_delantero);
+    this.marcarRadio(worksheet, 'H86', 'J86', 'L86', formData.parachoque_trasero);
+    this.marcarRadio(worksheet, 'H88', 'J88', 'L88', formData.vidrios_seguridad);
+    this.marcarRadio(worksheet, 'H90', 'J90', 'L90', formData.vidrios_laterales);
+    this.marcarRadio(worksheet, 'H92', 'J92', 'L92', formData.limpia_brisas);
+    this.marcarRadio(worksheet, 'H94', 'J94', 'L94', formData.guardabarros);
+    this.marcarRadio(worksheet, 'H96', 'J96', 'L96', formData.estribos_laterales);
+    this.marcarRadio(worksheet, 'H98', 'J98', 'L98', formData.placa_adhesivo);
+    this.marcarRadio(worksheet, 'H100', 'J100', 'L100', formData.chapa_compuerta);
 
     // // ✅ CABINA Y MANDOS
-    // this.marcarRadio(worksheet, 'C39', 'D39', 'E39', formData.tapiceria);
-    // this.marcarRadio(worksheet, 'C40', 'D40', 'E40', formData.manijas_seguros);
+    this.marcarRadio(worksheet, 'H106', 'J106', 'L106', formData.tapiceria);
+    this.marcarRadio(worksheet, 'H108', 'J108', 'L108', formData.manijas_seguros);
+    this.marcarRadio(worksheet, 'H114', 'J114', 'L114', formData.tablero_instrumentos_interno);
+    this.marcarRadio(worksheet, 'H112', 'J112', 'L112', formData.antideslizantes_pedales);
+    this.marcarRadio(worksheet, 'H110', 'J110', 'L110', formData.vidrios_electricos);
+
+
+    // // ✅ SEGURIDAD PASIVA
+
     // this.marcarRadio(worksheet, 'C41', 'D41', 'E41', formData.cinturones_seguridad);
     // this.marcarRadio(worksheet, 'C42', 'D42', 'E42', formData.airbags);
     // this.marcarRadio(worksheet, 'C43', 'D43', 'E43', formData.cadena_sujecion);
@@ -525,10 +572,8 @@ async generarXlsxConductorConImagenes(
     // this.marcarRadio(worksheet, 'C45', 'D45', 'E45', formData.apoyacabezas);
     // this.marcarRadio(worksheet, 'C46', 'D46', 'E46', formData.barra_antivuelco);
     // this.marcarRadio(worksheet, 'C47', 'D47', 'E47', formData.rejilla_vidrio_trasero);
-    // this.marcarRadio(worksheet, 'C48', 'D48', 'E48', formData.tablero_instrumentos_interno);
-    // this.marcarRadio(worksheet, 'C49', 'D49', 'E49', formData.antideslizantes_pedales);
-    // this.marcarRadio(worksheet, 'C50', 'D50', 'E50', formData.freno_mano);
 
+ 
     // // ✅ SEGURIDAD ACTIVA
     // this.marcarRadio(worksheet, 'C54', 'D54', 'E54', formData.sistema_frenos);
     // this.marcarRadio(worksheet, 'C55', 'D55', 'E55', formData.abs);
@@ -603,47 +648,153 @@ async generarXlsxConductorConImagenes(
   //   }
   // }
   private marcarRadio(
-  worksheet: ExcelJS.Worksheet,
-  colOk: string,
-  colNeg: string,
-  colNa: string,
-  valor: string
-): void {
-  if (!valor) return;
+    worksheet: ExcelJS.Worksheet,
+    colOk: string,
+    colNeg: string,
+    colNa: string,
+    valor: string
+  ): void {
+    if (!valor) return;
 
-  // Limpiar todas las opciones primero
-  worksheet.getCell(colOk).value = null;
-  worksheet.getCell(colNeg).value = null;
-  worksheet.getCell(colNa).value = null;
+    // Limpiar todas las opciones primero
+    worksheet.getCell(colOk).value = null;
+    worksheet.getCell(colNeg).value = null;
+    worksheet.getCell(colNa).value = null;
 
-  // Símbolo de check Unicode
-  const CHECK = '✓';
+    // Símbolo de check Unicode
+    const CHECK = '✓';
 
-  // Colocar check solo en la columna correspondiente
-  switch (valor.toLowerCase()) {
-    case 'ok':
-    case 'cumple':
-    case 'c':
-      worksheet.getCell(colOk).value = CHECK;
-      break;
-      
-    case 'negativo':
-    case 'no cumple':
-    case 'n/c':
-      worksheet.getCell(colNeg).value = CHECK;
-      break;
-      
-    case 'na':
-    case 'n/a':
-    case 'no aplica':
-      worksheet.getCell(colNa).value = CHECK;
-      break;
+    // Colocar check solo en la columna correspondiente
+    switch (valor.toLowerCase()) {
+      case 'ok':
+      case 'cumple':
+      case 'c':
+        worksheet.getCell(colOk).value = CHECK;
+        break;
+
+      case 'negativo':
+      case 'no cumple':
+      case 'n/c':
+        worksheet.getCell(colNeg).value = CHECK;
+        break;
+
+      case 'na':
+      case 'n/a':
+      case 'no aplica':
+        worksheet.getCell(colNa).value = CHECK;
+        break;
+    }
   }
-}
+  /**
+   * ✅ Marca el estado de aprobación en la hoja IMAGENES
+   * - F21: Check ✓ si estado es "aprobada/aprobado/sí"
+   * - H21: Check ✓ si estado es "rechazada/rechazado/no"
+   */
+  private marcarEstadoAprobacion(
+    worksheet: ExcelJS.Worksheet,
+    estado: string
+  ): void {
+    if (!estado) {
+      console.warn('⚠️ No se proporcionó estado para aprobación');
+      return;
+    }
 
+    const CHECK = '✓'; // Símbolo de check Unicode
+    const cellF21 = worksheet.getCell('F21'); // Columna F = Aprobada
+    const cellH21 = worksheet.getCell('H21'); // Columna H = Rechazada
+
+    // Limpiar ambas celdas primero para evitar marcas duplicadas
+    cellF21.value = null;
+    cellH21.value = null;
+
+    // Normalizar el estado para comparación
+    const estadoLower = estado.toLowerCase().trim();
+
+    // ✅ Marcar según el estado recibido
+    if (estadoLower === 'aprobada' || estadoLower === 'aprobado' || estadoLower === 'si' || estadoLower === 'sí') {
+      cellF21.value = CHECK;
+      console.log(`✅ Estado: "${estado}" → Marcado con ✓ en F21 (APROBADA)`);
+
+    } else if (estadoLower === 'rechazada' || estadoLower === 'rechazado' || estadoLower === 'no') {
+      cellH21.value = CHECK;
+      console.log(`✅ Estado: "${estado}" → Marcado con ✓ en H21 (RECHAZADA)`);
+
+    } else {
+      console.warn(`⚠️ Estado no reconocido: "${estado}". Valores válidos: aprobada/aprobado/sí, rechazada/rechazado/no`);
+    }
+  }
   /**
    * Carga la plantilla Excel desde assets
    */
+  /**
+ * Agrega la nota sobre reinspección de 15 días hábiles
+ * Rango: D24:AA25
+ * SOLO se llama cuando el estado es "rechazada"
+ */
+  private agregarNotaReinspeccion(worksheet: ExcelJS.Worksheet): void {
+    const notaTexto = 'Nota: En caso de NO aprobar la inspección realizada tiene hasta 15 días hábiles para realizar las respectivas correcciones a los defectos señalados y realizar la reinspección sin ningún costo adicional.';
+
+    try {
+      // ✅ Fusionar celdas en el rango D24:AA25
+      worksheet.mergeCells('D24:AA25');
+
+      // ✅ Obtener la celda fusionada
+      const notaCell = worksheet.getCell('D24');
+
+      // ✅ Agregar el texto
+      notaCell.value = notaTexto;
+
+      // ✅ Configuración de alineación
+      notaCell.alignment = {
+        vertical: 'top',
+        horizontal: 'left',
+        wrapText: true  // El texto se ajusta automáticamente
+      };
+
+      // ✅ Formato de fuente
+      notaCell.font = {
+        name: 'Calibri',
+        size: 9,
+        bold: false,
+        italic: false,
+        color: { argb: 'FFFF0000' } // Rojo para destacar
+      };
+
+      // ✅ Fondo amarillo claro (opcional, para resaltar)
+      notaCell.fill = {
+        type: 'pattern',
+        pattern: 'solid',
+        fgColor: { argb: 'FFFFFACD' } // LemonChiffon
+      };
+
+      // ✅ Bordes opcionales
+      notaCell.border = {
+        top: { style: 'thin', color: { argb: 'FFFF0000' } },
+        left: { style: 'thin', color: { argb: 'FFFF0000' } },
+        bottom: { style: 'thin', color: { argb: 'FFFF0000' } },
+        right: { style: 'thin', color: { argb: 'FFFF0000' } }
+      };
+      notaCell.font.color = { argb: 'FFFF0000' };
+      notaCell.font.bold = true;
+      notaCell.font.italic = true;
+      notaCell.font.size = 19;
+      notaCell.font.name = 'Calibri';
+      notaCell.font.color = { argb: 'FFFF0000' };
+      notaCell.font.bold = true;
+      notaCell.font.italic = true;
+      notaCell.font.size = 19;
+      notaCell.font.name = 'Calibri';
+
+      // ✅ Ajustar altura de las filas
+      worksheet.getRow(24).height = 35;
+      worksheet.getRow(25).height = 35;
+
+      console.log('✅ Nota de reinspección agregada en D24:AA25');
+
+    } catch (error) {
+      console.error('❌ Error al agregar nota de reinspección:', error);
+    }
+  }
   async loadTemplateFromAssets(): Promise<File> {
     try {
       console.log('📂 Cargando plantilla desde assets...');

@@ -24,7 +24,7 @@ interface FlatpickrOptions {
   templateUrl: './nueva.html',
   styleUrls: ['./nueva.scss'],
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterModule]
+  imports: [CommonModule, ReactiveFormsModule,RouterModule]
 })
 export class Nueva implements AfterViewInit, OnInit {
 
@@ -36,7 +36,7 @@ export class Nueva implements AfterViewInit, OnInit {
 
   // Estado de subida de imágenes
   isUploadingImages: boolean = false;
-
+  
   // Referencias a los elementos del DOM para los selectores de fecha
   @ViewChild('fechaInspeccion') fechaInspeccionInput!: ElementRef<HTMLInputElement>;
   @ViewChild('fechaVigencia') fechaVigenciaInput!: ElementRef<HTMLInputElement>;
@@ -109,6 +109,7 @@ export class Nueva implements AfterViewInit, OnInit {
       fecha_vencimiento_tarjeta_operacion: ['', Validators.required],
 
       // Sección: Estado y observaciones
+      estado: ['borrador'],
       observaciones: [''],
 
       // === CAMPOS DE INSPECCIÓN DEL VEHÍCULO (Paso 4) ===
@@ -192,124 +193,137 @@ export class Nueva implements AfterViewInit, OnInit {
       silenciadores: [''],
       tanques_compresor: [''],
 
-     // ===LABRADO LLANTAS ===
-      llanta_dd: [''],          // Delantera Derecha
-      llanta_tie: [''],         // Trasera Izquierda Exterior
-      llanta_tde: [''],         // Trasera Derecha Exterior
-      llanta_tii: [''],         // Trasera Izquierda Interior
-      llanta_tdi: [''],         // Trasera Derecha Interior
+      // Profundidad de Labrado
+      // llanta_d_ld: [''],
+      // llanta_t_lie: [''],
+      // llanta_t_lii: [''],
+      // llanta_t_lid: ['']
 
-      // === PRESIÓN DE AIRE EN LLANTAS  ===
+
+      llanta_di: [''],          // Delantera Izquierda - FALTA
+      llanta_dd: [''],          // Delantera Derecha - FALTA (reemplaza llanta_d_ld)
+      llanta_tie: [''],         // Trasera Izquierda Exterior - FALTA (reemplaza llanta_t_lie)
+      llanta_tde: [''],         // Trasera Derecha Exterior - FALTA
+      llanta_tii: [''],         // Trasera Izquierda Interior - FALTA (reemplaza llanta_t_lii)
+      llanta_tdi: [''],         // Trasera Derecha Interior - FALTA (reemplaza llanta_t_lid)
+
+
+      // === PRESIÓN DE AIRE EN LLANTAS (NUEVOS - TODOS FALTAN) ===
       presion_llanta_d_li: [''],    // Delantera Izquierda
       presion_llanta_d_ld: [''],    // Delantera Derecha
       presion_llanta_t_lie: [''],   // Trasera Izquierda Exterior
       presion_llanta_t_lde: [''],   // Trasera Derecha Exterior
       presion_llanta_t_lii: [''],   // Trasera Izquierda Interior
       presion_llanta_t_ldi: [''],   // Trasera Derecha Interior
-       
+
+
+      // === REGISTRO DE DAÑOS FÍSICOS ===
+      danos_vista_frontal: [''],        // JSON o texto con coordenadas de daños
+      danos_vista_lateral: [''],        // JSON o texto con coordenadas de daños
+      danos_vista_trasera: ['']         // JSON o texto con coordenadas de daños
     });
 
     // Inicialización del formulario del teléfono
     this.phoneForm = this.fb.group({
       localNumber: ['', [Validators.required, Validators.pattern(/^\d{10}$/)]],
-      whatsapp: [false] // Valor por defecto: falso
+      whatsapp: [false] // Default to false
     });
   }
-  // === MÉTODOS PARA MANEJO DE IMÁGENES ===
+// === MÉTODOS PARA MANEJO DE IMÁGENES ===
 
-  // Cuando el usuario selecciona archivos
-  onFilesSelected(event: any): void {
-    const files: FileList = event.target.files;
-
-    for (let i = 0; i < files.length; i++) {
-      const file = files[i];
-
-      // Validar que sea imagen
-      if (!file.type.startsWith('image/')) {
-        Swal.fire({
-          title: 'Archivo inválido',
-          text: `El archivo "${file.name}" no es una imagen`,
-          icon: 'warning',
-          confirmButtonText: 'Aceptar'
-        });
-        continue;
-      }
-
-      // Validar tamaño (5MB max)
-      if (file.size > 5 * 1024 * 1024) {
-        Swal.fire({
-          title: 'Archivo muy pesado',
-          text: `La imagen "${file.name}" excede los 5MB`,
-          icon: 'warning',
-          confirmButtonText: 'Aceptar'
-        });
-        continue;
-      }
-
-      // Agregar al array
-      this.selectedFiles.push(file);
-
-      // Crear preview
-      const reader = new FileReader();
-      reader.onload = (e: any) => {
-        this.imagePreviews.push(e.target.result);
-      };
-      reader.readAsDataURL(file);
-    }
-
-    // Limpiar input para permitir seleccionar el mismo archivo
-    event.target.value = '';
-  }
-
-  // Remover una imagen seleccionada
-  removeImage(index: number): void {
-    this.selectedFiles.splice(index, 1);
-    this.imagePreviews.splice(index, 1);
-  }
-
-  // Subir imágenes a PocketBase
-  async uploadImagesToCollection(): Promise<string[]> {
-    if (this.selectedFiles.length === 0) return [];
-
-    this.isUploadingImages = true;
-
-    try {
-      const metadata = {
-        type: 'inspection',
-        userId: this.currentUser,
-        uploaded_at: new Date().toISOString()
-      };
-
-      const imageIds = await this.inspectionService.uploadMultipleImages(
-        this.selectedFiles,
-        metadata
-      );
-
-      if (imageIds.length > 0) {
-        Swal.fire({
-          title: 'Imágenes cargadas',
-          text: `${imageIds.length} imágenes subidas correctamente`,
-          icon: 'success',
-          timer: 1500,
-          showConfirmButton: false
-        });
-      }
-
-      return imageIds;
-
-    } catch (error: any) {
-      console.error('Error al subir imágenes:', error);
+// Cuando el usuario selecciona archivos
+onFilesSelected(event: any): void {
+  const files: FileList = event.target.files;
+  
+  for (let i = 0; i < files.length; i++) {
+    const file = files[i];
+    
+    // Validar que sea imagen
+    if (!file.type.startsWith('image/')) {
       Swal.fire({
-        title: 'Error',
-        text: error.message || 'No se pudieron cargar las imágenes',
-        icon: 'error',
+        title: 'Archivo inválido',
+        text: `El archivo "${file.name}" no es una imagen`,
+        icon: 'warning',
         confirmButtonText: 'Aceptar'
       });
-      throw error;
-    } finally {
-      this.isUploadingImages = false;
+      continue;
     }
+    
+    // Validar tamaño (5MB max)
+    if (file.size > 5 * 1024 * 1024) {
+      Swal.fire({
+        title: 'Archivo muy pesado',
+        text: `La imagen "${file.name}" excede los 5MB`,
+        icon: 'warning',
+        confirmButtonText: 'Aceptar'
+      });
+      continue;
+    }
+    
+    // Agregar al array
+    this.selectedFiles.push(file);
+    
+    // Crear preview
+    const reader = new FileReader();
+    reader.onload = (e: any) => {
+      this.imagePreviews.push(e.target.result);
+    };
+    reader.readAsDataURL(file);
   }
+  
+  // Limpiar input para permitir seleccionar el mismo archivo
+  event.target.value = '';
+}
+
+// Remover una imagen seleccionada
+removeImage(index: number): void {
+  this.selectedFiles.splice(index, 1);
+  this.imagePreviews.splice(index, 1);
+}
+
+// Subir imágenes a PocketBase
+async uploadImagesToCollection(): Promise<string[]> {
+  if (this.selectedFiles.length === 0) return [];
+
+  this.isUploadingImages = true;
+
+  try {
+    const metadata = {
+      type: 'inspection',
+      userId: this.currentUser,
+      uploaded_at: new Date().toISOString()
+    };
+
+    const imageIds = await this.inspectionService.uploadMultipleImages(
+      this.selectedFiles,
+      metadata
+    );
+
+    if (imageIds.length > 0) {
+      Swal.fire({
+        title: 'Imágenes cargadas',
+        text: `${imageIds.length} imágenes subidas correctamente`,
+        icon: 'success',
+        timer: 1500,
+        showConfirmButton: false
+      });
+    }
+
+    return imageIds;
+
+  } catch (error: any) {
+    console.error('Error al subir imágenes:', error);
+    Swal.fire({
+      title: 'Error',
+      text: error.message || 'No se pudieron cargar las imágenes',
+      icon: 'error',
+      confirmButtonText: 'Aceptar'
+    });
+    throw error;
+  } finally {
+    this.isUploadingImages = false;
+  }
+}
   ngOnInit() {
     // Sincronizar teléfono entre formularios
     this.phoneForm.get('localNumber')?.valueChanges.subscribe(value => {
@@ -430,6 +444,89 @@ export class Nueva implements AfterViewInit, OnInit {
       return;
     }
     this.initStep1DatePickers();
+    const flatpickrOptions: FlatpickrOptions = {
+      dateFormat: 'd/m/Y',
+      allowInput: true,
+      clickOpens: true,
+      disableMobile: true,
+      locale: {
+        firstDayOfWeek: 1,
+        weekdays: {
+          shorthand: ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'],
+          longhand: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado']
+        },
+        months: {
+          shorthand: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+          longhand: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
+        }
+      }
+    };
+
+    // Configuración de los date pickers
+    const inspeccionPicker = flatpickr(this.fechaInspeccionInput.nativeElement, {
+      ...flatpickrOptions,
+      defaultDate: new Date(),
+      onChange: (selectedDates: Date[], dateStr: string) => {
+        this.fechaInspeccion = dateStr;
+        this.inspectionForm.patchValue({ fecha_inspeccion: dateStr });
+        this.inspectionForm.get('fecha_inspeccion')?.markAsTouched();
+      }
+    });
+    this.flatpickrInstances['push'](inspeccionPicker);
+    const vigenciaPicker = flatpickr(this.fechaVigenciaInput.nativeElement, {
+      ...flatpickrOptions,
+      minDate: 'today',
+      onChange: (selectedDates: Date[], dateStr: string) => {
+        this.fechaVigencia = dateStr;
+        this.inspectionForm.patchValue({ fecha_vigencia: dateStr });
+        this.inspectionForm.get('fecha_vigencia')?.markAsTouched();
+      }
+    });
+    this.flatpickrInstances['push'](vigenciaPicker);
+
+    const licenciaPicker = flatpickr(this.fechaLicenciaInput.nativeElement, {
+      ...flatpickrOptions,
+      minDate: 'today',
+      onChange: (selectedDates: Date[], dateStr: string) => {
+        this.fechaLicencia = dateStr;
+        this.inspectionForm.patchValue({ fecha_vencimiento_licencia: dateStr });
+        this.inspectionForm.get('fecha_vencimiento_licencia')?.markAsTouched();
+      }
+    });
+    this.flatpickrInstances['push'](licenciaPicker);
+
+    const soatPicker = flatpickr(this.fechaVencimientoSoatInput.nativeElement, {
+      ...flatpickrOptions,
+      minDate: 'today',
+      onChange: (selectedDates: Date[], dateStr: string) => {
+        this.fechaVencimientoSoat = dateStr;
+        this.inspectionForm.patchValue({ fecha_vencimiento_soat: dateStr });
+        this.inspectionForm.get('fecha_vencimiento_soat')?.markAsTouched();
+      }
+    });
+    this.flatpickrInstances['push'](soatPicker);
+
+    const revisionTecnomecanicaPicker = flatpickr(this.fechaVencimientoRevisionTecnomecanicaInput.nativeElement, {
+      ...flatpickrOptions,
+      minDate: 'today',
+      onChange: (selectedDates: Date[], dateStr: string) => {
+        this.fechaVencimientoRevisionTecnomecanica = dateStr;
+        this.inspectionForm.patchValue({ fecha_vencimiento_revision_tecnomecanica: dateStr });
+        this.inspectionForm.get('fecha_vencimiento_revision_tecnomecanica')?.markAsTouched();
+      }
+    });
+    this.flatpickrInstances['push'](revisionTecnomecanicaPicker);
+
+    const tarjetaOperacionPicker = flatpickr(this.fechaVencimientoTarjetaOperacionInput.nativeElement, {
+      ...flatpickrOptions,
+      minDate: 'today',
+      onChange: (selectedDates: Date[], dateStr: string) => {
+        this.fechaVencimientoTarjetaOperacion = dateStr;
+        this.inspectionForm.patchValue({ fecha_vencimiento_tarjeta_operacion: dateStr });
+        this.inspectionForm.get('fecha_vencimiento_tarjeta_operacion')?.markAsTouched();
+      }
+    });
+    this.flatpickrInstances['push'](tarjetaOperacionPicker);
   }
 
   ngOnDestroy() {
@@ -526,6 +623,10 @@ export class Nueva implements AfterViewInit, OnInit {
    */
   private validateStep2(): boolean {
     const controls = [
+      // 'nombre_transportadora',
+      // 'nombres_conductor',
+      // 'identificacion',
+      // 'telefono',
       'fecha_vencimiento_licencia'
     ];
 
@@ -560,6 +661,12 @@ export class Nueva implements AfterViewInit, OnInit {
    */
   private validateStep3(): boolean {
     const requiredControls = [
+      // 'placa',
+      // 'marca',
+      // 'modelo',
+      // 'kilometraje',
+      // 'fecha_vencimiento_soat',
+      // 'fecha_vencimiento_revision_tecnomecanica',
       'fecha_vencimiento_tarjeta_operacion'
     ];
 
@@ -630,77 +737,6 @@ export class Nueva implements AfterViewInit, OnInit {
 
   // ===== FORM SUBMISSION METHODS =====
 
-  /**
-   * Calcula el estado de la inspección basado en los campos de inspección
-   */
-  private calculateEstado(inspectionData: any): string {
-    const inspectionFields = [
-      // Sistema Eléctrico (12 items)
-        'luces_navegacion', 
-        'luces_frenado', 
-        'luces_direccionales', 
-        'luz_reversa', 
-        'luces_estacionamiento', 
-        'luces_posicion', 
-        'luz_antineblina', 
-        'luz_placa', 
-        'tablero_instrumentos', 
-        'bocina', 
-        'bateria', 
-        'aire_acondicionado',
-      // Sistema Motor (7 items)
-        'aceite_motor', 
-        'aceite_transmision', 
-        'liquido_refrigerante', 
-        'liquido_frenos', 
-        'filtro_aire', 
-        'hidraulico_direccion', 
-        'tension_correas',
-      // Carrocería (9 items)
-        'parachoque_delantero', 
-        'parachoque_trasero', 
-        'vidrios_seguridad', 
-        'vidrios_laterales', 
-        'limpia_brisas', 
-        'guardabarros', 
-        'estribos_laterales', 
-        'placa_adhesivo', 
-        'chapa_compuerta',
-      // Cabina (6 items)
-        'tapiceria', 
-        'manijas_seguros', 
-        'vidrios_electricos', 
-        'antideslizantes_pedales', 
-        'freno_mano', 
-        'tablero_instrumentos_interno',
-      // Seguridad Activa (6 items)
-        'sistema_frenos', 
-        'abs', 
-        'sistema_direccion', 
-        'espejos_laterales', 
-        'espejo_interno', 
-        'freno_mano_seguridad',
-      // Seguridad Pasiva (7 items)
-      'cinturones_seguridad', 'airbags', 'cadena_sujecion', 'columna_direccion', 'apoyacabezas', 'barra_antivuelco', 'rejilla_vidrio_trasero',
-      // Kit de Carretera (8 items)
-      'conos_triangular', 'botiquin', 'extintor', 'cunas', 'llanta_repuesto', 'caja_herramientas', 'linterna', 'gato',
-      // Parte Baja (8 items)
-      'buies_barra', 'buies_tiera', 'cuna_motor', 'guardapolvo_axiales', 'amortiguadores', 'hojas_muelles', 'silenciadores', 'tanques_compresor',
-      // Labrado Llantas (6 items)
-      'llanta_di','llanta_dd','llanta_tie', 'llanta_tde', 'llanta_tii', 'llanta_tdi',
-      // Presión Aire Llantas (6 items)
-      'presion_llanta_d_li', 'presion_llanta_d_ld', 'presion_llanta_t_lie', 'presion_llanta_t_lde', 'presion_llanta_t_lii', 'presion_llanta_t_ldi',
-    ];
-
-    for (const field of inspectionFields) {
-      const value = inspectionData[field];
-      if (value !== 'ok') {
-        return 'rechazada';
-      }
-    }
-    return 'aprobada';
-  }
-
   async onSubmit() {
     if (!this.isLoading) {
       // Validar todos los pasos antes de enviar
@@ -722,103 +758,100 @@ export class Nueva implements AfterViewInit, OnInit {
           Swal.showLoading();
         }
       });
-      try {
-        // 1. SUBIR IMÁGENES PRIMERO (si hay)
-        let imageIds: string[] = [];
-        if (this.selectedFiles.length > 0) {
-          imageIds = await this.uploadImagesToCollection();
-        }
+  try {
+    // 1. SUBIR IMÁGENES PRIMERO (si hay)
+    let imageIds: string[] = [];
+    if (this.selectedFiles.length > 0) {
+      imageIds = await this.uploadImagesToCollection();
+    }
 
-        const inspectionData = this.inspectionForm.value;
+    const inspectionData = this.inspectionForm.value;
 
-        // Calcular estado basado en los campos de inspección
-        const estado = this.calculateEstado(inspectionData);
+    // 2. Validar
+    const validation = this.inspectionService.validateInspectionData(inspectionData);
+    if (!validation.valid) {
+      Swal.close();
+      await Swal.fire({
+        title: 'Datos inválidos',
+        html: validation.errors.join('<br>'),
+        icon: 'error',
+        confirmButtonText: 'Corregir'
+      });
+      this.isLoading = false;
+      return;
+    }
 
-        // 2. Validar
-        const validation = this.inspectionService.validateInspectionData(inspectionData);
-        if (!validation.valid) {
-          Swal.close();
-          await Swal.fire({
-            title: 'Datos inválidos',
-            html: validation.errors.join('<br>'),
-            icon: 'error',
-            confirmButtonText: 'Corregir'
-          });
-          this.isLoading = false;
-          return;
-        }
+    // 3. Formatear fechas
+    const formatDateForAPI = (dateStr: string) => {
+      const [day, month, year] = dateStr.split('/');
+      return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}T00:00:00.000Z`;
+    };
 
-        // 3. Formatear fechas
-        const formatDateForAPI = (dateStr: string) => {
-          const [day, month, year] = dateStr.split('/');
-          return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}T00:00:00.000Z`;
-        };
+    // 4. Preparar datos CON LAS IMÁGENES
+    const formattedData = {
+      ...inspectionData,
+      // Incluir el valor de whatsapp del phoneForm
+      whatsapp: this.phoneForm.get('whatsapp')?.value || false,
+      // Incluir el teléfono del formulario de teléfono
+      telefono: this.phoneForm.get('localNumber')?.value || inspectionData.telefono,
+      
+      fecha_inspeccion: formatDateForAPI(inspectionData.fecha_inspeccion),
+      fecha_vigencia: formatDateForAPI(inspectionData.fecha_vigencia),
+      fecha_vencimiento_licencia: formatDateForAPI(inspectionData.fecha_vencimiento_licencia),
+      fecha_vencimiento_soat: formatDateForAPI(inspectionData.fecha_vencimiento_soat),
+      fecha_vencimiento_revision_tecnomecanica: formatDateForAPI(inspectionData.fecha_vencimiento_revision_tecnomecanica),
+      fecha_vencimiento_tarjeta_operacion: formatDateForAPI(inspectionData.fecha_vencimiento_tarjeta_operacion),
+      created_by: this.currentUser,
+      estado: 'borrador',
+      kilometraje: Number(inspectionData.kilometraje),
+      capacidad_pasajeros: Number(inspectionData.capacidad_pasajeros),
 
-        // 4. Preparar datos CON LAS IMÁGENES
-        const formattedData = {
-          ...inspectionData,
-          // Incluir el valor de whatsapp del phoneForm
-          whatsapp: this.phoneForm.get('whatsapp')?.value || false,
-          // Incluir el teléfono del formulario de teléfono
-          telefono: this.phoneForm.get('localNumber')?.value || inspectionData.telefono,
+      llanta_di: Number(inspectionData.llanta_di),
+      llanta_dd: Number(inspectionData.llanta_dd),
+      llanta_tie: Number(inspectionData.llanta_tie),
+      llanta_tde: Number(inspectionData.llanta_tde),
+      llanta_tii: Number(inspectionData.llanta_tii),
+      llanta_tdi: Number(inspectionData.llanta_tdi),
+      presion_llanta_d_li: Number(inspectionData.presion_llanta_d_li),
+      presion_llanta_d_ld: Number(inspectionData.presion_llanta_d_ld),
+      presion_llanta_t_lie: Number(inspectionData.presion_llanta_t_lie),
+      presion_llanta_t_lde: Number(inspectionData.presion_llanta_t_lde),
+      presion_llanta_t_lii: Number(inspectionData.presion_llanta_t_lii),
+      presion_llanta_t_ldi: Number(inspectionData.presion_llanta_t_ldi),
+      
+      // 5. GUARDAR LOS IDs DE LAS IMÁGENES EN EL CAMPO JSON
+      images: imageIds
+    };
 
-          fecha_inspeccion: formatDateForAPI(inspectionData.fecha_inspeccion),
-          fecha_vigencia: formatDateForAPI(inspectionData.fecha_vigencia),
-          fecha_vencimiento_licencia: formatDateForAPI(inspectionData.fecha_vencimiento_licencia),
-          fecha_vencimiento_soat: formatDateForAPI(inspectionData.fecha_vencimiento_soat),
-          fecha_vencimiento_revision_tecnomecanica: formatDateForAPI(inspectionData.fecha_vencimiento_revision_tecnomecanica),
-          fecha_vencimiento_tarjeta_operacion: formatDateForAPI(inspectionData.fecha_vencimiento_tarjeta_operacion),
-          created_by: this.currentUser,
-          estado: estado,
-          kilometraje: Number(inspectionData.kilometraje),
-          capacidad_pasajeros: Number(inspectionData.capacidad_pasajeros),
+    console.log('Datos a enviar:', JSON.stringify(formattedData, null, 2));
 
-          llanta_di: Number(inspectionData.llanta_di),
-          llanta_dd: Number(inspectionData.llanta_dd),
-          llanta_tie: Number(inspectionData.llanta_tie),
-          llanta_tde: Number(inspectionData.llanta_tde),
-          llanta_tii: Number(inspectionData.llanta_tii),
-          llanta_tdi: Number(inspectionData.llanta_tdi),
-          presion_llanta_d_li: Number(inspectionData.presion_llanta_d_li),
-          presion_llanta_d_ld: Number(inspectionData.presion_llanta_d_ld),
-          presion_llanta_t_lie: Number(inspectionData.presion_llanta_t_lie),
-          presion_llanta_t_lde: Number(inspectionData.presion_llanta_t_lde),
-          presion_llanta_t_lii: Number(inspectionData.presion_llanta_t_lii),
-          presion_llanta_t_ldi: Number(inspectionData.presion_llanta_t_ldi),
+    // 6. Crear inspección
+    await this.inspectionService.createInspection(formattedData).toPromise();
 
-          // 5. GUARDAR LOS IDs DE LAS IMÁGENES EN EL CAMPO JSON
-          images: imageIds
-        };
+    Swal.close();
+    await Swal.fire({
+      title: '¡Éxito!',
+      text: 'La inspección ha sido creada correctamente',
+      icon: 'success',
+      confirmButtonText: 'Aceptar',
+      confirmButtonColor: '#198754'
+    });
 
-        console.log('Datos a enviar:', JSON.stringify(formattedData, null, 2));
+    this.resetForms();
+    this.currentStep = 1;
 
-        // 6. Crear inspección
-        await this.inspectionService.createInspection(formattedData).toPromise();
-
-        Swal.close();
-        await Swal.fire({
-          title: '¡Éxito!',
-          text: `La inspección ha sido creada correctamente. Estado: ${estado === 'aprobada' ? 'Aprobada' : 'Rechazada'}`,
-          icon: 'success',
-          confirmButtonText: 'Aceptar',
-          confirmButtonColor: '#198754'
-        });
-
-        this.resetForms();
-        this.currentStep = 1;
-
-      } catch (error: any) {
-        Swal.close();
-        await Swal.fire({
-          title: 'Error',
-          text: error.message || 'Ocurrió un error al guardar la inspección',
-          icon: 'error',
-          confirmButtonText: 'Entendido'
-        });
-      } finally {
-        this.isLoading = false;
-      }
-
+  } catch (error: any) {
+    Swal.close();
+    await Swal.fire({
+      title: 'Error',
+      text: error.message || 'Ocurrió un error al guardar la inspección',
+      icon: 'error',
+      confirmButtonText: 'Entendido'
+    });
+  } finally {
+    this.isLoading = false;
+  }
+   
     }
   }
 
@@ -852,24 +885,38 @@ export class Nueva implements AfterViewInit, OnInit {
   /**
    * Reinicia los formularios a su estado inicial
    */
+  // private resetForms() {
+  //   this.inspectionForm.reset();
+  //   this.phoneForm.reset();
+  //   this.fechaInspeccion = '';
+  //   this.fechaVigencia = '';
+  //   this.fechaLicencia = '';
+  //   this.fechaVencimientoSoat = '';
+  //   this.fechaVencimientoRevisionTecnomecanica = '';
+  //   this.fechaVencimientoTarjetaOperacion = '';
+
+  //   if (this.flatpickrInstances[0]) {
+  //     this.flatpickrInstances[0].setDate(new Date());
+  //   }
+  // }
   private resetForms() {
-    this.inspectionForm.reset();
-    this.phoneForm.reset();
+  this.inspectionForm.reset();
+  this.phoneForm.reset();
+  
+  // Limpiar imágenes
+  this.selectedFiles = [];
+  this.imagePreviews = [];
+  
+  this.fechaInspeccion = '';
+  this.fechaVigencia = '';
+  this.fechaLicencia = '';
+  this.fechaVencimientoSoat = '';
+  this.fechaVencimientoRevisionTecnomecanica = '';
+  this.fechaVencimientoTarjetaOperacion = '';
 
-    // Limpiar imágenes
-    this.selectedFiles = [];
-    this.imagePreviews = [];
-
-    this.fechaInspeccion = '';
-    this.fechaVigencia = '';
-    this.fechaLicencia = '';
-    this.fechaVencimientoSoat = '';
-    this.fechaVencimientoRevisionTecnomecanica = '';
-    this.fechaVencimientoTarjetaOperacion = '';
-
-    if (this.flatpickrInstances['fecha_inspeccion']) {
-      this.flatpickrInstances['fecha_inspeccion'].setDate(new Date());
-    }
-    this.router.navigate(['/home']);
+  if (this.flatpickrInstances[0]) {
+    this.flatpickrInstances[0].setDate(new Date());
   }
+  this.router.navigate(['/home']);
+}
 }
