@@ -2,7 +2,7 @@
   "background_color": "#ffffff",
   "dir": "ltr",
   "display": "fullscreen",
-  "description": "Aplicación de verificación",
+  "description": "Plataforma móvil oficial de Verificar IT diseñada para optimizar el proceso de inspección vehicular. Permite realizar evaluaciones técnicas completas para camionetas, busetas y transporte pesado de manera eficiente.",
   "name": "VerificarIT",
   "orientation": "any",
   "scope": "/",
