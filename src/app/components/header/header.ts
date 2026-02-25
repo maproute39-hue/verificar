@@ -1,7 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../services/auth.service';
+import { PwaInstallService } from '../../services/pwa-install.service';
+import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -11,11 +13,29 @@ import Swal from 'sweetalert2';
   templateUrl: './header.html',
   styleUrl: './header.scss',
 })
-export class Header {
+export class Header implements OnInit, OnDestroy {
+  showInstallButton = false;
+  private installSubscription: Subscription | undefined;
+
   constructor(
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
+    private pwaInstallService: PwaInstallService
   ) {}
+
+  ngOnInit() {
+    this.installSubscription = this.pwaInstallService.installPromptAvailable$.subscribe(
+      (available) => {
+        this.showInstallButton = available;
+      }
+    );
+  }
+
+  ngOnDestroy() {
+    if (this.installSubscription) {
+      this.installSubscription.unsubscribe();
+    }
+  }
 
   async logout(event: Event) {
     event.preventDefault();
@@ -58,6 +78,25 @@ export class Header {
           confirmButtonColor: '#3f51b5'
         });
       }
+    }
+  }
+
+  async installPwa() {
+    const accepted = await this.pwaInstallService.promptInstall();
+    if (accepted) {
+      await Swal.fire({
+        title: '¡Instalada!',
+        text: 'La aplicación se ha instalado correctamente.',
+        icon: 'success',
+        confirmButtonColor: '#3f51b5'
+      });
+    } else {
+      await Swal.fire({
+        title: 'Cancelado',
+        text: 'La instalación fue cancelada.',
+        icon: 'info',
+        confirmButtonColor: '#3f51b5'
+      });
     }
   }
 }
