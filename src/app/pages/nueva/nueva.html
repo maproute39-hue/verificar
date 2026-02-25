@@ -1582,27 +1582,29 @@
                 </div>
               </div>
             </div>
-            <div class="card mt-4" *ngIf="currentStep === 4">
-  <div class="card-header bg-light">
-    <h6 class="mb-0">
-      <i class="fi fi-rr-comment-alt me-2"></i>
-      Observaciones / Comentarios / Compromisos
-    </h6>
-  </div>
-  <div class="card-body">
-    <textarea 
-      formControlName="observaciones" 
-      class="form-control" 
-      rows="5"
-      placeholder="Describa las observaciones encontradas durante la inspección...">
-    </textarea>
-    <div class="form-text">
-      Máximo 500 caracteres. Esta información se incluirá en el reporte Excel/PDF.
-    </div>
-  </div>
-</div>
+
             <!-- Agrega esto en el Paso 4 donde tengas el registro fotográfico -->
-            <div class="image-upload-section" *ngIf="currentStep === 4">
+            <div class="image-upload-section">
+              <div class="card mt-4">
+                <div class="card-header bg-light">
+                  <h6 class="mb-0">
+                    <i class="fi fi-rr-comment-alt me-2"></i>
+                    Observaciones / Comentarios / Compromisos
+                  </h6>
+                </div>
+                <div class="card-body">
+                  <textarea 
+                    formControlName="observaciones" 
+                    class="form-control" 
+                    rows="5"
+                    placeholder="Describa las observaciones encontradas durante la inspección...">
+                  </textarea>
+                  <div class="form-text">
+                    Máximo 500 caracteres. Esta información se incluirá en el reporte Excel/PDF.
+                  </div>
+                </div>
+              </div>
+              
               <h5>Registro Fotográfico</h5>
 
               <div class="form-group">
