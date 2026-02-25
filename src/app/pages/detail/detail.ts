@@ -229,7 +229,7 @@ export class Detail implements OnInit, AfterViewInit {
       presion_llanta_t_lde: [''],   // Trasera Derecha Exterior
       presion_llanta_t_lii: [''],   // Trasera Izquierda Interior
       presion_llanta_t_ldi: [''],   // Trasera Derecha Interior
-         numero_certificado: [''],
+      numero_certificado: [''],
     });
 
     this.phoneForm = this.fb.group({
@@ -852,9 +852,62 @@ export class Detail implements OnInit, AfterViewInit {
         hidraulico_direccion: this.inspectionForm.get('hidraulico_direccion')?.value,
         tension_correas: this.inspectionForm.get('tension_correas')?.value,
 
-      // SEGURIDAD ACTIVA
+        // SEGURIDAD ACTIVA
+        sistema_frenos: this.inspectionForm.get('sistema_frenos')?.value,
+        abs: this.inspectionForm.get('abs')?.value,
+        sistema_direccion: this.inspectionForm.get('sistema_direccion')?.value,
+        espejos_laterales: this.inspectionForm.get('espejos_laterales')?.value,
+        espejo_interno: this.inspectionForm.get('espejo_interno')?.value,
+        freno_mano_seguridad: this.inspectionForm.get('freno_mano_seguridad')?.value,
 
+        //SEGURIDAD PASIVA
+        cinturones_seguridad: this.inspectionForm.get('cinturones_seguridad')?.value,
+        airbags: this.inspectionForm.get('airbags')?.value,
+        cadena_sujecion: this.inspectionForm.get('cadena_sujecion')?.value,
+        colomna_sujecion: this.inspectionForm.get('colomna_sujecion')?.value,
+        apoyacabezas: this.inspectionForm.get('apoyacabezas')?.value,
+        barra_antivuelco: this.inspectionForm.get('barra_antivuelco')?.value,
+        rejilla_vidrio_trasero: this.inspectionForm.get('rejilla_vidrio_trasero')?.value,
 
+        // KIT DE CARRETERA
+
+        conos_triangular: this.inspectionForm.get('conos_triangular')?.value,
+        botiquin: this.inspectionForm.get('botiquin')?.value,
+        extintor: this.inspectionForm.get('extintor')?.value,
+        cunas: this.inspectionForm.get('cunas')?.value,
+        llanta_repuesto: this.inspectionForm.get('llanta_repuesto')?.value,
+        caja_herramientas: this.inspectionForm.get('caja_herramientas')?.value,
+        linterna: this.inspectionForm.get('linterna')?.value,
+        gato: this.inspectionForm.get('gato')?.value,
+        
+
+        //PARTE BAJA
+        buies_barra: this.inspectionForm.get('buies_barra')?.value,
+        buies_tiera: this.inspectionForm.get('buies_tiera')?.value,
+        cuna_motor: this.inspectionForm.get('cuna_motor')?.value,
+        guardapolvo_axiales: this.inspectionForm.get('guardapolvo_axiales')?.value,
+        amortiguadores: this.inspectionForm.get('amortiguadores')?.value,
+        hojas_muelles: this.inspectionForm.get('hojas_muelles')?.value,
+        silenciadores: this.inspectionForm.get('silenciadores')?.value,
+        tanques_compresor: this.inspectionForm.get('tanques_compresor')?.value,
+
+        // PROFUNDIDAD DE LABRADO
+        llanta_di: this.inspectionForm.get('llanta_di')?.value,
+        llanta_dd: this.inspectionForm.get('llanta_dd')?.value,
+        llanta_tie: this.inspectionForm.get('llanta_tie')?.value,
+        llanta_tde: this.inspectionForm.get('llanta_tde')?.value,
+        llanta_tii: this.inspectionForm.get('llanta_tii')?.value,
+        llanta_tdi: this.inspectionForm.get('llanta_tdi')?.value,
+
+        // PRESION DE AIRE
+        presion_llanta_d_li: this.inspectionForm.get('presion_llanta_d_li')?.value,
+        presion_llanta_d_ld: this.inspectionForm.get('presion_llanta_d_ld')?.value,
+        presion_llanta_t_lie: this.inspectionForm.get('presion_llanta_t_lie')?.value,
+        presion_llanta_t_lde: this.inspectionForm.get('presion_llanta_t_lde')?.value,
+        presion_llanta_t_lii: this.inspectionForm.get('presion_llanta_t_lii')?.value,
+        presion_llanta_t_ldi: this.inspectionForm.get('presion_llanta_t_ldi')?.value,
+
+        observaciones: this.inspectionForm.get('observaciones')?.value,
 
         // ℹ️ CAMPOS ADICIONALES (si los usas en otra lógica)
         estado: this.inspectionForm.get('estado')?.value,

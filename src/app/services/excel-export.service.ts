@@ -477,6 +477,15 @@ export class ExcelExportService {
     // Ejemplo: fechas, observaciones, etc.
     // this.setCell(worksheet, 'A1', formData.observaciones_imagenes);
 
+    this.setCell(worksheet, 'U14', formData.presion_llanta_d_li);  // LLanta D-LDI
+    this.setCell(worksheet, 'Y14', formData.presion_llanta_d_ld);   // LLanta D-LD
+    this.setCell(worksheet, 'U15', formData.presion_llanta_t_lie);  // LLanta T-LIE
+    this.setCell(worksheet, 'Y15', formData.presion_llanta_t_lde);  // LLanta T-LDE
+    this.setCell(worksheet, 'U16', formData.presion_llanta_t_lii);  // LLanta T-LII
+    this.setCell(worksheet, 'Y16', formData.presion_llanta_t_ldi);  // LLanta T-LDI
+    this.setCell(worksheet, 'D30:AA35', formData.observaciones);
+
+
     console.log('✅ Hoja IMAGENES procesada exitosamente');
   }
   private procesarHoja(worksheet: ExcelJS.Worksheet, formData: any): void {
@@ -584,28 +593,53 @@ export class ExcelExportService {
 
 
     // // ✅ SEGURIDAD ACTIVA
-    this.marcarRadio(worksheet, 'C54', 'D54', 'E54', formData.sistema_frenos);
-    this.marcarRadio(worksheet, 'C55', 'D55', 'E55', formData.abs);
-    this.marcarRadio(worksheet, 'C56', 'D56', 'E56', formData.sistema_direccion);
-    this.marcarRadio(worksheet, 'C57', 'D57', 'E57', formData.espejos_laterales);
-    this.marcarRadio(worksheet, 'C58', 'D58', 'E58', formData.espejo_interno);
-    this.marcarRadio(worksheet, 'C59', 'D59', 'E59', formData.freno_mano_seguridad);
+    this.marcarRadio(worksheet, 'W38', 'Y38', 'AA38', formData.sistema_frenos);
+    this.marcarRadio(worksheet, 'W40', 'Y40', 'AA40', formData.abs);
+    this.marcarRadio(worksheet, 'W42', 'Y42', 'AA42', formData.sistema_direccion);
+    this.marcarRadio(worksheet, 'W44', 'Y44', 'AA44', formData.espejos_laterales);
+    this.marcarRadio(worksheet, 'W46', 'Y46', 'AA46', formData.espejo_interno);
+    this.marcarRadio(worksheet, 'W48', 'Y48', 'AA48', formData.freno_mano_seguridad);
 
     // // ✅ KIT DE CARRETERA
-    // this.marcarRadio(worksheet, 'C63', 'D63', 'E63', formData.conos_triangular);
-    // this.marcarRadio(worksheet, 'C64', 'D64', 'E64', formData.botiquin);
-    // this.marcarRadio(worksheet, 'C65', 'D65', 'E65', formData.extintor);
-    // this.marcarRadio(worksheet, 'C66', 'D66', 'E66', formData.cunas);
-    // this.marcarRadio(worksheet, 'C67', 'D67', 'E67', formData.llanta_repuesto);
-    // this.marcarRadio(worksheet, 'C68', 'D68', 'E68', formData.caja_herramientas);
-    // this.marcarRadio(worksheet, 'C69', 'D69', 'E69', formData.linterna);
-    // this.marcarRadio(worksheet, 'C70', 'D70', 'E70', formData.gato);
+    this.marcarRadio(worksheet, 'W72', 'Y72', 'AA72', formData.conos_triangular);
+    this.marcarRadio(worksheet, 'W74', 'Y74', 'AA74', formData.botiquin);
+    this.marcarRadio(worksheet, 'W76', 'Y76', 'AA76', formData.extintor);
+    this.marcarRadio(worksheet, 'W78', 'Y78', 'AA78', formData.cunas);
+    this.marcarRadio(worksheet, 'W80', 'Y80', 'AA80', formData.llanta_repuesto);
+    this.marcarRadio(worksheet, 'W82', 'Y82', 'AA82', formData.caja_herramientas);
+    this.marcarRadio(worksheet, 'W84', 'Y84', 'AA84', formData.linterna);
+    this.marcarRadio(worksheet, 'W86', 'Y86', 'AA86', formData.gato);
 
-    // // ✅ PROFUNDIDAD DE LABRADO
-    // this.setCell(worksheet, 'B74', formData.llanta_d_ld); // Ajustar según coordenadas reales
-    // this.setCell(worksheet, 'D74', formData.llanta_t_lie);
-    // this.setCell(worksheet, 'F74', formData.llanta_t_lii);
-    // this.setCell(worksheet, 'H74', formData.llanta_t_lid);
+
+    //PARTE BAJA
+    this.marcarRadio(worksheet, 'W92', 'Y92', 'AA92', formData.buies_barra);
+    this.marcarRadio(worksheet, 'W94', 'Y94', 'AA94', formData.buies_tiera);
+    this.marcarRadio(worksheet, 'W96', 'Y96', 'AA96', formData.cuna_motor);
+    this.marcarRadio(worksheet, 'W98', 'Y98', 'AA98', formData.guardapolvo_axiales);
+    this.marcarRadio(worksheet, 'W100', 'Y100', 'AA100', formData.amortiguadores);
+    this.marcarRadio(worksheet, 'W102', 'Y102', 'AA102', formData.hojas_muelles);
+    this.marcarRadio(worksheet, 'W104', 'Y104', 'AA104', formData.silenciadores);
+    this.marcarRadio(worksheet, 'W106', 'Y106', 'AA106', formData.tanques_compresor);
+
+    // ✅ PROFUNDIDAD DE LABRADO
+    this.setCell(worksheet, 'O112', formData.llanta_di); // Ajustar según coordenadas reales
+    this.setCell(worksheet, 'W112', formData.llanta_dd);
+    this.setCell(worksheet, 'O114', formData.llanta_tie);
+    this.setCell(worksheet, 'W114', formData.llanta_tde);
+    this.setCell(worksheet, 'O116', formData.llanta_tii);
+    this.setCell(worksheet, 'W116', formData.llanta_tdi);
+
+
+
+    // PRESION DE AIRE
+    // this.setCell(worksheet, 'B76', formData.presion_llanta_d_li); 
+    // this.setCell(worksheet, 'D76', formData.presion_llanta_d_ld);
+    // this.setCell(worksheet, 'F76', formData.presion_llanta_t_lie);
+    // this.setCell(worksheet, 'L76', formData.presion_llanta_t_lde);
+    // this.setCell(worksheet, 'H76', formData.presion_llanta_t_lii);
+    // this.setCell(worksheet, 'J76', formData.presion_llanta_t_ldi);
+
+
 
     this.setCell(worksheet, 'X4:AA6', formData.numero_certificado); // numero_certificado
 
