@@ -697,9 +697,9 @@ export class Nueva implements AfterViewInit, OnInit {
       // Parte Baja (8 items)
       'buies_barra', 'buies_tiera', 'cuna_motor', 'guardapolvo_axiales', 'amortiguadores', 'hojas_muelles', 'silenciadores', 'tanques_compresor',
       // Labrado Llantas (6 items)
-      'llanta_di','llanta_dd','llanta_tie', 'llanta_tde', 'llanta_tii', 'llanta_tdi',
+      // 'llanta_di','llanta_dd','llanta_tie', 'llanta_tde', 'llanta_tii', 'llanta_tdi',
       // Presión Aire Llantas (6 items)
-      'presion_llanta_d_li', 'presion_llanta_d_ld', 'presion_llanta_t_lie', 'presion_llanta_t_lde', 'presion_llanta_t_lii', 'presion_llanta_t_ldi',
+      // 'presion_llanta_d_li', 'presion_llanta_d_ld', 'presion_llanta_t_lie', 'presion_llanta_t_lde', 'presion_llanta_t_lii', 'presion_llanta_t_ldi',
     ];
 
     for (const field of inspectionFields) {

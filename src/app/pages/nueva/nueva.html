@@ -461,12 +461,7 @@
                     <button class="nav-link " id="v-pills-settings-tab5" data-bs-toggle="pill" data-bs-target="#presion"
                       type="button" role="tab" aria-controls="presion" aria-selected="false"
                       style="border: 1px solid #02376b;">PRESION DE AIRE DE LLANTAS</button>
-                      <button class="nav-link" id="v-pills-obs-tab" data-bs-toggle="pill" 
-        data-bs-target="#observaciones" type="button" role="tab" 
-        aria-controls="observaciones" aria-selected="false"
-        style="border: 1px solid #02376b;">
-  OBSERVACIONES
-</button> 
+                     
                   </div>
 
                   <div class="tab-content">
@@ -1581,30 +1576,31 @@
                         </div>
                       </div>
                     </div>
-                    <div class="tab-pane fade" id="observaciones" role="tabpanel" 
-     aria-labelledby="observaciones-tab" tabindex="0">
-  <div class="row">
-    <div class="col-12 mb-3">
-      <label class="form-label">
-        Observaciones / Comentarios / Compromisos
-      </label>
-      <textarea 
-        formControlName="observaciones" 
-        class="form-control" 
-        rows="6"
-        placeholder="Escriba aquí las observaciones de la inspección...">
-      </textarea>
-      <small class="text-muted">
-        Este campo aparecerá en el reporte final
-      </small>
-    </div>
-  </div>
-</div>
+               
 
                   </div>
                 </div>
               </div>
             </div>
+            <div class="card mt-4" *ngIf="currentStep === 4">
+  <div class="card-header bg-light">
+    <h6 class="mb-0">
+      <i class="fi fi-rr-comment-alt me-2"></i>
+      Observaciones / Comentarios / Compromisos
+    </h6>
+  </div>
+  <div class="card-body">
+    <textarea 
+      formControlName="observaciones" 
+      class="form-control" 
+      rows="5"
+      placeholder="Describa las observaciones encontradas durante la inspección...">
+    </textarea>
+    <div class="form-text">
+      Máximo 500 caracteres. Esta información se incluirá en el reporte Excel/PDF.
+    </div>
+  </div>
+</div>
             <!-- Agrega esto en el Paso 4 donde tengas el registro fotográfico -->
             <div class="image-upload-section" *ngIf="currentStep === 4">
               <h5>Registro Fotográfico</h5>

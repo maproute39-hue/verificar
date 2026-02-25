@@ -842,7 +842,6 @@ export class Detail implements OnInit, AfterViewInit {
         tablero_instrumentos: this.inspectionForm.get('tablero_instrumentos')?.value,
         antideslizantes_pedales: this.inspectionForm.get('antideslizantes_pedales')?.value,
 
-
         // SISTEMA DE MOTOR 
         aceite_motor: this.inspectionForm.get('aceite_motor')?.value,
         aceite_transmision: this.inspectionForm.get('aceite_transmision')?.value,
@@ -864,7 +863,8 @@ export class Detail implements OnInit, AfterViewInit {
         cinturones_seguridad: this.inspectionForm.get('cinturones_seguridad')?.value,
         airbags: this.inspectionForm.get('airbags')?.value,
         cadena_sujecion: this.inspectionForm.get('cadena_sujecion')?.value,
-        colomna_sujecion: this.inspectionForm.get('colomna_sujecion')?.value,
+        columna_direccion: this.inspectionForm.get('columna_direccion')?.value,
+
         apoyacabezas: this.inspectionForm.get('apoyacabezas')?.value,
         barra_antivuelco: this.inspectionForm.get('barra_antivuelco')?.value,
         rejilla_vidrio_trasero: this.inspectionForm.get('rejilla_vidrio_trasero')?.value,
@@ -879,7 +879,7 @@ export class Detail implements OnInit, AfterViewInit {
         caja_herramientas: this.inspectionForm.get('caja_herramientas')?.value,
         linterna: this.inspectionForm.get('linterna')?.value,
         gato: this.inspectionForm.get('gato')?.value,
-        
+
 
         //PARTE BAJA
         buies_barra: this.inspectionForm.get('buies_barra')?.value,
