@@ -2,13 +2,29 @@
   "background_color": "#ffffff",
   "dir": "ltr",
   "display": "fullscreen",
-  "description":"Aplicación de verificación",
-  "name": "Verificar IT",
+  "description": "Aplicación de verificación",
+  "name": "VerificarIT",
   "orientation": "any",
   "scope": "/",
-  "short_name": "appverificar",
+  "short_name": "AppVerificar",
   "start_url": "/",
   "theme_color": "#ffffff",
+  "screenshots": [
+    {
+      "src": "assets/screenshots/mobile-screenshot.png",
+      "sizes": "702x1525",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Pantalla principal de VerificarIT"
+    },
+    {
+      "src": "assets/screenshots/desktop-screenshot.png",
+      "sizes": "1600x900",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Vista de escritorio de VerificarIT"
+    }
+  ],
   "icons": [
     {
       "src": "assets/icons/android/launchericon-48x48.png",
@@ -16,13 +32,13 @@
       "type": "image/png"
     },
     {
-      "src": "assets/icons/android/launchericon-72x72.png", 
+      "src": "assets/icons/android/launchericon-72x72.png",
       "sizes": "72x72",
       "type": "image/png"
     },
     {
       "src": "assets/icons/android/launchericon-96x96.png",
-      "sizes": "96x96", 
+      "sizes": "96x96",
       "type": "image/png"
     },
     {
@@ -36,7 +52,7 @@
       "type": "image/png"
     },
     {
-      "src": "assets/icons/android/launchericon-512x512.png", 
+      "src": "assets/icons/android/launchericon-512x512.png",
       "sizes": "512x512",
       "type": "image/png"
     },
