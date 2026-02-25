@@ -558,29 +558,38 @@ export class ExcelExportService {
     // // ✅ CABINA Y MANDOS
     this.marcarRadio(worksheet, 'H106', 'J106', 'L106', formData.tapiceria);
     this.marcarRadio(worksheet, 'H108', 'J108', 'L108', formData.manijas_seguros);
-    this.marcarRadio(worksheet, 'H114', 'J114', 'L114', formData.tablero_instrumentos_interno);
-    this.marcarRadio(worksheet, 'H112', 'J112', 'L112', formData.antideslizantes_pedales);
     this.marcarRadio(worksheet, 'H110', 'J110', 'L110', formData.vidrios_electricos);
+    this.marcarRadio(worksheet, 'H112', 'J112', 'L112', formData.antideslizantes_pedales);
+    this.marcarRadio(worksheet, 'H114', 'J114', 'L114', formData.tablero_instrumentos);
+
+    // MOTOR 
+    this.marcarRadio(worksheet, 'H66', 'J66', 'L66', formData.aceite_motor);
+    this.marcarRadio(worksheet, 'H68', 'J68', 'L68', formData.aceite_transmision);
+    this.marcarRadio(worksheet, 'H70', 'J70', 'L70', formData.liquido_refrigerante);
+    this.marcarRadio(worksheet, 'H72', 'J72', 'L72', formData.liquido_frenos);
+    this.marcarRadio(worksheet, 'H74', 'J74', 'L74', formData.filtro_aire);
+    this.marcarRadio(worksheet, 'H76', 'J76', 'L76', formData.hidraulico_direccion);
+    this.marcarRadio(worksheet, 'H78', 'J78', 'L78', formData.tension_correas);
 
 
     // // ✅ SEGURIDAD PASIVA
 
-    // this.marcarRadio(worksheet, 'C41', 'D41', 'E41', formData.cinturones_seguridad);
-    // this.marcarRadio(worksheet, 'C42', 'D42', 'E42', formData.airbags);
-    // this.marcarRadio(worksheet, 'C43', 'D43', 'E43', formData.cadena_sujecion);
-    // this.marcarRadio(worksheet, 'C44', 'D44', 'E44', formData.columna_direccion);
-    // this.marcarRadio(worksheet, 'C45', 'D45', 'E45', formData.apoyacabezas);
-    // this.marcarRadio(worksheet, 'C46', 'D46', 'E46', formData.barra_antivuelco);
-    // this.marcarRadio(worksheet, 'C47', 'D47', 'E47', formData.rejilla_vidrio_trasero);
+    this.marcarRadio(worksheet, 'W54', 'Y54', 'AA54', formData.cinturones_seguridad);
+    this.marcarRadio(worksheet, 'W56', 'Y56', 'AA56', formData.airbags);
+    this.marcarRadio(worksheet, 'W58', 'Y58', 'AA58', formData.cadena_sujecion);
+    this.marcarRadio(worksheet, 'W60', 'Y60', 'AA60', formData.columna_direccion);
+    this.marcarRadio(worksheet, 'W62', 'Y62', 'AA62', formData.apoyacabezas);
+    this.marcarRadio(worksheet, 'W64', 'Y64', 'AA64', formData.barra_antivuelco);
+    this.marcarRadio(worksheet, 'W66', 'Y66', 'AA66', formData.rejilla_vidrio_trasero);
 
- 
+
     // // ✅ SEGURIDAD ACTIVA
-    // this.marcarRadio(worksheet, 'C54', 'D54', 'E54', formData.sistema_frenos);
-    // this.marcarRadio(worksheet, 'C55', 'D55', 'E55', formData.abs);
-    // this.marcarRadio(worksheet, 'C56', 'D56', 'E56', formData.sistema_direccion);
-    // this.marcarRadio(worksheet, 'C57', 'D57', 'E57', formData.espejos_laterales);
-    // this.marcarRadio(worksheet, 'C58', 'D58', 'E58', formData.espejo_interno);
-    // this.marcarRadio(worksheet, 'C59', 'D59', 'E59', formData.freno_mano_seguridad);
+    this.marcarRadio(worksheet, 'C54', 'D54', 'E54', formData.sistema_frenos);
+    this.marcarRadio(worksheet, 'C55', 'D55', 'E55', formData.abs);
+    this.marcarRadio(worksheet, 'C56', 'D56', 'E56', formData.sistema_direccion);
+    this.marcarRadio(worksheet, 'C57', 'D57', 'E57', formData.espejos_laterales);
+    this.marcarRadio(worksheet, 'C58', 'D58', 'E58', formData.espejo_interno);
+    this.marcarRadio(worksheet, 'C59', 'D59', 'E59', formData.freno_mano_seguridad);
 
     // // ✅ KIT DE CARRETERA
     // this.marcarRadio(worksheet, 'C63', 'D63', 'E63', formData.conos_triangular);
@@ -597,6 +606,10 @@ export class ExcelExportService {
     // this.setCell(worksheet, 'D74', formData.llanta_t_lie);
     // this.setCell(worksheet, 'F74', formData.llanta_t_lii);
     // this.setCell(worksheet, 'H74', formData.llanta_t_lid);
+
+    this.setCell(worksheet, 'X4:AA6', formData.numero_certificado); // numero_certificado
+
+
 
     console.log('✅ Todos los datos escritos exitosamente');
   }

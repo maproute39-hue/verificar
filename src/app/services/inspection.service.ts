@@ -140,6 +140,34 @@ getImageUrl(collectionId: string, recordId: string, filename: string, thumb: str
   return `${this.pb.baseUrl}/api/files/${collectionId}/${recordId}/${filename}?thumb=${thumb}`;
 }
 
+// services/inspection.service.ts
+
+async getNextCertificateNumberPreview(prefix: string): Promise<string> {
+    // 1. Obtener registro de secuencia sin actualizar
+    const secuencia = await this.pb.collection('secuencias').getFirstListItem(`prefijo="${prefix}"`);
+    
+    // 2. Calcular próximo número
+    const nuevoNumero = secuencia['ultimo_numero'] + 1;
+    
+    // 3. Retornar formato sin actualizar: "C 0041"
+    return `${prefix} ${String(nuevoNumero).padStart(4, '0')}`;
+}
+
+async getNextCertificateNumber(prefix: string): Promise<string> {
+    // 1. Obtener registro de secuencia
+    const secuencia = await this.pb.collection('secuencias').getFirstListItem(`prefijo="${prefix}"`);
+    
+    // 2. Calcular nuevo número
+    const nuevoNumero = secuencia['ultimo_numero'] + 1;
+    
+    // 3. Actualizar secuencia en PocketBase (con optimismo controlado)
+    await this.pb.collection('secuencias').update(secuencia.id, {
+        ultimo_numero: nuevoNumero
+    });
+    
+    // 4. Retornar formato: "C 0041"
+    return `${prefix} ${String(nuevoNumero).padStart(4, '0')}`;
+}
 // Método para obtener inspección con imágenes expandidas
 getInspectionWithImages(id: string): Observable<any> {
   return from(

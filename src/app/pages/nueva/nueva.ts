@@ -70,6 +70,9 @@ export class Nueva implements AfterViewInit, OnInit {
   // Usuario actual
   currentUser: string = 'admin';
 
+  // Número de certificado próximo
+  nextCertificateNumber: string = '';
+
   constructor(
     private fb: FormBuilder,
     private inspectionService: InspectionService,
@@ -316,6 +319,13 @@ export class Nueva implements AfterViewInit, OnInit {
       if (value) {
         this.inspectionForm.patchValue({ telefono: value });
       }
+    });
+
+    // Obtener el próximo número de certificado (sin actualizar)
+    this.inspectionService.getNextCertificateNumberPreview('C').then(num => {
+      this.nextCertificateNumber = num;
+    }).catch(error => {
+      console.error('Error al obtener número de certificado:', error);
     });
   }
 
@@ -734,7 +744,10 @@ export class Nueva implements AfterViewInit, OnInit {
         // Calcular estado basado en los campos de inspección
         const estado = this.calculateEstado(inspectionData);
 
-        // 2. Validar
+        // 3. Obtener número de certificado
+        const numero_certificado = await this.inspectionService.getNextCertificateNumber('C');
+
+        // 4. Validar
         const validation = this.inspectionService.validateInspectionData(inspectionData);
         if (!validation.valid) {
           Swal.close();
@@ -785,6 +798,8 @@ export class Nueva implements AfterViewInit, OnInit {
           presion_llanta_t_lde: Number(inspectionData.presion_llanta_t_lde),
           presion_llanta_t_lii: Number(inspectionData.presion_llanta_t_lii),
           presion_llanta_t_ldi: Number(inspectionData.presion_llanta_t_ldi),
+
+          numero_certificado: numero_certificado,
 
           // 5. GUARDAR LOS IDs DE LAS IMÁGENES EN EL CAMPO JSON
           images: imageIds

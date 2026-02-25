@@ -212,7 +212,7 @@ export class Detail implements OnInit, AfterViewInit {
       tanques_compresor: [''],
 
       // Profundidad de Labrado
-  
+
 
       llanta_di: [''],          // Delantera Izquierda - FALTA
       llanta_dd: [''],          // Delantera Derecha - FALTA (reemplaza llanta_d_ld)
@@ -229,6 +229,7 @@ export class Detail implements OnInit, AfterViewInit {
       presion_llanta_t_lde: [''],   // Trasera Derecha Exterior
       presion_llanta_t_lii: [''],   // Trasera Izquierda Interior
       presion_llanta_t_ldi: [''],   // Trasera Derecha Interior
+         numero_certificado: [''],
     });
 
     this.phoneForm = this.fb.group({
@@ -770,97 +771,111 @@ export class Detail implements OnInit, AfterViewInit {
 
 
   async imprimirInspeccion(): Promise<void> {
-  try {
-    Swal.fire({
-      title: 'Generando PDF...',
-      html: 'Procesando datos e imágenes...',
-      allowOutsideClick: false,
-      didOpen: () => Swal.showLoading()
-    });
+    try {
+      Swal.fire({
+        title: 'Generando PDF...',
+        html: 'Procesando datos e imágenes...',
+        allowOutsideClick: false,
+        didOpen: () => Swal.showLoading()
+      });
 
-    // 1. Recolectar datos del formulario
-   const formData = {
-  // 📋 DATOS DEL PROPIETARIO
-  propietario: this.inspectionForm.get('propietario')?.value,
-  documento_propietario: this.inspectionForm.get('documento_propietario')?.value,
+      // 1. Recolectar datos del formulario
+      const formData = {
+        // 📋 DATOS DEL PROPIETARIO
+        propietario: this.inspectionForm.get('propietario')?.value,
+        documento_propietario: this.inspectionForm.get('documento_propietario')?.value,
 
-  // 🚗 DATOS DEL VEHÍCULO
-  placa: this.inspectionForm.get('placa')?.value,
-  marca: this.inspectionForm.get('marca')?.value,
-  modelo: this.inspectionForm.get('modelo')?.value,
-  color: this.inspectionForm.get('color')?.value,
-  clase_vehiculo: this.inspectionForm.get('clase_vehiculo')?.value,
-  codigo_vehiculo: this.inspectionForm.get('codigo_vehiculo')?.value,
-  capacidad_pasajeros: Number(this.inspectionForm.get('capacidad_pasajeros')?.value),
-  kilometraje: this.inspectionForm.get('kilometraje')?.value,
-  soat: this.inspectionForm.get('soat')?.value,
-  revision_tecnomecanica: this.inspectionForm.get('revision_tecnomecanica')?.value,
-  tarjeta_operacion: this.inspectionForm.get('tarjeta_operacion')?.value,
-  licencia_transito: this.inspectionForm.get('licencia_transito')?.value,
-  fecha_inspeccion: this.inspectionForm.get('fecha_inspeccion')?.value,
-  fecha_vigencia: this.inspectionForm.get('fecha_vigencia')?.value,
-  fecha_vencimiento_soat: this.inspectionForm.get('fecha_vencimiento_soat')?.value,
-  fecha_vencimiento_revision_tecnomecanica: this.inspectionForm.get('fecha_vencimiento_revision_tecnomecanica')?.value,
-  fecha_vencimiento_tarjeta_operacion: this.inspectionForm.get('fecha_vencimiento_tarjeta_operacion')?.value,
+        // 🚗 DATOS DEL VEHÍCULO
+        placa: this.inspectionForm.get('placa')?.value,
+        marca: this.inspectionForm.get('marca')?.value,
+        modelo: this.inspectionForm.get('modelo')?.value,
+        color: this.inspectionForm.get('color')?.value,
+        clase_vehiculo: this.inspectionForm.get('clase_vehiculo')?.value,
+        codigo_vehiculo: this.inspectionForm.get('codigo_vehiculo')?.value,
+        capacidad_pasajeros: Number(this.inspectionForm.get('capacidad_pasajeros')?.value),
+        kilometraje: this.inspectionForm.get('kilometraje')?.value,
+        soat: this.inspectionForm.get('soat')?.value,
+        revision_tecnomecanica: this.inspectionForm.get('revision_tecnomecanica')?.value,
+        tarjeta_operacion: this.inspectionForm.get('tarjeta_operacion')?.value,
+        licencia_transito: this.inspectionForm.get('licencia_transito')?.value,
+        fecha_inspeccion: this.inspectionForm.get('fecha_inspeccion')?.value,
+        fecha_vigencia: this.inspectionForm.get('fecha_vigencia')?.value,
+        fecha_vencimiento_soat: this.inspectionForm.get('fecha_vencimiento_soat')?.value,
+        fecha_vencimiento_revision_tecnomecanica: this.inspectionForm.get('fecha_vencimiento_revision_tecnomecanica')?.value,
+        fecha_vencimiento_tarjeta_operacion: this.inspectionForm.get('fecha_vencimiento_tarjeta_operacion')?.value,
 
-  // 👨‍✈️ DATOS DEL CONDUCTOR
-  nombres_conductor: this.inspectionForm.get('nombres_conductor')?.value,
-  identificacion: this.inspectionForm.get('identificacion')?.value,
-  telefono_conductor: this.inspectionForm.get('telefono')?.value,
-  fecha_vencimiento_licencia: this.inspectionForm.get('fecha_vencimiento_licencia')?.value,
-  nombre_transportadora: this.inspectionForm.get('nombre_transportadora')?.value,
+        // 👨‍✈️ DATOS DEL CONDUCTOR
+        nombres_conductor: this.inspectionForm.get('nombres_conductor')?.value,
+        identificacion: this.inspectionForm.get('identificacion')?.value,
+        telefono_conductor: this.inspectionForm.get('telefono')?.value,
+        fecha_vencimiento_licencia: this.inspectionForm.get('fecha_vencimiento_licencia')?.value,
+        nombre_transportadora: this.inspectionForm.get('nombre_transportadora')?.value,
 
-  // ⚡ SISTEMA ELÉCTRICO (OK/Negativo/N/A)
-  luces_navegacion: this.inspectionForm.get('luces_navegacion')?.value,
-  luces_frenado: this.inspectionForm.get('luces_frenado')?.value,
-  luces_direccionales: this.inspectionForm.get('luces_direccionales')?.value,
-  luz_reversa: this.inspectionForm.get('luz_reversa')?.value,
-  luces_estacionamiento: this.inspectionForm.get('luces_estacionamiento')?.value,
-  luces_posicion: this.inspectionForm.get('luces_posicion')?.value,
-  luz_antineblina: this.inspectionForm.get('luz_antineblina')?.value,
-  luz_placa: this.inspectionForm.get('luz_placa')?.value,
-  tablero_instrumentos: this.inspectionForm.get('tablero_instrumentos')?.value,
-  bocina: this.inspectionForm.get('bocina')?.value,
-  bateria: this.inspectionForm.get('bateria')?.value,
-  aire_acondicionado: this.inspectionForm.get('aire_acondicionado')?.value,
+        // ⚡ SISTEMA ELÉCTRICO (OK/Negativo/N/A)
+        luces_navegacion: this.inspectionForm.get('luces_navegacion')?.value,
+        luces_frenado: this.inspectionForm.get('luces_frenado')?.value,
+        luces_direccionales: this.inspectionForm.get('luces_direccionales')?.value,
+        luz_reversa: this.inspectionForm.get('luz_reversa')?.value,
+        luces_estacionamiento: this.inspectionForm.get('luces_estacionamiento')?.value,
+        luces_posicion: this.inspectionForm.get('luces_posicion')?.value,
+        luz_antineblina: this.inspectionForm.get('luz_antineblina')?.value,
+        luz_placa: this.inspectionForm.get('luz_placa')?.value,
+        bocina: this.inspectionForm.get('bocina')?.value,
+        bateria: this.inspectionForm.get('bateria')?.value,
+        aire_acondicionado: this.inspectionForm.get('aire_acondicionado')?.value,
 
-  // 🔧 CARROCERÍA (OK/Negativo/N/A)
-  parachoque_delantero: this.inspectionForm.get('parachoque_delantero')?.value,
-  parachoque_trasero: this.inspectionForm.get('parachoque_trasero')?.value,
-  vidrios_seguridad: this.inspectionForm.get('vidrios_seguridad')?.value,
-  vidrios_laterales: this.inspectionForm.get('vidrios_laterales')?.value,
-  limpia_brisas: this.inspectionForm.get('limpia_brisas')?.value,
-  guardabarros: this.inspectionForm.get('guardabarros')?.value,
-  estribos_laterales: this.inspectionForm.get('estribos_laterales')?.value,
-  placa_adhesivo: this.inspectionForm.get('placa_adhesivo')?.value,
-  chapa_compuerta: this.inspectionForm.get('chapa_compuerta')?.value,
+        // 🔧 CARROCERÍA (OK/Negativo/N/A)
+        parachoque_delantero: this.inspectionForm.get('parachoque_delantero')?.value,
+        parachoque_trasero: this.inspectionForm.get('parachoque_trasero')?.value,
+        vidrios_seguridad: this.inspectionForm.get('vidrios_seguridad')?.value,
+        vidrios_laterales: this.inspectionForm.get('vidrios_laterales')?.value,
+        limpia_brisas: this.inspectionForm.get('limpia_brisas')?.value,
+        guardabarros: this.inspectionForm.get('guardabarros')?.value,
+        estribos_laterales: this.inspectionForm.get('estribos_laterales')?.value,
+        placa_adhesivo: this.inspectionForm.get('placa_adhesivo')?.value,
+        chapa_compuerta: this.inspectionForm.get('chapa_compuerta')?.value,
 
-  // 🎛️ CABINA Y MANDOS (OK/Negativo/N/A)
-  tapiceria: this.inspectionForm.get('tapiceria')?.value,
-  manijas_seguros: this.inspectionForm.get('manijas_seguros')?.value,
-    vidrios_electricos: this.inspectionForm.get('vidrios_electricos')?.value,
-  tablero_instrumentos_interno: this.inspectionForm.get('tablero_instrumentos_interno')?.value,
-  antideslizantes_pedales: this.inspectionForm.get('antideslizantes_pedales')?.value,
+        // 🎛️ CABINA Y MANDOS (OK/Negativo/N/A)
+        tapiceria: this.inspectionForm.get('tapiceria')?.value,
+        manijas_seguros: this.inspectionForm.get('manijas_seguros')?.value,
+        vidrios_electricos: this.inspectionForm.get('vidrios_electricos')?.value,
+        tablero_instrumentos: this.inspectionForm.get('tablero_instrumentos')?.value,
+        antideslizantes_pedales: this.inspectionForm.get('antideslizantes_pedales')?.value,
 
-  // ℹ️ CAMPOS ADICIONALES (si los usas en otra lógica)
-  estado: this.inspectionForm.get('estado')?.value,
-};
 
-    // 2. ✅ Pasar las URLs de imágenes que ya tienes cargadas
-    const imageUrls = this.inspectionImages; // ← Ya las tienes en el componente
+        // SISTEMA DE MOTOR 
+        aceite_motor: this.inspectionForm.get('aceite_motor')?.value,
+        aceite_transmision: this.inspectionForm.get('aceite_transmision')?.value,
+        liquido_refrigerante: this.inspectionForm.get('liquido_refrigerante')?.value,
+        liquido_frenos: this.inspectionForm.get('liquido_frenos')?.value,
+        filtro_aire: this.inspectionForm.get('filtro_aire')?.value,
+        hidraulico_direccion: this.inspectionForm.get('hidraulico_direccion')?.value,
+        tension_correas: this.inspectionForm.get('tension_correas')?.value,
 
-    // 3. ✅ LLAMAR AL NUEVO MÉTODO CON IMÁGENES
-    await this.excelExportService.exportarDatosConductorComoPdfConImagenes(
-      formData, 
-      imageUrls
-    );
+      // SEGURIDAD ACTIVA
 
-    Swal.close();
-    Swal.fire('Éxito', 'PDF con imágenes generado', 'success');
 
-  } catch (error) {
-    Swal.close();
-    Swal.fire('Error', error instanceof Error ? error.message : 'Error al generar PDF', 'error');
+
+        // ℹ️ CAMPOS ADICIONALES (si los usas en otra lógica)
+        estado: this.inspectionForm.get('estado')?.value,
+        numero_certificado: this.inspectionForm.get('numero_certificado')?.value,
+      };
+
+      // 2. ✅ Pasar las URLs de imágenes que ya tienes cargadas
+      const imageUrls = this.inspectionImages; // ← Ya las tienes en el componente
+
+      // 3. ✅ LLAMAR AL NUEVO MÉTODO CON IMÁGENES
+      await this.excelExportService.exportarDatosConductorComoPdfConImagenes(
+        formData,
+        imageUrls
+      );
+
+      Swal.close();
+      Swal.fire('Éxito', 'PDF con imágenes generado', 'success');
+
+    } catch (error) {
+      Swal.close();
+      Swal.fire('Error', error instanceof Error ? error.message : 'Error al generar PDF', 'error');
+    }
   }
-}
 }
