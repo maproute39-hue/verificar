@@ -169,9 +169,9 @@ export class ExcelExportService {
 
     // ✅ Definir las 3 posiciones exactas (rangos de celdas)
     const posiciones = [
-      { rango: 'D18:L20', descripcion: 'Imagen 1 - Vista frontal/lateral' },
-      { rango: 'N18:AA20', descripcion: 'Imagen 2 - Vista lateral/posterior' },
-      { rango: 'D22:L29', descripcion: 'Imagen 3 - Motor/detalle' }
+      { rango: 'D22:L24', descripcion: 'Imagen 1 - Vista frontal/lateral' },
+      { rango: 'N22:AA24', descripcion: 'Imagen 2 - Vista lateral/posterior' },
+      { rango: 'D26:L33', descripcion: 'Imagen 3 - Motor/detalle' }
     ];
 
     // ✅ Insertar cada imagen en su posición
@@ -477,20 +477,20 @@ export class ExcelExportService {
     // Ejemplo: fechas, observaciones, etc.
     // this.setCell(worksheet, 'A1', formData.observaciones_imagenes);
 
-    this.setCell(worksheet, 'U26', formData.llanta_di); // Ajustar según coordenadas reales
-    this.setCell(worksheet, 'Y26', formData.llanta_dd);
-    this.setCell(worksheet, 'U27', formData.llanta_tie);
-    this.setCell(worksheet, 'Y27', formData.llanta_tde);
-    this.setCell(worksheet, 'U28', formData.llanta_tii);
-    this.setCell(worksheet, 'Y28', formData.llanta_tdi);
+    this.setCell(worksheet, 'U30', formData.llanta_di); // Ajustar según coordenadas reales
+    this.setCell(worksheet, 'Y30', formData.llanta_dd);
+    this.setCell(worksheet, 'U31', formData.llanta_tie);
+    this.setCell(worksheet, 'Y31', formData.llanta_tde);
+    this.setCell(worksheet, 'U32', formData.llanta_tii);
+    this.setCell(worksheet, 'Y32', formData.llanta_tdi);
 
-    this.setCell(worksheet, 'U31', formData.presion_llanta_d_li);  // LLanta D-LDI
-    this.setCell(worksheet, 'Y31', formData.presion_llanta_d_ld);   // LLanta D-LD
-    this.setCell(worksheet, 'U32', formData.presion_llanta_t_lie);  // LLanta T-LIE
-    this.setCell(worksheet, 'Y32', formData.presion_llanta_t_lde);  // LLanta T-LDE
-    this.setCell(worksheet, 'U33', formData.presion_llanta_t_lii);  // LLanta T-LII
-    this.setCell(worksheet, 'Y33', formData.presion_llanta_t_ldi);  // LLanta T-LDI
-    this.setCell(worksheet, 'D42:AA47', formData.observaciones);
+    this.setCell(worksheet, 'U35', formData.presion_llanta_d_li);  // LLanta D-LDI
+    this.setCell(worksheet, 'Y35', formData.presion_llanta_d_ld);   // LLanta D-LD
+    this.setCell(worksheet, 'U36', formData.presion_llanta_t_lie);  // LLanta T-LIE
+    this.setCell(worksheet, 'Y36', formData.presion_llanta_t_lde);  // LLanta T-LDE
+    this.setCell(worksheet, 'U37', formData.presion_llanta_t_lii);  // LLanta T-LII
+    this.setCell(worksheet, 'Y37', formData.presion_llanta_t_ldi);  // LLanta T-LDI
+    this.setCell(worksheet, 'D46:AA51', formData.observaciones);
 
 
     console.log('✅ Hoja SECOND_PAGE procesada exitosamente');
@@ -561,15 +561,15 @@ export class ExcelExportService {
     this.marcarRadio(worksheet, 'H60', 'J60', 'L60', formData.aire_acondicionado);
 
     // // ✅ CARROCERÍA (ajustar filas según tu plantilla real)
-    this.marcarRadio(worksheet, 'H84', 'J84', 'L84', formData.parachoque_delantero);
-    this.marcarRadio(worksheet, 'H86', 'J86', 'L86', formData.parachoque_trasero);
-    this.marcarRadio(worksheet, 'H88', 'J88', 'L88', formData.vidrios_seguridad);
-    this.marcarRadio(worksheet, 'H90', 'J90', 'L90', formData.vidrios_laterales);
-    this.marcarRadio(worksheet, 'H92', 'J92', 'L92', formData.limpia_brisas);
-    this.marcarRadio(worksheet, 'H94', 'J94', 'L94', formData.guardabarros);
-    this.marcarRadio(worksheet, 'H96', 'J96', 'L96', formData.estribos_laterales);
-    this.marcarRadio(worksheet, 'H98', 'J98', 'L98', formData.placa_adhesivo);
-    this.marcarRadio(worksheet, 'H100', 'J100', 'L100', formData.chapa_compuerta);
+    this.marcarRadio(worksheet, 'H82', 'J82', 'L82', formData.parachoque_delantero);
+    this.marcarRadio(worksheet, 'H84', 'J84', 'L84', formData.parachoque_trasero);
+    this.marcarRadio(worksheet, 'H86', 'J86', 'L86', formData.vidrios_seguridad);
+    this.marcarRadio(worksheet, 'H88', 'J88', 'L88', formData.vidrios_laterales);
+    this.marcarRadio(worksheet, 'H90', 'J90', 'L90', formData.limpia_brisas);
+    this.marcarRadio(worksheet, 'H92', 'J92', 'L92', formData.guardabarros);
+    this.marcarRadio(worksheet, 'H94', 'J94', 'L94', formData.estribos_laterales);
+    this.marcarRadio(worksheet, 'H96', 'J96', 'L96', formData.placa_adhesivo);
+    this.marcarRadio(worksheet, 'H98', 'J98', 'L98', formData.chapa_compuerta);
 
     // // ✅ CABINA Y MANDOS
     this.marcarRadio(worksheet, 'H106', 'J106', 'L106', formData.tapiceria);
@@ -582,51 +582,45 @@ export class ExcelExportService {
     this.marcarRadio(worksheet, 'H66', 'J66', 'L66', formData.aceite_motor);
     this.marcarRadio(worksheet, 'H68', 'J68', 'L68', formData.aceite_transmision);
     this.marcarRadio(worksheet, 'H70', 'J70', 'L70', formData.liquido_refrigerante);
-    this.marcarRadio(worksheet, 'H72', 'J72', 'L72', formData.liquido_frenos);
+    this.marcarRadio(worksheet, 'H72', 'J72', 'L72', formData.tension_correas);
     this.marcarRadio(worksheet, 'H74', 'J74', 'L74', formData.filtro_aire);
-    this.marcarRadio(worksheet, 'H76', 'J76', 'L76', formData.hidraulico_direccion);
-    this.marcarRadio(worksheet, 'H78', 'J78', 'L78', formData.tension_correas);
 
 
     // // ✅ SEGURIDAD PASIVA
 
-    this.marcarRadio(worksheet, 'W54', 'Y54', 'AA54', formData.cinturones_seguridad);
-    this.marcarRadio(worksheet, 'W56', 'Y56', 'AA56', formData.airbags);
-    this.marcarRadio(worksheet, 'W58', 'Y58', 'AA58', formData.cadena_sujecion);
-    this.marcarRadio(worksheet, 'W60', 'Y60', 'AA60', formData.columna_direccion);
-    this.marcarRadio(worksheet, 'W62', 'Y62', 'AA62', formData.apoyacabezas);
-    this.marcarRadio(worksheet, 'W64', 'Y64', 'AA64', formData.barra_antivuelco);
-    this.marcarRadio(worksheet, 'W66', 'Y66', 'AA66', formData.rejilla_vidrio_trasero);
+    this.marcarRadio(worksheet, 'W50', 'Y50', 'AA50', formData.cinturones_seguridad);
+    this.marcarRadio(worksheet, 'W52', 'Y52', 'AA52', formData.airbags);
+    this.marcarRadio(worksheet, 'W54', 'Y54', 'AA54', formData.cadena_sujecion);
+    this.marcarRadio(worksheet, 'W56', 'Y56', 'AA56', formData.apoyacabezas);
+    this.marcarRadio(worksheet, 'W58', 'Y58', 'AA58', formData.barra_antivuelco);
+    this.marcarRadio(worksheet, 'W60', 'Y60', 'AA60', formData.rejilla_vidrio_trasero);
 
 
     // // ✅ SEGURIDAD ACTIVA
-    this.marcarRadio(worksheet, 'W38', 'Y38', 'AA38', formData.sistema_frenos);
+    this.marcarRadio(worksheet, 'W38', 'Y38', 'AA38', formData.espejo_interno);
     this.marcarRadio(worksheet, 'W40', 'Y40', 'AA40', formData.abs);
-    this.marcarRadio(worksheet, 'W42', 'Y42', 'AA42', formData.sistema_direccion);
-    this.marcarRadio(worksheet, 'W44', 'Y44', 'AA44', formData.espejos_laterales);
-    this.marcarRadio(worksheet, 'W46', 'Y46', 'AA46', formData.espejo_interno);
-    this.marcarRadio(worksheet, 'W48', 'Y48', 'AA48', formData.freno_mano_seguridad);
+    this.marcarRadio(worksheet, 'W42', 'Y42', 'AA42', formData.espejos_laterales);
 
     // // ✅ KIT DE CARRETERA
-    this.marcarRadio(worksheet, 'W72', 'Y72', 'AA72', formData.conos_triangular);
-    this.marcarRadio(worksheet, 'W74', 'Y74', 'AA74', formData.botiquin);
-    this.marcarRadio(worksheet, 'W76', 'Y76', 'AA76', formData.extintor);
-    this.marcarRadio(worksheet, 'W78', 'Y78', 'AA78', formData.cunas);
-    this.marcarRadio(worksheet, 'W80', 'Y80', 'AA80', formData.llanta_repuesto);
-    this.marcarRadio(worksheet, 'W82', 'Y82', 'AA82', formData.caja_herramientas);
-    this.marcarRadio(worksheet, 'W84', 'Y84', 'AA84', formData.linterna);
-    this.marcarRadio(worksheet, 'W86', 'Y86', 'AA86', formData.gato);
+    this.marcarRadio(worksheet, 'W66', 'Y66', 'AA66', formData.conos_triangular);
+    this.marcarRadio(worksheet, 'W68', 'Y68', 'AA68', formData.botiquin);
+    this.marcarRadio(worksheet, 'W70', 'Y70', 'AA70', formData.extintor);
+    this.marcarRadio(worksheet, 'W72', 'Y72', 'AA72', formData.cunas);
+    this.marcarRadio(worksheet, 'W74', 'Y74', 'AA74', formData.llanta_repuesto);
+    this.marcarRadio(worksheet, 'W76', 'Y76', 'AA76', formData.caja_herramientas);
+    this.marcarRadio(worksheet, 'W78', 'Y78', 'AA78', formData.linterna);
+    this.marcarRadio(worksheet, 'W80', 'Y80', 'AA80', formData.gato);
 
 
     //PARTE BAJA
-    this.marcarRadio(worksheet, 'W92', 'Y92', 'AA92', formData.buies_barra);
-    this.marcarRadio(worksheet, 'W94', 'Y94', 'AA94', formData.buies_tiera);
-    this.marcarRadio(worksheet, 'W96', 'Y96', 'AA96', formData.cuna_motor);
-    this.marcarRadio(worksheet, 'W98', 'Y98', 'AA98', formData.guardapolvo_axiales);
-    this.marcarRadio(worksheet, 'W100', 'Y100', 'AA100', formData.amortiguadores);
-    this.marcarRadio(worksheet, 'W102', 'Y102', 'AA102', formData.hojas_muelles);
-    this.marcarRadio(worksheet, 'W104', 'Y104', 'AA104', formData.silenciadores);
-    this.marcarRadio(worksheet, 'W106', 'Y106', 'AA106', formData.tanques_compresor);
+    this.marcarRadio(worksheet, 'W88', 'Y88', 'AA88', formData.buies_barra);
+    this.marcarRadio(worksheet, 'W90', 'Y90', 'AA90', formData.buies_tiera);
+    this.marcarRadio(worksheet, 'W92', 'Y92', 'AA92', formData.cuna_motor);
+    this.marcarRadio(worksheet, 'W94', 'Y94', 'AA94', formData.guardapolvo_axiales);
+    this.marcarRadio(worksheet, 'W96', 'Y96', 'AA96', formData.amortiguadores);
+    this.marcarRadio(worksheet, 'W98', 'Y98', 'AA98', formData.hojas_muelles);
+    this.marcarRadio(worksheet, 'W100', 'Y100', 'AA100', formData.silenciadores);
+    this.marcarRadio(worksheet, 'W102', 'Y102', 'AA102', formData.tanques_compresor);
 
     // ✅ PROFUNDIDAD DE LABRADO
     // this.setCell(worksheet, 'O112', formData.llanta_di); // Ajustar según coordenadas reales
@@ -646,9 +640,14 @@ export class ExcelExportService {
     // this.setCell(worksheet, 'H76', formData.presion_llanta_t_lii);
     // this.setCell(worksheet, 'J76', formData.presion_llanta_t_ldi);
 
-
+    this.marcarRadio(worksheet, 'H72', 'J72', 'L72', formData.liquido_frenos);
+    this.marcarRadio(worksheet, 'H76', 'J76', 'L76', formData.hidraulico_direccion);
+    this.marcarRadio(worksheet, 'H78', 'J78', 'L78', formData.columna_direccion);
+    this.marcarRadio(worksheet, 'W42', 'Y42', 'AA42', formData.sistema_direccion);
 
     this.setCell(worksheet, 'X4:AA6', formData.numero_certificado); // numero_certificado
+    this.marcarRadio(worksheet, 'W38', 'Y38', 'AA38', formData.sistema_frenos);
+    this.marcarRadio(worksheet, 'W48', 'Y48', 'AA48', formData.freno_mano_seguridad);
 
 
 
@@ -754,8 +753,8 @@ export class ExcelExportService {
     }
 
     const CHECK = '✓'; // Símbolo de check Unicode
-    const cellF21 = worksheet.getCell('F33'); // Columna F = Aprobada
-    const cellH21 = worksheet.getCell('H33'); // Columna H = Rechazada
+    const cellF21 = worksheet.getCell('F37'); // Columna F = Aprobada
+    const cellH21 = worksheet.getCell('H37'); // Columna H = Rechazada
 
     // Limpiar ambas celdas primero para evitar marcas duplicadas
     cellF21.value = null;
@@ -790,10 +789,10 @@ export class ExcelExportService {
 
     try {
       // ✅ Fusionar celdas en el rango D24:AA25
-      worksheet.mergeCells('D36:AA38');
+      worksheet.mergeCells('D39:AA42');
 
       // ✅ Obtener la celda fusionada
-      const notaCell = worksheet.getCell('D36');
+      const notaCell = worksheet.getCell('D39:AA42');
 
       // ✅ Agregar el texto
       notaCell.value = notaTexto;
