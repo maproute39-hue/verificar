@@ -4,7 +4,8 @@ import { CommonModule } from '@angular/common';
 import Swal from 'sweetalert2';
 import { InspectionService } from '../../services/inspection.service';
 import { RouterModule } from '@angular/router';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
+import { SharedService } from '../../services/shared.service';
 
 declare const flatpickr: any;
 
@@ -51,7 +52,7 @@ export class Nueva implements AfterViewInit, OnInit {
 
   // Estado del wizard
   currentStep: number = 1;
-  totalSteps: number = 4;
+  totalSteps: number = 5;
 
   // Variables para almacenar fechas formateadas
   fechaInspeccion: string = '';
@@ -76,7 +77,9 @@ export class Nueva implements AfterViewInit, OnInit {
   constructor(
     private fb: FormBuilder,
     private inspectionService: InspectionService,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute,
+    public sharedService: SharedService
   ) {
     // Inicialización del formulario principal
     this.inspectionForm = this.fb.group({
@@ -314,6 +317,7 @@ export class Nueva implements AfterViewInit, OnInit {
     }
   }
   ngOnInit() {
+    this.sharedService.currentRoute = this.route.snapshot.url[0].path;
     // Sincronizar teléfono entre formularios
     this.phoneForm.get('localNumber')?.valueChanges.subscribe(value => {
       if (value) {
@@ -479,39 +483,35 @@ export class Nueva implements AfterViewInit, OnInit {
       }, 0);
     }
   }
-  private initDatePickersForCurrentStep() {
-    switch (this.currentStep) {
-      case 1:
-        this.initStep1DatePickers();
-        break;
-      case 2:
-        this.initStep2DatePickers();
-        break;
-      case 3:
-        this.initStep3DatePickers();
-        break;
-      // Paso 4 no tiene date pickers
-    }
+private initDatePickersForCurrentStep() {
+  switch (this.currentStep) {
+    case 1:
+      this.initStep1DatePickers();
+      break;
+    case 2:
+      this.initStep2DatePickers();
+      break;
+    case 3:
+      this.initStep3DatePickers();
+      break;
+    // Casos 4 y 5 no tienen date pickers
   }
+}
 
 
   /**
    * Valida los campos del paso actual
    */
-  validateCurrentStep(): boolean {
-    switch (this.currentStep) {
-      case 1:
-        return this.validateStep1();
-      case 2:
-        return this.validateStep2();
-      case 3:
-        return this.validateStep3();
-      case 4:
-        return true; // Paso 4 no tiene validación obligatoria
-      default:
-        return true;
-    }
+validateCurrentStep(): boolean {
+  switch (this.currentStep) {
+    case 1: return this.validateStep1();
+    case 2: return this.validateStep2();
+    case 3: return this.validateStep3();
+    case 4: 
+    case 5: return true; // Pasos 4 y 5 sin validación obligatoria
+    default: return true;
   }
+}
 
   /**
    * Valida el Paso 1: Datos Generales
@@ -621,15 +621,16 @@ export class Nueva implements AfterViewInit, OnInit {
   /**
    * Obtiene el nombre del paso actual
    */
-  getStepName(step: number): string {
-    const stepNames = [
-      'Datos Generales',
-      'Datos del Conductor',
-      'Datos del Vehículo',
-      'Inspección Vehicular'
-    ];
-    return stepNames[step - 1] || '';
-  }
+getStepName(step: number): string {
+  const stepNames = [
+    'Datos Generales',
+    'Datos del Conductor',
+    'Datos del Vehículo',
+    'Inspección Vehicular',
+    'Observaciones y Fotos'  // 👈 Nuevo paso 5
+  ];
+  return stepNames[step - 1] || '';
+}
 
   /**
    * Obtiene el porcentaje de progreso del wizard

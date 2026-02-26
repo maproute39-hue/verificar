@@ -1,10 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
+import { Router,ActivatedRoute, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../services/auth.service';
 import { PwaInstallService } from '../../services/pwa-install.service';
 import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
+import { SharedService } from '../../services/shared.service';
 
 @Component({
   selector: 'app-header',
@@ -16,20 +17,28 @@ import Swal from 'sweetalert2';
 export class Header implements OnInit, OnDestroy {
   showInstallButton = false;
   private installSubscription: Subscription | undefined;
-
+  showHomeButton = true;
+  public currentRoute: string = '';
   constructor(
     private router: Router,
+    private route: ActivatedRoute,
     private authService: AuthService,
-    private pwaInstallService: PwaInstallService
+    private pwaInstallService: PwaInstallService,
+    public sharedService: SharedService
   ) {}
 
   ngOnInit() {
+  
+    console.log(this.currentRoute);
     this.installSubscription = this.pwaInstallService.installPromptAvailable$.subscribe(
       (available) => {
         this.showInstallButton = available;
       }
     );
+ 
   }
+
+
 
   ngOnDestroy() {
     if (this.installSubscription) {

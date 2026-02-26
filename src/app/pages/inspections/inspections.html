@@ -55,14 +55,10 @@
           </div>
           <div class="card-body px-1 pt-2 pb-2">
             <div class="table-responsive">
-              <table id="dt_Inspections" class="table table-sm display table-row-rounded data-row-checkbox">
-                <thead class="table-light">
+              <table id="dt_Inspections" class="table table-border-bottom-0 mb-0">
+                <thead class="">
                   <tr>
-                    <th class="pe-0">
-                      <div class="form-check">
-                        <input class="form-check-input" data-row-checkbox type="checkbox">
-                      </div>
-                    </th>
+             
                     <th class="minw-200px">Conductor</th>
                     <th class="minw-150px">Placa del vehículo</th>
                     <th class="minw-150px">Teléfono</th>
@@ -74,12 +70,7 @@
                 <tbody>
                   <tr *ngFor="let inspection of filteredInspections" (click)="viewInspection(inspection.id)"
                     style="cursor: pointer;">
-                    <td class="pe-0">
-                      <div class="form-check p-0 w-auto d-inline-block mb-0 mb-n1">
-                        <input class="form-check-input m-0" data-checkbox type="checkbox"
-                          (click)="$event.stopPropagation()">
-                      </div>
-                    </td>
+             
                     <td>
                       <div class="d-flex align-items-center">
                         <div class="avatar avatar-circle avatar-xs me-2">
@@ -114,10 +105,10 @@
                           (click)="$event.stopPropagation(); viewInspection(inspection.id)" title="Ver">
                           <i class="fi fi-rr-eye"></i>
                         </button>
-                        <button class="btn btn-sm btn-icon btn-soft-info" (click)="$event.stopPropagation();"
+                        <!-- <button class="btn btn-sm btn-icon btn-soft-info" (click)="$event.stopPropagation();"
                           title="Editar">
                           <i class="fi fi-rr-edit"></i>
-                        </button>
+                        </button> -->
                         <button class="btn btn-sm btn-icon btn-soft-danger"
                           (click)="deleteInspection($event, inspection.id)" title="Eliminar">
                           <i class="fi fi-rr-trash"></i>

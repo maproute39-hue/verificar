@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { RealtimeInspectionsService } from '../../services/inspections-realtime';
 import { CommonModule } from '@angular/common';
-import { Router, RouterLink, RouterModule } from '@angular/router';
+import { Router,ActivatedRoute, RouterLink, RouterModule } from '@angular/router';
 import Swal from 'sweetalert2';
 import { Inspection } from '../../models/inspection.model';
+import { SharedService } from '../../services/shared.service';
 @Component({
   selector: 'app-home',
   imports: [CommonModule, RouterModule, RouterLink], standalone: true,
@@ -19,9 +20,12 @@ export class Home implements OnInit {
   currentMonthInspections: number = 0;
   filteredInspections: Inspection[] = [];
 
+  currentRoute: string = '';
   constructor(
     public RealtimeInspectionsService: RealtimeInspectionsService,
-    private router: Router
+    private router: Router,
+    public sharedService: SharedService,
+    private route: ActivatedRoute  
   ) { }
 
   /**
@@ -124,6 +128,10 @@ export class Home implements OnInit {
   }
 
   ngOnInit(): void {
+    this.sharedService.currentRoute = this.route.snapshot.url[0].path;
+    console.log(this.sharedService.currentRoute);
+    this.currentRoute = this.router.url.split('/')[1] || '';
+    
     this.initializeData();
   }
   private initializeData(): void {

@@ -9,9 +9,14 @@
         </button>
         
         <!-- Mobile home button (visible only on mobile/tablet) -->
-        <a routerLink="/" class="mobile-home-btn" style="padding-left: 30px;" aria-label="Ir al inicio">
+        <!-- <a routerLink="/" class="mobile-home-btn" style="padding-left: 30px;" aria-label="Ir al inicio">
           <i class="fi fi-rr-home"></i>
-        </a>
+        </a> -->
+        <div style="padding-left: 20px; padding-top: 10px;" [hidden]="sharedService.currentRoute === 'home'">
+         <a routerLink="/" class="btn btn-icon btn-white btn-xl"  data-bs-toggle="tooltip" data-bs-placement="top"   >
+                <i class="fi fi-rr-home"></i>
+              </a>
+        </div>
         
       <div class="app-header-start d-none d-md-flex">
           <!-- <form class="d-flex align-items-center h-100 w-lg-250px w-xxl-300px position-relative" >

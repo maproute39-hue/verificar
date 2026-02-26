@@ -85,31 +85,31 @@
 // }
 
 // Estilos para las filas de la tabla
-.table {
-  tbody {
-    tr {
-      transition: all 0.3s ease;
-      cursor: pointer;
+// .table {
+//   tbody {
+//     tr {
+//       transition: all 0.3s ease;
+//       cursor: pointer;
 
-      &:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        z-index: 1;
-        position: relative;
-      }
+//       &:hover {
+//         transform: translateY(-2px);
+//         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+//         z-index: 1;
+//         position: relative;
+//       }
 
-      // Asegurar que las celdas tengan un fondo blanco para el efecto de elevación
-      td {
-        background-color: #fff;
-        transition: background-color 0.3s ease;
-      }
+//       // Asegurar que las celdas tengan un fondo blanco para el efecto de elevación
+//       td {
+//         background-color: #fff;
+//         transition: background-color 0.3s ease;
+//       }
 
-      &:hover td {
-        background-color: #f8f9fa;
-      }
-    }
-  }
-}
+//       &:hover td {
+//         background-color: #f8f9fa;
+//       }
+//     }
+//   }
+// }
 
 // Asegurar que los botones dentro de la fila no afecten el cursor
 .btn {

@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { RealtimeInspectionsService } from '../../services/inspections-realtime';
 import { CommonModule } from '@angular/common';
-import { Router, RouterModule } from '@angular/router';
+import { Router, ActivatedRoute, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { Inspection } from '../../models/inspection.model';
 import Swal from 'sweetalert2';
+import { SharedService } from '../../services/shared.service';
 @Component({
   selector: 'app-inspections',
   standalone: true,
@@ -21,10 +22,14 @@ export class Inspections implements OnInit {
 
   constructor(
     public realtimeInspectionsService: RealtimeInspectionsService,
-    private router: Router
+    private router: Router,
+    public sharedService: SharedService,
+    private route: ActivatedRoute
   ) { }
 
   ngOnInit(): void {
+    this.sharedService.currentRoute = this.route.snapshot.url[0].path;
+    console.log(this.sharedService.currentRoute);
     this.initializeData();
   }
   

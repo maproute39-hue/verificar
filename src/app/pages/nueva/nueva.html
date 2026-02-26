@@ -36,7 +36,7 @@
               </div>
             </div>
             <!-- <div class="mt-3 text-center">
-              <h6 class="mb-0">{{getStepName(currentStep)}}</h6>
+              <h6 class="fw-bold border-bottom titulo">{{getStepName(currentStep)}}</h6>
             </div> -->
           </div>
         </div>
@@ -96,7 +96,7 @@
       <div *ngIf="currentStep === 1" class="Datos Generales col-12 mb-3">
         <div class="card">
           <div class="card-header ">
-            <h5 class="mb-0">
+            <h5 class="fw-bold border-bottom titulo">
               <i class="fi fi-rr-calendar me-2"></i>
               <small>Datos Generales</small>
             </h5>
@@ -186,7 +186,7 @@
       <div *ngIf="currentStep === 2" class="col-12 mb-3">
         <div class="card">
           <div class="card-header">
-            <h5 class="mb-0">
+            <h5 class="fw-bold border-bottom titulo">
               <i class="fi fi-rr-user me-2"></i>Datos del Conductor
             </h5>
           </div>
@@ -289,7 +289,7 @@
       <div *ngIf="currentStep === 3" class="col-12 mb-3">
         <div class="card">
           <div class="card-header ">
-            <h5 class="mb-0">
+            <h5 class="fw-bold border-bottom titulo">
               <i class="fi fi-rr-car me-2"></i>Datos del Vehículo
             </h5>
           </div>
@@ -411,7 +411,7 @@
       <div *ngIf="currentStep === 4" class="col-12 mb-3">
         <div class="card">
           <div class="card-header ">
-            <h5 class="mb-0">
+            <h5 class="fw-bold border-bottom titulo">
               <i class="fi fi-rr-clipboard-list-check me-2"></i>Inspección del Vehículo
             </h5>
           </div>
@@ -1592,81 +1592,108 @@
               </div>
             </div>
 
-            <!-- Agrega esto en el Paso 4 donde tengas el registro fotográfico -->
-            <div class="image-upload-section">
-              <div class="card mt-4">
-                <div class="card-header bg-light">
-                  <h6 class="mb-0">
-                    <i class="fi fi-rr-comment-alt me-2"></i>
-                    Observaciones / Comentarios / Compromisos
-                  </h6>
-                </div>
-                <div class="card-body">
-                  <textarea 
-                    formControlName="observaciones" 
-                    class="form-control" 
-                    rows="5"
-                    placeholder="Describa las observaciones encontradas durante la inspección...">
-                  </textarea>
-                  <div class="form-text">
-                    Máximo 500 caracteres. Esta información se incluirá en el reporte Excel/PDF.
-                  </div>
-                </div>
-              </div>
-              
-              <h5>Registro Fotográfico</h5>
-
-              <div class="form-group">
-                <label for="images">Seleccionar imágenes:</label>
-                <input type="file" id="images" #fileInput multiple accept="image/*" (change)="onFilesSelected($event)"
-                  class="form-control" [disabled]="isUploadingImages" />
-                <small class="text-muted">Puedes seleccionar múltiples imágenes (máx 5MB cada una)</small>
-              </div>
-
-              <!-- Preview de imágenes -->
-              <div class="selected-images" *ngIf="imagePreviews.length > 0">
-                <div *ngFor="let preview of imagePreviews; let i = index" class="image-preview">
-                  <img [src]="preview" alt="Preview {{i}}">
-                  <button type="button" (click)="removeImage(i)" class="btn-remove" [disabled]="isUploadingImages">
-                    ×
-                  </button>
-                </div>
-              </div>
-
-              <!-- Contador -->
-              <div class="image-count" *ngIf="selectedFiles.length > 0">
-                {{ selectedFiles.length }} imagen(es) seleccionada(s)
-              </div>
-            </div>
+       
           </div>
         </div>
 
       </div>
+<!-- ✅ STEP 5: OBSERVACIONES Y REGISTRO FOTOGRÁFICO (NUEVO) -->
+<div *ngIf="currentStep === 5" class="col-12 mb-3">
+  <div class="card">
+    <div class="card-header bg-light">
+      <h5 class="fw-bold border-bottom titulo">
+        <i class="fi fi-rr-comment-alt me-2"></i>
+        Observaciones y Registro Fotográfico
+      </h5>
+    </div>
+    <div class="card-body">
+      
+      <!-- Sección de Observaciones -->
+      <div class="image-upload-section">
+        <div class=" mt-4">
+          <div class=" bg-light">
+            <h6 class="">
+              <i class="fi fi-rr-comment-alt me-2"></i>
+              Observaciones / Comentarios / Compromisos
+            </h6>
+          </div>
+          <div class="-body">
+            <textarea
+              formControlName="observaciones"
+              class="form-control"
+              rows="5"
+              placeholder="Describa las observaciones encontradas durante la inspección..."
+              maxlength="500">
+            </textarea>
+            <div class="form-text">
+              Máximo 500 caracteres. Esta información se incluirá en el reporte Excel/PDF.
+            </div>
+            <div class="text-end">
+              <small class="text-muted">{{ inspectionForm.get('observaciones')?.value?.length || 0 }}/500</small>
+            </div>
+          </div>
+        </div>
 
-      <!-- NAVIGATION BUTTONS -->
-      <div class="col-12 mt-4">
-        <div class="d-flex justify-content-between">
-          <button type="button" class="btn btn-secondary" *ngIf="!isFirstStep()" (click)="prevStep()">
-            <i class="fi fi-rr-arrow-left me-1"></i> Anterior
-          </button>
+        <!-- Sección de Registro Fotográfico -->
+         
+        <h5 class="mt-4">
+        <i class="fi fi-rr-camera me-2"></i>
+          
+          Registro Fotográfico</h5>
+        <div class="form-group">
+          <label for="images">Seleccionar imágenes:</label>
+          <input type="file" id="images" #fileInput multiple accept="image/*" 
+                 (change)="onFilesSelected($event)"
+                 class="form-control btn btn-secondary btn-sm" [disabled]="isUploadingImages" />
+          <small class="text-muted">Puedes seleccionar hasta 3 imágenes (máx 5MB cada una)</small>
+        </div>
 
-          <button type="button" class="btn btn-outline-secondary" routerLink="/inspections">
-            Cancelar
-          </button>
+        <!-- Preview de imágenes -->
+        <div class="selected-images d-flex flex-wrap gap-2 mt-3" *ngIf="imagePreviews.length > 0">
+          <div *ngFor="let preview of imagePreviews; let i = index" 
+               class="image-preview position-relative" style="width: 150px; height: 150px;">
+            <img [src]="preview" alt="Preview {{i}}" class="img-thumbnail w-100 h-100" style="object-fit: cover;">
+            <button type="button" (click)="removeImage(i)" 
+                    class="btn btn-danger btn-sm position-absolute top-0 end-0 rounded-circle" 
+                    style="width: 24px; height: 24px; padding: 0; font-size: 14px;" 
+                    [disabled]="isUploadingImages">×</button>
+          </div>
+        </div>
 
-          <button type="button" class="btn btn-primary" *ngIf="!isLastStep()" (click)="nextStep()">
-            Siguiente <i class="fi fi-rr-arrow-right ms-1"></i>
-          </button>
-
-          <button type="button" class="btn btn-success" *ngIf="isLastStep()" (click)="onSubmit()"
-            [disabled]="isLoading">
-            <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2" role="status"
-              aria-hidden="true"></span>
-            <i class="fi fi-rr-save me-1"></i>
-            {{ isLoading ? 'Guardando...' : 'Guardar Inspección' }}
-          </button>
+        <!-- Contador de imágenes -->
+        <div class="image-count mt-2" *ngIf="selectedFiles.length > 0">
+          <span class="badge bg-primary">{{ selectedFiles.length }} imagen(es) seleccionada(s)</span>
         </div>
       </div>
+
+    </div>
+  </div>
+</div>
+      <!-- NAVIGATION BUTTONS -->
+     <!-- NAVIGATION BUTTONS -->
+<div class="col-12 mt-4">
+  <div class="d-flex justify-content-between">
+    <button type="button" class="btn btn-secondary" *ngIf="!isFirstStep()" (click)="prevStep()">
+      <i class="fi fi-rr-arrow-left me-1"></i> Anterior
+    </button>
+    
+    <button type="button" class="btn btn-outline-secondary" routerLink="/inspections">
+      Cancelar
+    </button>
+    
+    <button type="button" class="btn btn-primary" *ngIf="!isLastStep()" (click)="nextStep()">
+      Siguiente <i class="fi fi-rr-arrow-right ms-1"></i>
+    </button>
+    
+    <button type="button" class="btn btn-success" *ngIf="isLastStep()" (click)="onSubmit()"
+            [disabled]="isLoading">
+      <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2" role="status"
+            aria-hidden="true"></span>
+      <i class="fi fi-rr-save me-1"></i>
+      {{ isLoading ? 'Guardando...' : 'Guardar Inspección' }}
+    </button>
+  </div>
+</div>
     </form>
   </div>
 </main>
