@@ -1,4 +1,4 @@
-import { Injectable  } from '@angular/core';
+import { Injectable } from '@angular/core';
 import * as ExcelJS from 'exceljs';
 import { saveAs } from 'file-saver';
 import { GotenbergService } from './gotenberg.service';
@@ -125,6 +125,7 @@ export class ExcelExportService {
       if (!worksheetImagenes) {
         throw new Error('No se encontró la hoja "SECOND_PAGE" en la plantilla');
       }
+
       // console.log('✅ Procesando hoja "SECOND_PAGE" con fotografías...');
       // ✅ AGREGAR ESTO: Procesar datos de la hoja SECOND_PAGE (estado de aprobación)
       console.log('✅ Procesando hoja "SECOND_PAGE" con datos del formulario...');
@@ -137,7 +138,15 @@ export class ExcelExportService {
       } else {
         console.warn('⚠️ No hay imágenes para insertar');
       }
+      // 🎯 NORMALIZAR IMÁGENES: garantizar siempre 3 posiciones con la default si está vacío
+      const imagenesParaInsertar = this.normalizarImagenes(imageUrls);
+      console.log(`🖼️ Imágenes a insertar: ${imagenesParaInsertar.length} (normalizadas)`);
 
+      if (imagenesParaInsertar.length > 0) {
+        await this.insertarTresImagenesPosicionesFijas(worksheetImagenes, imagenesParaInsertar, workbook);
+      } else {
+        console.warn('⚠️ No hay imágenes para insertar');
+      }
       // ✅ 3. Generar buffer final con AMBAS hojas procesadas
       const buffer = await workbook.xlsx.writeBuffer();
       console.log('✅ XLSX generado exitosamente con datos e imágenes');
@@ -159,6 +168,27 @@ export class ExcelExportService {
    * 
    * SIN modificar la estructura ni formato de la hoja
    */
+
+
+  private normalizarImagenes(imageUrls: string[] = []): string[] {
+    // const DEFAULT_IMAGE = 'https://db.buckapi.site:8095/api/files/5bjt6wpqfj0rnsl/yp5yvjgc4az23bi/gemini_generated_image_ms4ptsms4ptsms4p_qYXpFuSoAk.png?token=';
+    const DEFAULT_IMAGE = '/assets/images/no_image.png';
+
+    // Si no hay imágenes, retornar 3 copias de la default
+    if (!imageUrls || imageUrls.length === 0) {
+      return [DEFAULT_IMAGE, DEFAULT_IMAGE, DEFAULT_IMAGE];
+    }
+
+    // Si hay imágenes, tomar máximo 3 y rellenar con default si es necesario
+    const result = imageUrls.slice(0, 3);
+    while (result.length < 3) {
+      result.push(DEFAULT_IMAGE);
+    }
+
+    return result;
+  }
+
+
   private async insertarTresImagenesPosicionesFijas(
     worksheet: ExcelJS.Worksheet,
     imageUrls: string[],
@@ -169,9 +199,9 @@ export class ExcelExportService {
 
     // ✅ Definir las 3 posiciones exactas (rangos de celdas)
     const posiciones = [
-      { rango: 'D22:L24', descripcion: 'Imagen 1 - Vista frontal/lateral' },
-      { rango: 'N22:AA24', descripcion: 'Imagen 2 - Vista lateral/posterior' },
-      { rango: 'D26:L33', descripcion: 'Imagen 3 - Motor/detalle' }
+      { rango: 'D23:L27', descripcion: 'Imagen 1 - Vista frontal/lateral' },
+      { rango: 'N23:AA27', descripcion: 'Imagen 2 - Vista lateral/posterior' },
+      { rango: 'D30:L34', descripcion: 'Imagen 3 - Motor/detalle' }
     ];
 
     // ✅ Insertar cada imagen en su posición
@@ -477,6 +507,22 @@ export class ExcelExportService {
     // Ejemplo: fechas, observaciones, etc.
     // this.setCell(worksheet, 'A1', formData.observaciones_imagenes);
 
+
+    this.marcarRadio(worksheet, 'H11', 'J11', 'L11', formData.liquido_frenos);
+    this.marcarRadio(worksheet, 'W19', 'Y19', 'AA19', formData.hidraulico_direccion);
+    this.marcarRadio(worksheet, 'W17', 'Y17', 'AA17', formData.columna_direccion);
+    this.marcarRadio(worksheet, 'H9', 'J9', 'L9', formData.freno_mano_seguridad);
+
+
+
+    // this.marcarRadio(worksheet, 'W42', 'Y42', 'AA42', formData.sistema_direccion);
+
+    // this.marcarRadio(worksheet, 'W38', 'Y38', 'AA38', formData.sistema_frenos);
+
+
+
+    this.setCell(worksheet, 'X4:AA6', formData.numero_certificado); // numero_certificado
+
     this.setCell(worksheet, 'U30', formData.llanta_di); // Ajustar según coordenadas reales
     this.setCell(worksheet, 'Y30', formData.llanta_dd);
     this.setCell(worksheet, 'U31', formData.llanta_tie);
@@ -640,15 +686,6 @@ export class ExcelExportService {
     // this.setCell(worksheet, 'H76', formData.presion_llanta_t_lii);
     // this.setCell(worksheet, 'J76', formData.presion_llanta_t_ldi);
 
-    this.marcarRadio(worksheet, 'H72', 'J72', 'L72', formData.liquido_frenos);
-    this.marcarRadio(worksheet, 'H76', 'J76', 'L76', formData.hidraulico_direccion);
-    this.marcarRadio(worksheet, 'H78', 'J78', 'L78', formData.columna_direccion);
-    this.marcarRadio(worksheet, 'W42', 'Y42', 'AA42', formData.sistema_direccion);
-
-    this.setCell(worksheet, 'X4:AA6', formData.numero_certificado); // numero_certificado
-    this.marcarRadio(worksheet, 'W38', 'Y38', 'AA38', formData.sistema_frenos);
-    this.marcarRadio(worksheet, 'W48', 'Y48', 'AA48', formData.freno_mano_seguridad);
-
 
 
     console.log('✅ Todos los datos escritos exitosamente');
@@ -792,7 +829,7 @@ export class ExcelExportService {
       worksheet.mergeCells('D39:AA42');
 
       // ✅ Obtener la celda fusionada
-      const notaCell = worksheet.getCell('D39:AA42');
+      const notaCell = worksheet.getCell('D39');
 
       // ✅ Agregar el texto
       notaCell.value = notaTexto;
@@ -827,11 +864,6 @@ export class ExcelExportService {
         bottom: { style: 'thin', color: { argb: 'FFFF0000' } },
         right: { style: 'thin', color: { argb: 'FFFF0000' } }
       };
-      notaCell.font.color = { argb: 'FFFF0000' };
-      notaCell.font.bold = true;
-      notaCell.font.italic = true;
-      notaCell.font.size = 19;
-      notaCell.font.name = 'Calibri';
       notaCell.font.color = { argb: 'FFFF0000' };
       notaCell.font.bold = true;
       notaCell.font.italic = true;
