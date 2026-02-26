@@ -5,10 +5,12 @@
   "description": "Plataforma móvil oficial de Verificar IT diseñada para optimizar el proceso de inspección vehicular. Permite realizar evaluaciones técnicas completas para camionetas, busetas y transporte pesado de manera eficiente.",
   "name": "VerificarIT",
   "orientation": "any",
+  "lang": "es",
   "scope": "/",
-  "short_name": "AppVerificar",
+  "short_name": "VerificarIT",
   "start_url": "/",
   "theme_color": "#ffffff",
+  "categories": ["business", "utilities", "productivity"],
   "screenshots": [
     {
       "src": "assets/screenshots/mobile-screenshot.png",

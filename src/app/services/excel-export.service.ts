@@ -65,14 +65,14 @@ export class ExcelExportService {
         workbook.worksheets.map(ws => ws.name));
 
       // ✅ Obtener la hoja POR NOMBRE
-      const worksheet = workbook.getWorksheet('CAMIONETA');
+      const worksheet = workbook.getWorksheet('FIRST_PAGE');
 
       if (!worksheet) {
         // Intentar fallback por índice si falla el nombre
-        console.warn('⚠️ Hoja "CAMIONETA" no encontrada por nombre, intentando por índice...');
-        const fallbackSheet = workbook.getWorksheet('CAMIONETA'); // Segunda hoja (índice 2 en ExcelJS)
+        console.warn('⚠️ Hoja "FIRST_PAGE" no encontrada por nombre, intentando por índice...');
+        const fallbackSheet = workbook.getWorksheet('FIRST_PAGE'); // Segunda hoja (índice 2 en ExcelJS)
         if (!fallbackSheet) {
-          throw new Error('No se encontró la hoja "CAMIONETA" ni la hoja 2 en el archivo Excel');
+          throw new Error('No se encontró la hoja "FIRST_PAGE" ni la hoja 2 en el archivo Excel');
         }
         this.procesarHoja(fallbackSheet, formData);
       } else {
@@ -112,25 +112,25 @@ export class ExcelExportService {
       const workbook = new ExcelJS.Workbook();
       await workbook.xlsx.load(arrayBuffer);
 
-      // ✅ 1. PROCESAR HOJA "CAMIONETA" CON LOS DATOS DEL FORMULARIO
-      const worksheetCamioneta = workbook.getWorksheet('CAMIONETA');
+      // ✅ 1. PROCESAR HOJA "FIRST_PAGE" CON LOS DATOS DEL FORMULARIO
+      const worksheetCamioneta = workbook.getWorksheet('FIRST_PAGE');
       if (!worksheetCamioneta) {
-        throw new Error('No se encontró la hoja "CAMIONETA" en la plantilla');
+        throw new Error('No se encontró la hoja "FIRST_PAGE" en la plantilla');
       }
-      console.log('✅ Procesando hoja "CAMIONETA" con datos del formulario...');
+      console.log('✅ Procesando hoja "FIRST_PAGE" con datos del formulario...');
       this.procesarHoja(worksheetCamioneta, formData);
 
-      // ✅ 2. PROCESAR HOJA "IMAGENES" CON LAS FOTOS
-      const worksheetImagenes = workbook.getWorksheet('IMAGENES');
+      // ✅ 2. PROCESAR HOJA "SECOND_PAGE" CON LAS FOTOS
+      const worksheetImagenes = workbook.getWorksheet('SECOND_PAGE');
       if (!worksheetImagenes) {
-        throw new Error('No se encontró la hoja "IMAGENES" en la plantilla');
+        throw new Error('No se encontró la hoja "SECOND_PAGE" en la plantilla');
       }
-      // console.log('✅ Procesando hoja "IMAGENES" con fotografías...');
-      // ✅ AGREGAR ESTO: Procesar datos de la hoja IMAGENES (estado de aprobación)
-      console.log('✅ Procesando hoja "IMAGENES" con datos del formulario...');
+      // console.log('✅ Procesando hoja "SECOND_PAGE" con fotografías...');
+      // ✅ AGREGAR ESTO: Procesar datos de la hoja SECOND_PAGE (estado de aprobación)
+      console.log('✅ Procesando hoja "SECOND_PAGE" con datos del formulario...');
       this.procesarHoja(worksheetImagenes, formData);  // ← ← ← ¡AGREGAR ESTA LÍNEA!
 
-      console.log('✅ Procesando hoja "IMAGENES" con fotografías...');
+      console.log('✅ Procesando hoja "SECOND_PAGE" con fotografías...');
 
       if (imageUrls && imageUrls.length > 0) {
         await this.insertarTresImagenesPosicionesFijas(worksheetImagenes, imageUrls, workbook);
@@ -169,9 +169,9 @@ export class ExcelExportService {
 
     // ✅ Definir las 3 posiciones exactas (rangos de celdas)
     const posiciones = [
-      { rango: 'D6:L8', descripcion: 'Imagen 1 - Vista frontal/lateral' },
-      { rango: 'N6:AA8', descripcion: 'Imagen 2 - Vista lateral/posterior' },
-      { rango: 'D10:L17', descripcion: 'Imagen 3 - Motor/detalle' }
+      { rango: 'D18:L20', descripcion: 'Imagen 1 - Vista frontal/lateral' },
+      { rango: 'N18:AA20', descripcion: 'Imagen 2 - Vista lateral/posterior' },
+      { rango: 'D22:L29', descripcion: 'Imagen 3 - Motor/detalle' }
     ];
 
     // ✅ Insertar cada imagen en su posición
@@ -274,7 +274,7 @@ export class ExcelExportService {
       const fecha = this.getCurrentDate();
       this.gotenbergService.downloadBlob(
         pdfBlob!,
-        `Inspeccion_${placa}_${fecha}_CON_IMAGENES.pdf`
+        `Inspeccion_${placa}_${fecha}_CON_SECOND_PAGE.pdf`
       );
 
       console.log('✅ PDF con imágenes generado');
@@ -330,13 +330,13 @@ export class ExcelExportService {
       await workbook.xlsx.load(arrayBuffer);
 
       // ✅ Obtener la hoja POR NOMBRE
-      const worksheet = workbook.getWorksheet('CAMIONETA');
+      const worksheet = workbook.getWorksheet('FIRST_PAGE');
 
       if (!worksheet) {
-        console.warn('⚠️ Hoja "CAMIONETA" no encontrada por nombre, intentando por índice...');
+        console.warn('⚠️ Hoja "FIRST_PAGE" no encontrada por nombre, intentando por índice...');
         const fallbackSheet = workbook.getWorksheet(1);
         if (!fallbackSheet) {
-          throw new Error('No se encontró la hoja "CAMIONETA" ni la hoja 2 en el archivo Excel');
+          throw new Error('No se encontró la hoja "FIRST_PAGE" ni la hoja 2 en el archivo Excel');
         }
         this.procesarHoja(fallbackSheet, formData);
       } else {
@@ -429,10 +429,10 @@ export class ExcelExportService {
       await workbook.xlsx.load(arrayBuffer);
 
       // ✅ Obtener hoja POR NOMBRE (crítico para tu plantilla)
-      let worksheet = workbook.getWorksheet('CAMIONETA');
+      let worksheet = workbook.getWorksheet('FIRST_PAGE');
 
       if (!worksheet) {
-        console.warn('⚠️ Hoja "CAMIONETA" no encontrada, usando segunda hoja por índice');
+        console.warn('⚠️ Hoja "FIRST_PAGE" no encontrada, usando segunda hoja por índice');
         worksheet = workbook.getWorksheet(2);
       }
 
@@ -460,7 +460,7 @@ export class ExcelExportService {
     }
   }
   private procesarHojaImagenes(worksheet: ExcelJS.Worksheet, formData: any): void {
-    console.log('✏️ Procesando hoja IMAGENES...');
+    console.log('✏️ Procesando hoja SECOND_PAGE...');
 
     // ✅ Marcar estado de aprobación (F21 = aprobada, H21 = rechazada)
     if (formData.estado) {
@@ -473,32 +473,39 @@ export class ExcelExportService {
       }
     }
 
-    // ✅ Aquí puedes agregar más lógica específica para la hoja IMAGENES si la necesitas
+    // ✅ Aquí puedes agregar más lógica específica para la hoja SECOND_PAGE si la necesitas
     // Ejemplo: fechas, observaciones, etc.
     // this.setCell(worksheet, 'A1', formData.observaciones_imagenes);
 
-    this.setCell(worksheet, 'U14', formData.presion_llanta_d_li);  // LLanta D-LDI
-    this.setCell(worksheet, 'Y14', formData.presion_llanta_d_ld);   // LLanta D-LD
-    this.setCell(worksheet, 'U15', formData.presion_llanta_t_lie);  // LLanta T-LIE
-    this.setCell(worksheet, 'Y15', formData.presion_llanta_t_lde);  // LLanta T-LDE
-    this.setCell(worksheet, 'U16', formData.presion_llanta_t_lii);  // LLanta T-LII
-    this.setCell(worksheet, 'Y16', formData.presion_llanta_t_ldi);  // LLanta T-LDI
-    this.setCell(worksheet, 'D30:AA35', formData.observaciones);
+    this.setCell(worksheet, 'U26', formData.llanta_di); // Ajustar según coordenadas reales
+    this.setCell(worksheet, 'Y26', formData.llanta_dd);
+    this.setCell(worksheet, 'U27', formData.llanta_tie);
+    this.setCell(worksheet, 'Y27', formData.llanta_tde);
+    this.setCell(worksheet, 'U28', formData.llanta_tii);
+    this.setCell(worksheet, 'Y28', formData.llanta_tdi);
+
+    this.setCell(worksheet, 'U31', formData.presion_llanta_d_li);  // LLanta D-LDI
+    this.setCell(worksheet, 'Y31', formData.presion_llanta_d_ld);   // LLanta D-LD
+    this.setCell(worksheet, 'U32', formData.presion_llanta_t_lie);  // LLanta T-LIE
+    this.setCell(worksheet, 'Y32', formData.presion_llanta_t_lde);  // LLanta T-LDE
+    this.setCell(worksheet, 'U33', formData.presion_llanta_t_lii);  // LLanta T-LII
+    this.setCell(worksheet, 'Y33', formData.presion_llanta_t_ldi);  // LLanta T-LDI
+    this.setCell(worksheet, 'D42:AA47', formData.observaciones);
 
 
-    console.log('✅ Hoja IMAGENES procesada exitosamente');
+    console.log('✅ Hoja SECOND_PAGE procesada exitosamente');
   }
   private procesarHoja(worksheet: ExcelJS.Worksheet, formData: any): void {
     console.log('✏️ Escribiendo datos en hoja:', worksheet.name);
 
-    // ✅ Si es la hoja IMAGENES, procesar el estado de aprobación
-    if (worksheet.name === 'IMAGENES') {
+    // ✅ Si es la hoja SECOND_PAGE, procesar el estado de aprobación
+    if (worksheet.name === 'SECOND_PAGE') {
       this.procesarHojaImagenes(worksheet, formData); // ✅ Corregido: llamar al método específico
       return;
     }
 
-    // ✅ Si es la hoja CAMIONETA, procesar datos del vehículo
-    if (worksheet.name === 'CAMIONETA') {
+    // ✅ Si es la hoja FIRST_PAGE, procesar datos del vehículo
+    if (worksheet.name === 'FIRST_PAGE') {
       this.procesarHojaCamioneta(worksheet, formData);
     }
   }
@@ -622,12 +629,12 @@ export class ExcelExportService {
     this.marcarRadio(worksheet, 'W106', 'Y106', 'AA106', formData.tanques_compresor);
 
     // ✅ PROFUNDIDAD DE LABRADO
-    this.setCell(worksheet, 'O112', formData.llanta_di); // Ajustar según coordenadas reales
-    this.setCell(worksheet, 'W112', formData.llanta_dd);
-    this.setCell(worksheet, 'O114', formData.llanta_tie);
-    this.setCell(worksheet, 'W114', formData.llanta_tde);
-    this.setCell(worksheet, 'O116', formData.llanta_tii);
-    this.setCell(worksheet, 'W116', formData.llanta_tdi);
+    // this.setCell(worksheet, 'O112', formData.llanta_di); // Ajustar según coordenadas reales
+    // this.setCell(worksheet, 'W112', formData.llanta_dd);
+    // this.setCell(worksheet, 'O114', formData.llanta_tie);
+    // this.setCell(worksheet, 'W114', formData.llanta_tde);
+    // this.setCell(worksheet, 'O116', formData.llanta_tii);
+    // this.setCell(worksheet, 'W116', formData.llanta_tdi);
 
 
 
@@ -733,7 +740,7 @@ export class ExcelExportService {
     }
   }
   /**
-   * ✅ Marca el estado de aprobación en la hoja IMAGENES
+   * ✅ Marca el estado de aprobación en la hoja SECOND_PAGE
    * - F21: Check ✓ si estado es "aprobada/aprobado/sí"
    * - H21: Check ✓ si estado es "rechazada/rechazado/no"
    */
@@ -747,8 +754,8 @@ export class ExcelExportService {
     }
 
     const CHECK = '✓'; // Símbolo de check Unicode
-    const cellF21 = worksheet.getCell('F21'); // Columna F = Aprobada
-    const cellH21 = worksheet.getCell('H21'); // Columna H = Rechazada
+    const cellF21 = worksheet.getCell('F33'); // Columna F = Aprobada
+    const cellH21 = worksheet.getCell('H33'); // Columna H = Rechazada
 
     // Limpiar ambas celdas primero para evitar marcas duplicadas
     cellF21.value = null;
@@ -783,10 +790,10 @@ export class ExcelExportService {
 
     try {
       // ✅ Fusionar celdas en el rango D24:AA25
-      worksheet.mergeCells('D24:AA25');
+      worksheet.mergeCells('D36:AA38');
 
       // ✅ Obtener la celda fusionada
-      const notaCell = worksheet.getCell('D24');
+      const notaCell = worksheet.getCell('D36');
 
       // ✅ Agregar el texto
       notaCell.value = notaTexto;
@@ -847,7 +854,7 @@ export class ExcelExportService {
       console.log('📂 Cargando plantilla desde assets...');
 
       // ✅ Ruta CORRECTA según tu estructura (verifica en network tab del navegador)
-      const path = '/assets/templates/camioneta.xlsx';
+      const path = '/assets/templates/busetas.xlsx';
       console.log('🔍 Cargando:', path);
 
       const response = await fetch(path);
