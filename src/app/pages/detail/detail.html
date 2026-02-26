@@ -27,20 +27,20 @@
         </div>
 
         <div class="row">
-          <div class="col-lg-6 mb-3">
-            <label class="form-label ">Fecha de Inspección <span class="text-danger">*</span></label>
+          <div class="col-lg-6 mb-3 col-6 col-sm-6">
+            <label class="form-label ">Fecha de Insp.<span class="text-danger">*</span></label>
             <input #fechaInspeccion type="text" class="form-control date-picker" formControlName="fecha_inspeccion"
               placeholder="Seleccione fecha" readonly>
           </div>
 
-          <div class="col-lg-6 mb-3">
+          <div class="col-lg-6 mb-3 col-6 col-sm-6">
             <label class="form-label">Vigencia Hasta <span class="text-danger">*</span></label>
             <input #fechaVigencia type="text" class="form-control date-picker" formControlName="fecha_vigencia"
               placeholder="Seleccione fecha" readonly>
           </div>
         </div>
         <div class="row">
-          <div class="col-lg-6 mb-3">
+          <div class="col-lg-6 mb-3 col-7">
             <label class="form-label">Propietario <span class="text-danger">*</span></label>
             <input type="text" formControlName="propietario" class="form-control" placeholder="Propietario">
             <div
@@ -50,8 +50,8 @@
             </div>
           </div>
 
-          <div class="col-lg-6 mb-3">
-            <label class="form-label">Documento Propietario <span class="text-danger">*</span></label>
+          <div class="col-lg-6 mb-3 col-5">
+            <label class="form-label">Documento<span class="text-danger">*</span></label>
             <input type="text" formControlName="documento_propietario" class="form-control"
               placeholder="Documento propietario">
             <div
@@ -69,7 +69,7 @@
         <div class="row">
 
           <div class="col-lg-6 mb-3">
-            <label class="form-label">Nombre Transportadora <span class="text-danger">*</span></label>
+            <label class="form-label">Transportadora <span class="text-danger">*</span></label>
             <input type="text" formControlName="nombre_transportadora" class="form-control"
               placeholder="Nombre transportadora">
             <div
@@ -79,8 +79,8 @@
             </div>
           </div>
 
-          <div class="col-lg-6 mb-3">
-            <label class="form-label">Nombres Conductor <span class="text-danger">*</span></label>
+          <div class="col-lg-6 mb-3 col-7">
+            <label class="form-label">Conductor <span class="text-danger">*</span></label>
             <input type="text" formControlName="nombres_conductor" class="form-control" placeholder="Nombres conductor">
             <div
               *ngIf="inspectionForm.get('nombres_conductor')?.touched && inspectionForm.get('nombres_conductor')?.errors?.['required']"
@@ -89,8 +89,8 @@
             </div>
           </div>
 
-          <div class="col-lg-4 mb-3">
-            <label class="form-label">No. Identificación <span class="text-danger">*</span></label>
+          <div class="col-lg-4 mb-3 col-5">
+            <label class="form-label">Documento <span class="text-danger">*</span></label>
             <input type="text" formControlName="identificacion" class="form-control"
               placeholder="Número de identificación">
             <div
@@ -136,7 +136,7 @@
           <h6 class="fw-bold border-bottom titulo">DATOS DEL VEHÍCULO</h6>
         </div>
         <div class="row">
-          <div class="col-lg-4 mb-3">
+          <div class="col-lg-4 mb-3 col-6">
             <label class="form-label">Placa <span class="text-danger">*</span></label>
             <input type="text" formControlName="placa" class="form-control" placeholder="Placa del vehículo">
             <div *ngIf="inspectionForm.get('placa')?.touched && inspectionForm.get('placa')?.errors?.['required']"
@@ -145,7 +145,7 @@
             </div>
           </div>
 
-          <div class="col-lg-4 mb-3">
+          <div class="col-lg-4 mb-3 col-6">
             <label class="form-label">Marca <span class="text-danger">*</span></label>
             <input type="text" formControlName="marca" class="form-control" placeholder="Marca">
             <div *ngIf="inspectionForm.get('marca')?.touched && inspectionForm.get('marca')?.errors?.['required']"
@@ -154,7 +154,7 @@
             </div>
           </div>
 
-          <div class="col-lg-4 mb-3">
+          <div class="col-lg-4 mb-3 col-6">
             <label class="form-label">Modelo <span class="text-danger">*</span></label>
             <input type="text" formControlName="modelo" class="form-control" placeholder="Modelo">
             <div *ngIf="inspectionForm.get('modelo')?.touched && inspectionForm.get('modelo')?.errors?.['required']"
@@ -163,7 +163,7 @@
             </div>
           </div>
 
-          <div class="col-lg-4 mb-3">
+          <div class="col-lg-4 mb-3 col-6">
             <label class="form-label">Kilometraje actual <span class="text-danger">*</span></label>
             <input type="number" formControlName="kilometraje" class="form-control" placeholder="Kilometraje">
             <div
@@ -173,60 +173,60 @@
             </div>
           </div>
 
-          <div class="col-lg-4 mb-3">
+          <div class="col-lg-4 mb-3 col-6">
             <label class="form-label">SOAT</label>
             <input type="text" formControlName="soat" class="form-control" placeholder="Número SOAT">
           </div>
-          <div class="col-lg-4 mb-3">
+          <div class="col-lg-4 mb-3 col-6">
             <label class="form-label">V /de SOAT <span class="text-danger">*</span></label>
             <input #fechaVencimientoSoat type="text" class="form-control date-picker"
               formControlName="fecha_vencimiento_soat" placeholder="Seleccione fecha" readonly>
           </div>
 
 
-          <div class="col-lg-4 mb-3">
+          <div class="col-lg-4 mb-3   col-6">
             <label class="form-label">Licencia Transito</label>
             <input type="text" formControlName="licencia_transito" class="form-control" placeholder="Licencia transito">
           </div>
 
-          <div class="col-lg-4 mb-3">
+          <div class="col-lg-4 mb-3 col-6">
             <label class="form-label">R. Tecnicomecánica</label>
             <input type="text" formControlName="revision_tecnomecanica" class="form-control"
               placeholder="Número R. Tecnicomecánica">
           </div>
-          <div class="col-lg-4 mb-3">
+          <div class="col-lg-4 mb-3 col-6">
             <label class="form-label">V / R. Técnicomecánica <span class="text-danger">*</span></label>
             <input #fechaVencimientoRevisionTecnomecanica type="text" class="form-control date-picker"
               formControlName="fecha_vencimiento_revision_tecnomecanica" placeholder="Seleccione fecha" readonly>
           </div>
 
-          <div class="col-lg-4 mb-3">
+          <div class="col-lg-4 mb-3 col-6">
             <label class="form-label">Clase de vehículo</label>
             <input type="text" formControlName="clase_vehiculo" class="form-control" placeholder="Clase de vehículo">
           </div>
 
-          <div class="col-lg-4 mb-3">
+          <div class="col-lg-4 mb-3 col-6">
             <label class="form-label">Tarjeta de Operación</label>
             <input type="text" formControlName="tarjeta_operacion" class="form-control"
               placeholder="Tarjeta de operación">
           </div>
-          <div class="col-lg-4 mb-3">
+          <div class="col-lg-4 mb-3 col-6">
             <label class="form-label">V / Tarjeta de Operación <span class="text-danger">*</span></label>
             <input #fechaVencimientoTarjetaOperacion type="text" class="form-control date-picker"
               formControlName="fecha_vencimiento_tarjeta_operacion" placeholder="Seleccione fecha" readonly>
           </div>
 
-          <div class="col-lg-4 mb-3">
+          <div class="col-lg-4 mb-3 col-6">
             <label class="form-label">Color</label>
             <input type="text" formControlName="color" class="form-control" placeholder="Color">
           </div>
 
-          <div class="col-lg-4 mb-3">
+          <div class="col-lg-4 mb-3 col-6">
             <label class="form-label">Código del Vehículo</label>
             <input type="text" formControlName="codigo_vehiculo" class="form-control" placeholder="Código del vehículo">
           </div>
 
-          <div class="col-lg-4 mb-3">
+          <div class="col-lg-4 mb-3 col-6">
             <label class="form-label">Capacidad de pasajeros</label>
             <input type="number" formControlName="capacidad_pasajeros" class="form-control"
               placeholder="Cantidad de pasajeros">
@@ -1468,10 +1468,152 @@
       <!-- Botón de envío -->
 
     </form>
-    <div class="row mt-4">
+    <!-- <div class="row mt-4">
       <button type="button" class="btn btn-primary" (click)="imprimirInspeccion()">
         <i class="fi fi-rr-print"></i> Imprimir
       </button>
+    </div> -->
+  </div>
+   <div class="floating-action d-lg-none">
+    <input type="checkbox" id="fab-check" class="fab-check">
+    <label class="fab" for="fab-check">
+      <span class="fab-icon">
+        <i class="fa fa-bars"></i>
+      </span>
+      <span class="fab-icon-close">
+        <span>x</span>
+        <!-- <i class="fi fi-rr-cross"></i> -->
+      </span>
+    </label>
+    <div class="fab-options">
+
+      <a routerLink="/busetas" class="fab-option">
+        <span class="fab-label ">Generar a partir de esta</span>
+        <i class="fab-option-icon fi fi-rs-refresh"></i>
+      </a>
+      <a  (click)="imprimirInspeccion()"  class="fab-option">
+        <span class="fab-label">Exportar a PDF</span>
+        <i class="fab-option-icon fi fi-rs-download"></i>
+      </a>
+      <!-- <a (click)="pending()" class="fab-option">
+        <span class="fab-label text-warning">Pesados</span>
+        <span class="fab-option-icon">3</span>
+      </a> -->
     </div>
   </div>
+
+  <style>
+    .floating-action {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      z-index: 1000;
+    }
+
+    .fab {
+      width: 56px;
+      height: 56px;
+      background-color: var(--bs-primary);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 2rem;
+      font-weight: 300;
+      cursor: pointer;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+      transition: all 0.3s ease;
+      user-select: none;
+      position: relative;
+    }
+
+    .fab:hover {
+      background-color: var(--bs-primary);
+      transform: scale(1.1);
+    }
+
+    .fab-icon-close {
+      position: absolute;
+      opacity: 0;
+      transform: rotate(-45deg);
+      transition: all 0.3s ease;
+    }
+
+    .fab-check:checked+.fab .fab-icon {
+      opacity: 0;
+      transform: rotate(45deg);
+    }
+
+    .fab-check:checked+.fab .fab-icon-close {
+      opacity: 1;
+      transform: rotate(0);
+    }
+
+    .fab-check:checked+.fab {
+      background-color: var(--bs-primary);
+    }
+
+    .fab-check:checked+.fab:hover {
+      background-color: var(--bs-primary);
+    }
+
+    .fab-check {
+      display: none;
+    }
+
+    .fab-options {
+      position: absolute;
+      bottom: 70px;
+      right: 0;
+      opacity: 0;
+      transform: scale(0);
+      transform-origin: bottom right;
+      transition: all 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .fab-check:checked~.fab-options {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .fab-option {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      text-decoration: none;
+      color: #333;
+    }
+
+    .fab-label {
+      background: white;
+      padding: 8px 12px;
+      border-radius: 20px;
+      margin-right: 10px;
+      font-size: 0.85rem;
+      white-space: nowrap;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .fab-option-icon {
+      width: 40px;
+      height: 40px;
+      background-color: var(--bs-primary);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: bold;
+    }
+
+    @media (min-width: 992px) {
+      .floating-action {
+        display: none;
+      }
+    }
+  </style>
 </main>
