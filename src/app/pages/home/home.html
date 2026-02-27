@@ -268,7 +268,7 @@
                         {{ inspection.nombres_conductor || 'Sin nombre' }}
                       </div>
                     </td>
-                    <td (click)="viewInspection(inspection.id)">{{ (inspection.fecha_inspeccion | date: 'dd/MM/yyyy') ||
+                    <td (click)="viewInspection(inspection.id)">{{ (inspection.fecha_inspeccion | date: 'dd/MM/yyyy':'UTC')  ||
                       'Sin fecha' }}</td>
 
                     <td (click)="viewInspection(inspection.id)">

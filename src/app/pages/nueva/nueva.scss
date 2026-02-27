@@ -85,3 +85,54 @@ font-size: 13px !important;
   padding: 0.5rem !important;
   border-radius: 10px !important;
 }
+.form-control {
+  transition: all 0.3s ease;
+  
+  &.field-filled {
+    background-color: #d4edda !important;  // Verde claro
+    border-color: #28a745 !important;       // Verde
+    color: #155724;
+    
+    &:focus {
+      background-color: #c3e6cb !important;
+      border-color: #28a745 !important;
+      box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
+    }
+  }
+  
+  &.field-empty {
+    background-color: #e7f3ff !important;  // Azul claro
+    border-color: #007bff !important;       // Azul
+    color: #004085;
+    
+    &:focus {
+      background-color: #d4e9ff !important;
+      border-color: #007bff !important;
+      box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    }
+  }
+}
+
+// Para los datepickers de flatpickr
+.flatpickr-input {
+  &.field-filled {
+    background-color: #d4edda !important;
+    border-color: #28a745 !important;
+  }
+  
+  &.field-empty {
+    background-color: #e7f3ff !important;
+    border-color: #007bff !important;
+  }
+}
+
+// Animación suave al completar
+@keyframes pulse-green {
+  0% { box-shadow: 0 0 0 0 rgba(40, 167, 69, 0.4); }
+  70% { box-shadow: 0 0 0 6px rgba(40, 167, 69, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(40, 167, 69, 0); }
+}
+
+.field-filled {
+  animation: pulse-green 0.5s ease-in-out;
+}

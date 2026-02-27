@@ -1270,9 +1270,43 @@ export class Detail implements OnInit, AfterViewInit {
   private formatDate(dateString: string): string {
     if (!dateString) return '';
     const date = new Date(dateString);
-    return this.datePipe.transform(date, 'yyyy-MM-dd') || '';
+  return this.datePipe.transform(date, 'yyyy-MM-dd', 'UTC') || '';
   }
+/**
+ * Verifica si un campo del formulario tiene valor
+ * @param fieldName Nombre del campo a verificar
+ * @returns true si el campo tiene valor, false si está vacío
+ */
+getPhoneFieldClass(): string {
+  const control = this.phoneForm.get('localNumber');
+  if (!control) return 'field-empty';
+  
+  const value = control.value;
+  return (value && value.trim() !== '') ? 'field-filled' : 'field-empty';
+}
+isFieldFilled(fieldName: string): boolean {
+  const control = this.inspectionForm.get(fieldName);
+  if (!control) return false;
+  
+  const value = control.value;
+  
+  // Verificar si es un string vacío o null/undefined
+  if (typeof value === 'string') {
+    return value.trim() !== '';
+  }
+  
+  // Para otros tipos (números, booleanos, etc.)
+  return value !== null && value !== undefined && value !== '';
+}
 
+/**
+ * Obtiene la clase CSS para un campo según su estado
+ * @param fieldName Nombre del campo
+ * @returns 'field-filled' o 'field-empty'
+ */
+getFieldClass(fieldName: string): string {
+  return this.isFieldFilled(fieldName) ? 'field-filled' : 'field-empty';
+}
   /**
    * Inicializa los selectores de fecha (datepickers) en el formulario
    */

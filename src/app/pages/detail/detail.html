@@ -37,30 +37,274 @@
         <div class="row">
           <div class="col-lg-6 mb-3 col-6 col-sm-6">
             <label class="form-label ">Fecha de Insp.<span class="text-danger">*</span></label>
-            <input #fechaInspeccion type="text" class="form-control date-picker" formControlName="fecha_inspeccion"
+            <input #fechaInspeccion type="text" class="form-control date-picker"   [ngClass]="getFieldClass('fecha_inspeccion')" formControlName="fecha_inspeccion"
               placeholder="Seleccione fecha" readonly>
           </div>
 
           <div class="col-lg-6 mb-3 col-6 col-sm-6">
-            <label class="form-label">Vigencia Hasta <span class="text-danger">*</span></label>
-            <input #fechaVigencia type="text" class="form-control date-picker" formControlName="fecha_vigencia"
+            <label class="form-label">Vigencia Hasta <span class="text-danger" >*</span></label>
+            <input #fechaVigencia type="text" class="form-control date-picker" [ngClass]="getFieldClass('fecha_vigencia')" formControlName="fecha_vigencia"
               placeholder="Seleccione fecha" readonly>
           </div>
         </div>
         <div class="row">
           <div class="col-lg-6 mb-3 col-7">
             <label class="form-label">Propietario <span class="text-danger">*</span></label>
-            <input type="text" formControlName="propietario" class="form-control" placeholder="Propietario">
+            <input type="text" formControlName="propietario" class="form-control"   [ngClass]="getFieldClass('propietario')" placeholder="Propietario">
             <div
               *ngIf="inspectionForm.get('propietario')?.touched && inspectionForm.get('propietario')?.errors?.['required']"
               class="text-danger small">
               Este campo es requerido
             </div>
           </div>
+<div class="col-12 mb-3">
+  <h6 class="fw-bold border-bottom titulo">DATOS DEL CONDUCTOR</h6>
+</div>
+<div class="row">
 
+  <div class="col-lg-6 mb-3">
+    <label class="form-label">Transportadora <span class="text-danger">*</span></label>
+    <input type="text" 
+           formControlName="nombre_transportadora" 
+           class="form-control"
+           [ngClass]="getFieldClass('nombre_transportadora')"
+           placeholder="Nombre transportadora">
+    <div *ngIf="inspectionForm.get('nombre_transportadora')?.touched && inspectionForm.get('nombre_transportadora')?.errors?.['required']"
+      class="text-danger small">
+      Este campo es requerido
+    </div>
+  </div>
+
+  <div class="col-lg-6 mb-3 col-7">
+    <label class="form-label">Conductor <span class="text-danger">*</span></label>
+    <input type="text" 
+           formControlName="nombres_conductor" 
+           class="form-control" 
+           [ngClass]="getFieldClass('nombres_conductor')"
+           placeholder="Nombres conductor">
+    <div *ngIf="inspectionForm.get('nombres_conductor')?.touched && inspectionForm.get('nombres_conductor')?.errors?.['required']"
+      class="text-danger small">
+      Este campo es requerido
+    </div>
+  </div>
+
+  <div class="col-lg-4 mb-3 col-5">
+    <label class="form-label">Documento <span class="text-danger">*</span></label>
+    <input type="text" 
+           formControlName="identificacion" 
+           class="form-control"
+           [ngClass]="getFieldClass('identificacion')"
+           placeholder="Número de identificación">
+    <div *ngIf="inspectionForm.get('identificacion')?.touched && inspectionForm.get('identificacion')?.errors?.['required']"
+      class="text-danger small">
+      Este campo es requerido
+    </div>
+  </div>
+
+  <div class="col-lg-4 mb-3">
+    <label class="form-label">Teléfono <span class="text-danger">*</span></label>
+    <div [formGroup]="phoneForm">
+      <div class="input-group">
+        <span class="input-group-text">+57</span>
+        <input type="tel" 
+               class="form-control" 
+               formControlName="localNumber" 
+               [ngClass]="getPhoneFieldClass()"
+               placeholder="3001234567"
+               maxlength="10" />
+      </div>
+      <div *ngIf="phoneForm.get('localNumber')?.errors && phoneForm.get('localNumber')?.touched"
+        class="text-danger small">
+        <div *ngIf="phoneForm.get('localNumber')?.hasError('required')">
+          El número de teléfono es obligatorio.
+        </div>
+        <div *ngIf="phoneForm.get('localNumber')?.hasError('pattern')">
+          Ingrese 10 dígitos válidos (ej: 3001234567).
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-4 mb-3">
+    <label class="form-label">V / Licencia conducción <span class="text-danger">*</span></label>
+    <input #fechaLicencia 
+           type="text" 
+           class="form-control date-picker"
+           [ngClass]="getFieldClass('fecha_vencimiento_licencia')"
+           formControlName="fecha_vencimiento_licencia" 
+           placeholder="Fecha vencimiento licencia" 
+           readonly>
+    <div *ngIf="inspectionForm.get('fecha_vencimiento_licencia')?.touched && inspectionForm.get('fecha_vencimiento_licencia')?.errors?.['required']"
+      class="text-danger small">
+      Este campo es requerido
+    </div>
+  </div>
+</div>
+
+<!-- DATOS DEL VEHÍCULO -->
+<div class="col-12 mb-3">
+  <h6 class="fw-bold border-bottom titulo">DATOS DEL VEHÍCULO</h6>
+</div>
+<div class="row">
+  <div class="col-lg-4 mb-3 col-6">
+    <label class="form-label">Placa <span class="text-danger">*</span></label>
+    <input type="text" 
+           formControlName="placa" 
+           class="form-control" 
+           [ngClass]="getFieldClass('placa')"
+           placeholder="Placa del vehículo">
+    <div *ngIf="inspectionForm.get('placa')?.touched && inspectionForm.get('placa')?.errors?.['required']"
+      class="text-danger small">
+      Este campo es requerido
+    </div>
+  </div>
+
+  <div class="col-lg-4 mb-3 col-6">
+    <label class="form-label">Marca <span class="text-danger">*</span></label>
+    <input type="text" 
+           formControlName="marca" 
+           class="form-control" 
+           [ngClass]="getFieldClass('marca')"
+           placeholder="Marca">
+    <div *ngIf="inspectionForm.get('marca')?.touched && inspectionForm.get('marca')?.errors?.['required']"
+      class="text-danger small">
+      Este campo es requerido
+    </div>
+  </div>
+
+  <div class="col-lg-4 mb-3 col-6">
+    <label class="form-label">Modelo <span class="text-danger">*</span></label>
+    <input type="text" 
+           formControlName="modelo" 
+           class="form-control" 
+           [ngClass]="getFieldClass('modelo')"
+           placeholder="Modelo">
+    <div *ngIf="inspectionForm.get('modelo')?.touched && inspectionForm.get('modelo')?.errors?.['required']"
+      class="text-danger small">
+      Este campo es requerido
+    </div>
+  </div>
+
+  <div class="col-lg-4 mb-3 col-6">
+    <label class="form-label">Kilometraje actual <span class="text-danger">*</span></label>
+    <input type="number" 
+           formControlName="kilometraje" 
+           class="form-control" 
+           [ngClass]="getFieldClass('kilometraje')"
+           placeholder="Kilometraje">
+    <div *ngIf="inspectionForm.get('kilometraje')?.touched && inspectionForm.get('kilometraje')?.errors?.['required']"
+      class="text-danger small">
+      Este campo es requerido
+    </div>
+  </div>
+
+  <div class="col-lg-4 mb-3 col-6">
+    <label class="form-label">SOAT</label>
+    <input type="text" 
+           formControlName="soat" 
+           class="form-control" 
+           [ngClass]="getFieldClass('soat')"
+           placeholder="Número SOAT">
+  </div>
+  <div class="col-lg-4 mb-3 col-6">
+    <label class="form-label">V /de SOAT <span class="text-danger">*</span></label>
+    <input #fechaVencimientoSoat 
+           type="text" 
+           class="form-control date-picker"
+           [ngClass]="getFieldClass('fecha_vencimiento_soat')"
+           formControlName="fecha_vencimiento_soat" 
+           placeholder="Seleccione fecha" 
+           readonly>
+  </div>
+
+
+  <div class="col-lg-4 mb-3   col-6">
+    <label class="form-label">Licencia Transito</label>
+    <input type="text" 
+           formControlName="licencia_transito" 
+           class="form-control" 
+           [ngClass]="getFieldClass('licencia_transito')"
+           placeholder="Licencia transito">
+  </div>
+
+  <div class="col-lg-4 mb-3 col-6">
+    <label class="form-label">R. Tecnicomecánica</label>
+    <input type="text" 
+           formControlName="revision_tecnomecanica" 
+           class="form-control"
+           [ngClass]="getFieldClass('revision_tecnomecanica')"
+           placeholder="Número R. Tecnicomecánica">
+  </div>
+  <div class="col-lg-4 mb-3 col-6">
+    <label class="form-label">V / R. Técnicomec. <span class="text-danger">*</span></label>
+    <input #fechaVencimientoRevisionTecnomecanica 
+           type="text" 
+           class="form-control date-picker"
+           [ngClass]="getFieldClass('fecha_vencimiento_revision_tecnomecanica')"
+           formControlName="fecha_vencimiento_revision_tecnomecanica" 
+           placeholder="Seleccione fecha" 
+           readonly>
+  </div>
+
+  <div class="col-lg-4 mb-3 col-6">
+    <label class="form-label">Clase de vehículo</label>
+    <input type="text" 
+           formControlName="clase_vehiculo" 
+           class="form-control" 
+           [ngClass]="getFieldClass('clase_vehiculo')"
+           placeholder="Clase de vehículo">
+  </div>
+
+  <div class="col-lg-4 mb-3 col-6">
+    <label class="form-label">Tarjeta de Operación</label>
+    <input type="text" 
+           formControlName="tarjeta_operacion" 
+           class="form-control"
+           [ngClass]="getFieldClass('tarjeta_operacion')"
+           placeholder="Tarjeta de operación">
+  </div>
+  <div class="col-lg-4 mb-3 col-6">
+    <label class="form-label">V / Tarj. de Oper. <span class="text-danger">*</span></label>
+    <input #fechaVencimientoTarjetaOperacion 
+           type="text" 
+           class="form-control date-picker"
+           [ngClass]="getFieldClass('fecha_vencimiento_tarjeta_operacion')"
+           formControlName="fecha_vencimiento_tarjeta_operacion" 
+           placeholder="Seleccione fecha" 
+           readonly>
+  </div>
+
+  <div class="col-lg-4 mb-3 col-6">
+    <label class="form-label">Color</label>
+    <input type="text" 
+           formControlName="color" 
+           class="form-control" 
+           [ngClass]="getFieldClass('color')"
+           placeholder="Color">
+  </div>
+
+  <div class="col-lg-4 mb-3 col-6">
+    <label class="form-label">Código del Vehículo</label>
+    <input type="text" 
+           formControlName="codigo_vehiculo" 
+           class="form-control"
+           [ngClass]="getFieldClass('codigo_vehiculo')"
+           placeholder="Código del vehículo">
+  </div>
+
+  <div class="col-lg-4 mb-3 col-6">
+    <label class="form-label">Capacidad de pasajeros</label>
+    <input type="number" 
+           formControlName="capacidad_pasajeros" 
+           class="form-control"
+           [ngClass]="getFieldClass('capacidad_pasajeros')"
+           placeholder="Cantidad de pasajeros">
+  </div>
+
+</div>
           <div class="col-lg-6 mb-3 col-5">
             <label class="form-label">Documento<span class="text-danger">*</span></label>
-            <input type="text" formControlName="documento_propietario" class="form-control"
+            <input type="text" formControlName="documento_propietario" class="form-control"  [ngClass]="getFieldClass('documento_propietario')"
               placeholder="Documento propietario">
             <div
               *ngIf="inspectionForm.get('documento_propietario')?.touched && inspectionForm.get('documento_propietario')?.errors?.['required']"
@@ -70,178 +314,7 @@
           </div>
         </div>
 
-        <!-- DATOS DEL CONDUCTOR -->
-        <div class="col-12 mb-3">
-          <h6 class="fw-bold border-bottom titulo">DATOS DEL CONDUCTOR</h6>
-        </div>
-        <div class="row">
-
-          <div class="col-lg-6 mb-3">
-            <label class="form-label">Transportadora <span class="text-danger">*</span></label>
-            <input type="text" formControlName="nombre_transportadora" class="form-control"
-              placeholder="Nombre transportadora">
-            <div
-              *ngIf="inspectionForm.get('nombre_transportadora')?.touched && inspectionForm.get('nombre_transportadora')?.errors?.['required']"
-              class="text-danger small">
-              Este campo es requerido
-            </div>
-          </div>
-
-          <div class="col-lg-6 mb-3 col-7">
-            <label class="form-label">Conductor <span class="text-danger">*</span></label>
-            <input type="text" formControlName="nombres_conductor" class="form-control" placeholder="Nombres conductor">
-            <div
-              *ngIf="inspectionForm.get('nombres_conductor')?.touched && inspectionForm.get('nombres_conductor')?.errors?.['required']"
-              class="text-danger small">
-              Este campo es requerido
-            </div>
-          </div>
-
-          <div class="col-lg-4 mb-3 col-5">
-            <label class="form-label">Documento <span class="text-danger">*</span></label>
-            <input type="text" formControlName="identificacion" class="form-control"
-              placeholder="Número de identificación">
-            <div
-              *ngIf="inspectionForm.get('identificacion')?.touched && inspectionForm.get('identificacion')?.errors?.['required']"
-              class="text-danger small">
-              Este campo es requerido
-            </div>
-          </div>
-
-          <div class="col-lg-4 mb-3">
-            <label class="form-label">Teléfono <span class="text-danger">*</span></label>
-            <div [formGroup]="phoneForm">
-              <div class="input-group">
-                <span class="input-group-text">+57</span>
-                <input type="tel" class="form-control" formControlName="localNumber" placeholder="3001234567"
-                  maxlength="10" />
-              </div>
-              <div *ngIf="phoneForm.get('localNumber')?.errors && phoneForm.get('localNumber')?.touched"
-                class="text-danger small">
-                <div *ngIf="phoneForm.get('localNumber')?.hasError('required')">
-                  El número de teléfono es obligatorio.
-                </div>
-                <div *ngIf="phoneForm.get('localNumber')?.hasError('pattern')">
-                  Ingrese 10 dígitos válidos (ej: 3001234567).
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-lg-4 mb-3">
-            <label class="form-label">V / Licencia conducción <span class="text-danger">*</span></label>
-            <input #fechaLicencia type="text" class="form-control date-picker"
-              formControlName="fecha_vencimiento_licencia" placeholder="Fecha vencimiento licencia" readonly>
-            <div
-              *ngIf="inspectionForm.get('fecha_vencimiento_licencia')?.touched && inspectionForm.get('fecha_vencimiento_licencia')?.errors?.['required']"
-              class="text-danger small">
-              Este campo es requerido
-            </div>
-          </div>
-        </div>
-        <!-- DATOS DEL VEHÍCULO -->
-        <div class="col-12 mb-3">
-          <h6 class="fw-bold border-bottom titulo">DATOS DEL VEHÍCULO</h6>
-        </div>
-        <div class="row">
-          <div class="col-lg-4 mb-3 col-6">
-            <label class="form-label">Placa <span class="text-danger">*</span></label>
-            <input type="text" formControlName="placa" class="form-control" placeholder="Placa del vehículo">
-            <div *ngIf="inspectionForm.get('placa')?.touched && inspectionForm.get('placa')?.errors?.['required']"
-              class="text-danger small">
-              Este campo es requerido
-            </div>
-          </div>
-
-          <div class="col-lg-4 mb-3 col-6">
-            <label class="form-label">Marca <span class="text-danger">*</span></label>
-            <input type="text" formControlName="marca" class="form-control" placeholder="Marca">
-            <div *ngIf="inspectionForm.get('marca')?.touched && inspectionForm.get('marca')?.errors?.['required']"
-              class="text-danger small">
-              Este campo es requerido
-            </div>
-          </div>
-
-          <div class="col-lg-4 mb-3 col-6">
-            <label class="form-label">Modelo <span class="text-danger">*</span></label>
-            <input type="text" formControlName="modelo" class="form-control" placeholder="Modelo">
-            <div *ngIf="inspectionForm.get('modelo')?.touched && inspectionForm.get('modelo')?.errors?.['required']"
-              class="text-danger small">
-              Este campo es requerido
-            </div>
-          </div>
-
-          <div class="col-lg-4 mb-3 col-6">
-            <label class="form-label">Kilometraje actual <span class="text-danger">*</span></label>
-            <input type="number" formControlName="kilometraje" class="form-control" placeholder="Kilometraje">
-            <div
-              *ngIf="inspectionForm.get('kilometraje')?.touched && inspectionForm.get('kilometraje')?.errors?.['required']"
-              class="text-danger small">
-              Este campo es requerido
-            </div>
-          </div>
-
-          <div class="col-lg-4 mb-3 col-6">
-            <label class="form-label">SOAT</label>
-            <input type="text" formControlName="soat" class="form-control" placeholder="Número SOAT">
-          </div>
-          <div class="col-lg-4 mb-3 col-6">
-            <label class="form-label">V /de SOAT <span class="text-danger">*</span></label>
-            <input #fechaVencimientoSoat type="text" class="form-control date-picker"
-              formControlName="fecha_vencimiento_soat" placeholder="Seleccione fecha" readonly>
-          </div>
-
-
-          <div class="col-lg-4 mb-3   col-6">
-            <label class="form-label">Licencia Transito</label>
-            <input type="text" formControlName="licencia_transito" class="form-control" placeholder="Licencia transito">
-          </div>
-
-          <div class="col-lg-4 mb-3 col-6">
-            <label class="form-label">R. Tecnicomecánica</label>
-            <input type="text" formControlName="revision_tecnomecanica" class="form-control"
-              placeholder="Número R. Tecnicomecánica">
-          </div>
-          <div class="col-lg-4 mb-3 col-6">
-            <label class="form-label">V / R. Técnicomec. <span class="text-danger">*</span></label>
-            <input #fechaVencimientoRevisionTecnomecanica type="text" class="form-control date-picker"
-              formControlName="fecha_vencimiento_revision_tecnomecanica" placeholder="Seleccione fecha" readonly>
-          </div>
-
-          <div class="col-lg-4 mb-3 col-6">
-            <label class="form-label">Clase de vehículo</label>
-            <input type="text" formControlName="clase_vehiculo" class="form-control" placeholder="Clase de vehículo">
-          </div>
-
-          <div class="col-lg-4 mb-3 col-6">
-            <label class="form-label">Tarjeta de Operación</label>
-            <input type="text" formControlName="tarjeta_operacion" class="form-control"
-              placeholder="Tarjeta de operación">
-          </div>
-          <div class="col-lg-4 mb-3 col-6">
-            <label class="form-label">V / Tarj. de Oper. <span class="text-danger">*</span></label>
-            <input #fechaVencimientoTarjetaOperacion type="text" class="form-control date-picker"
-              formControlName="fecha_vencimiento_tarjeta_operacion" placeholder="Seleccione fecha" readonly>
-          </div>
-
-          <div class="col-lg-4 mb-3 col-6">
-            <label class="form-label">Color</label>
-            <input type="text" formControlName="color" class="form-control" placeholder="Color">
-          </div>
-
-          <div class="col-lg-4 mb-3 col-6">
-            <label class="form-label">Código del Vehículo</label>
-            <input type="text" formControlName="codigo_vehiculo" class="form-control" placeholder="Código del vehículo">
-          </div>
-
-          <div class="col-lg-4 mb-3 col-6">
-            <label class="form-label">Capacidad de pasajeros</label>
-            <input type="number" formControlName="capacidad_pasajeros" class="form-control"
-              placeholder="Cantidad de pasajeros">
-          </div>
-
-        </div>
-        <!-- INSPECCIÓN DEL VEHÍCULO -->
+      
 
       </div>
       <!-- columna derecha -->

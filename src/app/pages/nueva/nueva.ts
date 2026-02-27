@@ -886,6 +886,39 @@ export class Nueva implements AfterViewInit, OnInit {
 
     }
   }
+  /**
+ * Verifica si un campo del formulario tiene valor
+ */
+isFieldFilled(fieldName: string): boolean {
+  const control = this.inspectionForm.get(fieldName);
+  if (!control) return false;
+  
+  const value = control.value;
+  
+  if (typeof value === 'string') {
+    return value.trim() !== '';
+  }
+  
+  return value !== null && value !== undefined && value !== '';
+}
+
+/**
+ * Obtiene la clase CSS para un campo según su estado
+ */
+getFieldClass(fieldName: string): string {
+  return this.isFieldFilled(fieldName) ? 'field-filled' : 'field-empty';
+}
+
+/**
+ * Obtiene la clase CSS para el campo de teléfono (phoneForm)
+ */
+getPhoneFieldClass(): string {
+  const control = this.phoneForm.get('localNumber');
+  if (!control) return 'field-empty';
+  
+  const value = control.value;
+  return (value && value.trim() !== '') ? 'field-filled' : 'field-empty';
+}
 
   /**
    * Valida todos los pasos antes del envío final
