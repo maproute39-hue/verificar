@@ -626,6 +626,11 @@ ngOnDestroy(): void {
     // El formulario se marca como 'dirty' cuando el usuario modifica algún valor
     this.hasChanges = this.inspectionForm.dirty;
   });
+  
+  this.phoneForm.valueChanges.subscribe(() => {
+    // El formulario se marca como 'dirty' cuando el usuario modifica algún valor
+    this.hasChanges = this.phoneForm.dirty;
+  });
     this.route.paramMap.subscribe(params => {
       const id = params.get('id');
       if (id) {

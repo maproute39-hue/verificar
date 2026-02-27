@@ -190,16 +190,19 @@
   font-size: 1.1rem;
   font-weight: 600;
   border-radius: 50px;
-  background: linear-gradient(135deg, #02376b 0%, #01254a 100%);
+  // 🟢 Gradiente verde profesional (ajusta los tonos según tu logo)
+  background: linear-gradient(135deg, #198754 0%, #157347 100%);
   border: none;
-  box-shadow: 0 6px 20px rgba(2, 55, 107, 0.4);
+  color: white; // Texto blanco para contraste
+  box-shadow: 0 6px 20px rgba(25, 135, 84, 0.4); // Sombra con tono verde
   transition: all 0.25s ease;
   animation: slideUpFade 0.3s ease-out;
 
   &:hover {
     transform: translateY(-3px);
-    box-shadow: 0 8px 25px rgba(2, 55, 107, 0.6);
-    background: linear-gradient(135deg, #034a8f 0%, #02376b 100%);
+    box-shadow: 0 8px 25px rgba(25, 135, 84, 0.6);
+    // Verde un poco más oscuro al hacer hover
+    background: linear-gradient(135deg, #157347 0%, #146c43 100%);
   }
 
   &:active {

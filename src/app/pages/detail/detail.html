@@ -1471,7 +1471,7 @@
       </button>
     </div> -->
   </div>
-   <div class="floating-action d-lg-none" *ngIf="!hasChanges">
+   <div class="floating-action " *ngIf="!hasChanges">
     <input type="checkbox" id="fab-check" class="fab-check">
     <label class="fab" for="fab-check">
       <span class="fab-icon">
@@ -1607,11 +1607,7 @@
       font-weight: bold;
     }
 
-    @media (min-width: 992px) {
-      .floating-action {
-        display: none;
-      }
-    }
+   
   </style>
   <div class="floating-save-container" *ngIf="hasChanges">
   <button 
@@ -1620,5 +1616,6 @@
     (click)="saveChanges()">
     <i class="fas fa-save me-2"></i>Guardar Cambios
   </button>
+  
 </div>
 </main>
