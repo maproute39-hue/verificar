@@ -171,7 +171,7 @@ private formSubscription?: Subscription;
       manijas_seguros: [''],
       vidrios_electricos: [''],
       antideslizantes_pedales: [''],
-      freno_mano: [''],
+      // freno_mano: [''],
       tablero_instrumentos_interno: [''],
 
       // Seguridad Activa
@@ -708,15 +708,17 @@ async saveChanges(): Promise<void> {
 
     // Mostrar confirmación con el estado resultante
     const estadoTexto = {
-      'aprobada': '✅ Inspección aprobada',
-      'rechazada': '❌ Inspección rechazada', 
-      'borrador': '📝 Guardado como borrador'
+ // Opción 2 - Más básico
+'aprobada': '[✓] Inspección APROBADA',
+'rechazada': '[✗] Inspección RECHAZADA', 
+'borrador': '[✎] Guardado como BORRADOR'
+
     };
     
     Swal.fire({
       icon: formData.estado === 'rechazada' ? 'warning' : 'success',
       title: 'Éxito',
-      text: `Cambios guardados. ${estadoTexto[formData.estado as keyof typeof estadoTexto]}`,
+      text: `Cambios guardados ${estadoTexto[formData.estado as keyof typeof estadoTexto]}`,
       confirmButtonColor: formData.estado === 'rechazada' ? '#ffc107' : '#198754'
     });
 
@@ -815,8 +817,8 @@ public showNoExportWithDetails(formData: any): void {
       'tablero_instrumentos', 'bocina', 'bateria', 'aire_acondicionado'
     ],
     '🔧 Sistema Motor': [
-      'aceite_motor', 'aceite_transmision', 'liquido_refrigerante', 'liquido_frenos',
-      'filtro_aire', 'hidraulico_direccion', 'tension_correas'
+      'aceite_motor', 'aceite_transmision', 'liquido_refrigerante', 
+      'filtro_aire',  'tension_correas'
     ],
     '🚗 Carrocería': [
       'parachoque_delantero', 'parachoque_trasero', 'vidrios_seguridad', 'vidrios_laterales',
@@ -824,14 +826,15 @@ public showNoExportWithDetails(formData: any): void {
     ],
     '🎛️ Cabina': [
       'tapiceria', 'manijas_seguros', 'vidrios_electricos', 'antideslizantes_pedales',
-      'freno_mano', 'tablero_instrumentos_interno'
+      // 'freno_mano',
+       'tablero_instrumentos_interno'
     ],
     '🛡️ Seguridad Activa': [
-      'sistema_frenos', 'abs', 'sistema_direccion', 'espejos_laterales', 
-      'espejo_interno', 'freno_mano_seguridad'
+   'abs', 'sistema_direccion', 'espejos_laterales', 
+      'espejo_interno',
     ],
     '🪑 Seguridad Pasiva': [
-      'cinturones_seguridad', 'airbags', 'cadena_sujecion', 'columna_direccion',
+      'cinturones_seguridad', 'airbags', 'cadena_sujecion',
       'apoyacabezas', 'barra_antivuelco', 'rejilla_vidrio_trasero'
     ],
     '🧰 Kit de Carretera': [
@@ -841,7 +844,17 @@ public showNoExportWithDetails(formData: any): void {
     '🔩 Parte Baja': [
       'buies_barra', 'buies_tiera', 'cuna_motor', 'guardapolvo_axiales',
       'amortiguadores', 'hojas_muelles', 'silenciadores', 'tanques_compresor'
-    ]
+    ],
+    '🔩 Sistema de frenos': [
+     'liquido_frenos',
+     'pedal_frenos',
+     'bomba_frenos', 
+     'freno_mano_seguridad'
+    ],
+    '🔩 Sistema de Dirección': [
+      'hidraulico_direccion',
+       'columna_direccion',
+    ],
   };
 
   // 🔍 Identificar campos vacíos por categoría
@@ -890,7 +903,7 @@ public showNoExportWithDetails(formData: any): void {
     'manijas_seguros': 'Manijas y seguros',
     'vidrios_electricos': 'Vidrios eléctricos',
     'antideslizantes_pedales': 'Antideslizantes de pedales',
-    'freno_mano': 'Freno de mano',
+    // 'freno_mano': 'Freno de mano',
     'tablero_instrumentos_interno': 'Tablero interno',
     'sistema_frenos': 'Sistema de frenos',
     'abs': 'Sistema ABS',
@@ -1160,7 +1173,7 @@ private calcularEstadoInspeccion(formData: any): 'aprobada' | 'rechazada' | 'bor
     
     // Sistema Motor
     'aceite_motor', 'aceite_transmision', 'liquido_refrigerante', 
-    'filtro_aire', 'hidraulico_direccion', 'tension_correas',
+    'filtro_aire',  'tension_correas',
     
     // Carrocería
     'parachoque_delantero', 'parachoque_trasero', 'vidrios_seguridad', 'vidrios_laterales',
@@ -1168,14 +1181,18 @@ private calcularEstadoInspeccion(formData: any): 'aprobada' | 'rechazada' | 'bor
     
     // Cabina
     'tapiceria', 'manijas_seguros', 'vidrios_electricos', 'antideslizantes_pedales',
-    'freno_mano', 'tablero_instrumentos_interno',
+    // 'freno_mano', 
+    'tablero_instrumentos_interno',
     
     // Seguridad Activa
-    'sistema_frenos', 'abs', 'sistema_direccion', 'espejos_laterales', 
-    'espejo_interno', 'freno_mano_seguridad',
+    // 'sistema_frenos',
+     'abs',
+      // 'sistema_direccion', 
+     'espejos_laterales', 
+    'espejo_interno', 
     
     // Seguridad Pasiva
-    'cinturones_seguridad', 'airbags', 'cadena_sujecion', 'columna_direccion',
+    'cinturones_seguridad', 'airbags', 'cadena_sujecion', 
     'apoyacabezas', 'barra_antivuelco', 'rejilla_vidrio_trasero',
     
     // Kit de Carretera
@@ -1187,7 +1204,10 @@ private calcularEstadoInspeccion(formData: any): 'aprobada' | 'rechazada' | 'bor
     'amortiguadores', 'hojas_muelles', 'silenciadores', 'tanques_compresor',
 
     // Sistema de fresno
+    'freno_mano_seguridad',
     'liquido_frenos','bomba_frenos','pedal_frenos',
+    //sistema de direccion
+    'columna_direccion','hidraulico_direccion',
   ];
 
   // 🔍 Verificar campos vacíos (sin seleccionar C/N/C/N/A)

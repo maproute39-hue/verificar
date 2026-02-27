@@ -672,26 +672,6 @@ export class ExcelExportService {
     this.marcarRadio(worksheet, 'W100', 'Y100', 'AA100', formData.silenciadores);
     this.marcarRadio(worksheet, 'W102', 'Y102', 'AA102', formData.tanques_compresor);
 
-    // ✅ PROFUNDIDAD DE LABRADO
-    // this.setCell(worksheet, 'O112', formData.llanta_di); // Ajustar según coordenadas reales
-    // this.setCell(worksheet, 'W112', formData.llanta_dd);
-    // this.setCell(worksheet, 'O114', formData.llanta_tie);
-    // this.setCell(worksheet, 'W114', formData.llanta_tde);
-    // this.setCell(worksheet, 'O116', formData.llanta_tii);
-    // this.setCell(worksheet, 'W116', formData.llanta_tdi);
-
-
-
-    // PRESION DE AIRE
-    // this.setCell(worksheet, 'B76', formData.presion_llanta_d_li); 
-    // this.setCell(worksheet, 'D76', formData.presion_llanta_d_ld);
-    // this.setCell(worksheet, 'F76', formData.presion_llanta_t_lie);
-    // this.setCell(worksheet, 'L76', formData.presion_llanta_t_lde);
-    // this.setCell(worksheet, 'H76', formData.presion_llanta_t_lii);
-    // this.setCell(worksheet, 'J76', formData.presion_llanta_t_ldi);
-
-
-
     console.log('✅ Todos los datos escritos exitosamente');
   }
 
@@ -713,34 +693,7 @@ export class ExcelExportService {
     }
   }
 
-  /**
-   * Marca una celda con "X" según el valor del radio (ok/negativo/na)
-   * colC = OK, colD = Negativo, colE = N/A
-   * ✅ Solo escribe "X", preserva estilos originales
-   */
-  // private marcarRadio(
-  //   worksheet: ExcelJS.Worksheet,
-  //   colOk: string,
-  //   colNeg: string,
-  //   colNa: string,
-  //   valor: string
-  // ): void {
-  //   if (!valor) return;
 
-  //   // Limpiar todas las opciones primero (importante para radios)
-  //   worksheet.getCell(colOk).value = null;
-  //   worksheet.getCell(colNeg).value = null;
-  //   worksheet.getCell(colNa).value = null;
-
-  //   // Marcar la opción seleccionada
-  //   if (valor === 'ok') {
-  //     worksheet.getCell(colOk).value = 'X';
-  //   } else if (valor === 'negativo') {
-  //     worksheet.getCell(colNeg).value = 'X';
-  //   } else if (valor === 'na') {
-  //     worksheet.getCell(colNa).value = 'X';
-  //   }
-  // }
   private marcarRadio(
     worksheet: ExcelJS.Worksheet,
     colOk: string,

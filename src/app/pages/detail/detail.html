@@ -821,7 +821,7 @@
                 <div class="tab-pane fade" id="seguridadActiva" role="tabpanel"
                   aria-labelledby="seguridadActiva-tabPillsFill" tabindex="0">
                   <div class="row">
-                    <div class="col-lg-6 mb-3">
+                    <!-- <div class="col-lg-6 mb-3">
                       <label class="form-label">Sistema de frenos</label>
                       <div class="btn-group w-100" role="group">
                         <input type="radio" class="btn-check" name="sistema_frenos" id="sistema_frenos_ok"
@@ -834,7 +834,7 @@
                           [value]="'na'" formControlName="sistema_frenos" autocomplete="off">
                         <label class="btn btn-outline-secondary" for="sistema_frenos_na">N/A</label>
                       </div>
-                    </div>
+                    </div> -->
 
                     <div class="col-lg-6 mb-3">
                       <label class="form-label">Sistema ABS (anti-block sistema)</label>
@@ -851,7 +851,7 @@
                       </div>
                     </div>
 
-                    <div class="col-lg-6 mb-3">
+                    <!-- <div class="col-lg-6 mb-3">
                       <label class="form-label">Sistema de dirección</label>
                       <div class="btn-group w-100" role="group">
                         <input type="radio" class="btn-check" name="sistema_direccion" id="sistema_direccion_ok"
@@ -864,7 +864,7 @@
                           [value]="'na'" formControlName="sistema_direccion" autocomplete="off">
                         <label class="btn btn-outline-secondary" for="sistema_direccion_na">N/A</label>
                       </div>
-                    </div>
+                    </div> -->
 
                     <div class="col-lg-6 mb-3">
                       <label class="form-label">Espejos retrovisores laterales</label>
@@ -896,20 +896,7 @@
                       </div>
                     </div>
 
-                    <div class="col-lg-6 mb-3">
-                      <label class="form-label">Freno de seguridad de mano (parqueo)</label>
-                      <div class="btn-group w-100" role="group">
-                        <input type="radio" class="btn-check" name="freno_mano_seguridad" id="freno_mano_seguridad_ok"
-                          [value]="'ok'" formControlName="freno_mano_seguridad" autocomplete="off">
-                        <label class="btn btn-outline-success" for="freno_mano_seguridad_ok">C</label>
-                        <input type="radio" class="btn-check" name="freno_mano_seguridad" id="freno_mano_seguridad_neg"
-                          [value]="'negativo'" formControlName="freno_mano_seguridad" autocomplete="off">
-                        <label class="btn btn-outline-danger" for="freno_mano_seguridad_neg">N/C</label>
-                        <input type="radio" class="btn-check" name="freno_mano_seguridad" id="freno_mano_seguridad_na"
-                          [value]="'na'" formControlName="freno_mano_seguridad" autocomplete="off">
-                        <label class="btn btn-outline-secondary" for="freno_mano_seguridad_na">N/A</label>
-                      </div>
-                    </div>
+                
                   </div>
                 </div>
 
@@ -1384,7 +1371,7 @@
                   </div>
                 </div>
                 <div class="tab-pane fade" id="frenos" role="tabpanel" aria-labelledby="frenos-tabPillsFill">
-                   <div class="col-lg-6 mb-3">
+                   <!-- <div class="col-lg-6 mb-3">
                       <label class="form-label">Freno de seguridad de mano (parqueo)</label>
                       <div class="btn-group w-100" role="group">
                         <input type="radio" class="btn-check" name="freno_mano" id="freno_mano_ok" [value]="'ok'"
@@ -1396,6 +1383,20 @@
                         <input type="radio" class="btn-check" name="freno_mano" id="freno_mano_na" [value]="'na'"
                           formControlName="freno_mano" autocomplete="off">
                         <label class="btn btn-outline-secondary" for="freno_mano_na">N/A</label>
+                      </div>
+                    </div> -->
+                        <div class="col-lg-6 mb-3">
+                      <label class="form-label">Freno de seguridad de mano (parqueo)</label>
+                      <div class="btn-group w-100" role="group">
+                        <input type="radio" class="btn-check" name="freno_mano_seguridad" id="freno_mano_seguridad_ok"
+                          [value]="'ok'" formControlName="freno_mano_seguridad" autocomplete="off">
+                        <label class="btn btn-outline-success" for="freno_mano_seguridad_ok">C</label>
+                        <input type="radio" class="btn-check" name="freno_mano_seguridad" id="freno_mano_seguridad_neg"
+                          [value]="'negativo'" formControlName="freno_mano_seguridad" autocomplete="off">
+                        <label class="btn btn-outline-danger" for="freno_mano_seguridad_neg">N/C</label>
+                        <input type="radio" class="btn-check" name="freno_mano_seguridad" id="freno_mano_seguridad_na"
+                          [value]="'na'" formControlName="freno_mano_seguridad" autocomplete="off">
+                        <label class="btn btn-outline-secondary" for="freno_mano_seguridad_na">N/A</label>
                       </div>
                     </div>
                   
@@ -1458,8 +1459,7 @@
                       <label class="btn btn-outline-secondary" for="hidraulico_direccion_na">N/A</label>
                     </div>
                   </div>
-                </div>
-                <div class="col-lg-6 mb-3">
+                    <div class="col-lg-6 mb-3">
                       <label class="form-label">Columna de dirección</label>
                       <div class="btn-group w-100" role="group">
                         <input type="radio" class="btn-check" name="columna_direccion" id="columna_direccion_ok"
@@ -1473,6 +1473,8 @@
                         <label class="btn btn-outline-secondary" for="columna_direccion_na">N/A</label>
                       </div>
                     </div>
+                </div>
+              
               </div>
 
             </div>
