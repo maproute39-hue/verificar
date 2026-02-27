@@ -9,20 +9,19 @@
             <a routerLink="/inspections" style="cursor: pointer;">
               <i class="fi fi-rr-home"></i>
               <span class="inactive">Inspecciones</span>
-               
+
             </a>
           </li>
           <li class="breadcrumb-item active2" aria-current="page">Detalle de inspeccion
-    {{ inspectionForm.value.numero_certificado | titlecase }}
+            {{ inspectionForm.value.numero_certificado | titlecase }}
 
-             <span class="badge" 
-        [ngClass]="{
+            <span class="badge" [ngClass]="{
           'bg-success': inspectionForm.value.estado === 'aprobada',
           'bg-warning': inspectionForm.value.estado === 'borrador',
           'bg-danger': inspectionForm.value.estado === 'rechazada'
         }">
-    {{ inspectionForm.value.estado | titlecase }}
-  </span>
+              {{ inspectionForm.value.estado | titlecase }}
+            </span>
           </li>
         </ol>
       </nav>
@@ -263,14 +262,18 @@
               <div class="nav flex-column nav-pills border-end " style="padding-right: 2px;" id="v-pills-tab"
                 role="tablist" aria-orientation="vertical">
                 <button class="nav-link active" id="v-pills-home-tab" data-bs-toggle="pill" data-bs-target="#electrico"
-                  type="button" role="tab" aria-controls="electrico" aria-selected="true" style="border: 1px solid #02376b;">SISTEMA ELÉCTRICO</button>
+                  type="button" role="tab" aria-controls="electrico" aria-selected="true"
+                  style="border: 1px solid #02376b;">SISTEMA ELÉCTRICO</button>
                 <button class="nav-link" id="v-pills-profile-tab" data-bs-toggle="pill" data-bs-target="#motor"
-                  type="button" role="tab" aria-controls="motor" aria-selected="false" style="border: 1px solid #02376b;">SISTEMA DE MOTOR</button>
+                  type="button" role="tab" aria-controls="motor" aria-selected="false"
+                  style="border: 1px solid #02376b;">SISTEMA DE MOTOR</button>
                 <button class="nav-link" id="v-pills-disabled-tab" data-bs-toggle="pill" data-bs-target="#carroceria"
-                  type="button" role="tab" aria-controls="carroceria" aria-selected="false" style="border: 1px solid #02376b;">CARROCERÍA / PARTE
+                  type="button" role="tab" aria-controls="carroceria" aria-selected="false"
+                  style="border: 1px solid #02376b;">CARROCERÍA / PARTE
                   EXTERNA</button>
                 <button class="nav-link" id="v-pills-messages-tab" data-bs-toggle="pill" data-bs-target="#cabina"
-                  type="button" role="tab" aria-controls="cabina" aria-selected="false" style="border: 1px solid #02376b;">CABINA Y MANDOS / PARTE
+                  type="button" role="tab" aria-controls="cabina" aria-selected="false"
+                  style="border: 1px solid #02376b;">CABINA Y MANDOS / PARTE
                   INTERNA</button>
                 <button class="nav-link" id="v-pills-settings-tab" data-bs-toggle="pill"
                   data-bs-target="#seguridadActiva" type="button" role="tab" aria-controls="seguridadActiva"
@@ -279,24 +282,27 @@
                   data-bs-target="#seguridadPasiva" type="button" role="tab" aria-controls="seguridadPasiva"
                   aria-selected="false" style="border: 1px solid #02376b;">SISTEMA DE SEGURIDAD PASIVA</button>
                 <button class="nav-link" id="v-pills-settings-tab3" data-bs-toggle="pill" data-bs-target="#kit"
-                  type="button" role="tab" aria-controls="kit" aria-selected="false" style="border: 1px solid #02376b;">KIT DE CARRETERA</button>
+                  type="button" role="tab" aria-controls="kit" aria-selected="false"
+                  style="border: 1px solid #02376b;">KIT DE CARRETERA</button>
                 <button class="nav-link" id="v-pills-settings-tab4" data-bs-toggle="pill" data-bs-target="#parteBaja"
-                  type="button" role="tab" aria-controls="parteBaja" aria-selected="false" style="border: 1px solid #02376b;">PARTE BAJA</button>
+                  type="button" role="tab" aria-controls="parteBaja" aria-selected="false"
+                  style="border: 1px solid #02376b;">PARTE BAJA</button>
                 <button class="nav-link" id="v-pills-settings-tab5" data-bs-toggle="pill" data-bs-target="#profundidad"
-                  type="button" role="tab" aria-controls="profundidad" aria-selected="false" style="border: 1px solid #02376b;">PROFUNDIDAD DE
+                  type="button" role="tab" aria-controls="profundidad" aria-selected="false"
+                  style="border: 1px solid #02376b;">PROFUNDIDAD DE
                   <br />
                   LABRADO DE LLANTAS</button>
-                   <button class="nav-link " id="v-pills-settings-tab5" data-bs-toggle="pill" data-bs-target="#presion"
-                      type="button" role="tab" aria-controls="presion" aria-selected="false"
-                      style="border: 1px solid #02376b;">PRESION DE AIRE DE LLANTAS</button>
-                          <button class="nav-link " id="v-pills-settings-tab5" data-bs-toggle="pill" data-bs-target="#frenos"
-                      type="button" role="tab" aria-controls="frenos" aria-selected="false"
-                      style="border: 1px solid #02376b;">SISTEMA DE FRENOS
-                    </button>
-                     <button class="nav-link " id="v-pills-settings-tab5" data-bs-toggle="pill" data-bs-target="#direccion"
-                      type="button" role="tab" aria-controls="direccion" aria-selected="false"
-                      style="border: 1px solid #02376b;">SISTEMA DE DIRECCIÓN
-                    </button>
+                <button class="nav-link " id="v-pills-settings-tab5" data-bs-toggle="pill" data-bs-target="#presion"
+                  type="button" role="tab" aria-controls="presion" aria-selected="false"
+                  style="border: 1px solid #02376b;">PRESION DE AIRE DE LLANTAS</button>
+                <button class="nav-link " id="v-pills-settings-tab5" data-bs-toggle="pill" data-bs-target="#frenos"
+                  type="button" role="tab" aria-controls="frenos" aria-selected="false"
+                  style="border: 1px solid #02376b;">SISTEMA DE FRENOS
+                </button>
+                <button class="nav-link " id="v-pills-settings-tab5" data-bs-toggle="pill" data-bs-target="#direccion"
+                  type="button" role="tab" aria-controls="direccion" aria-selected="false"
+                  style="border: 1px solid #02376b;">SISTEMA DE DIRECCIÓN
+                </button>
               </div>
 
               <div class="tab-content">
@@ -535,7 +541,7 @@
                       </div>
                     </div>
 
-                    <div class="col-lg-6 mb-3">
+                    <!-- <div class="col-lg-6 mb-3">
                       <label class="form-label">Nivel de líquido de frenos</label>
                       <div class="btn-group w-100" role="group">
                         <input type="radio" class="btn-check" name="liquido_frenos" id="liquido_frenos_ok"
@@ -548,7 +554,7 @@
                           [value]="'na'" formControlName="liquido_frenos" autocomplete="off">
                         <label class="btn btn-outline-secondary" for="liquido_frenos_na">N/A</label>
                       </div>
-                    </div>
+                    </div> -->
 
                     <div class="col-lg-6 mb-3">
                       <label class="form-label">Filtro de Aire</label>
@@ -565,20 +571,7 @@
                       </div>
                     </div>
 
-                    <div class="col-lg-6 mb-3">
-                      <label class="form-label">Nivel hidráulico dirección</label>
-                      <div class="btn-group w-100" role="group">
-                        <input type="radio" class="btn-check" name="hidraulico_direccion" id="hidraulico_direccion_ok"
-                          [value]="'ok'" formControlName="hidraulico_direccion" autocomplete="off">
-                        <label class="btn btn-outline-success" for="hidraulico_direccion_ok">C</label>
-                        <input type="radio" class="btn-check" name="hidraulico_direccion" id="hidraulico_direccion_neg"
-                          [value]="'negativo'" formControlName="hidraulico_direccion" autocomplete="off">
-                        <label class="btn btn-outline-danger" for="hidraulico_direccion_neg">N/C</label>
-                        <input type="radio" class="btn-check" name="hidraulico_direccion" id="hidraulico_direccion_na"
-                          [value]="'na'" formControlName="hidraulico_direccion" autocomplete="off">
-                        <label class="btn btn-outline-secondary" for="hidraulico_direccion_na">N/A</label>
-                      </div>
-                    </div>
+
 
                     <div class="col-lg-6 mb-3">
                       <label class="form-label">Tensión y estado de correas</label>
@@ -803,20 +796,7 @@
                       </div>
                     </div>
 
-                    <div class="col-lg-6 mb-3">
-                      <label class="form-label">Freno de seguridad de mano (parqueo)</label>
-                      <div class="btn-group w-100" role="group">
-                        <input type="radio" class="btn-check" name="freno_mano" id="freno_mano_ok" [value]="'ok'"
-                          formControlName="freno_mano" autocomplete="off">
-                        <label class="btn btn-outline-success" for="freno_mano_ok">C</label>
-                        <input type="radio" class="btn-check" name="freno_mano" id="freno_mano_neg" [value]="'negativo'"
-                          formControlName="freno_mano" autocomplete="off">
-                        <label class="btn btn-outline-danger" for="freno_mano_neg">N/C</label>
-                        <input type="radio" class="btn-check" name="freno_mano" id="freno_mano_na" [value]="'na'"
-                          formControlName="freno_mano" autocomplete="off">
-                        <label class="btn btn-outline-secondary" for="freno_mano_na">N/A</label>
-                      </div>
-                    </div>
+                   
 
                     <div class="col-lg-6 mb-3">
                       <label class="form-label">Tablero de instrumentos</label>
@@ -981,20 +961,7 @@
                       </div>
                     </div>
 
-                    <div class="col-lg-6 mb-3">
-                      <label class="form-label">Columna de dirección</label>
-                      <div class="btn-group w-100" role="group">
-                        <input type="radio" class="btn-check" name="columna_direccion" id="columna_direccion_ok"
-                          [value]="'ok'" formControlName="columna_direccion" autocomplete="off">
-                        <label class="btn btn-outline-success" for="columna_direccion_ok">C</label>
-                        <input type="radio" class="btn-check" name="columna_direccion" id="columna_direccion_neg"
-                          [value]="'negativo'" formControlName="columna_direccion" autocomplete="off">
-                        <label class="btn btn-outline-danger" for="columna_direccion_neg">N/C</label>
-                        <input type="radio" class="btn-check" name="columna_direccion" id="columna_direccion_na"
-                          [value]="'na'" formControlName="columna_direccion" autocomplete="off">
-                        <label class="btn btn-outline-secondary" for="columna_direccion_na">N/A</label>
-                      </div>
-                    </div>
+                    
 
                     <div class="col-lg-6 mb-3">
                       <label class="form-label">Apoyacabezas (todas las sillas)</label>
@@ -1323,97 +1290,187 @@
                     </div>
                   </div>
                 </div> -->
-                   <div class="tab-pane fade" id="profundidad" role="tabpanel"
-                      aria-labelledby="profundidad-tabPillsFill" tabindex="0">
-                      <div class="row">
-                        <!-- Llanta Delantera Izquierda - FALTABA -->
-                        <div class="col-lg-6 mb-3">
-                          <label class="form-label">Llanta DI / Ej: 2,3 mm</label>
-                          <input type="number" class="form-control" inputmode="decimal" pattern="[0-9,.]*"
-                            placeholder="0" formControlName="llanta_di">
-                        </div>
-
-                        <!-- Llanta Delantera Derecha -->
-                        <div class="col-lg-6 mb-3">
-                          <label class="form-label">Llanta DD / Ej: 2,5 mm</label>
-                          <input type="number" class="form-control" inputmode="decimal" pattern="[0-9,.]*"
-                            placeholder="0" formControlName="llanta_dd">
-                        </div>
-
-                        <!-- Llanta Trasera Izquierda Exterior -->
-                        <div class="col-lg-6 mb-3">
-                          <label class="form-label">Llanta TIE / Ej: 3,4 mm</label>
-                          <input type="number" class="form-control" inputmode="decimal" pattern="[0-9,.]*"
-                            placeholder="0" formControlName="llanta_tie">
-                        </div>
-
-                        <!-- Llanta Trasera Derecha Exterior - FALTABA -->
-                        <div class="col-lg-6 mb-3">
-                          <label class="form-label">Llanta TDE / Ej: 3,2 mm</label>
-                          <input type="number" class="form-control" inputmode="decimal" pattern="[0-9,.]*"
-                            placeholder="0" formControlName="llanta_tde">
-                        </div>
-
-                        <!-- Llanta Trasera Izquierda Interior -->
-                        <div class="col-lg-6 mb-3">
-                          <label class="form-label">Llanta TII / Ej: 2,8 mm</label>
-                          <input type="number" class="form-control" inputmode="decimal" pattern="[0-9,.]*"
-                            placeholder="0" formControlName="llanta_tii">
-                        </div>
-
-                        <!-- Llanta Trasera Derecha Interior -->
-                        <div class="col-lg-6 mb-3">
-                          <label class="form-label">Llanta TDI / Ej: 3,1 mm</label>
-                          <input type="number" class="form-control" inputmode="decimal" pattern="[0-9,.]*"
-                            placeholder="0" formControlName="llanta_tdi">
-                        </div>
-                      </div>
+                <div class="tab-pane fade" id="profundidad" role="tabpanel" aria-labelledby="profundidad-tabPillsFill"
+                  tabindex="0">
+                  <div class="row">
+                    <!-- Llanta Delantera Izquierda - FALTABA -->
+                    <div class="col-lg-6 mb-3">
+                      <label class="form-label">Llanta DI / Ej: 2,3 mm</label>
+                      <input type="number" class="form-control" inputmode="decimal" pattern="[0-9,.]*" placeholder="0"
+                        formControlName="llanta_di">
                     </div>
 
-                    <div class="tab-pane fade" id="presion" role="tabpanel" aria-labelledby="presion-tabPillsFill"
-                      tabindex="0">
-                      <div class="row">
-                        <!-- Llanta Delantera Izquierda -->
-                        <div class="col-lg-6 mb-3">
-                          <label class="form-label">Llanta D LI / Ej: 32 PSI</label>
-                          <input type="number" class="form-control" inputmode="decimal" pattern="[0-9,.]*"
-                            placeholder="0" formControlName="presion_llanta_d_li">
-                        </div>
+                    <!-- Llanta Delantera Derecha -->
+                    <div class="col-lg-6 mb-3">
+                      <label class="form-label">Llanta DD / Ej: 2,5 mm</label>
+                      <input type="number" class="form-control" inputmode="decimal" pattern="[0-9,.]*" placeholder="0"
+                        formControlName="llanta_dd">
+                    </div>
 
-                        <!-- Llanta Delantera Derecha -->
-                        <div class="col-lg-6 mb-3">
-                          <label class="form-label">Llanta D LD / Ej: 32 PSI</label>
-                          <input type="number" class="form-control" inputmode="decimal" pattern="[0-9,.]*"
-                            placeholder="0" formControlName="presion_llanta_d_ld">
-                        </div>
+                    <!-- Llanta Trasera Izquierda Exterior -->
+                    <div class="col-lg-6 mb-3">
+                      <label class="form-label">Llanta TIE / Ej: 3,4 mm</label>
+                      <input type="number" class="form-control" inputmode="decimal" pattern="[0-9,.]*" placeholder="0"
+                        formControlName="llanta_tie">
+                    </div>
 
-                        <!-- Llanta Trasera Izquierda Exterior -->
-                        <div class="col-lg-6 mb-3">
-                          <label class="form-label">Llanta T LIE / Ej: 35 PSI</label>
-                          <input type="number" class="form-control" inputmode="decimal" pattern="[0-9,.]*"
-                            placeholder="0" formControlName="presion_llanta_t_lie">
-                        </div>
+                    <!-- Llanta Trasera Derecha Exterior - FALTABA -->
+                    <div class="col-lg-6 mb-3">
+                      <label class="form-label">Llanta TDE / Ej: 3,2 mm</label>
+                      <input type="number" class="form-control" inputmode="decimal" pattern="[0-9,.]*" placeholder="0"
+                        formControlName="llanta_tde">
+                    </div>
 
-                        <!-- Llanta Trasera Derecha Exterior -->
-                        <div class="col-lg-6 mb-3">
-                          <label class="form-label">Llanta T LDE / Ej: 35 PSI</label>
-                          <input type="number" class="form-control" inputmode="decimal" pattern="[0-9,.]*"
-                            placeholder="0" formControlName="presion_llanta_t_lde">
-                        </div>
+                    <!-- Llanta Trasera Izquierda Interior -->
+                    <div class="col-lg-6 mb-3">
+                      <label class="form-label">Llanta TII / Ej: 2,8 mm</label>
+                      <input type="number" class="form-control" inputmode="decimal" pattern="[0-9,.]*" placeholder="0"
+                        formControlName="llanta_tii">
+                    </div>
 
-                        <!-- Llanta Trasera Izquierda Interior -->
-                        <div class="col-lg-6 mb-3">
-                          <label class="form-label">Llanta T LII / Ej: 35 PSI</label>
-                          <input type="number" class="form-control" inputmode="decimal" pattern="[0-9,.]*"
-                            placeholder="0" formControlName="presion_llanta_t_lii">
-                        </div>
+                    <!-- Llanta Trasera Derecha Interior -->
+                    <div class="col-lg-6 mb-3">
+                      <label class="form-label">Llanta TDI / Ej: 3,1 mm</label>
+                      <input type="number" class="form-control" inputmode="decimal" pattern="[0-9,.]*" placeholder="0"
+                        formControlName="llanta_tdi">
+                    </div>
+                  </div>
+                </div>
 
-                        <!-- Llanta Trasera Derecha Interior -->
-                        <div class="col-lg-6 mb-3">
-                          <label class="form-label">Llanta T LDI / Ej: 35 PSI</label>
-                          <input type="number" class="form-control" inputmode="decimal" pattern="[0-9,.]*"
-                            placeholder="0" formControlName="presion_llanta_t_ldi">
-                        </div>
+                <div class="tab-pane fade" id="presion" role="tabpanel" aria-labelledby="presion-tabPillsFill"
+                  tabindex="0">
+                  <div class="row">
+                    <!-- Llanta Delantera Izquierda -->
+                    <div class="col-lg-6 mb-3">
+                      <label class="form-label">Llanta D LI / Ej: 32 PSI</label>
+                      <input type="number" class="form-control" inputmode="decimal" pattern="[0-9,.]*" placeholder="0"
+                        formControlName="presion_llanta_d_li">
+                    </div>
+
+                    <!-- Llanta Delantera Derecha -->
+                    <div class="col-lg-6 mb-3">
+                      <label class="form-label">Llanta D LD / Ej: 32 PSI</label>
+                      <input type="number" class="form-control" inputmode="decimal" pattern="[0-9,.]*" placeholder="0"
+                        formControlName="presion_llanta_d_ld">
+                    </div>
+
+                    <!-- Llanta Trasera Izquierda Exterior -->
+                    <div class="col-lg-6 mb-3">
+                      <label class="form-label">Llanta T LIE / Ej: 35 PSI</label>
+                      <input type="number" class="form-control" inputmode="decimal" pattern="[0-9,.]*" placeholder="0"
+                        formControlName="presion_llanta_t_lie">
+                    </div>
+
+                    <!-- Llanta Trasera Derecha Exterior -->
+                    <div class="col-lg-6 mb-3">
+                      <label class="form-label">Llanta T LDE / Ej: 35 PSI</label>
+                      <input type="number" class="form-control" inputmode="decimal" pattern="[0-9,.]*" placeholder="0"
+                        formControlName="presion_llanta_t_lde">
+                    </div>
+
+                    <!-- Llanta Trasera Izquierda Interior -->
+                    <div class="col-lg-6 mb-3">
+                      <label class="form-label">Llanta T LII / Ej: 35 PSI</label>
+                      <input type="number" class="form-control" inputmode="decimal" pattern="[0-9,.]*" placeholder="0"
+                        formControlName="presion_llanta_t_lii">
+                    </div>
+
+                    <!-- Llanta Trasera Derecha Interior -->
+                    <div class="col-lg-6 mb-3">
+                      <label class="form-label">Llanta T LDI / Ej: 35 PSI</label>
+                      <input type="number" class="form-control" inputmode="decimal" pattern="[0-9,.]*" placeholder="0"
+                        formControlName="presion_llanta_t_ldi">
+                    </div>
+                  </div>
+                </div>
+                <div class="tab-pane fade" id="frenos" role="tabpanel" aria-labelledby="frenos-tabPillsFill">
+                   <div class="col-lg-6 mb-3">
+                      <label class="form-label">Freno de seguridad de mano (parqueo)</label>
+                      <div class="btn-group w-100" role="group">
+                        <input type="radio" class="btn-check" name="freno_mano" id="freno_mano_ok" [value]="'ok'"
+                          formControlName="freno_mano" autocomplete="off">
+                        <label class="btn btn-outline-success" for="freno_mano_ok">C</label>
+                        <input type="radio" class="btn-check" name="freno_mano" id="freno_mano_neg" [value]="'negativo'"
+                          formControlName="freno_mano" autocomplete="off">
+                        <label class="btn btn-outline-danger" for="freno_mano_neg">N/C</label>
+                        <input type="radio" class="btn-check" name="freno_mano" id="freno_mano_na" [value]="'na'"
+                          formControlName="freno_mano" autocomplete="off">
+                        <label class="btn btn-outline-secondary" for="freno_mano_na">N/A</label>
+                      </div>
+                    </div>
+                  
+                  <div class="col-lg-6 mb-3">
+                    <label class="form-label">Nivel de líquido de frenos</label>
+                    <div class="btn-group w-100" role="group">
+                      <input type="radio" class="btn-check" name="liquido_frenos" id="liquido_frenos_ok" [value]="'ok'"
+                        formControlName="liquido_frenos" autocomplete="off">
+                      <label class="btn btn-outline-success" for="liquido_frenos_ok">C</label>
+                      <input type="radio" class="btn-check" name="liquido_frenos" id="liquido_frenos_neg"
+                        [value]="'negativo'" formControlName="liquido_frenos" autocomplete="off">
+                      <label class="btn btn-outline-danger" for="liquido_frenos_neg">N/C</label>
+                      <input type="radio" class="btn-check" name="liquido_frenos" id="liquido_frenos_na" [value]="'na'"
+                        formControlName="liquido_frenos" autocomplete="off">
+                      <label class="btn btn-outline-secondary" for="liquido_frenos_na">N/A</label>
+                    </div>
+                  </div>
+                  <div class="col-lg-6 mb-3">
+                    <label class="form-label">Pedal de frenos</label>
+                    <div class="btn-group w-100" role="group">
+                      <input type="radio" class="btn-check" name="pedal_frenos" id="pedal_frenos_ok" [value]="'ok'"
+                        formControlName="pedal_frenos" autocomplete="off">
+                      <label class="btn btn-outline-success" for="pedal_frenos_ok">C</label>
+                      <input type="radio" class="btn-check" name="pedal_frenos" id="pedal_frenos_neg"
+                        [value]="'negativo'" formControlName="pedal_frenos" autocomplete="off">
+                      <label class="btn btn-outline-danger" for="pedal_frenos_neg">N/C</label>
+                      <input type="radio" class="btn-check" name="pedal_frenos" id="pedal_frenos_na" [value]="'na'"
+                        formControlName="pedal_frenos" autocomplete="off">
+                      <label class="btn btn-outline-secondary" for="pedal_frenos_na">N/A</label>
+                    </div>
+                  </div>
+                  <div class="col-lg-6 mb-3">
+                    <label class="form-label">Pedal de frenos</label>
+                    <div class="btn-group w-100" role="group">
+                      <input type="radio" class="btn-check" name="bomba_frenos" id="bomba_frenos_ok" [value]="'ok'"
+                        formControlName="bomba_frenos" autocomplete="off">
+                      <label class="btn btn-outline-success" for="bomba_frenos_ok">C</label>
+                      <input type="radio" class="btn-check" name="bomba_frenos" id="bomba_frenos_neg"
+                        [value]="'negativo'" formControlName="bomba_frenos" autocomplete="off">
+                      <label class="btn btn-outline-danger" for="bomba_frenos_neg">N/C</label>
+                      <input type="radio" class="btn-check" name="bomba_frenos" id="bomba_frenos_na" [value]="'na'"
+                        formControlName="bomba_frenos" autocomplete="off">
+                      <label class="btn btn-outline-secondary" for="bomba_frenos_na">N/A</label>
+                    </div>
+                  </div>
+
+                </div>
+                <div class="tab-pane fade" id="direccion" role="tabpanel" aria-labelledby="direccion-tabPillsFill">
+                  <div class="col-lg-6 mb-3">
+                    <label class="form-label">Nivel hidráulico dirección</label>
+                    <div class="btn-group w-100" role="group">
+                      <input type="radio" class="btn-check" name="hidraulico_direccion" id="hidraulico_direccion_ok"
+                        [value]="'ok'" formControlName="hidraulico_direccion" autocomplete="off">
+                      <label class="btn btn-outline-success" for="hidraulico_direccion_ok">C</label>
+                      <input type="radio" class="btn-check" name="hidraulico_direccion" id="hidraulico_direccion_neg"
+                        [value]="'negativo'" formControlName="hidraulico_direccion" autocomplete="off">
+                      <label class="btn btn-outline-danger" for="hidraulico_direccion_neg">N/C</label>
+                      <input type="radio" class="btn-check" name="hidraulico_direccion" id="hidraulico_direccion_na"
+                        [value]="'na'" formControlName="hidraulico_direccion" autocomplete="off">
+                      <label class="btn btn-outline-secondary" for="hidraulico_direccion_na">N/A</label>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-6 mb-3">
+                      <label class="form-label">Columna de dirección</label>
+                      <div class="btn-group w-100" role="group">
+                        <input type="radio" class="btn-check" name="columna_direccion" id="columna_direccion_ok"
+                          [value]="'ok'" formControlName="columna_direccion" autocomplete="off">
+                        <label class="btn btn-outline-success" for="columna_direccion_ok">C</label>
+                        <input type="radio" class="btn-check" name="columna_direccion" id="columna_direccion_neg"
+                          [value]="'negativo'" formControlName="columna_direccion" autocomplete="off">
+                        <label class="btn btn-outline-danger" for="columna_direccion_neg">N/C</label>
+                        <input type="radio" class="btn-check" name="columna_direccion" id="columna_direccion_na"
+                          [value]="'na'" formControlName="columna_direccion" autocomplete="off">
+                        <label class="btn btn-outline-secondary" for="columna_direccion_na">N/A</label>
                       </div>
                     </div>
               </div>
@@ -1483,7 +1540,7 @@
       </button>
     </div> -->
   </div>
-   <div class="floating-action " *ngIf="!hasChanges">
+  <div class="floating-action " *ngIf="!hasChanges">
     <input type="checkbox" id="fab-check" class="fab-check">
     <label class="fab" for="fab-check">
       <span class="fab-icon">
@@ -1500,14 +1557,16 @@
         <span class="fab-label ">Generar a partir de esta</span>
         <i class="fab-option-icon fi fi-rs-refresh"></i>
       </a> -->
-      <a style="cursor:pointer;" (click)="imprimirInspeccion()"  class="fab-option"  [hidden]="inspectionForm.value.estado === 'borrador'">
+      <a style="cursor:pointer;" (click)="imprimirInspeccion()" class="fab-option"
+        [hidden]="inspectionForm.value.estado === 'borrador'">
         <span class="fab-label">Exportar a PDF</span>
         <i class="fab-option-icon fi fi-rs-download"></i>
       </a>
-       <a  style="cursor:pointer;" (click)="imprimirInspeccion()"  class="fab-option"  [hidden]="inspectionForm.value.estado !== 'borrador'">
-       <span class="fab-label">Exportar a PDF</span>
+      <a style="cursor:pointer;" (click)="imprimirInspeccion()" class="fab-option"
+        [hidden]="inspectionForm.value.estado !== 'borrador'">
+        <span class="fab-label">Exportar a PDF</span>
         <i class="fab-option-icon fi fi-rs-download"></i>
-   <!-- <i class="fab-option-icon fi fi-rs-info"></i>  -->
+        <!-- <i class="fab-option-icon fi fi-rs-info"></i>  -->
       </a>
       <!-- <a (click)="pending()" class="fab-option">
         <span class="fab-label text-warning">Pesados</span>
@@ -1515,7 +1574,7 @@
       </a> -->
     </div>
   </div>
-<!-- Indicador de estado pendiente (dentro del botón flotante o cerca) -->
+  <!-- Indicador de estado pendiente (dentro del botón flotante o cerca) -->
 
   <style>
     .floating-action {
@@ -1624,26 +1683,20 @@
       color: white;
       font-weight: bold;
     }
-
-   
   </style>
   <div class="floating-save-container" *ngIf="hasChanges">
-  <button 
-    type="button" 
-    class="btn btn-primary btn-save-floating shadow-lg" 
-    (click)="saveChanges()">
-    <div class="status-preview" *ngIf="hasChanges">
-  <span class="badge" 
-        [ngClass]="{
+    <button type="button" class="btn btn-primary btn-save-floating shadow-lg" (click)="saveChanges()">
+      <div class="status-preview" *ngIf="hasChanges">
+        <span class="badge" [ngClass]="{
           'bg-success': previsualizarEstado() === 'aprobada',
           'bg-warning': previsualizarEstado() === 'borrador',
           'bg-danger': previsualizarEstado() === 'rechazada'
         }">
-    {{ previsualizarEstado() | titlecase }}
-  </span>
-</div>
-    <i class="fas fa-save me-2"></i>Guardar Cambios
-  </button>
-  
-</div>
+          {{ previsualizarEstado() | titlecase }}
+        </span>
+      </div>
+      <i class="fas fa-save me-2"></i>Guardar Cambios
+    </button>
+
+  </div>
 </main>

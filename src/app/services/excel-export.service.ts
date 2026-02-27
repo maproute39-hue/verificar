@@ -507,11 +507,15 @@ export class ExcelExportService {
     // Ejemplo: fechas, observaciones, etc.
     // this.setCell(worksheet, 'A1', formData.observaciones_imagenes);
 
-
+    this.marcarRadio(worksheet, 'H9', 'J9', 'L9', formData.freno_mano_seguridad);
     this.marcarRadio(worksheet, 'H11', 'J11', 'L11', formData.liquido_frenos);
+    this.marcarRadio(worksheet, 'H13', 'J13', 'L13', formData.pedal_frenos);
+    this.marcarRadio(worksheet, 'H15', 'J15', 'L15', formData.bomba_frenos);
+
+
+
     this.marcarRadio(worksheet, 'W19', 'Y19', 'AA19', formData.hidraulico_direccion);
     this.marcarRadio(worksheet, 'W17', 'Y17', 'AA17', formData.columna_direccion);
-    this.marcarRadio(worksheet, 'H9', 'J9', 'L9', formData.freno_mano_seguridad);
 
 
 

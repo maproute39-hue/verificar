@@ -225,7 +225,7 @@
                   Este campo es requerido
                 </div>
               </div>
-            <!-- <div class="col-lg-4 mb-3">
+              <!-- <div class="col-lg-4 mb-3">
                 <label class="form-label">Teléfono <span class="text-danger">*</span></label>
                 <div [formGroup]="phoneForm">
                   <div class="input-group">
@@ -243,33 +243,34 @@
                     </div>
                   </div>
                 </div>
-              </div>   --><div class="col-lg-4 mb-3">
-  <label class="form-label">Teléfono <span class="text-danger">*</span></label>
-  <div [formGroup]="phoneForm">
-    <div class="input-group mb-2">
-      <span class="input-group-text">+57</span>
-      <input type="tel" class="form-control" formControlName="localNumber" placeholder="3001234567"
-        maxlength="10" />
-    </div>
-    
-    <div class="form-check form-switch mb-2">
-      <input class="form-check-input" type="checkbox" id="whatsappCheck" formControlName="whatsapp">
-      <label class="form-check-label" for="whatsappCheck">
-        <i class="fab fa-whatsapp me-1 text-success"></i> ¿Es número de WhatsApp?
-      </label>
-    </div>
-    
-    <div *ngIf="phoneForm.get('localNumber')?.errors && phoneForm.get('localNumber')?.touched"
-      class="text-danger small">
-      <div *ngIf="phoneForm.get('localNumber')?.hasError('required')">
-        El número de teléfono es obligatorio.
-      </div>
-      <div *ngIf="phoneForm.get('localNumber')?.hasError('pattern')">
-        Ingrese 10 dígitos válidos (ej: 3001234567).
-      </div>
-    </div>
-  </div>
-</div>
+              </div>   -->
+              <div class="col-lg-4 mb-3">
+                <label class="form-label">Teléfono <span class="text-danger">*</span></label>
+                <div [formGroup]="phoneForm">
+                  <div class="input-group mb-2">
+                    <span class="input-group-text">+57</span>
+                    <input type="tel" class="form-control" formControlName="localNumber" placeholder="3001234567"
+                      maxlength="10" />
+                  </div>
+
+                  <div class="form-check form-switch mb-2">
+                    <input class="form-check-input" type="checkbox" id="whatsappCheck" formControlName="whatsapp">
+                    <label class="form-check-label" for="whatsappCheck">
+                      <i class="fab fa-whatsapp me-1 text-success"></i> ¿Es número de WhatsApp?
+                    </label>
+                  </div>
+
+                  <div *ngIf="phoneForm.get('localNumber')?.errors && phoneForm.get('localNumber')?.touched"
+                    class="text-danger small">
+                    <div *ngIf="phoneForm.get('localNumber')?.hasError('required')">
+                      El número de teléfono es obligatorio.
+                    </div>
+                    <div *ngIf="phoneForm.get('localNumber')?.hasError('pattern')">
+                      Ingrese 10 dígitos válidos (ej: 3001234567).
+                    </div>
+                  </div>
+                </div>
+              </div>
               <div class="col-lg-4 mb-3">
                 <label class="form-label">V / Licencia conducción <span class="text-danger">*</span></label>
                 <input #fechaLicencia type="text" class="form-control date-picker"
@@ -297,7 +298,7 @@
             <div class="row">
               <div class="col-lg-3 mb-3">
                 <label class="form-label">Placa <span class="text-danger">*</span></label>
-                <input type="text" formControlName="placa" class="form-control text-uppercase" 
+                <input type="text" formControlName="placa" class="form-control text-uppercase"
                   placeholder="PLACA DEL VEHÍCULO"
                   (input)="inspectionForm.get('placa')?.setValue($any($event.target).value.toUpperCase(), {emitEvent: false})">
                 <div *ngIf="inspectionForm.get('placa')?.touched && inspectionForm.get('placa')?.errors?.['required']"
@@ -307,8 +308,7 @@
               </div>
               <div class="col-lg-3 mb-3">
                 <label class="form-label">Marca <span class="text-danger">*</span></label>
-                <input type="text" formControlName="marca" class="form-control text-uppercase" 
-                  placeholder="MARCA"
+                <input type="text" formControlName="marca" class="form-control text-uppercase" placeholder="MARCA"
                   (input)="inspectionForm.get('marca')?.setValue($any($event.target).value.toUpperCase(), {emitEvent: false})">
                 <div *ngIf="inspectionForm.get('marca')?.touched && inspectionForm.get('marca')?.errors?.['required']"
                   class="text-danger small">
@@ -317,8 +317,7 @@
               </div>
               <div class="col-lg-3 mb-3">
                 <label class="form-label">Modelo <span class="text-danger">*</span></label>
-                <input type="text" formControlName="modelo" class="form-control text-uppercase" 
-                  placeholder="MODELO"
+                <input type="text" formControlName="modelo" class="form-control text-uppercase" placeholder="MODELO"
                   (input)="inspectionForm.get('modelo')?.setValue($any($event.target).value.toUpperCase(), {emitEvent: false})">
                 <div *ngIf="inspectionForm.get('modelo')?.touched && inspectionForm.get('modelo')?.errors?.['required']"
                   class="text-danger small">
@@ -462,15 +461,15 @@
                       type="button" role="tab" aria-controls="presion" aria-selected="false"
                       style="border: 1px solid #02376b;">PRESION DE AIRE DE LLANTAS
                     </button>
-                     <button class="nav-link " id="v-pills-settings-tab5" data-bs-toggle="pill" data-bs-target="#frenos"
+                    <button class="nav-link " id="v-pills-settings-tab5" data-bs-toggle="pill" data-bs-target="#frenos"
                       type="button" role="tab" aria-controls="frenos" aria-selected="false"
                       style="border: 1px solid #02376b;">SISTEMA DE FRENOS
                     </button>
-                     <button class="nav-link " id="v-pills-settings-tab5" data-bs-toggle="pill" data-bs-target="#direccion"
-                      type="button" role="tab" aria-controls="direccion" aria-selected="false"
-                      style="border: 1px solid #02376b;">SISTEMA DE DIRECCIÓN
+                    <button class="nav-link " id="v-pills-settings-tab5" data-bs-toggle="pill"
+                      data-bs-target="#direccion" type="button" role="tab" aria-controls="direccion"
+                      aria-selected="false" style="border: 1px solid #02376b;">SISTEMA DE DIRECCIÓN
                     </button>
-                     
+
                   </div>
 
                   <div class="tab-content">
@@ -718,20 +717,7 @@
                           </div>
                         </div>
 
-                        <div class="col-lg-6 mb-3">
-                          <label class="form-label">Nivel de líquido de frenos</label>
-                          <div class="btn-group w-100" role="group">
-                            <input type="radio" class="btn-check" name="liquido_frenos" id="liquido_frenos_ok"
-                              [value]="'ok'" formControlName="liquido_frenos" autocomplete="off">
-                            <label class="btn btn-outline-success" for="liquido_frenos_ok">C</label>
-                            <input type="radio" class="btn-check" name="liquido_frenos" id="liquido_frenos_neg"
-                              [value]="'negativo'" formControlName="liquido_frenos" autocomplete="off">
-                            <label class="btn btn-outline-danger" for="liquido_frenos_neg">N/C</label>
-                            <input type="radio" class="btn-check" name="liquido_frenos" id="liquido_frenos_na"
-                              [value]="'na'" formControlName="liquido_frenos" autocomplete="off">
-                            <label class="btn btn-outline-secondary" for="liquido_frenos_na">N/A</label>
-                          </div>
-                        </div>
+
 
                         <div class="col-lg-6 mb-3">
                           <label class="form-label">Filtro de Aire</label>
@@ -748,23 +734,7 @@
                           </div>
                         </div>
 
-                        <div class="col-lg-6 mb-3">
-                          <label class="form-label">Nivel hidráulico dirección</label>
-                          <div class="btn-group w-100" role="group">
-                            <input type="radio" class="btn-check" name="hidraulico_direccion"
-                              id="hidraulico_direccion_ok" [value]="'ok'" formControlName="hidraulico_direccion"
-                              autocomplete="off">
-                            <label class="btn btn-outline-success" for="hidraulico_direccion_ok">C</label>
-                            <input type="radio" class="btn-check" name="hidraulico_direccion"
-                              id="hidraulico_direccion_neg" [value]="'negativo'" formControlName="hidraulico_direccion"
-                              autocomplete="off">
-                            <label class="btn btn-outline-danger" for="hidraulico_direccion_neg">N/C</label>
-                            <input type="radio" class="btn-check" name="hidraulico_direccion"
-                              id="hidraulico_direccion_na" [value]="'na'" formControlName="hidraulico_direccion"
-                              autocomplete="off">
-                            <label class="btn btn-outline-secondary" for="hidraulico_direccion_na">N/A</label>
-                          </div>
-                        </div>
+                       
 
                         <div class="col-lg-6 mb-3">
                           <label class="form-label">Tensión y estado de correas</label>
@@ -993,20 +963,7 @@
                           </div>
                         </div>
 
-                        <div class="col-lg-6 mb-3">
-                          <label class="form-label">Freno de seguridad de mano (parqueo)</label>
-                          <div class="btn-group w-100" role="group">
-                            <input type="radio" class="btn-check" name="freno_mano" id="freno_mano_ok" [value]="'ok'"
-                              formControlName="freno_mano" autocomplete="off">
-                            <label class="btn btn-outline-success" for="freno_mano_ok">C</label>
-                            <input type="radio" class="btn-check" name="freno_mano" id="freno_mano_neg"
-                              [value]="'negativo'" formControlName="freno_mano" autocomplete="off">
-                            <label class="btn btn-outline-danger" for="freno_mano_neg">N/C</label>
-                            <input type="radio" class="btn-check" name="freno_mano" id="freno_mano_na" [value]="'na'"
-                              formControlName="freno_mano" autocomplete="off">
-                            <label class="btn btn-outline-secondary" for="freno_mano_na">N/A</label>
-                          </div>
-                        </div>
+
 
                         <div class="col-lg-6 mb-3">
                           <label class="form-label">Tablero de instrumentos</label>
@@ -1177,20 +1134,7 @@
                           </div>
                         </div>
 
-                        <div class="col-lg-6 mb-3">
-                          <label class="form-label">Columna de dirección</label>
-                          <div class="btn-group w-100" role="group">
-                            <input type="radio" class="btn-check" name="columna_direccion" id="columna_direccion_ok"
-                              [value]="'ok'" formControlName="columna_direccion" autocomplete="off">
-                            <label class="btn btn-outline-success" for="columna_direccion_ok">C</label>
-                            <input type="radio" class="btn-check" name="columna_direccion" id="columna_direccion_neg"
-                              [value]="'negativo'" formControlName="columna_direccion" autocomplete="off">
-                            <label class="btn btn-outline-danger" for="columna_direccion_neg">N/C</label>
-                            <input type="radio" class="btn-check" name="columna_direccion" id="columna_direccion_na"
-                              [value]="'na'" formControlName="columna_direccion" autocomplete="off">
-                            <label class="btn btn-outline-secondary" for="columna_direccion_na">N/A</label>
-                          </div>
-                        </div>
+
 
                         <div class="col-lg-6 mb-3">
                           <label class="form-label">Apoyacabezas (todas las sillas)</label>
@@ -1585,115 +1529,205 @@
                         </div>
                       </div>
                     </div>
-               
+
+                    <div class="tab-pane fade" id="frenos" role="tabpanel" aria-labelledby="frenos-tabPillsFill">
+                      <div class="col-lg-6 mb-3">
+                        <label class="form-label">Freno de seguridad de mano (parqueo)</label>
+                        <div class="btn-group w-100" role="group">
+                          <input type="radio" class="btn-check" name="freno_mano" id="freno_mano_ok" [value]="'ok'"
+                            formControlName="freno_mano" autocomplete="off">
+                          <label class="btn btn-outline-success" for="freno_mano_ok">C</label>
+                          <input type="radio" class="btn-check" name="freno_mano" id="freno_mano_neg"
+                            [value]="'negativo'" formControlName="freno_mano" autocomplete="off">
+                          <label class="btn btn-outline-danger" for="freno_mano_neg">N/C</label>
+                          <input type="radio" class="btn-check" name="freno_mano" id="freno_mano_na" [value]="'na'"
+                            formControlName="freno_mano" autocomplete="off">
+                          <label class="btn btn-outline-secondary" for="freno_mano_na">N/A</label>
+                        </div>
+                      </div>
+                      <div class="col-lg-6 mb-3">
+                        <label class="form-label">Nivel de líquido de frenos</label>
+                        <div class="btn-group w-100" role="group">
+                          <input type="radio" class="btn-check" name="liquido_frenos" id="liquido_frenos_ok"
+                            [value]="'ok'" formControlName="liquido_frenos" autocomplete="off">
+                          <label class="btn btn-outline-success" for="liquido_frenos_ok">C</label>
+                          <input type="radio" class="btn-check" name="liquido_frenos" id="liquido_frenos_neg"
+                            [value]="'negativo'" formControlName="liquido_frenos" autocomplete="off">
+                          <label class="btn btn-outline-danger" for="liquido_frenos_neg">N/C</label>
+                          <input type="radio" class="btn-check" name="liquido_frenos" id="liquido_frenos_na"
+                            [value]="'na'" formControlName="liquido_frenos" autocomplete="off">
+                          <label class="btn btn-outline-secondary" for="liquido_frenos_na">N/A</label>
+                        </div>
+                      </div>
+                      <div class="col-lg-6 mb-3">
+                        <label class="form-label">Pedalo de frenos</label>
+                        <div class="btn-group w-100" role="group">
+                          <input type="radio" class="btn-check" name="pedal_frenos" id="pedal_frenos_ok" [value]="'ok'"
+                            formControlName="pedal_frenos" autocomplete="off">
+                          <label class="btn btn-outline-success" for="pedal_frenos_ok">C</label>
+                          <input type="radio" class="btn-check" name="pedal_frenos" id="pedal_frenos_neg"
+                            [value]="'negativo'" formControlName="pedal_frenos" autocomplete="off">
+                          <label class="btn btn-outline-danger" for="pedal_frenos_neg">N/C</label>
+                          <input type="radio" class="btn-check" name="pedal_frenos" id="pedal_frenos_na" [value]="'na'"
+                            formControlName="pedal_frenos" autocomplete="off">
+                          <label class="btn btn-outline-secondary" for="pedal_frenos_na">N/A</label>
+                        </div>
+                      </div>
+                      <div class="col-lg-6 mb-3">
+                        <label class="form-label">Bomba de frenos</label>
+                        <div class="btn-group w-100" role="group">
+                          <input type="radio" class="btn-check" name="bomba_frenos" id="bomba_frenos_ok" [value]="'ok'"
+                            formControlName="bomba_frenos" autocomplete="off">
+                          <label class="btn btn-outline-success" for="bomba_frenos_ok">C</label>
+                          <input type="radio" class="btn-check" name="bomba_frenos" id="bomba_frenos_neg"
+                            [value]="'negativo'" formControlName="bomba_frenos" autocomplete="off">
+                          <label class="btn btn-outline-danger" for="bomba_frenos_neg">N/C</label>
+                          <input type="radio" class="btn-check" name="bomba_frenos" id="bomba_frenos_na" [value]="'na'"
+                            formControlName="bomba_frenos" autocomplete="off">
+                          <label class="btn btn-outline-secondary" for="bomba_frenos_na">N/A</label>
+                        </div>
+                      </div>
+
+                    </div>
+
+                    <div class="tab-pane fade" id="direccion" role="tabpanel" aria-labelledby="direccion-tabPillsFill">
+                      <div class="col-lg-6 mb-3">
+                        <label class="form-label">Columna de dirección</label>
+                        <div class="btn-group w-100" role="group">
+                          <input type="radio" class="btn-check" name="columna_direccion" id="columna_direccion_ok"
+                            [value]="'ok'" formControlName="columna_direccion" autocomplete="off">
+                          <label class="btn btn-outline-success" for="columna_direccion_ok">C</label>
+                          <input type="radio" class="btn-check" name="columna_direccion" id="columna_direccion_neg"
+                            [value]="'negativo'" formControlName="columna_direccion" autocomplete="off">
+                          <label class="btn btn-outline-danger" for="columna_direccion_neg">N/C</label>
+                          <input type="radio" class="btn-check" name="columna_direccion" id="columna_direccion_na"
+                            [value]="'na'" formControlName="columna_direccion" autocomplete="off">
+                          <label class="btn btn-outline-secondary" for="columna_direccion_na">N/A</label>
+                        </div>
+                      </div>
+                       <div class="col-lg-6 mb-3">
+                          <label class="form-label">Nivel hidráulico dirección</label>
+                          <div class="btn-group w-100" role="group">
+                            <input type="radio" class="btn-check" name="hidraulico_direccion"
+                              id="hidraulico_direccion_ok" [value]="'ok'" formControlName="hidraulico_direccion"
+                              autocomplete="off">
+                            <label class="btn btn-outline-success" for="hidraulico_direccion_ok">C</label>
+                            <input type="radio" class="btn-check" name="hidraulico_direccion"
+                              id="hidraulico_direccion_neg" [value]="'negativo'" formControlName="hidraulico_direccion"
+                              autocomplete="off">
+                            <label class="btn btn-outline-danger" for="hidraulico_direccion_neg">N/C</label>
+                            <input type="radio" class="btn-check" name="hidraulico_direccion"
+                              id="hidraulico_direccion_na" [value]="'na'" formControlName="hidraulico_direccion"
+                              autocomplete="off">
+                            <label class="btn btn-outline-secondary" for="hidraulico_direccion_na">N/A</label>
+                          </div>
+                        </div>
+
+                    </div>
 
                   </div>
                 </div>
               </div>
             </div>
 
-       
+
           </div>
         </div>
 
       </div>
-<!-- ✅ STEP 5: OBSERVACIONES Y REGISTRO FOTOGRÁFICO (NUEVO) -->
-<div *ngIf="currentStep === 5" class="col-12 mb-3">
-  <div class="card">
-    <div class="card-header bg-light">
-      <h5 class="fw-bold border-bottom titulo">
-        <i class="fi fi-rr-comment-alt me-2"></i>
-        Observaciones y Registro Fotográfico
-      </h5>
-    </div>
-    <div class="card-body">
-      
-      <!-- Sección de Observaciones -->
-      <div class="image-upload-section">
-        <div class=" mt-4">
-          <div class=" bg-light">
-            <h6 class="">
+      <!-- ✅ STEP 5: OBSERVACIONES Y REGISTRO FOTOGRÁFICO (NUEVO) -->
+      <div *ngIf="currentStep === 5" class="col-12 mb-3">
+        <div class="card">
+          <div class="card-header bg-light">
+            <h5 class="fw-bold border-bottom titulo">
               <i class="fi fi-rr-comment-alt me-2"></i>
-              Observaciones / Comentarios / Compromisos
-            </h6>
+              Observaciones y Registro Fotográfico
+            </h5>
           </div>
-          <div class="-body">
-            <textarea
-              formControlName="observaciones"
-              class="form-control"
-              rows="5"
-              placeholder="Describa las observaciones encontradas durante la inspección..."
-              maxlength="500">
+          <div class="card-body">
+
+            <!-- Sección de Observaciones -->
+            <div class="image-upload-section">
+              <div class=" mt-4">
+                <div class=" bg-light">
+                  <h6 class="">
+                    <i class="fi fi-rr-comment-alt me-2"></i>
+                    Observaciones / Comentarios / Compromisos
+                  </h6>
+                </div>
+                <div class="-body">
+                  <textarea formControlName="observaciones" class="form-control" rows="5"
+                    placeholder="Describa las observaciones encontradas durante la inspección..." maxlength="500">
             </textarea>
-            <div class="form-text">
-              Máximo 500 caracteres. Esta información se incluirá en el reporte Excel/PDF.
-            </div>
-            <div class="text-end">
-              <small class="text-muted">{{ inspectionForm.get('observaciones')?.value?.length || 0 }}/500</small>
-            </div>
-          </div>
-        </div>
+                  <div class="form-text">
+                    Máximo 500 caracteres. Esta información se incluirá en el reporte Excel/PDF.
+                  </div>
+                  <div class="text-end">
+                    <small class="text-muted">{{ inspectionForm.get('observaciones')?.value?.length || 0 }}/500</small>
+                  </div>
+                </div>
+              </div>
 
-        <!-- Sección de Registro Fotográfico -->
-         
-        <h5 class="mt-4">
-        <i class="fi fi-rr-camera me-2"></i>
-          
-          Registro Fotográfico</h5>
-        <div class="form-group">
-          <label for="images">Seleccionar imágenes:</label>
-          <input type="file" id="images" #fileInput multiple accept="image/*" 
-                 (change)="onFilesSelected($event)"
-                 class="form-control btn btn-secondary btn-sm" [disabled]="isUploadingImages" />
-          <small class="text-muted">Puedes seleccionar hasta 3 imágenes (máx 5MB cada una)</small>
-        </div>
+              <!-- Sección de Registro Fotográfico -->
 
-        <!-- Preview de imágenes -->
-        <div class="selected-images d-flex flex-wrap gap-2 mt-3" *ngIf="imagePreviews.length > 0">
-          <div *ngFor="let preview of imagePreviews; let i = index" 
-               class="image-preview position-relative" style="width: 150px; height: 150px;">
-            <img [src]="preview" alt="Preview {{i}}" class="img-thumbnail w-100 h-100" style="object-fit: cover;">
-            <button type="button" (click)="removeImage(i)" 
-                    class="btn btn-danger btn-sm position-absolute top-0 end-0 rounded-circle" 
-                    style="width: 24px; height: 24px; padding: 0; font-size: 14px;" 
+              <h5 class="mt-4">
+                <i class="fi fi-rr-camera me-2"></i>
+
+                Registro Fotográfico
+              </h5>
+              <div class="form-group">
+                <label for="images">Seleccionar imágenes:</label>
+                <input type="file" id="images" #fileInput multiple accept="image/*" (change)="onFilesSelected($event)"
+                  class="form-control btn btn-secondary btn-sm" [disabled]="isUploadingImages" />
+                <small class="text-muted">Puedes seleccionar hasta 3 imágenes (máx 5MB cada una)</small>
+              </div>
+
+              <!-- Preview de imágenes -->
+              <div class="selected-images d-flex flex-wrap gap-2 mt-3" *ngIf="imagePreviews.length > 0">
+                <div *ngFor="let preview of imagePreviews; let i = index" class="image-preview position-relative"
+                  style="width: 150px; height: 150px;">
+                  <img [src]="preview" alt="Preview {{i}}" class="img-thumbnail w-100 h-100" style="object-fit: cover;">
+                  <button type="button" (click)="removeImage(i)"
+                    class="btn btn-danger btn-sm position-absolute top-0 end-0 rounded-circle"
+                    style="width: 24px; height: 24px; padding: 0; font-size: 14px;"
                     [disabled]="isUploadingImages">×</button>
-          </div>
-        </div>
+                </div>
+              </div>
 
-        <!-- Contador de imágenes -->
-        <div class="image-count mt-2" *ngIf="selectedFiles.length > 0">
-          <span class="badge bg-primary">{{ selectedFiles.length }} imagen(es) seleccionada(s)</span>
+              <!-- Contador de imágenes -->
+              <div class="image-count mt-2" *ngIf="selectedFiles.length > 0">
+                <span class="badge bg-primary">{{ selectedFiles.length }} imagen(es) seleccionada(s)</span>
+              </div>
+            </div>
+
+          </div>
         </div>
       </div>
-
-    </div>
-  </div>
-</div>
       <!-- NAVIGATION BUTTONS -->
-     <!-- NAVIGATION BUTTONS -->
-<div class="col-12 mt-4">
-  <div class="d-flex justify-content-between">
-    <button type="button" class="btn btn-secondary" *ngIf="!isFirstStep()" (click)="prevStep()">
-      <i class="fi fi-rr-arrow-left me-1"></i> Anterior
-    </button>
-    
-    <button type="button" class="btn btn-outline-secondary" routerLink="/inspections">
-      Cancelar
-    </button>
-    
-    <button type="button" class="btn btn-primary" *ngIf="!isLastStep()" (click)="nextStep()">
-      Siguiente <i class="fi fi-rr-arrow-right ms-1"></i>
-    </button>
-    
-    <button type="button" class="btn btn-success" *ngIf="isLastStep()" (click)="onSubmit()"
+      <!-- NAVIGATION BUTTONS -->
+      <div class="col-12 mt-4">
+        <div class="d-flex justify-content-between">
+          <button type="button" class="btn btn-secondary" *ngIf="!isFirstStep()" (click)="prevStep()">
+            <i class="fi fi-rr-arrow-left me-1"></i> Anterior
+          </button>
+
+          <button type="button" class="btn btn-outline-secondary" routerLink="/inspections">
+            Cancelar
+          </button>
+
+          <button type="button" class="btn btn-primary" *ngIf="!isLastStep()" (click)="nextStep()">
+            Siguiente <i class="fi fi-rr-arrow-right ms-1"></i>
+          </button>
+
+          <button type="button" class="btn btn-success" *ngIf="isLastStep()" (click)="onSubmit()"
             [disabled]="isLoading">
-      <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2" role="status"
-            aria-hidden="true"></span>
-      <i class="fi fi-rr-save me-1"></i>
-      {{ isLoading ? 'Guardando...' : 'Guardar Inspección' }}
-    </button>
-  </div>
-</div>
+            <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2" role="status"
+              aria-hidden="true"></span>
+            <i class="fi fi-rr-save me-1"></i>
+            {{ isLoading ? 'Guardando...' : 'Guardar Inspección' }}
+          </button>
+        </div>
+      </div>
     </form>
   </div>
 </main>

@@ -151,7 +151,6 @@ private formSubscription?: Subscription;
       aceite_motor: [''],
       aceite_transmision: [''],
       liquido_refrigerante: [''],
-      liquido_frenos: [''],
       filtro_aire: [''],
       hidraulico_direccion: [''],
       tension_correas: [''],
@@ -231,6 +230,15 @@ private formSubscription?: Subscription;
       presion_llanta_t_lii: [''],   // Trasera Izquierda Interior
       presion_llanta_t_ldi: [''],   // Trasera Derecha Interior
       numero_certificado: [''],
+
+
+      // SISTEMA DE FRENOS
+      liquido_frenos: [''],
+
+      bomba_frenos:[''],
+      pedal_frenos:[''],
+
+
     });
 
     this.phoneForm = this.fb.group({
@@ -1151,7 +1159,7 @@ private calcularEstadoInspeccion(formData: any): 'aprobada' | 'rechazada' | 'bor
     'tablero_instrumentos', 'bocina', 'bateria', 'aire_acondicionado',
     
     // Sistema Motor
-    'aceite_motor', 'aceite_transmision', 'liquido_refrigerante', 'liquido_frenos',
+    'aceite_motor', 'aceite_transmision', 'liquido_refrigerante', 
     'filtro_aire', 'hidraulico_direccion', 'tension_correas',
     
     // Carrocería
@@ -1176,7 +1184,10 @@ private calcularEstadoInspeccion(formData: any): 'aprobada' | 'rechazada' | 'bor
     
     // Parte Baja
     'buies_barra', 'buies_tiera', 'cuna_motor', 'guardapolvo_axiales',
-    'amortiguadores', 'hojas_muelles', 'silenciadores', 'tanques_compresor'
+    'amortiguadores', 'hojas_muelles', 'silenciadores', 'tanques_compresor',
+
+    // Sistema de fresno
+    'liquido_frenos','bomba_frenos','pedal_frenos',
   ];
 
   // 🔍 Verificar campos vacíos (sin seleccionar C/N/C/N/A)
@@ -1396,6 +1407,11 @@ private calcularEstadoInspeccion(formData: any): 'aprobada' | 'rechazada' | 'bor
         presion_llanta_t_lde: this.inspectionForm.get('presion_llanta_t_lde')?.value,
         presion_llanta_t_lii: this.inspectionForm.get('presion_llanta_t_lii')?.value,
         presion_llanta_t_ldi: this.inspectionForm.get('presion_llanta_t_ldi')?.value,
+
+        // sistema de frenos
+        pedal_frenos: this.inspectionForm.get('pedal_frenos')?.value,
+
+        bomba_frenos: this.inspectionForm.get('bomba_frenos')?.value,
 
         observaciones: this.inspectionForm.get('observaciones')?.value,
 

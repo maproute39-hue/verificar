@@ -137,9 +137,7 @@ export class Nueva implements AfterViewInit, OnInit {
       aceite_motor: [''],
       aceite_transmision: [''],
       liquido_refrigerante: [''],
-      liquido_frenos: [''],
       filtro_aire: [''],
-      hidraulico_direccion: [''],
       tension_correas: [''],
 
       // Carrocería
@@ -167,7 +165,6 @@ export class Nueva implements AfterViewInit, OnInit {
       sistema_direccion: [''],
       espejos_laterales: [''],
       espejo_interno: [''],
-      freno_mano_seguridad: [''],
 
       // Seguridad Pasiva
       cinturones_seguridad: [''],
@@ -198,7 +195,7 @@ export class Nueva implements AfterViewInit, OnInit {
       silenciadores: [''],
       tanques_compresor: [''],
 
-     // ===LABRADO LLANTAS ===
+      // ===LABRADO LLANTAS ===
       llanta_dd: [''],          // Delantera Derecha
       llanta_tie: [''],         // Trasera Izquierda Exterior
       llanta_tde: [''],         // Trasera Derecha Exterior
@@ -212,7 +209,19 @@ export class Nueva implements AfterViewInit, OnInit {
       presion_llanta_t_lde: [''],   // Trasera Derecha Exterior
       presion_llanta_t_lii: [''],   // Trasera Izquierda Interior
       presion_llanta_t_ldi: [''],   // Trasera Derecha Interior
-       
+
+
+      // SISTEMA DE FRENOS
+      freno_mano_seguridad: [''],
+      liquido_frenos: [''],
+      bomba_frenos: [''],
+      pedal_frenos: [''],
+
+      // SISTEMA DE DIRECCION
+
+      hidraulico_direccion: [''],
+
+
     });
 
     // Inicialización del formulario del teléfono
@@ -483,35 +492,35 @@ export class Nueva implements AfterViewInit, OnInit {
       }, 0);
     }
   }
-private initDatePickersForCurrentStep() {
-  switch (this.currentStep) {
-    case 1:
-      this.initStep1DatePickers();
-      break;
-    case 2:
-      this.initStep2DatePickers();
-      break;
-    case 3:
-      this.initStep3DatePickers();
-      break;
-    // Casos 4 y 5 no tienen date pickers
+  private initDatePickersForCurrentStep() {
+    switch (this.currentStep) {
+      case 1:
+        this.initStep1DatePickers();
+        break;
+      case 2:
+        this.initStep2DatePickers();
+        break;
+      case 3:
+        this.initStep3DatePickers();
+        break;
+      // Casos 4 y 5 no tienen date pickers
+    }
   }
-}
 
 
   /**
    * Valida los campos del paso actual
    */
-validateCurrentStep(): boolean {
-  switch (this.currentStep) {
-    case 1: return this.validateStep1();
-    case 2: return this.validateStep2();
-    case 3: return this.validateStep3();
-    case 4: 
-    case 5: return true; // Pasos 4 y 5 sin validación obligatoria
-    default: return true;
+  validateCurrentStep(): boolean {
+    switch (this.currentStep) {
+      case 1: return this.validateStep1();
+      case 2: return this.validateStep2();
+      case 3: return this.validateStep3();
+      case 4:
+      case 5: return true; // Pasos 4 y 5 sin validación obligatoria
+      default: return true;
+    }
   }
-}
 
   /**
    * Valida el Paso 1: Datos Generales
@@ -621,16 +630,16 @@ validateCurrentStep(): boolean {
   /**
    * Obtiene el nombre del paso actual
    */
-getStepName(step: number): string {
-  const stepNames = [
-    'Datos Generales',
-    'Datos del Conductor',
-    'Datos del Vehículo',
-    'Inspección Vehicular',
-    'Observaciones y Fotos'  // 👈 Nuevo paso 5
-  ];
-  return stepNames[step - 1] || '';
-}
+  getStepName(step: number): string {
+    const stepNames = [
+      'Datos Generales',
+      'Datos del Conductor',
+      'Datos del Vehículo',
+      'Inspección Vehicular',
+      'Observaciones y Fotos'  // 👈 Nuevo paso 5
+    ];
+    return stepNames[step - 1] || '';
+  }
 
   /**
    * Obtiene el porcentaje de progreso del wizard
@@ -644,79 +653,93 @@ getStepName(step: number): string {
   /**
    * Calcula el estado de la inspección basado en los campos de inspección
    */
-/**
- * Calcula el estado de la inspección según las reglas de negocio:
- * - 'borrador': Si hay al menos 1 campo de inspección sin seleccionar (vacío)
- * - 'rechazada': Si hay al menos 1 campo con valor 'negativo' (N/C)
- * - 'aprobada': Si todos los campos tienen valor seleccionado y ninguno es 'negativo'
- * 
- * @param inspectionData - Objeto con los datos del formulario de inspección
- * @returns 'aprobada' | 'rechazada' | 'borrador'
- */
-private calculateEstado(inspectionData: any): 'aprobada' | 'rechazada' | 'borrador' {
-  // Lista completa de campos de inspección con opciones C/N/C/N/A (radio buttons)
-  // Excluye campos numéricos (profundidad, presión) y campos de texto/fecha
-  const inspectionFields = [
-    // Sistema Eléctrico
-    'luces_navegacion', 'luces_frenado', 'luces_direccionales', 'luz_reversa',
-    'luces_estacionamiento', 'luces_posicion', 'luz_antineblina', 'luz_placa',
-    'tablero_instrumentos', 'bocina', 'bateria', 'aire_acondicionado',
-    
-    // Sistema Motor
-    'aceite_motor', 'aceite_transmision', 'liquido_refrigerante', 'liquido_frenos',
-    'filtro_aire', 'hidraulico_direccion', 'tension_correas',
-    
-    // Carrocería
-    'parachoque_delantero', 'parachoque_trasero', 'vidrios_seguridad', 'vidrios_laterales',
-    'limpia_brisas', 'guardabarros', 'estribos_laterales', 'placa_adhesivo', 'chapa_compuerta',
-    
-    // Cabina
-    'tapiceria', 'manijas_seguros', 'vidrios_electricos', 'antideslizantes_pedales',
-    'freno_mano', 'tablero_instrumentos_interno',
-    
-    // Seguridad Activa
-    'sistema_frenos', 'abs', 'sistema_direccion', 'espejos_laterales', 
-    'espejo_interno', 'freno_mano_seguridad',
-    
-    // Seguridad Pasiva
-    'cinturones_seguridad', 'airbags', 'cadena_sujecion', 'columna_direccion',
-    'apoyacabezas', 'barra_antivuelco', 'rejilla_vidrio_trasero',
-    
-    // Kit de Carretera
-    'conos_triangular', 'botiquin', 'extintor', 'cunas', 'llanta_repuesto',
-    'caja_herramientas', 'linterna', 'gato',
-    
-    // Parte Baja
-    'buies_barra', 'buies_tiera', 'cuna_motor', 'guardapolvo_axiales',
-    'amortiguadores', 'hojas_muelles', 'silenciadores', 'tanques_compresor'
-  ];
+  /**
+   * Calcula el estado de la inspección según las reglas de negocio:
+   * - 'borrador': Si hay al menos 1 campo de inspección sin seleccionar (vacío)
+   * - 'rechazada': Si hay al menos 1 campo con valor 'negativo' (N/C)
+   * - 'aprobada': Si todos los campos tienen valor seleccionado y ninguno es 'negativo'
+   * 
+   * @param inspectionData - Objeto con los datos del formulario de inspección
+   * @returns 'aprobada' | 'rechazada' | 'borrador'
+   */
+  private calculateEstado(inspectionData: any): 'aprobada' | 'rechazada' | 'borrador' {
+    // Lista completa de campos de inspección con opciones C/N/C/N/A (radio buttons)
+    // Excluye campos numéricos (profundidad, presión) y campos de texto/fecha
+    const inspectionFields = [
+      // Sistema Eléctrico
+      'luces_navegacion', 'luces_frenado', 'luces_direccionales', 'luz_reversa',
+      'luces_estacionamiento', 'luces_posicion', 'luz_antineblina', 'luz_placa',
+      'tablero_instrumentos', 'bocina', 'bateria', 'aire_acondicionado',
 
-  // 🔍 Verificar campos vacíos (sin seleccionar C/N/C/N/A)
-  const emptyFields = inspectionFields.filter(field => 
-    !inspectionData[field] || inspectionData[field] === '' || inspectionData[field] === null
-  );
-  
-  // 🔍 Verificar campos con "negativo" (N/C)
-  const negativeFields = inspectionFields.filter(field => 
-    inspectionData[field] === 'negativo' || inspectionData[field] === 'N/C' || inspectionData[field] === 'no cumple'
-  );
-  
-  // 📋 Regla 1: Si hay al menos 1 campo vacío → BORRADOR
-  if (emptyFields.length > 0) {
-    console.log(`📝 Estado calculado: borrador (${emptyFields.length} campos pendientes)`);
-    return 'borrador';
+      // Sistema Motor
+      'aceite_motor',
+      'aceite_transmision',
+      'liquido_refrigerante',
+      'filtro_aire', 'tension_correas',
+
+      // Carrocería
+      'parachoque_delantero', 'parachoque_trasero', 'vidrios_seguridad', 'vidrios_laterales',
+      'limpia_brisas', 'guardabarros', 'estribos_laterales', 'placa_adhesivo', 'chapa_compuerta',
+
+      // Cabina
+      'tapiceria', 'manijas_seguros', 'vidrios_electricos', 'antideslizantes_pedales',
+      'freno_mano', 'tablero_instrumentos_interno',
+
+      // Seguridad Activa
+      'abs', 'espejos_laterales',
+      'espejo_interno', 
+
+      // Seguridad Pasiva
+      'cinturones_seguridad', 'airbags', 'cadena_sujecion', 'columna_direccion',
+      'apoyacabezas', 'barra_antivuelco', 'rejilla_vidrio_trasero',
+
+      // Kit de Carretera
+      'conos_triangular', 'botiquin', 'extintor', 'cunas', 'llanta_repuesto',
+      'caja_herramientas', 'linterna', 'gato',
+
+      // Parte Baja
+      'buies_barra', 'buies_tiera', 'cuna_motor', 'guardapolvo_axiales',
+      'amortiguadores', 'hojas_muelles', 'silenciadores', 'tanques_compresor',
+      
+      //Sistema Frenos
+      //  'sistema_frenos',
+      'freno_mano_seguridad',
+      'liquido_frenos',
+      'bomba_frenos',      
+      'pedal_frenos',
+
+      //Sistema de Dirección
+      // 'sistema_direccion',
+      'hidraulico_direccion',
+      
+    ];
+
+    // 🔍 Verificar campos vacíos (sin seleccionar C/N/C/N/A)
+    const emptyFields = inspectionFields.filter(field =>
+      !inspectionData[field] || inspectionData[field] === '' || inspectionData[field] === null
+    );
+
+    // 🔍 Verificar campos con "negativo" (N/C)
+    const negativeFields = inspectionFields.filter(field =>
+      inspectionData[field] === 'negativo' || inspectionData[field] === 'N/C' || inspectionData[field] === 'no cumple'
+    );
+
+    // 📋 Regla 1: Si hay al menos 1 campo vacío → BORRADOR
+    if (emptyFields.length > 0) {
+      console.log(`📝 Estado calculado: borrador (${emptyFields.length} campos pendientes)`);
+      return 'borrador';
+    }
+
+    // 📋 Regla 2: Si hay al menos 1 campo con "negativo" → RECHAZADA
+    if (negativeFields.length > 0) {
+      console.log(`❌ Estado calculado: rechazada (${negativeFields.length} ítems no cumplen)`);
+      return 'rechazada';
+    }
+
+    // 📋 Regla 3: Todos completos y sin negativos → APROBADA
+    console.log(`✅ Estado calculado: aprobada (todos los ítems verificados)`);
+    return 'aprobada';
   }
-  
-  // 📋 Regla 2: Si hay al menos 1 campo con "negativo" → RECHAZADA
-  if (negativeFields.length > 0) {
-    console.log(`❌ Estado calculado: rechazada (${negativeFields.length} ítems no cumplen)`);
-    return 'rechazada';
-  }
-  
-  // 📋 Regla 3: Todos completos y sin negativos → APROBADA
-  console.log(`✅ Estado calculado: aprobada (todos los ítems verificados)`);
-  return 'aprobada';
-}
 
   async onSubmit() {
     if (!this.isLoading) {
@@ -818,19 +841,19 @@ private calculateEstado(inspectionData: any): 'aprobada' | 'rechazada' | 'borrad
         await this.inspectionService.createInspection(formattedData).toPromise();
 
         Swal.close();
-     const estadoTexto = {
-  'aprobada': '✅ Inspección aprobada - Todos los ítems cumplen',
-  'rechazada': '❌ Inspección rechazada - Hay ítems que no cumplen',
-  'borrador': '📝 Guardado como borrador - Faltan campos por completar'
-};
+        const estadoTexto = {
+          'aprobada': '✅ Inspección aprobada - Todos los ítems cumplen',
+          'rechazada': '❌ Inspección rechazada - Hay ítems que no cumplen',
+          'borrador': '📝 Guardado como borrador - Faltan campos por completar'
+        };
 
-await Swal.fire({
-  title: '¡Éxito!',
-  html: `La inspección ha sido creada correctamente.<br><strong>${estadoTexto[estado]}</strong>`,
-  icon: estado === 'rechazada' ? 'warning' : 'success',
-  confirmButtonText: 'Aceptar',
-  confirmButtonColor: estado === 'rechazada' ? '#ffc107' : '#198754'
-});
+        await Swal.fire({
+          title: '¡Éxito!',
+          html: `La inspección ha sido creada correctamente.<br><strong>${estadoTexto[estado]}</strong>`,
+          icon: estado === 'rechazada' ? 'warning' : 'success',
+          confirmButtonText: 'Aceptar',
+          confirmButtonColor: estado === 'rechazada' ? '#ffc107' : '#198754'
+        });
 
         this.resetForms();
         this.currentStep = 1;
