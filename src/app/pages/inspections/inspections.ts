@@ -88,46 +88,64 @@ pending(){
     this.router.navigate(['/detail', id]);
   }
 
-  async deleteInspection(event: Event, id: string | undefined): Promise<void> {
-    event.stopPropagation();
-    
-    if (!id) {
-      console.error('No se pudo obtener el ID de la inspección');
-      return;
-    }
+async deleteInspection(event: Event, id: string | undefined): Promise<void> {
+  event.stopPropagation();
+  
+  if (!id) {
+    console.error('No se pudo obtener el ID de la inspección');
+    return;
+  }
 
-    const result = await Swal.fire({
-      title: '¿Estás seguro?',
-      text: 'Esta acción no se puede deshacer',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Sí, eliminar',
-      cancelButtonText: 'Cancelar'
-    });
+  const result = await Swal.fire({
+    title: '¿Estás seguro?',
+    text: 'Esta acción no se puede deshacer',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Sí, eliminar',
+    cancelButtonText: 'Cancelar'
+  });
 
-    if (result.isConfirmed) {
-      try {
-        await this.realtimeInspectionsService.deleteInspection(id);
-        
-        Swal.fire({
-          title: 'Eliminada',
-          text: 'La inspección ha sido eliminada',
-          icon: 'success',
-          confirmButtonText: 'Aceptar'
-        });
-        
-        // La lista se actualizará automáticamente gracias a la suscripción
-      } catch (error) {
-        console.error('Error al eliminar la inspección:', error);
-        Swal.fire({
-          title: 'Error',
-          text: 'No se pudo eliminar la inspección',
-          icon: 'error',
-          confirmButtonText: 'Aceptar'
-        });
-      }
+  if (result.isConfirmed) {
+    try {
+      // ✅ 1. Eliminar en el backend
+      await this.realtimeInspectionsService.deleteInspection(id);
+      
+      // ✅ 2. ACTUALIZAR LISTAS LOCALES INMEDIATAMENTE
+      this.inspections = this.inspections.filter(insp => insp.id_inspeccion !== id);
+      this.filteredInspections = this.filteredInspections.filter(insp => insp.id_inspeccion !== id);
+      
+      // ✅ 3. Recalcular contadores
+      this.totalInspections = this.inspections.length;
+      
+      this.currentMonthInspections = this.inspections.filter((inspection) => {
+        if (!inspection.fecha_inspeccion) return false;
+        const inspectionDate = new Date(inspection.fecha_inspeccion);
+        const currentDate = new Date();
+        return inspectionDate.getMonth() === currentDate.getMonth() &&
+               inspectionDate.getFullYear() === currentDate.getFullYear();
+      }).length;
+      
+      // ✅ 4. Mostrar confirmación breve y no intrusiva
+      Swal.fire({
+        title: 'Eliminada',
+        text: 'La inspección ha sido eliminada',
+        icon: 'success',
+        confirmButtonText: 'Aceptar',
+        timer: 2000,
+        showConfirmButton: false
+      });
+      
+    } catch (error) {
+      console.error('Error al eliminar la inspección:', error);
+      Swal.fire({
+        title: 'Error',
+        text: 'No se pudo eliminar la inspección',
+        icon: 'error',
+        confirmButtonText: 'Aceptar'
+      });
     }
   }
+}
 }

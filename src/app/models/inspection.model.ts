@@ -1,5 +1,7 @@
 export interface Inspection {
   // Identificadores
+numero_certificado?:string,
+
   id?: string;
   id_inspeccion?: string;  // ID único de la inspección
   collectionId?: string;
@@ -45,6 +47,7 @@ export interface Inspection {
   nombre_transportadora?: string;
   observaciones?: string;
   created_by?: string;
+  
   
   // Propiedades anidadas para búsqueda (mantenidas por compatibilidad)
   vehiculo?: {

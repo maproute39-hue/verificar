@@ -40,15 +40,27 @@ export class RealtimeInspectionsService implements OnDestroy {
    * @param id ID de la inspección a eliminar
    * @returns Promesa que se resuelve cuando se completa la eliminación
    */
-  public async deleteInspection(id: string): Promise<boolean> {
-    try {
-      await this.pb.collection(this.COLLECTION).delete(id);
-      return true;
-    } catch (error) {
-      console.error('Error al eliminar la inspección:', error);
-      throw error;
-    }
-  }
+  // public async deleteInspection(id: string): Promise<boolean> {
+  //   try {
+  //     await this.pb.collection(this.COLLECTION).delete(id);
+  //     return true;
+  //   } catch (error) {
+  //     console.error('Error al eliminar la inspección:', error);
+  //     throw error;
+  //   }
+  // }
+
+
+// Ejemplo en inspections-realtime.service.ts
+async deleteInspection(id: string): Promise<void> {
+  await this.pb.collection('inspections').delete(id);
+  
+  // ✅ Emitir nueva lista sin el elemento eliminado
+  this.inspectionsSubject.next(
+    this.inspectionsSubject.value.filter(insp => insp.id_inspeccion !== id)
+  );
+}
+
 
   constructor() {
     this.pb = new PocketBase('https://db.buckapi.site:8095');

@@ -576,11 +576,99 @@ private formSubscription?: Subscription;
   closeLightbox(): void {
     this._lightbox.close();
   }
-  async saveChanges(): Promise<void> {
-  if (!this.inspectionForm.valid) {
-    Swal.fire('Validación', 'Por favor completa los campos requeridos', 'warning');
-    return;
-  }
+//   async saveChanges(): Promise<void> {
+//   if (!this.inspectionForm.valid) {
+//     Swal.fire('Validación', 'Por favor completa los campos requeridos', 'warning');
+//     return;
+//   }
+
+//   try {
+//     Swal.fire({
+//       title: 'Guardando...',
+//       html: 'Procesando cambios de la inspección',
+//       allowOutsideClick: false,
+//       didOpen: () => Swal.showLoading()
+//     });
+
+//     const id = this.route.snapshot.paramMap.get('id');
+//     if (!id) throw new Error('No hay ID de inspección');
+
+//     // Obtener los valores del formulario
+//     const formData = { ...this.inspectionForm.value };
+
+//     // ✅ Aquí llamas a tu servicio para actualizar la inspección
+//     // Ejemplo con PocketBase:
+//     await this.inspectionService.pb.collection('inspections').update(id, formData);
+
+//     // ✅ Si también manejas imágenes, aquí podrías agregar esa lógica
+
+//     // Marcar el formulario como "limpio" para ocultar el botón
+//     this.inspectionForm.markAsPristine();
+//     this.hasChanges = false;
+
+//     Swal.fire('Éxito', 'Cambios guardados correctamente', 'success');
+
+//   } catch (error) {
+//     console.error('Error al guardar:', error);
+//     Swal.fire('Error', 'No se pudieron guardar los cambios', 'error');
+//   }
+// }
+// async saveChanges(): Promise<void> {
+//   if (!this.inspectionForm.valid) {
+//     Swal.fire('Validación', 'Por favor completa los campos requeridos', 'warning');
+//     return;
+//   }
+
+//   try {
+//     Swal.fire({
+//       title: 'Guardando...',
+//       html: 'Procesando cambios de la inspección',
+//       allowOutsideClick: false,
+//       didOpen: () => Swal.showLoading()
+//     });
+
+//     const id = this.route.snapshot.paramMap.get('id');
+//     if (!id) throw new Error('No hay ID de inspección');
+
+//     // Obtener los valores del formulario
+//     const formData = { ...this.inspectionForm.value };
+
+//     // 🎯 CALCULAR EL ESTADO AUTOMÁTICAMENTE
+//     formData.estado = this.calcularEstadoInspeccion(formData);
+
+//     // Mostrar mensaje informativo sobre el estado calculado
+//     const estadoTexto = {
+//       'aprobada': '✅ Inspección aprobada',
+//       'rechazada': '❌ Inspección rechazada',
+//       'borrador': '📝 Guardado como borrador'
+//     };
+    
+//     // ✅ Actualizar en PocketBase con el estado calculado
+//     await this.inspectionService.pb.collection('inspections').update(id, formData);
+
+//     // Marcar el formulario como "limpio" para ocultar el botón
+//     this.inspectionForm.markAsPristine();
+//     this.phoneForm.markAsPristine();
+//     this.hasChanges = false;
+
+//     // Mostrar confirmación con el estado resultante
+//     Swal.fire({
+//       icon: formData.estado === 'rechazada' ? 'warning' : 'success',
+//       title: 'Éxito',
+//       text: `Cambios guardados. ${estadoTexto[formData.estado as keyof typeof estadoTexto]}`,
+//       confirmButtonColor: formData.estado === 'rechazada' ? '#ffc107' : '#198754'
+//     });
+
+//   } catch (error) {
+//     console.error('Error al guardar:', error);
+//     Swal.fire('Error', 'No se pudieron guardar los cambios', 'error');
+//   }
+// }
+async saveChanges(): Promise<void> {
+  // if (!this.inspectionForm.valid) {
+  //   Swal.fire('Validación', 'Por favor completa los campos requeridos', 'warning');
+  //   return;
+  // }
 
   try {
     Swal.fire({
@@ -596,29 +684,298 @@ private formSubscription?: Subscription;
     // Obtener los valores del formulario
     const formData = { ...this.inspectionForm.value };
 
-    // ✅ Aquí llamas a tu servicio para actualizar la inspección
-    // Ejemplo con PocketBase:
-    await this.inspectionService.pb.collection('inspections').update(id, formData);
+    // 🎯 CALCULAR EL ESTADO AUTOMÁTICAMENTE
+    formData.estado = this.calcularEstadoInspeccion(formData);
 
-    // ✅ Si también manejas imágenes, aquí podrías agregar esa lógica
+    // ✅ Actualizar en PocketBase con el estado calculado
+    const updatedRecord = await this.inspectionService.pb.collection('inspections').update(id, formData);
+
+    // 🔄 ACTUALIZAR EL FORMULARIO CON LOS DATOS REFRESCADOS DEL SERVIDOR
+    this.actualizarFormularioConDatosActualizados(updatedRecord);
 
     // Marcar el formulario como "limpio" para ocultar el botón
     this.inspectionForm.markAsPristine();
+    this.phoneForm.markAsPristine();
     this.hasChanges = false;
 
-    Swal.fire('Éxito', 'Cambios guardados correctamente', 'success');
+    // Mostrar confirmación con el estado resultante
+    const estadoTexto = {
+      'aprobada': '✅ Inspección aprobada',
+      'rechazada': '❌ Inspección rechazada', 
+      'borrador': '📝 Guardado como borrador'
+    };
+    
+    Swal.fire({
+      icon: formData.estado === 'rechazada' ? 'warning' : 'success',
+      title: 'Éxito',
+      text: `Cambios guardados. ${estadoTexto[formData.estado as keyof typeof estadoTexto]}`,
+      confirmButtonColor: formData.estado === 'rechazada' ? '#ffc107' : '#198754'
+    });
 
   } catch (error) {
     console.error('Error al guardar:', error);
     Swal.fire('Error', 'No se pudieron guardar los cambios', 'error');
   }
 }
+/**
+ * Actualiza el formulario con los datos más recientes del servidor
+ * después de una operación de guardado exitosa
+ * @param updatedRecord - Registro actualizado recibido de PocketBase
+ */
+private actualizarFormularioConDatosActualizados(updatedRecord: any): void {
+  console.log('🔄 Actualizando formulario con datos del servidor...', updatedRecord);
+  
+  // Combinar datos principales con datos del vehículo si existen
+  let dataParaFormulario = { ...updatedRecord };
+  
+  if (updatedRecord.expand?.vehiculo) {
+    dataParaFormulario = { ...updatedRecord, ...updatedRecord.expand.vehiculo };
+  } else if (updatedRecord.vehiculo) {
+    dataParaFormulario = { ...updatedRecord, ...updatedRecord.vehiculo };
+  }
 
+  // Formatear fechas al formato YYYY-MM-DD para compatibilidad con flatpickr
+  const dateFields = [
+    'fecha_inspeccion', 'fecha_vigencia', 'fecha_vencimiento_licencia',
+    'fecha_vencimiento_soat', 'fecha_vencimiento_revision_tecnomecanica',
+    'fecha_vencimiento_tarjeta_operacion'
+  ];
+  
+  dateFields.forEach(field => {
+    if (dataParaFormulario[field]) {
+      dataParaFormulario[field] = this.formatDate(dataParaFormulario[field]);
+    }
+  });
+
+  // ✅ Actualizar formulario principal SIN emitir eventos para evitar bucles
+  this.inspectionForm.patchValue(dataParaFormulario, { emitEvent: false });
+  
+  // ✅ Actualizar formulario de teléfono si existe el campo
+  if (dataParaFormulario.telefono) {
+    this.phoneForm.patchValue({
+      localNumber: dataParaFormulario.telefono.replace('+57', '') // Ajustar según tu formato
+    }, { emitEvent: false });
+  }
+  
+  // ✅ Actualizar la referencia local de datos
+  this.inspectionData = dataParaFormulario;
+  
+  console.log('✅ Formulario actualizado con datos del servidor');
+}
+/**
+ * Muestra alerta cuando se intenta exportar una inspección en estado borrador
+ */
+public showNoExport(): void {
+  Swal.fire({
+    title: '<i class="fas fa-file-pdf text-danger"></i> Exportación no disponible',
+    html: `
+      <div class="py-2">
+        <p class="mb-3">La inspección no puede ser exportada porque está en estado de <strong class="text-warning">Borrador</strong>.</p>
+        <div class="alert alert-light border small mb-0">
+          <i class="fas fa-lightbulb text-warning me-2"></i>
+          Complete la inspección marcando todos los ítems (C/N/C/N/A) y guarde los cambios para habilitar la exportación.
+        </div>
+      </div>
+    `,
+    icon: 'warning',
+    confirmButtonText: 'Cerrar',
+    confirmButtonColor: '#02376b',
+    showCancelButton: true,
+    cancelButtonText: 'Ir a editar',
+    cancelButtonColor: '#6c757d',
+    reverseButtons: true
+  }).then((result) => {
+    if (result.isConfirmed) {
+      // Opcional: redirigir o enfocar algún campo
+      console.log('Usuario cerró la alerta');
+    } else if (result.dismiss === Swal.DismissReason.cancel) {
+      // Opcional: scroll a la sección de inspección
+      console.log('Usuario quiere editar');
+    }
+  });
+}
+/**
+ * Muestra alerta detallada con los campos pendientes cuando se intenta exportar en estado borrador
+ * @param formData - Datos actuales del formulario de inspección
+ */
+public showNoExportWithDetails(formData: any): void {
+  // Lista de campos de inspección agrupados por categoría para mejor visualización
+  const inspectionFieldsByCategory = {
+    '⚡ Sistema Eléctrico': [
+      'luces_navegacion', 'luces_frenado', 'luces_direccionales', 'luz_reversa',
+      'luces_estacionamiento', 'luces_posicion', 'luz_antineblina', 'luz_placa',
+      'tablero_instrumentos', 'bocina', 'bateria', 'aire_acondicionado'
+    ],
+    '🔧 Sistema Motor': [
+      'aceite_motor', 'aceite_transmision', 'liquido_refrigerante', 'liquido_frenos',
+      'filtro_aire', 'hidraulico_direccion', 'tension_correas'
+    ],
+    '🚗 Carrocería': [
+      'parachoque_delantero', 'parachoque_trasero', 'vidrios_seguridad', 'vidrios_laterales',
+      'limpia_brisas', 'guardabarros', 'estribos_laterales', 'placa_adhesivo', 'chapa_compuerta'
+    ],
+    '🎛️ Cabina': [
+      'tapiceria', 'manijas_seguros', 'vidrios_electricos', 'antideslizantes_pedales',
+      'freno_mano', 'tablero_instrumentos_interno'
+    ],
+    '🛡️ Seguridad Activa': [
+      'sistema_frenos', 'abs', 'sistema_direccion', 'espejos_laterales', 
+      'espejo_interno', 'freno_mano_seguridad'
+    ],
+    '🪑 Seguridad Pasiva': [
+      'cinturones_seguridad', 'airbags', 'cadena_sujecion', 'columna_direccion',
+      'apoyacabezas', 'barra_antivuelco', 'rejilla_vidrio_trasero'
+    ],
+    '🧰 Kit de Carretera': [
+      'conos_triangular', 'botiquin', 'extintor', 'cunas', 'llanta_repuesto',
+      'caja_herramientas', 'linterna', 'gato'
+    ],
+    '🔩 Parte Baja': [
+      'buies_barra', 'buies_tiera', 'cuna_motor', 'guardapolvo_axiales',
+      'amortiguadores', 'hojas_muelles', 'silenciadores', 'tanques_compresor'
+    ]
+  };
+
+  // 🔍 Identificar campos vacíos por categoría
+  const missingByCategory: { [category: string]: string[] } = {};
+  let totalMissing = 0;
+
+  Object.entries(inspectionFieldsByCategory).forEach(([category, fields]) => {
+    const missing = fields.filter(field => !formData[field] || formData[field] === '');
+    if (missing.length > 0) {
+      missingByCategory[category] = missing;
+      totalMissing += missing.length;
+    }
+  });
+
+  // 📋 Mapeo de nombres técnicos a nombres legibles para el usuario
+  const fieldLabels: { [key: string]: string } = {
+    'luces_navegacion': 'Luces de navegación',
+    'luces_frenado': 'Luces de frenado',
+    'luces_direccionales': 'Luces direccionales',
+    'luz_reversa': 'Luz de reversa',
+    'luces_estacionamiento': 'Luces de estacionamiento',
+    'luces_posicion': 'Luces de posición',
+    'luz_antineblina': 'Luz antineblina',
+    'luz_placa': 'Luz de placa',
+    'tablero_instrumentos': 'Tablero de instrumentos',
+    'bocina': 'Bocina',
+    'bateria': 'Batería',
+    'aire_acondicionado': 'Aire acondicionado',
+    'aceite_motor': 'Aceite del motor',
+    'aceite_transmision': 'Aceite de transmisión',
+    'liquido_refrigerante': 'Líquido refrigerante',
+    'liquido_frenos': 'Líquido de frenos',
+    'filtro_aire': 'Filtro de aire',
+    'hidraulico_direccion': 'Hidráulico de dirección',
+    'tension_correas': 'Tensión de correas',
+    'parachoque_delantero': 'Parachoques delantero',
+    'parachoque_trasero': 'Parachoques trasero',
+    'vidrios_seguridad': 'Vidrios de seguridad',
+    'vidrios_laterales': 'Vidrios laterales',
+    'limpia_brisas': 'Limpia brisas',
+    'guardabarros': 'Guardabarros',
+    'estribos_laterales': 'Estribos laterales',
+    'placa_adhesivo': 'Placa adhesiva',
+    'chapa_compuerta': 'Chapa compuerta',
+    'tapiceria': 'Tapicería',
+    'manijas_seguros': 'Manijas y seguros',
+    'vidrios_electricos': 'Vidrios eléctricos',
+    'antideslizantes_pedales': 'Antideslizantes de pedales',
+    'freno_mano': 'Freno de mano',
+    'tablero_instrumentos_interno': 'Tablero interno',
+    'sistema_frenos': 'Sistema de frenos',
+    'abs': 'Sistema ABS',
+    'sistema_direccion': 'Sistema de dirección',
+    'espejos_laterales': 'Espejos laterales',
+    'espejo_interno': 'Espejo interno',
+    'freno_mano_seguridad': 'Freno de seguridad',
+    'cinturones_seguridad': 'Cinturones de seguridad',
+    'airbags': 'Airbags',
+    'cadena_sujecion': 'Cadena de sujeción',
+    'columna_direccion': 'Columna de dirección',
+    'apoyacabezas': 'Apoyacabezas',
+    'barra_antivuelco': 'Barra antivuelco',
+    'rejilla_vidrio_trasero': 'Rejilla vidrio trasero',
+    'conos_triangular': 'Conos/triángulos',
+    'botiquin': 'Botiquín',
+    'extintor': 'Extintor',
+    'cunas': 'Cuñas de bloqueo',
+    'llanta_repuesto': 'Llanta de repuesto',
+    'caja_herramientas': 'Caja de herramientas',
+    'linterna': 'Linterna',
+    'gato': 'Gato elevador',
+    'buies_barra': 'Buies barra estabilizadora',
+    'buies_tiera': 'Buies de tierra',
+    'cuna_motor': 'Cuna de motor',
+    'guardapolvo_axiales': 'Guardapolvo axiales',
+    'amortiguadores': 'Amortiguadores',
+    'hojas_muelles': 'Hojas de muelles',
+    'silenciadores': 'Silenciadores',
+    'tanques_compresor': 'Tanques compresor'
+  };
+
+  // 🎨 Construir el HTML del mensaje
+  let missingHtml = `<div class="text-start"><p class="mb-2">Para exportar a PDF, completa los siguientes ítems:</p>`;
+  
+  Object.entries(missingByCategory).forEach(([category, fields]) => {
+    missingHtml += `<div class="mb-2"><strong class="text-primary">${category}</strong><ul class="mb-0 small ps-3">`;
+    fields.slice(0, 5).forEach(field => { // Mostrar máximo 5 por categoría para no saturar
+      const label = fieldLabels[field] || field;
+      missingHtml += `<li class="text-muted">• ${label}</li>`;
+    });
+    if (fields.length > 5) {
+      missingHtml += `<li class="text-muted fst-italic">• y ${fields.length - 5} más...</li>`;
+    }
+    missingHtml += `</ul></div>`;
+  });
+  
+  missingHtml += `</div>`;
+
+  // 🚨 Mostrar SweetAlert con detalles
+  Swal.fire({
+    title: `<i class="fas fa-clipboard-list text-warning"></i> Inspección incompleta`,
+    html: missingHtml,
+    icon: 'warning',
+    width: '600px',
+    confirmButtonText: 'Entendido',
+    confirmButtonColor: '#02376b',
+    showCancelButton: true,
+    cancelButtonText: 'Ir a completar',
+    cancelButtonColor: '#6c757d',
+    reverseButtons: true,
+    backdrop: true,
+    allowOutsideClick: false
+  }).then((result) => {
+    if (result.isConfirmed) {
+      // Usuario cerró la alerta
+      console.log('Usuario cerró la alerta de campos pendientes');
+    } else if (result.dismiss === Swal.DismissReason.cancel) {
+      // Usuario quiere ir a completar → hacer scroll a la sección de inspección
+      const inspectionSection = document.querySelector('#electrico');
+      if (inspectionSection) {
+        inspectionSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        // Resaltar visualmente la sección
+        inspectionSection.classList.add('bg-light', 'p-2', 'rounded');
+        setTimeout(() => {
+          inspectionSection.classList.remove('bg-light', 'p-2', 'rounded');
+        }, 2000);
+      }
+    }
+  });
+}
 // IMPORTANTE: Limpiar la suscripción para evitar memory leaks
 ngOnDestroy(): void {
   if (this.formSubscription) {
     this.formSubscription.unsubscribe();
   }
+}/**
+ * Previsualiza el estado que tendría la inspección con los cambios actuales
+ * (sin guardar, solo para mostrar al usuario)
+ */
+previsualizarEstado(): 'aprobada' | 'rechazada' | 'borrador' {
+  const formData = { ...this.inspectionForm.value };
+  return this.calcularEstadoInspeccion(formData);
 }
   ngOnInit(): void {
       // Suscribirse a los cambios del formulario principal
@@ -778,7 +1135,76 @@ ngOnDestroy(): void {
   printInspection(): void {
     window.print();
   }
+/**
+ * Calcula el estado de la inspección según las reglas de negocio:
+ * - 'borrador': Si hay al menos 1 campo de inspección sin seleccionar (vacío)
+ * - 'rechazada': Si hay al menos 1 campo con valor 'negativo' (N/C)
+ * - 'aprobada': Si todos los campos tienen valor seleccionado y ninguno es 'negativo'
+ */
+private calcularEstadoInspeccion(formData: any): 'aprobada' | 'rechazada' | 'borrador' {
+  // Lista de todos los campos de inspección con opciones C/N/C/N/A (radio buttons)
+  // Excluye campos numéricos (profundidad de labrado, presión) y campos de texto/fecha
+  const inspectionFields = [
+    // Sistema Eléctrico
+    'luces_navegacion', 'luces_frenado', 'luces_direccionales', 'luz_reversa',
+    'luces_estacionamiento', 'luces_posicion', 'luz_antineblina', 'luz_placa',
+    'tablero_instrumentos', 'bocina', 'bateria', 'aire_acondicionado',
+    
+    // Sistema Motor
+    'aceite_motor', 'aceite_transmision', 'liquido_refrigerante', 'liquido_frenos',
+    'filtro_aire', 'hidraulico_direccion', 'tension_correas',
+    
+    // Carrocería
+    'parachoque_delantero', 'parachoque_trasero', 'vidrios_seguridad', 'vidrios_laterales',
+    'limpia_brisas', 'guardabarros', 'estribos_laterales', 'placa_adhesivo', 'chapa_compuerta',
+    
+    // Cabina
+    'tapiceria', 'manijas_seguros', 'vidrios_electricos', 'antideslizantes_pedales',
+    'freno_mano', 'tablero_instrumentos_interno',
+    
+    // Seguridad Activa
+    'sistema_frenos', 'abs', 'sistema_direccion', 'espejos_laterales', 
+    'espejo_interno', 'freno_mano_seguridad',
+    
+    // Seguridad Pasiva
+    'cinturones_seguridad', 'airbags', 'cadena_sujecion', 'columna_direccion',
+    'apoyacabezas', 'barra_antivuelco', 'rejilla_vidrio_trasero',
+    
+    // Kit de Carretera
+    'conos_triangular', 'botiquin', 'extintor', 'cunas', 'llanta_repuesto',
+    'caja_herramientas', 'linterna', 'gato',
+    
+    // Parte Baja
+    'buies_barra', 'buies_tiera', 'cuna_motor', 'guardapolvo_axiales',
+    'amortiguadores', 'hojas_muelles', 'silenciadores', 'tanques_compresor'
+  ];
 
+  // 🔍 Verificar campos vacíos (sin seleccionar C/N/C/N/A)
+  const emptyFields = inspectionFields.filter(field => 
+    !formData[field] || formData[field] === ''
+  );
+  
+  // 🔍 Verificar campos con "negativo" (N/C)
+  const negativeFields = inspectionFields.filter(field => 
+    formData[field] === 'negativo'
+  );
+  
+  // 📋 Regla 1: Si hay al menos 1 campo vacío → BORRADOR
+  if (emptyFields.length > 0) {
+    console.log(`📝 Estado: borrador (${emptyFields.length} campos pendientes)`);
+    return 'borrador';
+  }
+  
+  // 📋 Regla 2: Si hay al menos 1 campo con "negativo" → RECHAZADA
+  if (negativeFields.length > 0) {
+    console.log(`❌ Estado: rechazada (${negativeFields.length} ítems no cumplen)`);
+    return 'rechazada';
+  }
+  
+  // 📋 Regla 3: Todos completos y sin negativos → APROBADA
+  console.log(`✅ Estado: aprobada (todos los ítems verificados)`);
+  return 'aprobada';
+}
   /**
    * Formatea una cadena de fecha al formato YYYY-MM-DD
    * @param dateString Cadena de fecha a formatear
@@ -827,6 +1253,15 @@ ngOnDestroy(): void {
 
   async imprimirInspeccion(): Promise<void> {
     try {
+          // ✅ Validar estado antes de generar PDF
+    const estadoActual = this.inspectionForm.get('estado')?.value;
+    
+    if (estadoActual === 'borrador') {
+      // 🎯 Mostrar alerta detallada con campos pendientes
+      const formData = { ...this.inspectionForm.value };
+      this.showNoExportWithDetails(formData);
+      return; // Detiene la ejecución
+    }
       Swal.fire({
         title: 'Generando PDF...',
         html: 'Procesando datos e imágenes...',

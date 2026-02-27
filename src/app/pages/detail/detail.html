@@ -9,9 +9,21 @@
             <a routerLink="/inspections" style="cursor: pointer;">
               <i class="fi fi-rr-home"></i>
               <span class="inactive">Inspecciones</span>
+               
             </a>
           </li>
-          <li class="breadcrumb-item active2" aria-current="page">Detalle de inspeccion</li>
+          <li class="breadcrumb-item active2" aria-current="page">Detalle de inspeccion
+    {{ inspectionForm.value.numero_certificado | titlecase }}
+
+             <span class="badge" 
+        [ngClass]="{
+          'bg-success': inspectionForm.value.estado === 'aprobada',
+          'bg-warning': inspectionForm.value.estado === 'borrador',
+          'bg-danger': inspectionForm.value.estado === 'rechazada'
+        }">
+    {{ inspectionForm.value.estado | titlecase }}
+  </span>
+          </li>
         </ol>
       </nav>
     </div>
@@ -1484,13 +1496,18 @@
     </label>
     <div class="fab-options">
 
-      <a routerLink="/busetas" class="fab-option">
+      <!-- <a routerLink="/busetas" class="fab-option">
         <span class="fab-label ">Generar a partir de esta</span>
         <i class="fab-option-icon fi fi-rs-refresh"></i>
-      </a>
-      <a  (click)="imprimirInspeccion()"  class="fab-option">
+      </a> -->
+      <a style="cursor:pointer;" (click)="imprimirInspeccion()"  class="fab-option"  [hidden]="inspectionForm.value.estado === 'borrador'">
         <span class="fab-label">Exportar a PDF</span>
         <i class="fab-option-icon fi fi-rs-download"></i>
+      </a>
+       <a  style="cursor:pointer;" (click)="imprimirInspeccion()"  class="fab-option"  [hidden]="inspectionForm.value.estado !== 'borrador'">
+       <span class="fab-label">Exportar a PDF</span>
+        <i class="fab-option-icon fi fi-rs-download"></i>
+   <!-- <i class="fab-option-icon fi fi-rs-info"></i>  -->
       </a>
       <!-- <a (click)="pending()" class="fab-option">
         <span class="fab-label text-warning">Pesados</span>
@@ -1498,6 +1515,7 @@
       </a> -->
     </div>
   </div>
+<!-- Indicador de estado pendiente (dentro del botón flotante o cerca) -->
 
   <style>
     .floating-action {
@@ -1614,6 +1632,16 @@
     type="button" 
     class="btn btn-primary btn-save-floating shadow-lg" 
     (click)="saveChanges()">
+    <div class="status-preview" *ngIf="hasChanges">
+  <span class="badge" 
+        [ngClass]="{
+          'bg-success': previsualizarEstado() === 'aprobada',
+          'bg-warning': previsualizarEstado() === 'borrador',
+          'bg-danger': previsualizarEstado() === 'rechazada'
+        }">
+    {{ previsualizarEstado() | titlecase }}
+  </span>
+</div>
     <i class="fas fa-save me-2"></i>Guardar Cambios
   </button>
   
