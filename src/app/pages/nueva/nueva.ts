@@ -170,7 +170,6 @@ export class Nueva implements AfterViewInit, OnInit {
       cinturones_seguridad: [''],
       airbags: [''],
       cadena_sujecion: [''],
-      columna_direccion: [''],
       apoyacabezas: [''],
       barra_antivuelco: [''],
       rejilla_vidrio_trasero: [''],
@@ -220,6 +219,13 @@ export class Nueva implements AfterViewInit, OnInit {
       // SISTEMA DE DIRECCION
 
       hidraulico_direccion: [''],
+      columna_direccion: [''],
+
+      caja_deposito: [''],
+      barras_bujes: [''],
+      terminales: [''],
+      protectores: [''],
+
 
 
     });
@@ -687,7 +693,7 @@ export class Nueva implements AfterViewInit, OnInit {
 
       // Seguridad Activa
       'abs', 'espejos_laterales',
-      'espejo_interno', 
+      'espejo_interno',
 
       // Seguridad Pasiva
       'cinturones_seguridad', 'airbags', 'cadena_sujecion', 'columna_direccion',
@@ -700,18 +706,22 @@ export class Nueva implements AfterViewInit, OnInit {
       // Parte Baja
       'buies_barra', 'buies_tiera', 'cuna_motor', 'guardapolvo_axiales',
       'amortiguadores', 'hojas_muelles', 'silenciadores', 'tanques_compresor',
-      
+
       //Sistema Frenos
       //  'sistema_frenos',
       'freno_mano_seguridad',
       'liquido_frenos',
-      'bomba_frenos',      
+      'bomba_frenos',
       'pedal_frenos',
 
       //Sistema de Dirección
       // 'sistema_direccion',
+      'caja_deposito',
+      'barras_bujes',
+      'protectores',
+      'terminales',
       'hidraulico_direccion',
-      
+
     ];
 
     // 🔍 Verificar campos vacíos (sin seleccionar C/N/C/N/A)

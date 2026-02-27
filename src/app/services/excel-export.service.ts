@@ -512,8 +512,10 @@ export class ExcelExportService {
     this.marcarRadio(worksheet, 'H13', 'J13', 'L13', formData.pedal_frenos);
     this.marcarRadio(worksheet, 'H15', 'J15', 'L15', formData.bomba_frenos);
 
-
-
+    this.marcarRadio(worksheet, 'W9', 'Y9', 'AA9', formData.caja_deposito);
+    this.marcarRadio(worksheet, 'W11', 'Y11', 'AA11', formData.terminales);
+    this.marcarRadio(worksheet, 'W13', 'Y13', 'AA13', formData.barras_bujes);
+    this.marcarRadio(worksheet, 'W15', 'Y15', 'AA15', formData.protectores);
     this.marcarRadio(worksheet, 'W19', 'Y19', 'AA19', formData.hidraulico_direccion);
     this.marcarRadio(worksheet, 'W17', 'Y17', 'AA17', formData.columna_direccion);
 
