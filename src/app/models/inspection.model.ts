@@ -41,7 +41,7 @@ numero_certificado?:string,
   fecha_vencimiento_tarjeta_operacion?: string;
   
   // Estado y validación
-  estado?: 'approved' | 'rejected' | 'pending' | string;
+  estado?: 'aprbada' | 'rechazada' | 'borrador' | string;
   
   // Información adicional
   nombre_transportadora?: string;

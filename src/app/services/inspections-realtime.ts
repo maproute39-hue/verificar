@@ -51,14 +51,27 @@ export class RealtimeInspectionsService implements OnDestroy {
   // }
 
 
-// Ejemplo en inspections-realtime.service.ts
+/**
+ * Elimina una inspección por su ID
+ * @param id ID de la inspección a eliminar (record.id de PocketBase)
+ * @returns Promesa que se resuelve cuando se completa la eliminación
+ */
 async deleteInspection(id: string): Promise<void> {
-  await this.pb.collection('inspections').delete(id);
-  
-  // ✅ Emitir nueva lista sin el elemento eliminado
-  this.inspectionsSubject.next(
-    this.inspectionsSubject.value.filter(insp => insp.id_inspeccion !== id)
-  );
+  try {
+    // ✅ 1. Eliminar en PocketBase
+    await this.pb.collection(this.COLLECTION).delete(id);
+    
+    // ✅ 2. NO actualizar manualmente la lista aquí
+    // El evento realtime 'delete' se encargará de actualizar inspectionsSubject
+    // a través de handleRealtimeEvent(), evitando duplicados
+    
+    console.log(`[RealtimeInspectionsService] Inspección ${id} eliminada exitosamente`);
+    
+  } catch (error) {
+    console.error('[RealtimeInspectionsService] Error al eliminar:', error);
+    this.errorSubject.next(error instanceof Error ? error : new Error(String(error)));
+    throw error; // Propagar el error para que el componente lo maneje
+  }
 }
 
 
@@ -74,70 +87,88 @@ async deleteInspection(id: string): Promise<void> {
     this.subscribe();
   }
 
-  async subscribe(autoLoad: boolean = true): Promise<void> {
-    if (this.isSubscribed) {
-      console.log('[RealtimeInspectionsService] Ya está suscrito');
+async subscribe(autoLoad: boolean = true): Promise<void> {
+  if (this.isSubscribed) {
+    console.log('[RealtimeInspectionsService] Ya está suscrito');
+    return;
+  }
+
+  try {
+    // ✅ Validación estricta de autenticación
+    if (!this.pb.authStore.isValid) {
+      const error = new Error('Autenticación requerida para suscripción realtime');
+      console.warn('[RealtimeInspectionsService]', error.message);
+      this.errorSubject.next(error);
       return;
     }
 
-    try {
-      if (!this.pb.authStore.isValid) {
-        console.warn('[RealtimeInspectionsService] No hay sesión activa. Conéctate primero.');
+    // ✅ Suscribirse a eventos realtime
+    this.pb.collection(this.COLLECTION).subscribe('*', (event: RecordSubscription<Inspection>) => {
+      if (['create', 'update', 'delete'].includes(event.action)) {
+        const mappedEvent: RealtimeEvent = {
+          ...event,
+          action: event.action as 'create' | 'update' | 'delete'
+        };
+        console.log('[Realtime] Evento recibido:', mappedEvent.action, mappedEvent.record.id);
+        this.eventsSubject.next(mappedEvent);
+        this.handleRealtimeEvent(mappedEvent);
       }
+    });
 
-      // Actualizamos la suscripción con el tipado correcto
-      this.pb.collection(this.COLLECTION).subscribe('*', (event: RecordSubscription<Inspection>) => {
-        if (['create', 'update', 'delete'].includes(event.action)) {
-          const mappedEvent: RealtimeEvent = {
-            ...event,
-            action: event.action as 'create' | 'update' | 'delete'
-          };
-          console.log('[Realtime] Evento recibido:', mappedEvent.action, mappedEvent.record.id);
-          this.eventsSubject.next(mappedEvent);
-          this.handleRealtimeEvent(mappedEvent);
-        }
-      });
+    this.isSubscribed = true;
+    console.log('[RealtimeInspectionsService] ✓ Suscripción activa');
 
-      this.isSubscribed = true;
-      console.log('[RealtimeInspectionsService] ✓ Suscripción activa');
-
-      if (autoLoad) {
-        await this.loadInspections();
-      }
-    } catch (error) {
-      this.handleError(error as Error);
-      throw error;
+    if (autoLoad) {
+      await this.loadInspections();
     }
+  } catch (error) {
+    this.handleError(error as Error);
+    throw error;
   }
+}
+
+// ✅ Método para cancelar suscripción manualmente (útil para testing o logout)
+unsubscribe(): void {
+  try {
+    this.pb.collection(this.COLLECTION).unsubscribe();
+    this.isSubscribed = false;
+    console.log('[RealtimeInspectionsService] ✗ Suscripción cancelada');
+  } catch (error) {
+    this.handleError(error as Error);
+  }
+}
   /**
    * Manejar eventos en tiempo real
    */
-  private handleRealtimeEvent(event: RealtimeEvent): void {
-    const currentInspections = this.inspectionsSubject.value;
+/**
+ * Manejar eventos en tiempo real
+ */
+private handleRealtimeEvent(event: RealtimeEvent): void {
+  const currentInspections = this.inspectionsSubject.value;
 
-    switch (event.action) {
-      case 'create':
-        // Agregar al inicio (más reciente primero)
-        this.inspectionsSubject.next([event.record, ...currentInspections]);
-        break;
+  switch (event.action) {
+    case 'create':
+      // Agregar al inicio (más reciente primero)
+      this.inspectionsSubject.next([event.record, ...currentInspections]);
+      break;
 
-      case 'update':
-        // Buscar y actualizar el registro
-        const updatedList = currentInspections.map(insp =>
-          insp.id === event.record.id ? event.record : insp
-        );
-        this.inspectionsSubject.next(updatedList);
-        break;
+    case 'update':
+      // Buscar y actualizar el registro usando event.record.id (estándar PocketBase)
+      const updatedList = currentInspections.map(insp =>
+        insp.id === event.record.id ? event.record : insp
+      );
+      this.inspectionsSubject.next(updatedList);
+      break;
 
-      case 'delete':
-        // Eliminar el registro
-        this.inspectionsSubject.next(
-          currentInspections.filter(insp => insp.id !== event.record.id)
-        );
-        break;
-    }
+    case 'delete':
+      // ✅ Eliminar usando event.record.id (NO id_inspeccion)
+      this.inspectionsSubject.next(
+        currentInspections.filter(insp => insp.id !== event.record.id)
+      );
+      console.log(`[Realtime] Inspección ${event.record.id} eliminada de la lista local`);
+      break;
   }
-
+}
   /**
    * Cargar lista completa de inspecciones
    */
