@@ -341,7 +341,7 @@ export class Nueva implements AfterViewInit, OnInit {
     });
 
     // Obtener el próximo número de certificado (sin actualizar)
-    this.inspectionService.getNextCertificateNumberPreview('C').then(num => {
+    this.inspectionService.getNextCertificateNumberPreview('U').then(num => {
       this.nextCertificateNumber = num;
     }).catch(error => {
       console.error('Error al obtener número de certificado:', error);
