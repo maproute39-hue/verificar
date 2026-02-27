@@ -195,6 +195,7 @@ export class Nueva implements AfterViewInit, OnInit {
       tanques_compresor: [''],
 
       // ===LABRADO LLANTAS ===
+      llanta_di:[''],
       llanta_dd: [''],          // Delantera Derecha
       llanta_tie: [''],         // Trasera Izquierda Exterior
       llanta_tde: [''],         // Trasera Derecha Exterior
@@ -673,7 +674,10 @@ export class Nueva implements AfterViewInit, OnInit {
     // Excluye campos numéricos (profundidad, presión) y campos de texto/fecha
     const inspectionFields = [
       // Sistema Eléctrico
-      'luces_navegacion', 'luces_frenado', 'luces_direccionales', 'luz_reversa',
+      'luces_navegacion', 
+      'luces_frenado',
+       'luces_direccionales',
+        'luz_reversa',
       'luces_estacionamiento', 'luces_posicion', 'luz_antineblina', 'luz_placa',
       'tablero_instrumentos', 'bocina', 'bateria', 'aire_acondicionado',
 
@@ -785,7 +789,7 @@ export class Nueva implements AfterViewInit, OnInit {
         const estado = this.calculateEstado(inspectionData);
 
         // 3. Obtener número de certificado
-        const numero_certificado = await this.inspectionService.getNextCertificateNumber('C');
+        const numero_certificado = await this.inspectionService.getNextCertificateNumber('U');
 
         // 4. Validar
         const validation = this.inspectionService.validateInspectionData(inspectionData);
