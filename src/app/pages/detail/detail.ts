@@ -97,6 +97,7 @@ export class Detail implements OnInit, AfterViewInit {
 
     // Inicialización del formulario principal con sus validaciones
     this.inspectionForm = this.fb.group({
+
       // Sección: Fechas (todas son campos requeridos)
       fecha_inspeccion: ['', Validators.required],
       fecha_vigencia: ['', Validators.required],
@@ -249,7 +250,7 @@ export class Detail implements OnInit, AfterViewInit {
     });
 
     this.phoneForm = this.fb.group({
-      localNumber: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]]
+      telefono: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]]
     });
   }
 
@@ -695,7 +696,14 @@ export class Detail implements OnInit, AfterViewInit {
 
       const id = this.route.snapshot.paramMap.get('id');
       if (!id) throw new Error('No hay ID de inspección');
-
+  // ✅ NUEVO: Sincronizar phoneForm con inspectionForm ANTES de guardar
+    const phoneValue = this.phoneForm.get('telefono')?.value;
+    if (phoneValue) {
+      this.inspectionForm.patchValue({
+        telefono: phoneValue
+      }, { emitEvent: false });
+    }
+    
       // Obtener los valores del formulario
       const formData = { ...this.inspectionForm.value };
 
@@ -770,7 +778,7 @@ export class Detail implements OnInit, AfterViewInit {
     // ✅ Actualizar formulario de teléfono si existe el campo
     if (dataParaFormulario.telefono) {
       this.phoneForm.patchValue({
-        localNumber: dataParaFormulario.telefono.replace('+57', '') // Ajustar según tu formato
+        telefono: dataParaFormulario.telefono.replace('+57', '') // Ajustar según tu formato
       }, { emitEvent: false });
     }
 
@@ -1155,11 +1163,11 @@ export class Detail implements OnInit, AfterViewInit {
     this.inspectionForm.patchValue(formattedData, { emitEvent: false });
 
     // Actualiza el formulario del teléfono si existe
-    if (formattedData.telefono) {
-      this.phoneForm.patchValue({
-        telefono: formattedData.telefono
-      }, { emitEvent: false });
-    }
+ if (formattedData.telefono) {
+    this.phoneForm.patchValue({
+      telefono: formattedData.telefono.replace('+57', '')  // ← Usar 'telefono'
+    }, { emitEvent: false });
+  }
   }
 
   /**
@@ -1278,7 +1286,7 @@ export class Detail implements OnInit, AfterViewInit {
  * @returns true si el campo tiene valor, false si está vacío
  */
 getPhoneFieldClass(): string {
-  const control = this.phoneForm.get('localNumber');
+  const control = this.phoneForm.get('telefono');
   if (!control) return 'field-empty';
   
   const value = control.value;

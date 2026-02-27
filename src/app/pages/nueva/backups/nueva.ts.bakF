@@ -192,12 +192,12 @@ export class Nueva implements AfterViewInit, OnInit {
     });
 
     this.phoneForm = this.fb.group({
-      localNumber: ['', [Validators.required, Validators.pattern(/^\d{10}$/)]]
+      telefono: ['', [Validators.required, Validators.pattern(/^\d{10}$/)]]
     });
   }
   
   ngOnInit() {
-    this.phoneForm.get('localNumber')?.valueChanges.subscribe(value => {
+    this.phoneForm.get('telefono')?.valueChanges.subscribe(value => {
       if (value) {
         this.inspectionForm.patchValue({ telefono: value });
       }
@@ -476,7 +476,7 @@ private forceCalendarVisibility() {
         if (!this.inspectionForm.get('identificacion')?.value) {
           errors.push('• No. Identificación es requerido');
         }
-        if (!this.phoneForm.get('localNumber')?.value) {
+        if (!this.phoneForm.get('telefono')?.value) {
           errors.push('• Teléfono es requerido');
         }
         if (!this.inspectionForm.get('fecha_vencimiento_licencia')?.value) {
@@ -532,7 +532,7 @@ private forceCalendarVisibility() {
           this.inspectionForm.get('nombre_transportadora')?.value &&
           this.inspectionForm.get('nombres_conductor')?.value &&
           this.inspectionForm.get('identificacion')?.value &&
-          this.phoneForm.get('localNumber')?.value &&
+          this.phoneForm.get('telefono')?.value &&
           this.inspectionForm.get('fecha_vencimiento_licencia')?.value
         );
       case 3:

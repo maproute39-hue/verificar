@@ -201,7 +201,7 @@ export class Detail implements OnInit, AfterViewInit {
     });
 
     this.phoneForm = this.fb.group({
-      localNumber: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]]
+      telefono: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]]
     });
   }
 

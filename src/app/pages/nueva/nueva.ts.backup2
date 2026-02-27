@@ -225,7 +225,7 @@ export class Nueva implements AfterViewInit, OnInit {
 
     // Inicialización del formulario del teléfono
     this.phoneForm = this.fb.group({
-      localNumber: ['', [Validators.required, Validators.pattern(/^\d{10}$/)]],
+      telefono: ['', [Validators.required, Validators.pattern(/^\d{10}$/)]],
       whatsapp: [false] // Default to false
     });
   }
@@ -326,7 +326,7 @@ async uploadImagesToCollection(): Promise<string[]> {
 }
   ngOnInit() {
     // Sincronizar teléfono entre formularios
-    this.phoneForm.get('localNumber')?.valueChanges.subscribe(value => {
+    this.phoneForm.get('telefono')?.valueChanges.subscribe(value => {
       if (value) {
         this.inspectionForm.patchValue({ telefono: value });
       }
@@ -646,7 +646,7 @@ async uploadImagesToCollection(): Promise<string[]> {
     }
 
     // Validar teléfono desde phoneForm
-    const phoneControl = this.phoneForm.get('localNumber');
+    const phoneControl = this.phoneForm.get('telefono');
     phoneControl?.markAsTouched();
     if (phoneControl?.invalid) {
       this.showStepError('Por favor ingrese un número de teléfono válido de 10 dígitos.');
@@ -793,7 +793,7 @@ async uploadImagesToCollection(): Promise<string[]> {
       // Incluir el valor de whatsapp del phoneForm
       whatsapp: this.phoneForm.get('whatsapp')?.value || false,
       // Incluir el teléfono del formulario de teléfono
-      telefono: this.phoneForm.get('localNumber')?.value || inspectionData.telefono,
+      telefono: this.phoneForm.get('telefono')?.value || inspectionData.telefono,
       
       fecha_inspeccion: formatDateForAPI(inspectionData.fecha_inspeccion),
       fecha_vigencia: formatDateForAPI(inspectionData.fecha_vigencia),

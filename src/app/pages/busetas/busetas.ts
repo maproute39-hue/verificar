@@ -210,13 +210,13 @@ export class Busetas implements AfterViewInit, OnInit {
 
     // Inicialización del formulario del teléfono
     this.phoneForm = this.fb.group({
-      localNumber: ['', [Validators.required, Validators.pattern(/^\d{10}$/)]]
+      telefono: ['', [Validators.required, Validators.pattern(/^\d{10}$/)]]
     });
   }
 
   ngOnInit() {
     // Sincronizar teléfono entre formularios
-    this.phoneForm.get('localNumber')?.valueChanges.subscribe(value => {
+    this.phoneForm.get('telefono')?.valueChanges.subscribe(value => {
       if (value) {
         this.inspectionForm.patchValue({ telefono: value });
       }
@@ -536,7 +536,7 @@ export class Busetas implements AfterViewInit, OnInit {
     }
 
     // Validar teléfono desde phoneForm
-    const phoneControl = this.phoneForm.get('localNumber');
+    const phoneControl = this.phoneForm.get('telefono');
     phoneControl?.markAsTouched();
     if (phoneControl?.invalid) {
       this.showStepError('Por favor ingrese un número de teléfono válido de 10 dígitos.');

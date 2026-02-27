@@ -226,7 +226,7 @@
                 <div [formGroup]="phoneForm">
                   <div class="input-group mb-2">
                     <span class="input-group-text">+57</span>
-                    <input type="tel" class="form-control" formControlName="localNumber" 
+                    <input type="tel" class="form-control" formControlName="telefono" 
                       [ngClass]="getPhoneFieldClass()"
                       placeholder="3001234567" maxlength="10" />
                   </div>
@@ -237,12 +237,12 @@
                       <i class="fab fa-whatsapp me-1 text-success"></i> ¿Es número de WhatsApp?
                     </label>
                   </div>
-                  <div *ngIf="phoneForm.get('localNumber')?.errors && phoneForm.get('localNumber')?.touched"
+                  <div *ngIf="phoneForm.get('telefono')?.errors && phoneForm.get('telefono')?.touched"
                     class="text-danger small">
-                    <div *ngIf="phoneForm.get('localNumber')?.hasError('required')">
+                    <div *ngIf="phoneForm.get('telefono')?.hasError('required')">
                       El número de teléfono es obligatorio.
                     </div>
-                    <div *ngIf="phoneForm.get('localNumber')?.hasError('pattern')">
+                    <div *ngIf="phoneForm.get('telefono')?.hasError('pattern')">
                       Ingrese 10 dígitos válidos (ej: 3001234567).
                     </div>
                   </div>

@@ -196,7 +196,7 @@ export class Nueva implements AfterViewInit, OnInit {
 
     // Inicialización del formulario del teléfono con sus validaciones
     this.phoneForm = this.fb.group({
-      localNumber: ['', [Validators.required, Validators.pattern(/^\d{10}$/)]]
+      telefono: ['', [Validators.required, Validators.pattern(/^\d{10}$/)]]
     });
   }
   
@@ -206,7 +206,7 @@ export class Nueva implements AfterViewInit, OnInit {
    */
   ngOnInit() {
     // Sincronizar teléfono entre formularios
-    this.phoneForm.get('localNumber')?.valueChanges.subscribe(value => {
+    this.phoneForm.get('telefono')?.valueChanges.subscribe(value => {
       if (value) {
         this.inspectionForm.patchValue({ telefono: value });
       }

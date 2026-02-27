@@ -233,7 +233,7 @@ export class Nueva implements AfterViewInit, OnInit {
 
     // Inicialización del formulario del teléfono
     this.phoneForm = this.fb.group({
-      localNumber: ['', [Validators.required, Validators.pattern(/^\d{10}$/)]],
+      telefono: ['', [Validators.required, Validators.pattern(/^\d{10}$/)]],
       whatsapp: [false] // Valor por defecto: falso
     });
   }
@@ -335,7 +335,7 @@ export class Nueva implements AfterViewInit, OnInit {
   ngOnInit() {
     this.sharedService.currentRoute = this.route.snapshot.url[0].path;
     // Sincronizar teléfono entre formularios
-    this.phoneForm.get('localNumber')?.valueChanges.subscribe(value => {
+    this.phoneForm.get('telefono')?.valueChanges.subscribe(value => {
       if (value) {
         this.inspectionForm.patchValue({ telefono: value });
       }
@@ -571,7 +571,7 @@ export class Nueva implements AfterViewInit, OnInit {
     }
 
     // Validar teléfono desde phoneForm
-    const phoneControl = this.phoneForm.get('localNumber');
+    const phoneControl = this.phoneForm.get('telefono');
     phoneControl?.markAsTouched();
     if (phoneControl?.invalid) {
       this.showStepError('Por favor ingrese un número de teléfono válido de 10 dígitos.');
@@ -817,7 +817,7 @@ export class Nueva implements AfterViewInit, OnInit {
           // Incluir el valor de whatsapp del phoneForm
           whatsapp: this.phoneForm.get('whatsapp')?.value || false,
           // Incluir el teléfono del formulario de teléfono
-          telefono: this.phoneForm.get('localNumber')?.value || inspectionData.telefono,
+          telefono: this.phoneForm.get('telefono')?.value || inspectionData.telefono,
 
           fecha_inspeccion: formatDateForAPI(inspectionData.fecha_inspeccion),
           fecha_vigencia: formatDateForAPI(inspectionData.fecha_vigencia),
@@ -913,7 +913,7 @@ getFieldClass(fieldName: string): string {
  * Obtiene la clase CSS para el campo de teléfono (phoneForm)
  */
 getPhoneFieldClass(): string {
-  const control = this.phoneForm.get('localNumber');
+  const control = this.phoneForm.get('telefono');
   if (!control) return 'field-empty';
   
   const value = control.value;
