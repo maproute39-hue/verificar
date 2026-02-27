@@ -13,7 +13,7 @@ import { GotenbergService } from '../../services/gotenberg.service';
 import { LightboxModule, Lightbox } from 'ngx-lightbox';
 import { ChangeDetectorRef } from '@angular/core';
 import { NgZone } from '@angular/core';
-
+import { Subscription } from 'rxjs';
 
 declare const flatpickr: any;
 
@@ -68,7 +68,8 @@ export class Detail implements OnInit, AfterViewInit {
   inspectionData: Inspection | null = null;
   // Bandera para controlar el estado de carga
   isLoading: boolean = false;
-
+hasChanges: boolean = false;
+private formSubscription?: Subscription;
   /**
    * Constructor del componente
    * @param fb Servicio para crear formularios reactivos
@@ -575,7 +576,56 @@ export class Detail implements OnInit, AfterViewInit {
   closeLightbox(): void {
     this._lightbox.close();
   }
+  async saveChanges(): Promise<void> {
+  if (!this.inspectionForm.valid) {
+    Swal.fire('Validación', 'Por favor completa los campos requeridos', 'warning');
+    return;
+  }
+
+  try {
+    Swal.fire({
+      title: 'Guardando...',
+      html: 'Procesando cambios de la inspección',
+      allowOutsideClick: false,
+      didOpen: () => Swal.showLoading()
+    });
+
+    const id = this.route.snapshot.paramMap.get('id');
+    if (!id) throw new Error('No hay ID de inspección');
+
+    // Obtener los valores del formulario
+    const formData = { ...this.inspectionForm.value };
+
+    // ✅ Aquí llamas a tu servicio para actualizar la inspección
+    // Ejemplo con PocketBase:
+    await this.inspectionService.pb.collection('inspections').update(id, formData);
+
+    // ✅ Si también manejas imágenes, aquí podrías agregar esa lógica
+
+    // Marcar el formulario como "limpio" para ocultar el botón
+    this.inspectionForm.markAsPristine();
+    this.hasChanges = false;
+
+    Swal.fire('Éxito', 'Cambios guardados correctamente', 'success');
+
+  } catch (error) {
+    console.error('Error al guardar:', error);
+    Swal.fire('Error', 'No se pudieron guardar los cambios', 'error');
+  }
+}
+
+// IMPORTANTE: Limpiar la suscripción para evitar memory leaks
+ngOnDestroy(): void {
+  if (this.formSubscription) {
+    this.formSubscription.unsubscribe();
+  }
+}
   ngOnInit(): void {
+      // Suscribirse a los cambios del formulario principal
+  this.formSubscription = this.inspectionForm.valueChanges.subscribe(() => {
+    // El formulario se marca como 'dirty' cuando el usuario modifica algún valor
+    this.hasChanges = this.inspectionForm.dirty;
+  });
     this.route.paramMap.subscribe(params => {
       const id = params.get('id');
       if (id) {

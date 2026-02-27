@@ -19,9 +19,6 @@
       <!-- columna izquierda -->
       <div class="col-lg-6 mb-3">
         <!-- Encabezado General -->
-
-
-
         <div class="col-12 mb-3">
           <h6 class="fw-bold border-bottom titulo ">DATOS GENERALES</h6>
         </div>
@@ -1474,7 +1471,7 @@
       </button>
     </div> -->
   </div>
-   <div class="floating-action d-lg-none">
+   <div class="floating-action d-lg-none" *ngIf="!hasChanges">
     <input type="checkbox" id="fab-check" class="fab-check">
     <label class="fab" for="fab-check">
       <span class="fab-icon">
@@ -1616,4 +1613,12 @@
       }
     }
   </style>
+  <div class="floating-save-container" *ngIf="hasChanges">
+  <button 
+    type="button" 
+    class="btn btn-primary btn-save-floating shadow-lg" 
+    (click)="saveChanges()">
+    <i class="fas fa-save me-2"></i>Guardar Cambios
+  </button>
+</div>
 </main>

@@ -170,3 +170,71 @@
   width: 100% !important;
   text-align: center !important;
 }
+// Contenedor del botón flotante
+.floating-save-container {
+  position: fixed;
+  bottom: 25px;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  z-index: 1050; // Por encima de modales y otros elementos
+  pointer-events: none; // Permite clicks a través del contenedor vacío
+  padding: 0 15px;
+}
+
+// Estilo del botón
+.btn-save-floating {
+  pointer-events: auto; // Reactiva los clicks en el botón
+  padding: 14px 35px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: 50px;
+  background: linear-gradient(135deg, #02376b 0%, #01254a 100%);
+  border: none;
+  box-shadow: 0 6px 20px rgba(2, 55, 107, 0.4);
+  transition: all 0.25s ease;
+  animation: slideUpFade 0.3s ease-out;
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(2, 55, 107, 0.6);
+    background: linear-gradient(135deg, #034a8f 0%, #02376b 100%);
+  }
+
+  &:active {
+    transform: translateY(-1px);
+    transition: none;
+  }
+
+  i {
+    font-size: 1.2rem;
+  }
+}
+
+// Animación de entrada
+@keyframes slideUpFade {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Ajustes para móviles
+@media (max-width: 768px) {
+  .floating-save-container {
+    bottom: 15px;
+    padding: 0 10px;
+  }
+  
+  .btn-save-floating {
+    width: 90%;
+    max-width: 400px;
+    padding: 12px 25px;
+    font-size: 1rem;
+  }
+}
