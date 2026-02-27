@@ -527,7 +527,6 @@ export class ExcelExportService {
 
 
 
-    this.setCell(worksheet, 'X4:AA6', formData.numero_certificado); // numero_certificado
 
     this.setCell(worksheet, 'U30', formData.llanta_di); // Ajustar según coordenadas reales
     this.setCell(worksheet, 'Y30', formData.llanta_dd);
@@ -673,6 +672,7 @@ export class ExcelExportService {
     this.marcarRadio(worksheet, 'W98', 'Y98', 'AA98', formData.hojas_muelles);
     this.marcarRadio(worksheet, 'W100', 'Y100', 'AA100', formData.silenciadores);
     this.marcarRadio(worksheet, 'W102', 'Y102', 'AA102', formData.tanques_compresor);
+    this.setCell(worksheet, 'X4:AA6', formData.numero_certificado); // numero_certificado
 
     console.log('✅ Todos los datos escritos exitosamente');
   }
@@ -844,7 +844,7 @@ export class ExcelExportService {
       console.log('📂 Cargando plantilla desde assets...');
 
       // ✅ Ruta CORRECTA según tu estructura (verifica en network tab del navegador)
-      const path = '/assets/templates/busetas.xlsx';
+      const path = '/assets/templates/inspection.xlsx';
       console.log('🔍 Cargando:', path);
 
       const response = await fetch(path);
