@@ -246,25 +246,25 @@
   transition: all 0.3s ease;
   
   &.field-filled {
-    background-color: #d4edda !important;  // Verde claro
-    border-color: #28a745 !important;       // Verde
+    background-color: #d4edda96 !important;  // Verde claro
+    border-color: transparent !important;       // Verde
     color: #155724;
     
     &:focus {
       background-color: #c3e6cb !important;
-      border-color: #28a745 !important;
+      border-color: transparent !important;
       box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
     }
   }
   
   &.field-empty {
     background-color: #e7f3ff !important;  // Azul claro
-    border-color: #007bff !important;       // Azul
+    border-color: transparent !important;       // Azul
     color: #004085;
     
     &:focus {
-      background-color: #d4e9ff !important;
-      border-color: #007bff !important;
+      background-color: #d4e9ff98 !important;
+      border-color: transparent !important;
       box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
     }
   }
@@ -273,13 +273,13 @@
 // Para los datepickers de flatpickr
 .flatpickr-input {
   &.field-filled {
-    background-color: #d4edda !important;
-    border-color: #28a745 !important;
+    background-color: #d4edda96 !important;
+    border-color: transparent !important;
   }
   
   &.field-empty {
     background-color: #e7f3ff !important;
-    border-color: #007bff !important;
+    border-color: transparent !important;
   }
 }
 
@@ -295,8 +295,8 @@
 .btn-check {
   &:checked + .btn {
     &.btn-success { // C - Cumple
-      background-color: #28a745 !important;
-      border-color: #28a745 !important;
+      background-color: transparent !important;
+      border-color: transparent !important;
     }
     &.btn-danger { // N/C - No Cumple
       background-color: #dc3545 !important;
