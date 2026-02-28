@@ -589,7 +589,37 @@ private base64ToArrayBuffer(base64: string): ArrayBuffer {
    * Procesa y escribe TODOS los datos en la hoja de Excel
    * ✅ PRESERVA ESTILOS: Solo modificamos .value, NUNCA .style
    */
-  private async insertarFirmaConductor(
+//   private async insertarFirmaConductor(
+//   worksheet: ExcelJS.Worksheet,
+//   firmaBase64: string | null | undefined,
+//   workbook: ExcelJS.Workbook
+// ): Promise<void> {
+//   if (!firmaBase64) {
+//     console.warn('⚠️ No hay firma del conductor para insertar');
+//     return;
+//   }
+
+//   try {
+//     console.log('🖊️ Insertando firma del conductor...');
+
+//     const buffer = this.base64ToArrayBuffer(firmaBase64);
+
+//     const imageId = workbook.addImage({
+//       buffer: buffer,
+//       extension: 'png'
+//     });
+
+//     worksheet.addImage(imageId, 'D57:L57');
+
+//     console.log('✅ Firma del conductor insertada en D57:L57');
+
+//   } catch (error) {
+//     console.error('❌ Error al insertar firma:', error);
+//   }
+// }
+
+
+private async insertarFirmaConductor(
   worksheet: ExcelJS.Worksheet,
   firmaBase64: string | null | undefined,
   workbook: ExcelJS.Workbook
@@ -608,13 +638,21 @@ private base64ToArrayBuffer(base64: string): ArrayBuffer {
     // 2. Agregar imagen al workbook
     const imageId = workbook.addImage({
       buffer: buffer,
-      extension: 'png'
+      extension: 'png',
+      // ✅ Opcional: Especificar dimensiones si conoces el tamaño de la firma
+      // width: 200,  // en píxeles
+      // height: 80   // en píxeles
     });
 
-    // ✅ 3. Insertar firma usando NOTACIÓN DE STRING (más simple y compatible)
-    worksheet.addImage(imageId, 'D57:L57');
+    // ✅ SOLUCIÓN: Usar rango estrecho y ajustar altura de fila
+    worksheet.addImage(imageId, 'E57:L59');
+    
+    // Ajustar altura de las filas para que quepa la firma
+    worksheet.getRow(57).height = 30;
+    worksheet.getRow(58).height = 30;
+    worksheet.getRow(59).height = 30;
 
-    console.log('✅ Firma del conductor insertada en D57:L57');
+    console.log('✅ Firma del conductor insertada correctamente');
 
   } catch (error) {
     console.error('❌ Error al insertar firma:', error);
