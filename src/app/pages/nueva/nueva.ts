@@ -11,7 +11,6 @@ import {
   NgSignaturePadOptions 
 } from '@almothafar/angular-signature-pad';
 declare const flatpickr: any;
-
 interface FlatpickrOptions {
   locale?: any;
   dateFormat: string;
@@ -31,17 +30,37 @@ interface FlatpickrOptions {
   imports: [CommonModule, ReactiveFormsModule, RouterModule, SignaturePadComponent]
 })
 export class Nueva implements AfterViewInit, OnInit {
+
+// Agrega esta propiedad
+@ViewChild('signaturePad', { read: ElementRef })
+signaturePadElement!: ElementRef<HTMLCanvasElement>;
+
+
+// Modifica signaturePadOptions
+signaturePadOptions: NgSignaturePadOptions = {
+  minWidth: 2,
+  maxWidth: 5,
+  penColor: 'rgb(0, 0, 0)',
+  backgroundColor: 'rgba(255, 255, 255, 1)',
+  // ✅ NO uses canvasWidth/canvasHeight aquí - lo manejaremos dinámicamente
+  throttle: 16,
+  minDistance: 5
+};
+
+
   @ViewChild('signaturePad') 
   signaturePad!: SignaturePadComponent;
     // Opciones configurables
-  signaturePadOptions: NgSignaturePadOptions = {
-    minWidth: 2,
-    maxWidth: 5,
-    penColor: 'rgb(0, 0, 0)',
-    backgroundColor: 'rgba(255, 255, 255, 1)',
-    canvasWidth: 500,  // Ancho fijo en px
-    canvasHeight: 300  // Alto fijo en px
-  };
+// signaturePadOptions: NgSignaturePadOptions = {
+//   minWidth: 2,
+//   maxWidth: 5,
+//   penColor: 'rgb(0, 0, 0)',
+//   backgroundColor: 'rgba(255, 255, 255, 1)',
+//   canvasWidth: 600,  
+//   canvasHeight: 250,
+//   throttle: 16,
+//   minDistance: 5
+// };
 
     firmaBase64: string | null = null;
 
@@ -254,7 +273,66 @@ export class Nueva implements AfterViewInit, OnInit {
     });
   }
   // === MÉTODOS PARA MANEJO DE IMÁGENES ===
+// ✅ MÉTODO CRÍTICO: Ajusta el canvas al contenedor
+private resizeCanvas(): void {
+  const ratio = Math.max(window.devicePixelRatio || 1, 1);
+  
+  // Obtener el canvas nativo
+  const canvas = this.signaturePadElement?.nativeElement.querySelector('canvas');
+  if (!canvas) {
+    console.warn('Canvas no encontrado');
+    return;
+  }
 
+  // Guardar datos actuales si existen
+  const data = this.signaturePad?.toData();
+
+  // Obtener dimensiones del contenedor padre
+  const container = canvas.parentElement;
+  if (!container) return;
+
+  // Ajustar dimensiones del canvas
+  canvas.width = container.offsetWidth * ratio;
+  canvas.height = 250 * ratio; // Altura fija de 250px
+  
+  // Escalar el contexto
+  const ctx = canvas.getContext('2d');
+  if (ctx) {
+    ctx.scale(ratio, ratio);
+  }
+
+  // Ajustar CSS del canvas
+  canvas.style.width = '100%';
+  canvas.style.height = '250px';
+
+  // Restaurar datos si existían
+  if (data && data.length > 0) {
+    this.signaturePad?.fromData(data);
+  }
+
+  console.log('Canvas redimensionado:', {
+    width: canvas.width,
+    height: canvas.height,
+    ratio: ratio
+  });
+}
+
+// Mejora initSignaturePad
+private initSignaturePad() {
+  if (this.signaturePad) {
+    try {
+      this.signaturePad.set('minWidth', 2);
+      this.signaturePad.set('maxWidth', 5);
+      
+      // Suscribirse al evento drawStart para asegurar que esté listo
+      console.log('✅ Signature pad inicializado correctamente');
+    } catch (error) {
+      console.warn('Error al inicializar signature pad:', error);
+    }
+  } else {
+    console.warn('⚠️ Signature pad no está disponible aún');
+  }
+}
   // Cuando el usuario selecciona archivos
   onFilesSelected(event: any): void {
     const files: FileList = event.target.files;
@@ -480,31 +558,49 @@ export class Nueva implements AfterViewInit, OnInit {
     this.initStep1DatePickers();
   }
 
-  private initSignaturePad() {
-    if (this.signaturePad) {
-      this.signaturePad.set('minWidth', 2);
-    }
-  }
+  // private initSignaturePad() {
+  //   if (this.signaturePad) {
+  //     try {
+  //       this.signaturePad.set('minWidth', 2);
+  //       console.log('Signature pad inicializado correctamente');
+  //     } catch (error) {
+  //       console.warn('Error al inicializar signature pad:', error);
+  //     }
+  //   } else {
+  //     console.warn('Signature pad no está disponible aún');
+  //   }
+  // }
   // Cuando el usuario termina de firmar
-  onFirmaCompletada() {
-    if (this.signaturePad && this.signaturePad.isEmpty()) {
-      alert('Por favor, firme antes de continuar');
-      return;
-    }
-    
-    // Obtener la firma como imagen Base64
-    this.firmaBase64 = this.signaturePad.toDataURL('image/png');
-    console.log('Firma capturada:', this.firmaBase64);
-    
-    // Aquí puedes enviarla a tu backend
-    // this.servicio.guardarFirma(this.firmaBase64).subscribe(...);
+onFirmaCompletada() {
+  if (!this.signaturePad) {
+    Swal.fire('Error', 'El canvas de firma no está disponible', 'error');
+    return;
   }
+  
+  if (this.signaturePad.isEmpty()) {
+    Swal.fire('Atención', 'Por favor firme antes de continuar', 'warning');
+    return;
+  }
+  
+  // Obtener la firma como imagen Base64
+  this.firmaBase64 = this.signaturePad.toDataURL('image/png');
+  console.log('✅ Firma capturada:', this.firmaBase64?.substring(0, 50) + '...');
+}
   // Limpiar la firma
   limpiarFirma() {
-    if (this.signaturePad) {
-      this.signaturePad.clear();
+    try {
+      if (this.signaturePad) {
+        this.signaturePad.clear();
+        console.log('Firma limpiada correctamente');
+      } else {
+        console.warn('Signature pad no disponible para limpiar');
+      }
+      this.firmaBase64 = null;
+    } catch (error) {
+      console.error('Error al limpiar la firma:', error);
+      // Fallback: resetear manualmente
+      this.firmaBase64 = null;
     }
-    this.firmaBase64 = null;
   }
 
   // Opcional: cuando empieza a dibujar
@@ -894,7 +990,7 @@ prevStep() {
           presion_llanta_t_lde: Number(inspectionData.presion_llanta_t_lde),
           presion_llanta_t_lii: Number(inspectionData.presion_llanta_t_lii),
           presion_llanta_t_ldi: Number(inspectionData.presion_llanta_t_ldi),
-  firma_conductor: this.firmaBase64,  // Base64 de la imagen
+          firma_conductor: this.firmaBase64,  // Base64 de la imagen
 
           numero_certificado: numero_certificado,
 

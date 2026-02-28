@@ -10,7 +10,7 @@
           </li> -->
           <li class="text-dark" aria-current="page">Nueva Inspeccion
             <span style="color:red; font-size: 20px !important; font-weight:bold !important;">
-            {{nextCertificateNumber}}
+              {{nextCertificateNumber}}
 
             </span>
 
@@ -95,7 +95,7 @@
           </li>
         </ul>
       </div> -->
-   <!-- STEP 1: DATOS GENERALES -->
+      <!-- STEP 1: DATOS GENERALES -->
       <div *ngIf="currentStep === 1" class="Datos Generales col-12 mb-3">
         <div class="card">
           <div class="card-header">
@@ -108,20 +108,20 @@
             <div class="row">
               <div class="col-lg-4 mb-3">
                 <label class="form-label">Fecha de Inspección <span class="text-danger">*</span></label>
-                <input #fechaInspeccion type="text" class="form-control date-picker" 
-                  formControlName="fecha_inspeccion" placeholder="Seleccione fecha" readonly
-                  [ngClass]="getFieldClass('fecha_inspeccion')">
-                <div *ngIf="inspectionForm.get('fecha_inspeccion')?.touched && inspectionForm.get('fecha_inspeccion')?.errors?.['required']"
+                <input #fechaInspeccion type="text" class="form-control date-picker" formControlName="fecha_inspeccion"
+                  placeholder="Seleccione fecha" readonly [ngClass]="getFieldClass('fecha_inspeccion')">
+                <div
+                  *ngIf="inspectionForm.get('fecha_inspeccion')?.touched && inspectionForm.get('fecha_inspeccion')?.errors?.['required']"
                   class="text-danger small">
                   Este campo es requerido
                 </div>
               </div>
               <div class="col-lg-4 mb-3">
                 <label class="form-label">Vigencia Hasta <span class="text-danger">*</span></label>
-                <input #fechaVigencia type="text" class="form-control date-picker" 
-                  formControlName="fecha_vigencia" placeholder="Seleccione fecha" readonly
-                  [ngClass]="getFieldClass('fecha_vigencia')">
-                <div *ngIf="inspectionForm.get('fecha_vigencia')?.touched && inspectionForm.get('fecha_vigencia')?.errors?.['required']"
+                <input #fechaVigencia type="text" class="form-control date-picker" formControlName="fecha_vigencia"
+                  placeholder="Seleccione fecha" readonly [ngClass]="getFieldClass('fecha_vigencia')">
+                <div
+                  *ngIf="inspectionForm.get('fecha_vigencia')?.touched && inspectionForm.get('fecha_vigencia')?.errors?.['required']"
                   class="text-danger small">
                   Este campo es requerido
                 </div>
@@ -131,11 +131,11 @@
               <div class="col-lg-4 mb-3">
                 <label class="form-label">Tipo de propietario: </label>
                 <div class="btn-group w-100" role="group">
-                  <input type="radio" class="btn-check" name="tipo_propietario" id="empresa" 
-                    [value]="'empresa'" formControlName="tipo_propietario" autocomplete="off">
+                  <input type="radio" class="btn-check" name="tipo_propietario" id="empresa" [value]="'empresa'"
+                    formControlName="tipo_propietario" autocomplete="off">
                   <label class="btn btn-outline-secondary" for="empresa">Empresa</label>
-                  <input type="radio" class="btn-check" name="tipo_propietario" id="persona" 
-                    [value]="'persona'" formControlName="tipo_propietario" autocomplete="off">
+                  <input type="radio" class="btn-check" name="tipo_propietario" id="persona" [value]="'persona'"
+                    formControlName="tipo_propietario" autocomplete="off">
                   <label class="btn btn-outline-secondary" for="persona">Persona Natural</label>
                 </div>
               </div>
@@ -152,7 +152,8 @@
                   [ngClass]="getFieldClass('propietario')"
                   [placeholder]="inspectionForm.get('tipo_propietario')?.value === 'empresa' ? 'Nombre de la empresa' : 'Nombre del propietario'"
                   (input)="inspectionForm.get('propietario')?.setValue($any($event.target).value.toUpperCase(), {emitEvent: false})">
-                <div *ngIf="inspectionForm.get('propietario')?.touched && inspectionForm.get('propietario')?.errors?.['required']"
+                <div
+                  *ngIf="inspectionForm.get('propietario')?.touched && inspectionForm.get('propietario')?.errors?.['required']"
                   class="text-danger small">
                   Este campo es requerido
                 </div>
@@ -168,7 +169,8 @@
                   [ngClass]="getFieldClass('documento_propietario')"
                   [placeholder]="inspectionForm.get('tipo_propietario')?.value === 'empresa' ? 'NIT de la empresa' : 'Documento del propietario'"
                   (input)="inspectionForm.get('documento_propietario')?.setValue($any($event.target).value.toUpperCase(), {emitEvent: false})">
-                <div *ngIf="inspectionForm.get('documento_propietario')?.touched && inspectionForm.get('documento_propietario')?.errors?.['required']"
+                <div
+                  *ngIf="inspectionForm.get('documento_propietario')?.touched && inspectionForm.get('documento_propietario')?.errors?.['required']"
                   class="text-danger small">
                   Este campo es requerido
                 </div>
@@ -191,10 +193,10 @@
               <div class="col-lg-4 mb-3">
                 <label class="form-label">Nombre Transportadora <span class="text-danger">*</span></label>
                 <input type="text" formControlName="nombre_transportadora" class="form-control text-uppercase"
-                  [ngClass]="getFieldClass('nombre_transportadora')"
-                  placeholder="NOMBRE TRANSPORTADORA"
+                  [ngClass]="getFieldClass('nombre_transportadora')" placeholder="NOMBRE TRANSPORTADORA"
                   (input)="inspectionForm.get('nombre_transportadora')?.setValue($any($event.target).value.toUpperCase(), {emitEvent: false})">
-                <div *ngIf="inspectionForm.get('nombre_transportadora')?.touched && inspectionForm.get('nombre_transportadora')?.errors?.['required']"
+                <div
+                  *ngIf="inspectionForm.get('nombre_transportadora')?.touched && inspectionForm.get('nombre_transportadora')?.errors?.['required']"
                   class="text-danger small">
                   Este campo es requerido
                 </div>
@@ -202,10 +204,10 @@
               <div class="col-lg-4 mb-3">
                 <label class="form-label">Nombres Conductor <span class="text-danger">*</span></label>
                 <input type="text" formControlName="nombres_conductor" class="form-control text-uppercase"
-                  [ngClass]="getFieldClass('nombres_conductor')"
-                  placeholder="NOMBRES CONDUCTOR"
+                  [ngClass]="getFieldClass('nombres_conductor')" placeholder="NOMBRES CONDUCTOR"
                   (input)="inspectionForm.get('nombres_conductor')?.setValue($any($event.target).value.toUpperCase(), {emitEvent: false})">
-                <div *ngIf="inspectionForm.get('nombres_conductor')?.touched && inspectionForm.get('nombres_conductor')?.errors?.['required']"
+                <div
+                  *ngIf="inspectionForm.get('nombres_conductor')?.touched && inspectionForm.get('nombres_conductor')?.errors?.['required']"
                   class="text-danger small">
                   Este campo es requerido
                 </div>
@@ -213,10 +215,10 @@
               <div class="col-lg-4 mb-3">
                 <label class="form-label">No. Identificación <span class="text-danger">*</span></label>
                 <input type="text" formControlName="identificacion" class="form-control text-uppercase"
-                  [ngClass]="getFieldClass('identificacion')"
-                  placeholder="NÚMERO DE IDENTIFICACIÓN"
+                  [ngClass]="getFieldClass('identificacion')" placeholder="NÚMERO DE IDENTIFICACIÓN"
                   (input)="inspectionForm.get('identificacion')?.setValue($any($event.target).value.toUpperCase(), {emitEvent: false})">
-                <div *ngIf="inspectionForm.get('identificacion')?.touched && inspectionForm.get('identificacion')?.errors?.['required']"
+                <div
+                  *ngIf="inspectionForm.get('identificacion')?.touched && inspectionForm.get('identificacion')?.errors?.['required']"
                   class="text-danger small">
                   Este campo es requerido
                 </div>
@@ -226,13 +228,11 @@
                 <div [formGroup]="phoneForm">
                   <div class="input-group mb-2">
                     <span class="input-group-text">+57</span>
-                    <input type="tel" class="form-control" formControlName="telefono" 
-                      [ngClass]="getPhoneFieldClass()"
+                    <input type="tel" class="form-control" formControlName="telefono" [ngClass]="getPhoneFieldClass()"
                       placeholder="3001234567" maxlength="10" />
                   </div>
                   <div class="form-check form-switch mb-2">
-                    <input class="form-check-input" type="checkbox" id="whatsappCheck" 
-                      formControlName="whatsapp">
+                    <input class="form-check-input" type="checkbox" id="whatsappCheck" formControlName="whatsapp">
                     <label class="form-check-label" for="whatsappCheck">
                       <i class="fab fa-whatsapp me-1 text-success"></i> ¿Es número de WhatsApp?
                     </label>
@@ -251,9 +251,10 @@
               <div class="col-lg-4 mb-3">
                 <label class="form-label">V / Licencia conducción <span class="text-danger">*</span></label>
                 <input #fechaLicencia type="text" class="form-control date-picker"
-                  [ngClass]="getFieldClass('fecha_vencimiento_licencia')"
-                  formControlName="fecha_vencimiento_licencia" placeholder="Fecha vencimiento licencia" readonly>
-                <div *ngIf="inspectionForm.get('fecha_vencimiento_licencia')?.touched && inspectionForm.get('fecha_vencimiento_licencia')?.errors?.['required']"
+                  [ngClass]="getFieldClass('fecha_vencimiento_licencia')" formControlName="fecha_vencimiento_licencia"
+                  placeholder="Fecha vencimiento licencia" readonly>
+                <div
+                  *ngIf="inspectionForm.get('fecha_vencimiento_licencia')?.touched && inspectionForm.get('fecha_vencimiento_licencia')?.errors?.['required']"
                   class="text-danger small">
                   Este campo es requerido
                 </div>
@@ -276,8 +277,7 @@
               <div class="col-lg-3 mb-3">
                 <label class="form-label">Placa <span class="text-danger">*</span></label>
                 <input type="text" formControlName="placa" class="form-control text-uppercase"
-                  [ngClass]="getFieldClass('placa')"
-                  placeholder="PLACA DEL VEHÍCULO"
+                  [ngClass]="getFieldClass('placa')" placeholder="PLACA DEL VEHÍCULO"
                   (input)="inspectionForm.get('placa')?.setValue($any($event.target).value.toUpperCase(), {emitEvent: false})">
                 <div *ngIf="inspectionForm.get('placa')?.touched && inspectionForm.get('placa')?.errors?.['required']"
                   class="text-danger small">
@@ -286,9 +286,8 @@
               </div>
               <div class="col-lg-3 mb-3">
                 <label class="form-label">Marca <span class="text-danger">*</span></label>
-                <input type="text" formControlName="marca" class="form-control text-uppercase" 
-                  [ngClass]="getFieldClass('marca')"
-                  placeholder="MARCA"
+                <input type="text" formControlName="marca" class="form-control text-uppercase"
+                  [ngClass]="getFieldClass('marca')" placeholder="MARCA"
                   (input)="inspectionForm.get('marca')?.setValue($any($event.target).value.toUpperCase(), {emitEvent: false})">
                 <div *ngIf="inspectionForm.get('marca')?.touched && inspectionForm.get('marca')?.errors?.['required']"
                   class="text-danger small">
@@ -297,9 +296,8 @@
               </div>
               <div class="col-lg-3 mb-3">
                 <label class="form-label">Modelo <span class="text-danger">*</span></label>
-                <input type="text" formControlName="modelo" class="form-control text-uppercase" 
-                  [ngClass]="getFieldClass('modelo')"
-                  placeholder="MODELO"
+                <input type="text" formControlName="modelo" class="form-control text-uppercase"
+                  [ngClass]="getFieldClass('modelo')" placeholder="MODELO"
                   (input)="inspectionForm.get('modelo')?.setValue($any($event.target).value.toUpperCase(), {emitEvent: false})">
                 <div *ngIf="inspectionForm.get('modelo')?.touched && inspectionForm.get('modelo')?.errors?.['required']"
                   class="text-danger small">
@@ -308,26 +306,26 @@
               </div>
               <div class="col-lg-3 mb-3">
                 <label class="form-label">Kilometraje actual <span class="text-danger">*</span></label>
-                <input type="number" formControlName="kilometraje" class="form-control" 
-                  [ngClass]="getFieldClass('kilometraje')"
-                  placeholder="Kilometraje">
-                <div *ngIf="inspectionForm.get('kilometraje')?.touched && inspectionForm.get('kilometraje')?.errors?.['required']"
+                <input type="number" formControlName="kilometraje" class="form-control"
+                  [ngClass]="getFieldClass('kilometraje')" placeholder="Kilometraje">
+                <div
+                  *ngIf="inspectionForm.get('kilometraje')?.touched && inspectionForm.get('kilometraje')?.errors?.['required']"
                   class="text-danger small">
                   Este campo es requerido
                 </div>
               </div>
               <div class="col-lg-3 mb-3">
                 <label class="form-label">SOAT</label>
-                <input type="text" formControlName="soat" class="form-control" 
-                  [ngClass]="getFieldClass('soat')"
+                <input type="text" formControlName="soat" class="form-control" [ngClass]="getFieldClass('soat')"
                   placeholder="Número SOAT">
               </div>
               <div class="col-lg-3 mb-3">
                 <label class="form-label">V /de SOAT <span class="text-danger">*</span></label>
                 <input #fechaVencimientoSoat type="text" class="form-control date-picker"
-                  [ngClass]="getFieldClass('fecha_vencimiento_soat')"
-                  formControlName="fecha_vencimiento_soat" placeholder="Seleccione fecha" readonly>
-                <div *ngIf="inspectionForm.get('fecha_vencimiento_soat')?.touched && inspectionForm.get('fecha_vencimiento_soat')?.errors?.['required']"
+                  [ngClass]="getFieldClass('fecha_vencimiento_soat')" formControlName="fecha_vencimiento_soat"
+                  placeholder="Seleccione fecha" readonly>
+                <div
+                  *ngIf="inspectionForm.get('fecha_vencimiento_soat')?.touched && inspectionForm.get('fecha_vencimiento_soat')?.errors?.['required']"
                   class="text-danger small">
                   Este campo es requerido
                 </div>
@@ -335,21 +333,20 @@
               <div class="col-lg-3 mb-3">
                 <label class="form-label">Licencia Transito</label>
                 <input type="text" formControlName="licencia_transito" class="form-control"
-                  [ngClass]="getFieldClass('licencia_transito')"
-                  placeholder="Licencia transito">
+                  [ngClass]="getFieldClass('licencia_transito')" placeholder="Licencia transito">
               </div>
               <div class="col-lg-3 mb-3">
                 <label class="form-label">R. Tecnicomecánica</label>
                 <input type="text" formControlName="revision_tecnomecanica" class="form-control"
-                  [ngClass]="getFieldClass('revision_tecnomecanica')"
-                  placeholder="Número R. Tecnicomecánica">
+                  [ngClass]="getFieldClass('revision_tecnomecanica')" placeholder="Número R. Tecnicomecánica">
               </div>
               <div class="col-lg-3 mb-3">
                 <label class="form-label">V / R. Técnicomecánica <span class="text-danger">*</span></label>
                 <input #fechaVencimientoRevisionTecnomecanica type="text" class="form-control date-picker"
                   [ngClass]="getFieldClass('fecha_vencimiento_revision_tecnomecanica')"
                   formControlName="fecha_vencimiento_revision_tecnomecanica" placeholder="Seleccione fecha" readonly>
-                <div *ngIf="inspectionForm.get('fecha_vencimiento_revision_tecnomecanica')?.touched && inspectionForm.get('fecha_vencimiento_revision_tecnomecanica')?.errors?.['required']"
+                <div
+                  *ngIf="inspectionForm.get('fecha_vencimiento_revision_tecnomecanica')?.touched && inspectionForm.get('fecha_vencimiento_revision_tecnomecanica')?.errors?.['required']"
                   class="text-danger small">
                   Este campo es requerido
                 </div>
@@ -357,42 +354,38 @@
               <div class="col-lg-3 mb-3">
                 <label class="form-label">Clase de vehículo</label>
                 <input type="text" formControlName="clase_vehiculo" class="form-control text-uppercase"
-                  [ngClass]="getFieldClass('clase_vehiculo')"
-                  placeholder="Clase de vehículo">
+                  [ngClass]="getFieldClass('clase_vehiculo')" placeholder="Clase de vehículo">
               </div>
               <div class="col-lg-3 mb-3">
                 <label class="form-label">Tarjeta de Operación</label>
                 <input type="text" formControlName="tarjeta_operacion" class="form-control"
-                  [ngClass]="getFieldClass('tarjeta_operacion')"
-                  placeholder="Tarjeta de operación">
+                  [ngClass]="getFieldClass('tarjeta_operacion')" placeholder="Tarjeta de operación">
               </div>
               <div class="col-lg-3 mb-3">
                 <label class="form-label">V / Tarjeta de Operación <span class="text-danger">*</span></label>
                 <input #fechaVencimientoTarjetaOperacion type="text" class="form-control date-picker"
                   [ngClass]="getFieldClass('fecha_vencimiento_tarjeta_operacion')"
                   formControlName="fecha_vencimiento_tarjeta_operacion" placeholder="Seleccione fecha" readonly>
-                <div *ngIf="inspectionForm.get('fecha_vencimiento_tarjeta_operacion')?.touched && inspectionForm.get('fecha_vencimiento_tarjeta_operacion')?.errors?.['required']"
+                <div
+                  *ngIf="inspectionForm.get('fecha_vencimiento_tarjeta_operacion')?.touched && inspectionForm.get('fecha_vencimiento_tarjeta_operacion')?.errors?.['required']"
                   class="text-danger small">
                   Este campo es requerido
                 </div>
               </div>
               <div class="col-lg-3 mb-3">
                 <label class="form-label">Color</label>
-                <input type="text" formControlName="color" class="form-control text-uppercase" 
-                  [ngClass]="getFieldClass('color')"
-                  placeholder="Color">
+                <input type="text" formControlName="color" class="form-control text-uppercase"
+                  [ngClass]="getFieldClass('color')" placeholder="Color">
               </div>
               <div class="col-lg-3 mb-3">
                 <label class="form-label">Código del Vehículo</label>
                 <input type="text" formControlName="codigo_vehiculo" class="form-control"
-                  [ngClass]="getFieldClass('codigo_vehiculo')"
-                  placeholder="Código del vehículo">
+                  [ngClass]="getFieldClass('codigo_vehiculo')" placeholder="Código del vehículo">
               </div>
               <div class="col-lg-3 mb-3">
                 <label class="form-label">Capacidad de pasajeros</label>
                 <input type="number" formControlName="capacidad_pasajeros" class="form-control"
-                  [ngClass]="getFieldClass('capacidad_pasajeros')"
-                  placeholder="Cantidad de pasajeros">
+                  [ngClass]="getFieldClass('capacidad_pasajeros')" placeholder="Cantidad de pasajeros">
               </div>
             </div>
           </div>
@@ -728,7 +721,7 @@
                           </div>
                         </div>
 
-                       
+
 
                         <div class="col-lg-6 mb-3">
                           <label class="form-label">Tensión y estado de correas</label>
@@ -1599,79 +1592,77 @@
                           <label class="btn btn-outline-secondary" for="columna_direccion_na">N/A</label>
                         </div>
                       </div>
-                       <div class="col-lg-6 mb-3">
-                          <label class="form-label">Nivel hidráulico dirección</label>
-                          <div class="btn-group w-100" role="group">
-                            <input type="radio" class="btn-check" name="hidraulico_direccion"
-                              id="hidraulico_direccion_ok" [value]="'ok'" formControlName="hidraulico_direccion"
-                              autocomplete="off">
-                            <label class="btn btn-outline-success" for="hidraulico_direccion_ok">C</label>
-                            <input type="radio" class="btn-check" name="hidraulico_direccion"
-                              id="hidraulico_direccion_neg" [value]="'negativo'" formControlName="hidraulico_direccion"
-                              autocomplete="off">
-                            <label class="btn btn-outline-danger" for="hidraulico_direccion_neg">N/C</label>
-                            <input type="radio" class="btn-check" name="hidraulico_direccion"
-                              id="hidraulico_direccion_na" [value]="'na'" formControlName="hidraulico_direccion"
-                              autocomplete="off">
-                            <label class="btn btn-outline-secondary" for="hidraulico_direccion_na">N/A</label>
-                          </div>
+                      <div class="col-lg-6 mb-3">
+                        <label class="form-label">Nivel hidráulico dirección</label>
+                        <div class="btn-group w-100" role="group">
+                          <input type="radio" class="btn-check" name="hidraulico_direccion" id="hidraulico_direccion_ok"
+                            [value]="'ok'" formControlName="hidraulico_direccion" autocomplete="off">
+                          <label class="btn btn-outline-success" for="hidraulico_direccion_ok">C</label>
+                          <input type="radio" class="btn-check" name="hidraulico_direccion"
+                            id="hidraulico_direccion_neg" [value]="'negativo'" formControlName="hidraulico_direccion"
+                            autocomplete="off">
+                          <label class="btn btn-outline-danger" for="hidraulico_direccion_neg">N/C</label>
+                          <input type="radio" class="btn-check" name="hidraulico_direccion" id="hidraulico_direccion_na"
+                            [value]="'na'" formControlName="hidraulico_direccion" autocomplete="off">
+                          <label class="btn btn-outline-secondary" for="hidraulico_direccion_na">N/A</label>
                         </div>
-                             <div class="col-lg-6 mb-3">
-                      <label class="form-label">Caja y deposito hidraulico</label>
-                      <div class="btn-group w-100" role="group">
-                        <input type="radio" class="btn-check" name="caja_deposito" id="caja_deposito_ok"
-                          [value]="'ok'" formControlName="caja_deposito" autocomplete="off">
-                        <label class="btn btn-outline-success" for="caja_deposito_ok">C</label>
-                        <input type="radio" class="btn-check" name="caja_deposito" id="caja_deposito_neg"
-                          [value]="'negativo'" formControlName="caja_deposito" autocomplete="off">
-                        <label class="btn btn-outline-danger" for="caja_deposito_neg">N/C</label>
-                        <input type="radio" class="btn-check" name="caja_deposito" id="caja_deposito_na"
-                          [value]="'na'" formControlName="caja_deposito" autocomplete="off">
-                        <label class="btn btn-outline-secondary" for="caja_deposito_na">N/A</label>
                       </div>
-                    </div>
                       <div class="col-lg-6 mb-3">
-                      <label class="form-label">Terminales</label>
-                      <div class="btn-group w-100" role="group">
-                        <input type="radio" class="btn-check" name="terminales" id="terminales_ok"
-                          [value]="'ok'" formControlName="terminales" autocomplete="off">
-                        <label class="btn btn-outline-success" for="terminales_ok">C</label>
-                        <input type="radio" class="btn-check" name="terminales" id="terminales_neg"
-                          [value]="'negativo'" formControlName="terminales" autocomplete="off">
-                        <label class="btn btn-outline-danger" for="terminales_neg">N/C</label>
-                        <input type="radio" class="btn-check" name="terminales" id="terminales_na"
-                          [value]="'na'" formControlName="terminales" autocomplete="off">
-                        <label class="btn btn-outline-secondary" for="terminales_na">N/A</label>
+                        <label class="form-label">Caja y deposito hidraulico</label>
+                        <div class="btn-group w-100" role="group">
+                          <input type="radio" class="btn-check" name="caja_deposito" id="caja_deposito_ok"
+                            [value]="'ok'" formControlName="caja_deposito" autocomplete="off">
+                          <label class="btn btn-outline-success" for="caja_deposito_ok">C</label>
+                          <input type="radio" class="btn-check" name="caja_deposito" id="caja_deposito_neg"
+                            [value]="'negativo'" formControlName="caja_deposito" autocomplete="off">
+                          <label class="btn btn-outline-danger" for="caja_deposito_neg">N/C</label>
+                          <input type="radio" class="btn-check" name="caja_deposito" id="caja_deposito_na"
+                            [value]="'na'" formControlName="caja_deposito" autocomplete="off">
+                          <label class="btn btn-outline-secondary" for="caja_deposito_na">N/A</label>
+                        </div>
                       </div>
-                    </div>
                       <div class="col-lg-6 mb-3">
-                      <label class="form-label">Barras y bujes de torsion</label>
-                      <div class="btn-group w-100" role="group">
-                        <input type="radio" class="btn-check" name="barras_bujes" id="barras_bujes_ok"
-                          [value]="'ok'" formControlName="barras_bujes" autocomplete="off">
-                        <label class="btn btn-outline-success" for="barras_bujes_ok">C</label>
-                        <input type="radio" class="btn-check" name="barras_bujes" id="barras_bujes_neg"
-                          [value]="'negativo'" formControlName="barras_bujes" autocomplete="off">
-                        <label class="btn btn-outline-danger" for="barras_bujes_neg">N/C</label>
-                        <input type="radio" class="btn-check" name="barras_bujes" id="barras_bujes_na"
-                          [value]="'na'" formControlName="barras_bujes" autocomplete="off">
-                        <label class="btn btn-outline-secondary" for="barras_bujes_na">N/A</label>
+                        <label class="form-label">Terminales</label>
+                        <div class="btn-group w-100" role="group">
+                          <input type="radio" class="btn-check" name="terminales" id="terminales_ok" [value]="'ok'"
+                            formControlName="terminales" autocomplete="off">
+                          <label class="btn btn-outline-success" for="terminales_ok">C</label>
+                          <input type="radio" class="btn-check" name="terminales" id="terminales_neg"
+                            [value]="'negativo'" formControlName="terminales" autocomplete="off">
+                          <label class="btn btn-outline-danger" for="terminales_neg">N/C</label>
+                          <input type="radio" class="btn-check" name="terminales" id="terminales_na" [value]="'na'"
+                            formControlName="terminales" autocomplete="off">
+                          <label class="btn btn-outline-secondary" for="terminales_na">N/A</label>
+                        </div>
                       </div>
-                    </div>
                       <div class="col-lg-6 mb-3">
-                      <label class="form-label">Protectores</label>
-                      <div class="btn-group w-100" role="group">
-                        <input type="radio" class="btn-check" name="protectores" id="protectores_ok"
-                          [value]="'ok'" formControlName="protectores" autocomplete="off">
-                        <label class="btn btn-outline-success" for="protectores_ok">C</label>
-                        <input type="radio" class="btn-check" name="protectores" id="protectores_neg"
-                          [value]="'negativo'" formControlName="protectores" autocomplete="off">
-                        <label class="btn btn-outline-danger" for="protectores_neg">N/C</label>
-                        <input type="radio" class="btn-check" name="protectores" id="protectores_na"
-                          [value]="'na'" formControlName="protectores" autocomplete="off">
-                        <label class="btn btn-outline-secondary" for="protectores_na">N/A</label>
+                        <label class="form-label">Barras y bujes de torsion</label>
+                        <div class="btn-group w-100" role="group">
+                          <input type="radio" class="btn-check" name="barras_bujes" id="barras_bujes_ok" [value]="'ok'"
+                            formControlName="barras_bujes" autocomplete="off">
+                          <label class="btn btn-outline-success" for="barras_bujes_ok">C</label>
+                          <input type="radio" class="btn-check" name="barras_bujes" id="barras_bujes_neg"
+                            [value]="'negativo'" formControlName="barras_bujes" autocomplete="off">
+                          <label class="btn btn-outline-danger" for="barras_bujes_neg">N/C</label>
+                          <input type="radio" class="btn-check" name="barras_bujes" id="barras_bujes_na" [value]="'na'"
+                            formControlName="barras_bujes" autocomplete="off">
+                          <label class="btn btn-outline-secondary" for="barras_bujes_na">N/A</label>
+                        </div>
                       </div>
-                    </div>
+                      <div class="col-lg-6 mb-3">
+                        <label class="form-label">Protectores</label>
+                        <div class="btn-group w-100" role="group">
+                          <input type="radio" class="btn-check" name="protectores" id="protectores_ok" [value]="'ok'"
+                            formControlName="protectores" autocomplete="off">
+                          <label class="btn btn-outline-success" for="protectores_ok">C</label>
+                          <input type="radio" class="btn-check" name="protectores" id="protectores_neg"
+                            [value]="'negativo'" formControlName="protectores" autocomplete="off">
+                          <label class="btn btn-outline-danger" for="protectores_neg">N/C</label>
+                          <input type="radio" class="btn-check" name="protectores" id="protectores_na" [value]="'na'"
+                            formControlName="protectores" autocomplete="off">
+                          <label class="btn btn-outline-secondary" for="protectores_na">N/A</label>
+                        </div>
+                      </div>
 
                     </div>
 
@@ -1691,79 +1682,23 @@
           <div class="card-header bg-light">
             <h5 class="fw-bold border-bottom titulo">
               <i class="fi fi-rr-comment-alt me-2"></i>
-              Observaciones y Registro Fotográfico
+              Observaciones, Firma y Registro Fotográfico
             </h5>
           </div>
           <div class="card-body">
+            <h5 class="">
+              <i class="fi fi-rr-camera me-2"></i>
 
+              Registro Fotográfico
+            </h5>
             <!-- Sección de Observaciones -->
             <div class="image-upload-section">
-              <div class=" mt-4">
-                <div class=" bg-light">
-                  <h6 class="">
-                    <i class="fi fi-rr-comment-alt me-2"></i>
-                    Observaciones / Comentarios / Compromisos
-                  </h6>
-                </div>
-                <div class="-body">
-                  <textarea formControlName="observaciones" class="form-control" rows="5"
-                    placeholder="Describa las observaciones encontradas durante la inspección..." maxlength="500">
-                 </textarea>
-                  <div class="form-text">
-                    Máximo 500 caracteres. Esta información se incluirá en el reporte Excel/PDF.
-                  </div>
-                  <div class="text-end">
-                    <small class="text-muted">{{ inspectionForm.get('observaciones')?.value?.length || 0 }}/500</small>
-                  </div>
-                </div>
-              </div>
-              <!-- 🔹 SECCIÓN DE FIRMA DEL CONDUCTOR -->
-<div class="firma-section mt-4 p-3 border rounded bg-light">
-  <h6 class="fw-bold mb-3">
-    <i class="fi fi-rr-signature me-2"></i>
-    Firma del Conductor <span class="text-danger">*</span>
-  </h6>
-  
-  <signature-pad 
-    #signaturePad
-    [options]="signaturePadOptions"
-    (drawStart)="onDibujoInicio($event)"
-    (drawEnd)="onFirmaCompletada()">
-  </signature-pad>
 
-  <div class="d-flex gap-2 justify-content-center mt-2">
-    <button type="button" (click)="limpiarFirma()" class="btn btn-outline-danger btn-sm" [disabled]="isLoading">
-      <i class="fi fi-rr-trash me-1"></i> Borrar
-    </button>
-    <button type="button" (click)="onFirmaCompletada()" class="btn btn-outline-success btn-sm" [disabled]="isLoading">
-      <i class="fi fi-rr-check me-1"></i> Confirmar
-    </button>
-  </div>
 
-  <!-- Preview de la firma capturada -->
-  <div *ngIf="firmaBase64" class="text-center mt-3">
-    <small class="text-success fw-bold">
-      <i class="fi fi-rr-check-circle me-1"></i> Firma capturada
-    </small>
-    <div class="border rounded bg-white p-2 mt-2 d-inline-block">
-      <img [src]="firmaBase64" alt="Firma del conductor" style="max-height: 80px;">
-    </div>
-  </div>
-
-  <!-- Mensaje de error si está vacío al enviar -->
-  <div *ngIf="inspectionForm.touched && !firmaBase64 && isLastStep()" class="text-danger small mt-2">
-    <i class="fi fi-rr-exclamation-triangle me-1"></i>
-    La firma es requerida para finalizar
-  </div>
-</div>
 
               <!-- Sección de Registro Fotográfico -->
 
-              <h5 class="mt-4">
-                <i class="fi fi-rr-camera me-2"></i>
 
-                Registro Fotográfico
-              </h5>
               <div class="form-group">
                 <label for="images">Seleccionar imágenes:</label>
                 <input type="file" id="images" #fileInput multiple accept="image/*" (change)="onFilesSelected($event)"
@@ -1786,6 +1721,65 @@
               <!-- Contador de imágenes -->
               <div class="image-count mt-2" *ngIf="selectedFiles.length > 0">
                 <span class="badge bg-primary">{{ selectedFiles.length }} imagen(es) seleccionada(s)</span>
+              </div>
+            </div>
+
+            <!-- observaciones -->
+            <div class=" mt-4">
+              <div class=" bg-light">
+                <h6 class="">
+                  <i class="fi fi-rr-comment-alt me-2"></i>
+                  Observaciones / Comentarios / Compromisos
+                </h6>
+              </div>
+              <div class="-body">
+                <textarea formControlName="observaciones" class="form-control" rows="5"
+                  placeholder="Describa las observaciones encontradas durante la inspección..." maxlength="500">
+                 </textarea>
+                <div class="form-text">
+                  Máximo 500 caracteres. Esta información se incluirá en el reporte Excel/PDF.
+                </div>
+                <div class="text-end">
+                  <small class="text-muted">{{ inspectionForm.get('observaciones')?.value?.length || 0 }}/500</small>
+                </div>
+              </div>
+            </div>
+            <!-- 🔹 SECCIÓN DE FIRMA DEL CONDUCTOR -->
+            <div class="firma-section mt-4 p-3 border rounded bg-light">
+              <h6 class="fw-bold mb-3">
+                <i class="fi fi-rr-signature me-2"></i>
+                Firma del Conductor <span class="text-danger">*</span>
+              </h6>
+
+              <signature-pad #signaturePad [options]="signaturePadOptions" (drawStart)="onDibujoInicio($event)"
+                (drawEnd)="onFirmaCompletada()">
+              </signature-pad>
+
+              <div class="d-flex gap-2 justify-content-center mt-2">
+                <button type="button" (click)="limpiarFirma()" class="btn btn-outline-danger btn-sm"
+                  [disabled]="isLoading">
+                  <i class="fi fi-rr-trash me-1"></i> Borrar
+                </button>
+                <button type="button" (click)="onFirmaCompletada()" class="btn btn-outline-success btn-sm"
+                  [disabled]="isLoading">
+                  <i class="fi fi-rr-check me-1"></i> Confirmar
+                </button>
+              </div>
+
+              <!-- Preview de la firma capturada -->
+              <div *ngIf="firmaBase64" class="text-center mt-3">
+                <small class="text-success fw-bold">
+                  <i class="fi fi-rr-check-circle me-1"></i> Firma capturada
+                </small>
+                <div class="border rounded bg-white p-2 mt-2 d-inline-block">
+                  <img [src]="firmaBase64" alt="Firma del conductor" style="max-height: 80px;">
+                </div>
+              </div>
+
+              <!-- Mensaje de error si está vacío al enviar -->
+              <div *ngIf="inspectionForm.touched && !firmaBase64 && isLastStep()" class="text-danger small mt-2">
+                <i class="fi fi-rr-exclamation-triangle me-1"></i>
+                La firma es requerida para finalizar
               </div>
             </div>
 
