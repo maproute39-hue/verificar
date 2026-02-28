@@ -8,6 +8,24 @@ import { GotenbergService } from './gotenberg.service';
 })
 export class ExcelExportService {
 
+/**
+ * Convierte string Base64 a ArrayBuffer para ExcelJS
+ */
+private base64ToArrayBuffer(base64: string): ArrayBuffer {
+  // Remover prefijo "data:image/png;base64," si existe
+  const base64String = base64.includes(',') 
+    ? base64.split(',')[1] 
+    : base64;
+  
+  const binaryString = atob(base64String);
+  const bytes = new Uint8Array(binaryString.length);
+  
+  for (let i = 0; i < binaryString.length; i++) {
+    bytes[i] = binaryString.charCodeAt(i);
+  }
+  
+  return bytes.buffer;
+}
   constructor
 
     (private gotenbergService: GotenbergService
@@ -22,6 +40,7 @@ export class ExcelExportService {
    */
   async exportarDatosConductor(formData: {
     nombre_transportadora?: string;
+    firma_conductor?: string;
     nombres_conductor?: string;
     telefono_conductor?: string;
     fecha_inspeccion?: string;
@@ -130,6 +149,11 @@ export class ExcelExportService {
       // ✅ AGREGAR ESTO: Procesar datos de la hoja SECOND_PAGE (estado de aprobación)
       console.log('✅ Procesando hoja "SECOND_PAGE" con datos del formulario...');
       this.procesarHoja(worksheetImagenes, formData);  // ← ← ← ¡AGREGAR ESTA LÍNEA!
+
+      // ✅ Insertar firma del conductor si existe
+      if (formData.firma_conductor) {
+        await this.insertarFirmaConductor(worksheetImagenes, formData.firma_conductor, workbook);
+      }
 
       console.log('✅ Procesando hoja "SECOND_PAGE" con fotografías...');
 
@@ -501,6 +525,7 @@ export class ExcelExportService {
       if (estadoLower === 'rechazada' || estadoLower === 'rechazado' || estadoLower === 'no') {
         this.agregarNotaReinspeccion(worksheet);
       }
+      
     }
 
     // ✅ Aquí puedes agregar más lógica específica para la hoja SECOND_PAGE si la necesitas
@@ -564,6 +589,37 @@ export class ExcelExportService {
    * Procesa y escribe TODOS los datos en la hoja de Excel
    * ✅ PRESERVA ESTILOS: Solo modificamos .value, NUNCA .style
    */
+  private async insertarFirmaConductor(
+  worksheet: ExcelJS.Worksheet,
+  firmaBase64: string | null | undefined,
+  workbook: ExcelJS.Workbook
+): Promise<void> {
+  if (!firmaBase64) {
+    console.warn('⚠️ No hay firma del conductor para insertar');
+    return;
+  }
+
+  try {
+    console.log('🖊️ Insertando firma del conductor...');
+
+    // 1. Convertir Base64 a ArrayBuffer
+    const buffer = this.base64ToArrayBuffer(firmaBase64);
+
+    // 2. Agregar imagen al workbook
+    const imageId = workbook.addImage({
+      buffer: buffer,
+      extension: 'png'
+    });
+
+    // ✅ 3. Insertar firma usando NOTACIÓN DE STRING (más simple y compatible)
+    worksheet.addImage(imageId, 'D57:L57');
+
+    console.log('✅ Firma del conductor insertada en D57:L57');
+
+  } catch (error) {
+    console.error('❌ Error al insertar firma:', error);
+  }
+}
   private procesarHojaCamioneta(worksheet: ExcelJS.Worksheet, formData: any): void {
     console.log('✏️ Escribiendo datos en hoja:', worksheet.name);
 

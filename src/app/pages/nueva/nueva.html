@@ -1708,7 +1708,7 @@
                 <div class="-body">
                   <textarea formControlName="observaciones" class="form-control" rows="5"
                     placeholder="Describa las observaciones encontradas durante la inspección..." maxlength="500">
-            </textarea>
+                 </textarea>
                   <div class="form-text">
                     Máximo 500 caracteres. Esta información se incluirá en el reporte Excel/PDF.
                   </div>
@@ -1717,6 +1717,45 @@
                   </div>
                 </div>
               </div>
+              <!-- 🔹 SECCIÓN DE FIRMA DEL CONDUCTOR -->
+<div class="firma-section mt-4 p-3 border rounded bg-light">
+  <h6 class="fw-bold mb-3">
+    <i class="fi fi-rr-signature me-2"></i>
+    Firma del Conductor <span class="text-danger">*</span>
+  </h6>
+  
+  <signature-pad 
+    #signaturePad
+    [options]="signaturePadOptions"
+    (drawStart)="onDibujoInicio($event)"
+    (drawEnd)="onFirmaCompletada()">
+  </signature-pad>
+
+  <div class="d-flex gap-2 justify-content-center mt-2">
+    <button type="button" (click)="limpiarFirma()" class="btn btn-outline-danger btn-sm" [disabled]="isLoading">
+      <i class="fi fi-rr-trash me-1"></i> Borrar
+    </button>
+    <button type="button" (click)="onFirmaCompletada()" class="btn btn-outline-success btn-sm" [disabled]="isLoading">
+      <i class="fi fi-rr-check me-1"></i> Confirmar
+    </button>
+  </div>
+
+  <!-- Preview de la firma capturada -->
+  <div *ngIf="firmaBase64" class="text-center mt-3">
+    <small class="text-success fw-bold">
+      <i class="fi fi-rr-check-circle me-1"></i> Firma capturada
+    </small>
+    <div class="border rounded bg-white p-2 mt-2 d-inline-block">
+      <img [src]="firmaBase64" alt="Firma del conductor" style="max-height: 80px;">
+    </div>
+  </div>
+
+  <!-- Mensaje de error si está vacío al enviar -->
+  <div *ngIf="inspectionForm.touched && !firmaBase64 && isLastStep()" class="text-danger small mt-2">
+    <i class="fi fi-rr-exclamation-triangle me-1"></i>
+    La firma es requerida para finalizar
+  </div>
+</div>
 
               <!-- Sección de Registro Fotográfico -->
 

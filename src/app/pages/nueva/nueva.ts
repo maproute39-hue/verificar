@@ -6,7 +6,10 @@ import { InspectionService } from '../../services/inspection.service';
 import { RouterModule } from '@angular/router';
 import { Router, ActivatedRoute } from '@angular/router';
 import { SharedService } from '../../services/shared.service';
-
+import { 
+  SignaturePadComponent, 
+  NgSignaturePadOptions 
+} from '@almothafar/angular-signature-pad';
 declare const flatpickr: any;
 
 interface FlatpickrOptions {
@@ -25,9 +28,22 @@ interface FlatpickrOptions {
   templateUrl: './nueva.html',
   styleUrls: ['./nueva.scss'],
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterModule]
+  imports: [CommonModule, ReactiveFormsModule, RouterModule, SignaturePadComponent]
 })
 export class Nueva implements AfterViewInit, OnInit {
+  @ViewChild('signaturePad') 
+  signaturePad!: SignaturePadComponent;
+    // Opciones configurables
+  signaturePadOptions: NgSignaturePadOptions = {
+    minWidth: 2,
+    maxWidth: 5,
+    penColor: 'rgb(0, 0, 0)',
+    backgroundColor: 'rgba(255, 255, 255, 1)',
+    canvasWidth: 500,  // Ancho fijo en px
+    canvasHeight: 300  // Alto fijo en px
+  };
+
+    firmaBase64: string | null = null;
 
   // Array para almacenar archivos seleccionados
   selectedFiles: File[] = [];
@@ -455,11 +471,45 @@ export class Nueva implements AfterViewInit, OnInit {
     };
   }
   ngAfterViewInit() {
+    this.initSignaturePad();
+
     if (typeof flatpickr === 'undefined') {
       console.error('Flatpickr no está cargado correctamente');
       return;
     }
     this.initStep1DatePickers();
+  }
+
+  private initSignaturePad() {
+    if (this.signaturePad) {
+      this.signaturePad.set('minWidth', 2);
+    }
+  }
+  // Cuando el usuario termina de firmar
+  onFirmaCompletada() {
+    if (this.signaturePad && this.signaturePad.isEmpty()) {
+      alert('Por favor, firme antes de continuar');
+      return;
+    }
+    
+    // Obtener la firma como imagen Base64
+    this.firmaBase64 = this.signaturePad.toDataURL('image/png');
+    console.log('Firma capturada:', this.firmaBase64);
+    
+    // Aquí puedes enviarla a tu backend
+    // this.servicio.guardarFirma(this.firmaBase64).subscribe(...);
+  }
+  // Limpiar la firma
+  limpiarFirma() {
+    if (this.signaturePad) {
+      this.signaturePad.clear();
+    }
+    this.firmaBase64 = null;
+  }
+
+  // Opcional: cuando empieza a dibujar
+  onDibujoInicio(event: MouseEvent | Touch) {
+    console.log('Inicio de firma', event);
   }
 
   ngOnDestroy() {
@@ -483,6 +533,7 @@ export class Nueva implements AfterViewInit, OnInit {
         this.currentStep++;
         setTimeout(() => {
           this.initDatePickersForCurrentStep();
+          this.initSignaturePad();
         }, 0);
       }
     }
@@ -491,11 +542,12 @@ export class Nueva implements AfterViewInit, OnInit {
   /**
    * Navega al paso anterior del wizard
    */
-  prevStep() {
+prevStep() {
     if (this.currentStep > 1) {
       this.currentStep--;
       setTimeout(() => {
         this.initDatePickersForCurrentStep();
+        this.initSignaturePad();
       }, 0);
     }
   }
@@ -842,6 +894,7 @@ export class Nueva implements AfterViewInit, OnInit {
           presion_llanta_t_lde: Number(inspectionData.presion_llanta_t_lde),
           presion_llanta_t_lii: Number(inspectionData.presion_llanta_t_lii),
           presion_llanta_t_ldi: Number(inspectionData.presion_llanta_t_ldi),
+  firma_conductor: this.firmaBase64,  // Base64 de la imagen
 
           numero_certificado: numero_certificado,
 

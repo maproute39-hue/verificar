@@ -136,3 +136,36 @@ font-size: 13px !important;
 .field-filled {
   animation: pulse-green 0.5s ease-in-out;
 }
+.firma-section {
+  border: 2px dashed #dee2e6 !important;
+  transition: border-color 0.2s;
+  
+  &:hover {
+    border-color: #0d6efd !important;
+  }
+}
+
+signature-pad {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+  
+  ::ng-deep canvas {
+    width: 100% !important;
+    height: 200px !important;
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    background: #fff;
+    cursor: crosshair;
+    
+    @media (max-width: 576px) {
+      height: 180px !important;
+    }
+  }
+}
+
+// Ajuste para móviles: que el canvas sea táctil
+signature-pad canvas {
+  touch-action: none; // Evita scroll mientras se firma
+}
