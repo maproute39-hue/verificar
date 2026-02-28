@@ -1684,10 +1684,7 @@
     </label>
     <div class="fab-options">
 
-      <!-- <a routerLink="/busetas" class="fab-option">
-        <span class="fab-label ">Generar a partir de esta</span>
-        <i class="fab-option-icon fi fi-rs-refresh"></i>
-      </a> -->
+   
       <a style="cursor:pointer;" (click)="imprimirInspeccion()" class="fab-option"
         [hidden]="inspectionForm.value.estado === 'borrador'">
         <span class="fab-label">Exportar a PDF</span>
