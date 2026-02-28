@@ -112,7 +112,16 @@ async deleteInspection(event: Event, id: string | undefined): Promise<void> {
     return;
   }
 
-  const result = await Swal.fire({ /* ... */ });
+  const result = await Swal.fire({
+    title: '¿Estás seguro?',
+    text: 'Esta acción no se puede deshacer. La inspección será eliminada permanentemente.',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#dc3545',
+    cancelButtonColor: '#6c757d',
+    confirmButtonText: 'Sí, eliminar',
+    cancelButtonText: 'Cancelar'
+  });
 
   if (result.isConfirmed) {
     try {
