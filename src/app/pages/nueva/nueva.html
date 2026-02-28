@@ -1699,13 +1699,38 @@
               <!-- Sección de Registro Fotográfico -->
 
 
-              <div class="form-group">
-                <label for="images">Seleccionar imágenes:</label>
-                <input type="file" id="images" #fileInput multiple accept="image/*" (change)="onFilesSelected($event)"
-                  class="form-control btn btn-secondary btn-sm" [disabled]="isUploadingImages" />
-                <small class="text-muted">Puedes seleccionar hasta 3 imágenes (máx 5MB cada una)</small>
-              </div>
-
+            <div class="form-group">
+    <label class="fw-bold mb-2">
+        <i class="fi fi-rr-camera me-2"></i>Registro Fotográfico
+    </label>
+    
+    <div class="camera-options d-flex gap-2 flex-wrap">
+        <input 
+            type="file" 
+            id="images" 
+            #fileInput 
+            multiple 
+            accept="image/*" 
+            capture="environment"
+            (change)="onFilesSelected($event)"
+            class="d-none"
+            [disabled]="isUploadingImages"
+        />
+        <button 
+            type="button" 
+            class="btn btn-primary w-100"
+            (click)="fileInput.click()"
+            [disabled]="isUploadingImages"
+        >
+            <i class="fi fi-rr-camera me-2"></i>
+            {{ isUploadingImages ? 'Subiendo...' : 'Tomar Foto / Seleccionar' }}
+        </button>
+    </div>
+    <small class="text-muted d-block mt-2">
+        <i class="fi fi-rr-info-circle me-1"></i>
+        En móvil: abre cámara directamente. En escritorio: abre explorador.
+    </small>
+</div>
               <!-- Preview de imágenes -->
               <div class="selected-images d-flex flex-wrap gap-2 mt-3" *ngIf="imagePreviews.length > 0">
                 <div *ngFor="let preview of imagePreviews; let i = index" class="image-preview position-relative"
