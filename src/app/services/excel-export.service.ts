@@ -41,6 +41,7 @@ private base64ToArrayBuffer(base64: string): ArrayBuffer {
   async exportarDatosConductor(formData: {
     nombre_transportadora?: string;
     firma_conductor?: string;
+    firma_inspector?:string;
     nombres_conductor?: string;
     telefono_conductor?: string;
     fecha_inspeccion?: string;
@@ -153,6 +154,9 @@ private base64ToArrayBuffer(base64: string): ArrayBuffer {
       // ✅ Insertar firma del conductor si existe
       if (formData.firma_conductor) {
         await this.insertarFirmaConductor(worksheetImagenes, formData.firma_conductor, workbook);
+      }
+ if (formData.firma_inspector) {
+        await this.insertarFirmaInspector(worksheetImagenes, formData.firma_inspector, workbook);
       }
 
       console.log('✅ Procesando hoja "SECOND_PAGE" con fotografías...');
@@ -618,7 +622,42 @@ private base64ToArrayBuffer(base64: string): ArrayBuffer {
 //   }
 // }
 
+private async insertarFirmaInspector(
+  worksheet: ExcelJS.Worksheet,
+  firmaBase64: string | null | undefined,
+  workbook: ExcelJS.Workbook
+): Promise<void> {
+  if (!firmaBase64) {
+    console.warn('⚠️ No hay firma del inspector para insertar');
+    return;
+  }
 
+  try {
+    console.log('🖊️ Insertando firma del inspector...');
+
+    // 1. Convertir Base64 a ArrayBuffer
+    const buffer = this.base64ToArrayBuffer(firmaBase64);
+
+    // 2. Agregar imagen al workbook
+    const imageId = workbook.addImage({
+      buffer: buffer,
+      extension: 'png'
+    });
+
+    // ✅ POSICIÓN CORRECTA para el inspector: O57:AA59
+    worksheet.addImage(imageId, 'O57:AA59');
+    
+    // Ajustar altura de las filas para que quepa la firma
+    worksheet.getRow(57).height = 30;
+    worksheet.getRow(58).height = 30;
+    worksheet.getRow(59).height = 30;
+
+    console.log('✅ Firma del inspector insertada en O57:AA59');
+
+  } catch (error) {
+    console.error('❌ Error al insertar firma del inspector:', error);
+  }
+}
 private async insertarFirmaConductor(
   worksheet: ExcelJS.Worksheet,
   firmaBase64: string | null | undefined,

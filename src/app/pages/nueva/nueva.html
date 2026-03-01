@@ -379,7 +379,7 @@
               </div>
               <div class="col-lg-3 mb-3">
                 <label class="form-label">Código del Vehículo</label>
-                <input type="number" formControlName="codigo_vehiculo" class="form-control"
+                <input type="text" formControlName="codigo_vehiculo" class="form-control"
                   [ngClass]="getFieldClass('codigo_vehiculo')" placeholder="Código del vehículo">
               </div>
               <div class="col-lg-3 mb-3">
@@ -1792,6 +1792,43 @@
               <div *ngIf="inspectionForm.touched && !firmaBase64 && isLastStep()" class="text-danger small mt-2">
                 <i class="fi fi-rr-exclamation-triangle me-1"></i>
                 La firma es requerida para finalizar
+              </div>
+            </div>
+            <!-- Firma del Inspector (nuevo) -->
+            <div class="firma-section mt-4 p-3 border rounded bg-light">
+              <h6 class="fw-bold mb-3">
+                <i class="fi fi-rr-signature me-2"></i>
+                Firma del Inspector <span class="text-danger">*</span>
+              </h6>
+
+              <signature-pad #signaturePadInspector [options]="signaturePadOptions"
+                (drawStart)="onDibujoInicioInspector($event)" (drawEnd)="onFirmaInspectorCompletada()">
+              </signature-pad>
+
+              <div class="d-flex gap-2 justify-content-center mt-2">
+                <button type="button" (click)="limpiarFirmaInspector()" class="btn btn-outline-danger btn-sm">
+                  <i class="fi fi-rr-trash me-1"></i> Borrar
+                </button>
+                <button type="button" (click)="onFirmaInspectorCompletada()" class="btn btn-outline-success btn-sm">
+                  <i class="fi fi-rr-check me-1"></i> Confirmar
+                </button>
+              </div>
+
+              <!-- ✅ PREVIEW - Esto es lo que probablemente falta -->
+              <div *ngIf="firmaInspectorBase64" class="text-center mt-3">
+                <small class="text-success fw-bold">
+                  <i class="fi fi-rr-check-circle me-1"></i> Firma capturada
+                </small>
+                <div class="border rounded bg-white p-2 mt-2 d-inline-block">
+                  <img [src]="firmaInspectorBase64" alt="Firma del inspector" style="max-height: 80px;">
+                </div>
+              </div>
+
+              <!-- Mensaje de error -->
+              <div *ngIf="inspectionForm.touched && !firmaInspectorBase64 && isLastStep()"
+                class="text-danger small mt-2">
+                <i class="fi fi-rr-exclamation-triangle me-1"></i>
+                La firma del inspector es requerida para finalizar
               </div>
             </div>
 
