@@ -245,6 +245,7 @@ export class Detail implements OnInit, AfterViewInit {
       hidraulico_direccion: [''],
       columna_direccion: [''],
       firma_conductor: [''],
+      firma_inspector: [''],
 
 
     });
@@ -1507,6 +1508,7 @@ getFieldClass(fieldName: string): string {
         terminales: this.inspectionForm.get('terminales')?.value,
 
         firma_conductor: this.inspectionForm.get('firma_conductor')?.value,
+        firma_inspector: this.inspectionForm.get('firma_inspector')?.value,
 
 
         observaciones: this.inspectionForm.get('observaciones')?.value,
