@@ -249,10 +249,18 @@
                 </div>
               </div>
               <div class="col-lg-4 mb-3">
-                <label class="form-label">V / Licencia conducción <span class="text-danger">*</span></label>
-                <input #fechaLicencia type="text" class="form-control date-picker"
+                <label class="form-label">V / Licencia conducción
+                   <!-- <span class="text-danger">*</span> NO ES OBLIGATORIO A PETICION DEL CLIENTE -->
+                  </label>
+                <!-- <input #fechaLicencia type="text" class="form-control date-picker"
                   [ngClass]="getFieldClass('fecha_vencimiento_licencia')" formControlName="fecha_vencimiento_licencia"
-                  placeholder="Fecha vencimiento licencia" readonly>
+                  placeholder="Fecha vencimiento licencia" readonly> -->
+                  <input #fechaLicencia 
+       type="text" 
+       class="form-control" 
+       [ngClass]="getFieldClass('fecha_vencimiento_licencia')" 
+       formControlName="fecha_vencimiento_licencia"
+       placeholder="Fecha vencimiento licencia">
                 <div
                   *ngIf="inspectionForm.get('fecha_vencimiento_licencia')?.touched && inspectionForm.get('fecha_vencimiento_licencia')?.errors?.['required']"
                   class="text-danger small">
@@ -315,9 +323,16 @@
                 </div>
               </div>
               <div class="col-lg-3 mb-3">
-                <label class="form-label">SOAT</label>
+                <label class="form-label">SOAT
+                  <span class="text-danger">*</span>
+                </label>
                 <input type="number" formControlName="soat" class="form-control" [ngClass]="getFieldClass('soat')"
                   placeholder="Número SOAT">
+                      <div
+                  *ngIf="inspectionForm.get('soat')?.touched && inspectionForm.get('soat')?.errors?.['required']"
+                  class="text-danger small">
+                  Este campo es requerido
+                </div>
               </div>
               <div class="col-lg-3 mb-3">
                 <label class="form-label">V /de SOAT <span class="text-danger">*</span></label>
@@ -331,20 +346,35 @@
                 </div>
               </div>
               <div class="col-lg-3 mb-3">
-                <label class="form-label">Licencia Transito</label>
+                <label class="form-label">Licencia Transito
+                  <span class="text-danger">*</span>
+                </label>
                 <input type="number" formControlName="licencia_transito" class="form-control"
                   [ngClass]="getFieldClass('licencia_transito')" placeholder="Licencia transito">
+                   <div
+                  *ngIf="inspectionForm.get('licencia_transito')?.touched && inspectionForm.get('licencia_transito')?.errors?.['required']"
+                  class="text-danger small">
+                  Este campo es requerido
+                </div>
               </div>
               <div class="col-lg-3 mb-3">
-                <label class="form-label">R. Tecnicomecánica</label>
+                <label class="form-label">R. Tecnicomecánica
+                  <span class="text-danger">*</span>
+                </label>
                 <input type="number" formControlName="revision_tecnomecanica" class="form-control"
                   [ngClass]="getFieldClass('revision_tecnomecanica')" placeholder="Número R. Tecnicomecánica">
+                      <div
+                  *ngIf="inspectionForm.get('revision_tecnomecanica')?.touched && inspectionForm.get('revision_tecnomecanica')?.errors?.['required']"
+                  class="text-danger small">
+                  Este campo es requerido
+                </div>
               </div>
               <div class="col-lg-3 mb-3">
                 <label class="form-label">V / R. Técnicomecánica <span class="text-danger">*</span></label>
                 <input #fechaVencimientoRevisionTecnomecanica type="text" class="form-control date-picker"
                   [ngClass]="getFieldClass('fecha_vencimiento_revision_tecnomecanica')"
                   formControlName="fecha_vencimiento_revision_tecnomecanica" placeholder="Seleccione fecha" readonly>
+                  
                 <div
                   *ngIf="inspectionForm.get('fecha_vencimiento_revision_tecnomecanica')?.touched && inspectionForm.get('fecha_vencimiento_revision_tecnomecanica')?.errors?.['required']"
                   class="text-danger small">
@@ -357,9 +387,16 @@
                   [ngClass]="getFieldClass('clase_vehiculo')" placeholder="Clase de vehículo">
               </div>
               <div class="col-lg-3 mb-3">
-                <label class="form-label">Tarjeta de Operación</label>
+                <label class="form-label">Tarjeta de Operación
+                  <span class="text-danger">*</span>
+                </label>
                 <input type="number" formControlName="tarjeta_operacion" class="form-control"
                   [ngClass]="getFieldClass('tarjeta_operacion')" placeholder="Tarjeta de operación">
+                           <div
+                  *ngIf="inspectionForm.get('tarjeta_operacion')?.touched && inspectionForm.get('tarjeta_operacion')?.errors?.['required']"
+                  class="text-danger small">
+                  Este campo es requerido
+                </div>
               </div>
               <div class="col-lg-3 mb-3">
                 <label class="form-label">V / Tarjeta de Operación <span class="text-danger">*</span></label>
@@ -386,6 +423,13 @@
                 <label class="form-label">Capacidad de pasajeros</label>
                 <input type="number" formControlName="capacidad_pasajeros" class="form-control"
                   [ngClass]="getFieldClass('capacidad_pasajeros')" placeholder="Cantidad de pasajeros">
+                    
+            
+                <div
+                  *ngIf="inspectionForm.get('capacidad_pasajeros')?.touched && inspectionForm.get('capacidad_pasajeros')?.errors?.['required']"
+                  class="text-danger small">
+                  Este campo es requerido
+                </div>
               </div>
             </div>
           </div>

@@ -128,7 +128,7 @@ firmaInspectorBase64: string | null = null;
         nombres_conductor: ['', [Validators.required, Validators.minLength(3)]],
         identificacion: ['', [Validators.required, Validators.pattern(/^\d+$/)]],
         telefono: ['', [Validators.required, Validators.pattern(/^\d{10}$/)]],
-        fecha_vencimiento_licencia: ['', Validators.required],
+        fecha_vencimiento_licencia: [''],
         propietario: ['', [Validators.required, Validators.minLength(3)]],
         documento_propietario: ['', [Validators.required]],
         tipo_propietario: ['', Validators.required],
@@ -140,12 +140,12 @@ firmaInspectorBase64: string | null = null;
         kilometraje: ['', [Validators.required, Validators.min(0)]],
         color: [''],
         codigo_vehiculo: [''],
-        capacidad_pasajeros: ['', [Validators.min(0)]],
-        soat: [''],
-        licencia_transito: [''],
-        revision_tecnomecanica: [''],
+        capacidad_pasajeros:  ['', [Validators.required, Validators.min(0)]],
+        soat: ['',Validators.required],
+        licencia_transito: ['',Validators.required],
+        revision_tecnomecanica: ['',Validators.required],
         clase_vehiculo: [''],
-        tarjeta_operacion: [''],
+        tarjeta_operacion: ['',Validators.required],
         fecha_vencimiento_soat: ['', Validators.required],
         fecha_vencimiento_revision_tecnomecanica: ['', Validators.required],
         fecha_vencimiento_tarjeta_operacion: ['', Validators.required],
@@ -472,21 +472,21 @@ firmaInspectorBase64: string | null = null;
       });
     }
 
-    private initStep2DatePickers() {
-      if (this.flatpickrInstances['fecha_vencimiento_licencia']) return;
+    // private initStep2DatePickers() {
+    //   if (this.flatpickrInstances['fecha_vencimiento_licencia']) return;
 
-      const flatpickrOptions = this.getFlatpickrOptions();
+    //   const flatpickrOptions = this.getFlatpickrOptions();
 
-      this.flatpickrInstances['fecha_vencimiento_licencia'] = flatpickr(this.fechaLicenciaInput.nativeElement, {
-        ...flatpickrOptions,
-        minDate: 'today',
-        onChange: (selectedDates: Date[], dateStr: string) => {
-          this.fechaLicencia = dateStr;
-          this.inspectionForm.patchValue({ fecha_vencimiento_licencia: dateStr });
-          this.inspectionForm.get('fecha_vencimiento_licencia')?.markAsTouched();
-        }
-      });
-    }
+    //   this.flatpickrInstances['fecha_vencimiento_licencia'] = flatpickr(this.fechaLicenciaInput.nativeElement, {
+    //     ...flatpickrOptions,
+    //     minDate: 'today',
+    //     onChange: (selectedDates: Date[], dateStr: string) => {
+    //       this.fechaLicencia = dateStr;
+    //       this.inspectionForm.patchValue({ fecha_vencimiento_licencia: dateStr });
+    //       this.inspectionForm.get('fecha_vencimiento_licencia')?.markAsTouched();
+    //     }
+    //   });
+    // }
 
     private initStep3DatePickers() {
       if (this.flatpickrInstances['fecha_vencimiento_soat']) return;
@@ -703,7 +703,7 @@ onDibujoInicioInspector(event: MouseEvent | Touch) {
           this.initStep1DatePickers();
           break;
         case 2:
-          this.initStep2DatePickers();
+          // this.initStep2DatePickers();
           break;
         case 3:
           this.initStep3DatePickers();
@@ -750,7 +750,10 @@ onDibujoInicioInspector(event: MouseEvent | Touch) {
      */
     private validateStep2(): boolean {
       const controls = [
-        'fecha_vencimiento_licencia'
+        // 'fecha_vencimiento_licencia'
+        'nombre_transportadora',
+        'identificacion',
+        'nombres_conductor'
       ];
 
       let isValid = true;
@@ -764,7 +767,7 @@ onDibujoInicioInspector(event: MouseEvent | Touch) {
       });
 
       if (!isValid) {
-        this.showStepError('Por favor complete todos los campos del conductor.');
+        this.showStepError('Por favor complete todos los campos del.');
         return false;
       }
 
@@ -784,7 +787,18 @@ onDibujoInicioInspector(event: MouseEvent | Touch) {
      */
     private validateStep3(): boolean {
       const requiredControls = [
-        'fecha_vencimiento_tarjeta_operacion'
+        'placa',
+        'marca',
+        'modelo',
+        'kilometraje',
+        'soat',
+        'fecha_vencimiento_soat',
+        'licencia_transito',
+        'revision_tecnomecanica',
+        'fecha_vencimiento_revision_tecnomecanica',
+        'tarjeta_operacion',
+        'fecha_vencimiento_tarjeta_operacion',
+        'capacidad_pasajeros'
       ];
 
       let isValid = true;
@@ -1019,7 +1033,7 @@ onDibujoInicioInspector(event: MouseEvent | Touch) {
 
             fecha_inspeccion: formatDateForAPI(inspectionData.fecha_inspeccion),
             fecha_vigencia: formatDateForAPI(inspectionData.fecha_vigencia),
-            fecha_vencimiento_licencia: formatDateForAPI(inspectionData.fecha_vencimiento_licencia),
+            // fecha_vencimiento_licencia: formatDateForAPI(inspectionData.fecha_vencimiento_licencia),
             fecha_vencimiento_soat: formatDateForAPI(inspectionData.fecha_vencimiento_soat),
             fecha_vencimiento_revision_tecnomecanica: formatDateForAPI(inspectionData.fecha_vencimiento_revision_tecnomecanica),
             fecha_vencimiento_tarjeta_operacion: formatDateForAPI(inspectionData.fecha_vencimiento_tarjeta_operacion),
