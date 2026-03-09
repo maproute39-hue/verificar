@@ -321,7 +321,25 @@
         </div>
 
       
-
+  <div class=" mt-4">
+              <div class=" bg-light">
+                <h6 class="">
+                  <i class="fi fi-rr-comment-alt me-2"></i>
+                  Observaciones / Comentarios / Compromisos
+                </h6>
+              </div>
+              <div class="-body">
+                <textarea formControlName="observaciones" class="form-control" rows="5"
+                  placeholder="Describa las observaciones encontradas durante la inspección..." maxlength="500">
+                 </textarea>
+                <div class="form-text">
+                  Máximo 500 caracteres. Esta información se incluirá en el reporte Excel/PDF.
+                </div>
+                <div class="text-end">
+                  <small class="text-muted">{{ inspectionForm.get('observaciones')?.value?.length || 0 }}/500</small>
+                </div>
+              </div>
+            </div>
       </div>
       <!-- columna derecha -->
       <div class="col-lg-6 mb-3">
@@ -1608,6 +1626,7 @@
                         <label class="btn btn-outline-secondary" for="protectores_na">N/A</label>
                       </div>
                     </div>
+                    
                 </div>
               
               </div>
