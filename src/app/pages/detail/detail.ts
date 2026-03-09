@@ -762,7 +762,7 @@ export class Detail implements OnInit, AfterViewInit {
 
     // Formatear fechas al formato YYYY-MM-DD para compatibilidad con flatpickr
     const dateFields = [
-      'fecha_inspeccion', 'fecha_vigencia', 'fecha_vencimiento_licencia',
+      'fecha_inspeccion', 'fecha_vigencia', 
       'fecha_vencimiento_soat', 'fecha_vencimiento_revision_tecnomecanica',
       'fecha_vencimiento_tarjeta_operacion'
     ];
