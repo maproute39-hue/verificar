@@ -127,13 +127,19 @@
 
   <div class="col-lg-4 mb-3">
     <label class="form-label">V / Licencia conducción <span class="text-danger">*</span></label>
-    <input #fechaLicencia 
+    <!-- <input #fechaLicencia 
            type="text" 
            class="form-control date-picker"
            [ngClass]="getFieldClass('fecha_vencimiento_licencia')"
            formControlName="fecha_vencimiento_licencia" 
            placeholder="Fecha vencimiento licencia" 
-           readonly>
+           readonly> -->
+               <input #fechaLicencia 
+       type="text" 
+       class="form-control" 
+       [ngClass]="getFieldClass('fecha_vencimiento_licencia')" 
+       formControlName="fecha_vencimiento_licencia"
+       placeholder="Fecha vencimiento licencia">
     <div *ngIf="inspectionForm.get('fecha_vencimiento_licencia')?.touched && inspectionForm.get('fecha_vencimiento_licencia')?.errors?.['required']"
       class="text-danger small">
       Este campo es requerido
