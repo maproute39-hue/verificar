@@ -250,17 +250,14 @@
               </div>
               <div class="col-lg-4 mb-3">
                 <label class="form-label">V / Licencia conducción
-                   <!-- <span class="text-danger">*</span> NO ES OBLIGATORIO A PETICION DEL CLIENTE -->
-                  </label>
+                  <!-- <span class="text-danger">*</span> NO ES OBLIGATORIO A PETICION DEL CLIENTE -->
+                </label>
                 <!-- <input #fechaLicencia type="text" class="form-control date-picker"
                   [ngClass]="getFieldClass('fecha_vencimiento_licencia')" formControlName="fecha_vencimiento_licencia"
                   placeholder="Fecha vencimiento licencia" readonly> -->
-                  <input #fechaLicencia 
-       type="text" 
-       class="form-control" 
-       [ngClass]="getFieldClass('fecha_vencimiento_licencia')" 
-       formControlName="fecha_vencimiento_licencia"
-       placeholder="Fecha vencimiento licencia">
+                <input #fechaLicencia type="text" class="form-control"
+                  [ngClass]="getFieldClass('fecha_vencimiento_licencia')" formControlName="fecha_vencimiento_licencia"
+                  placeholder="Fecha vencimiento licencia">
                 <div
                   *ngIf="inspectionForm.get('fecha_vencimiento_licencia')?.touched && inspectionForm.get('fecha_vencimiento_licencia')?.errors?.['required']"
                   class="text-danger small">
@@ -328,8 +325,7 @@
                 </label>
                 <input type="number" formControlName="soat" class="form-control" [ngClass]="getFieldClass('soat')"
                   placeholder="Número SOAT">
-                      <div
-                  *ngIf="inspectionForm.get('soat')?.touched && inspectionForm.get('soat')?.errors?.['required']"
+                <div *ngIf="inspectionForm.get('soat')?.touched && inspectionForm.get('soat')?.errors?.['required']"
                   class="text-danger small">
                   Este campo es requerido
                 </div>
@@ -351,7 +347,7 @@
                 </label>
                 <input type="number" formControlName="licencia_transito" class="form-control"
                   [ngClass]="getFieldClass('licencia_transito')" placeholder="Licencia transito">
-                   <div
+                <div
                   *ngIf="inspectionForm.get('licencia_transito')?.touched && inspectionForm.get('licencia_transito')?.errors?.['required']"
                   class="text-danger small">
                   Este campo es requerido
@@ -363,7 +359,7 @@
                 </label>
                 <input type="number" formControlName="revision_tecnomecanica" class="form-control"
                   [ngClass]="getFieldClass('revision_tecnomecanica')" placeholder="Número R. Tecnicomecánica">
-                      <div
+                <div
                   *ngIf="inspectionForm.get('revision_tecnomecanica')?.touched && inspectionForm.get('revision_tecnomecanica')?.errors?.['required']"
                   class="text-danger small">
                   Este campo es requerido
@@ -374,7 +370,7 @@
                 <input #fechaVencimientoRevisionTecnomecanica type="text" class="form-control date-picker"
                   [ngClass]="getFieldClass('fecha_vencimiento_revision_tecnomecanica')"
                   formControlName="fecha_vencimiento_revision_tecnomecanica" placeholder="Seleccione fecha" readonly>
-                  
+
                 <div
                   *ngIf="inspectionForm.get('fecha_vencimiento_revision_tecnomecanica')?.touched && inspectionForm.get('fecha_vencimiento_revision_tecnomecanica')?.errors?.['required']"
                   class="text-danger small">
@@ -386,7 +382,7 @@
                 <input type="text" formControlName="clase_vehiculo" class="form-control text-uppercase"
                   [ngClass]="getFieldClass('clase_vehiculo')" placeholder="Clase de vehículo">
               </div>
-              <div class="col-lg-3 mb-3">
+              <!-- <div class="col-lg-3 mb-3">
                 <label class="form-label">Tarjeta de Operación
                   <span class="text-danger">*</span>
                 </label>
@@ -408,7 +404,7 @@
                   class="text-danger small">
                   Este campo es requerido
                 </div>
-              </div>
+              </div> -->
               <div class="col-lg-3 mb-3">
                 <label class="form-label">Color</label>
                 <input type="text" formControlName="color" class="form-control text-uppercase"
@@ -423,8 +419,8 @@
                 <label class="form-label">Capacidad de pasajeros</label>
                 <input type="number" formControlName="capacidad_pasajeros" class="form-control"
                   [ngClass]="getFieldClass('capacidad_pasajeros')" placeholder="Cantidad de pasajeros">
-                    
-            
+
+
                 <div
                   *ngIf="inspectionForm.get('capacidad_pasajeros')?.touched && inspectionForm.get('capacidad_pasajeros')?.errors?.['required']"
                   class="text-danger small">
@@ -1751,16 +1747,16 @@
                 <div class="camera-options d-flex gap-2 flex-wrap">
                   <input type="file" id="images" #fileInput multiple accept="image/*" capture="environment"
                     (change)="onFilesSelected($event)" class="d-none" [disabled]="isUploadingImages" />
-                  <button type="button" class="btn btn-primary w-100" (click)="fileInput.click()"
-                    [disabled]="isUploadingImages">
-                    <i class="fi fi-rr-camera me-2"></i>
-                    {{ isUploadingImages ? 'Subiendo...' : 'Tomar Foto / Seleccionar' }}
+                  <button type="button" class="btn btn-success btn-lg w-100" (click)="selectImageSource()">
+                    <i class="fas fa-camera me-2"></i>
+                    Tomar Foto / Seleccionar
                   </button>
+                  <p class="text-muted small mt-2 text-center">
+                    En móvil: elige entre cámara o galería.<br>
+                    En escritorio: abre explorador de archivos.
+                  </p>
                 </div>
-                <small class="text-muted d-block mt-2">
-                  <i class="fi fi-rr-info-circle me-1"></i>
-                  En móvil: abre cámara directamente. En escritorio: abre explorador.
-                </small>
+
               </div>
               <!-- Preview de imágenes -->
               <div class="selected-images d-flex flex-wrap gap-2 mt-3" *ngIf="imagePreviews.length > 0">

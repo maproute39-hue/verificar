@@ -37,6 +37,7 @@ interface FlatpickrOptions {
  * Permite visualizar y modificar todos los datos de una inspección existente
  */
 
+
 @Component({
   selector: 'app-detail',
   standalone: true,
@@ -46,6 +47,228 @@ interface FlatpickrOptions {
   providers: [DatePipe]
 })
 export class Detail implements OnInit, AfterViewInit {
+    selectedFiles: File[] = [];
+imagePreviews: string[] = [];
+isUploadingImages: boolean = false;
+imageUploadInput!: ElementRef<HTMLInputElement>;
+
+@ViewChild('imageUpload') set imageUploadSetter(content: ElementRef<HTMLInputElement>) {
+  this.imageUploadInput = content;
+}
+
+  
+
+  // === PROPIEDADES PARA GESTIÓN DE IMÁGENES ===
+
+
+
+/**
+ * Maneja la selección de archivos (compatible con el componente nueva)
+ */
+onFilesSelected(event: any): void {
+  const files: FileList = event.target.files;
+
+  for (let i = 0; i < files.length; i++) {
+    const file = files[i];
+
+    // Validar que sea imagen
+    if (!file.type.startsWith('image/')) {
+      Swal.fire({
+        title: 'Archivo inválido',
+        text: `El archivo "${file.name}" no es una imagen`,
+        icon: 'warning',
+        confirmButtonText: 'Aceptar'
+      });
+      continue;
+    }
+
+    // Validar tamaño (5MB max)
+    if (file.size > 5 * 1024 * 1024) {
+      Swal.fire({
+        title: 'Archivo muy pesado',
+        text: `La imagen "${file.name}" excede los 5MB`,
+        icon: 'warning',
+        confirmButtonText: 'Aceptar'
+      });
+      continue;
+    }
+
+    // Agregar al array
+    this.selectedFiles.push(file);
+
+    // Crear preview
+    const reader = new FileReader();
+    reader.onload = (e: any) => {
+      this.imagePreviews.push(e.target.result);
+    };
+    reader.readAsDataURL(file);
+  }
+
+  // Limpiar input para permitir seleccionar el mismo archivo
+  event.target.value = '';
+  
+  // Si hay archivos seleccionados, subirlos automáticamente
+  if (this.selectedFiles.length > 0) {
+    this.uploadSelectedImages();
+  }
+}
+
+/**
+ * Sube las imágenes seleccionadas a PocketBase
+ */
+async uploadSelectedImages(): Promise<void> {
+  if (this.selectedFiles.length === 0) return;
+
+  this.isUploadingImages = true;
+  const id = this.route.snapshot.paramMap.get('id');
+  
+  if (!id) {
+    Swal.fire('Error', 'No hay ID de inspección', 'error');
+    this.isUploadingImages = false;
+    return;
+  }
+
+  try {
+    Swal.fire({
+      title: 'Subiendo imágenes...',
+      html: `Procesando ${this.selectedFiles.length} imagen(es)`,
+      allowOutsideClick: false,
+      didOpen: () => Swal.showLoading()
+    });
+
+    const uploadedImageIds: string[] = [];
+    const collectionId = '5bjt6wpqfj0rnsl'; // ID de la colección 'images'
+
+    // Subir cada imagen individualmente
+    for (const file of this.selectedFiles) {
+      const formData = new FormData();
+      formData.append('image', file);
+      formData.append('inspection', id);
+
+      const uploadedRecord = await this.inspectionService.pb.collection('images').create(formData);
+      uploadedImageIds.push(uploadedRecord.id);
+    }
+
+    // Actualizar la inspección con los nuevos IDs de imágenes
+    if (uploadedImageIds.length > 0) {
+      const inspection = await this.inspectionService.pb.collection('inspections').getOne(id);
+      const currentImages = inspection['images'] || [];
+      const updatedImages = [...currentImages, ...uploadedImageIds];
+
+      await this.inspectionService.pb.collection('inspections').update(id, {
+        images: updatedImages
+      });
+
+      // Recargar las imágenes
+      await this.loadInspectionImages(id);
+      
+      Swal.fire('Éxito', `${uploadedImageIds.length} imagen(es) subida(s) correctamente`, 'success');
+      this.hasChanges = false;
+    }
+
+  } catch (error) {
+    console.error('Error al subir imágenes:', error);
+    Swal.fire('Error', 'No se pudieron subir las imágenes', 'error');
+  } finally {
+    this.isUploadingImages = false;
+    this.selectedFiles = [];
+    this.imagePreviews = [];
+    Swal.close();
+  }
+}
+
+/**
+ * Elimina una imagen específica de la inspección
+ */
+async deleteImage(imageUrl: string, index: number): Promise<void> {
+  const id = this.route.snapshot.paramMap.get('id');
+  
+  if (!id) {
+    Swal.fire('Error', 'No hay ID de inspección', 'error');
+    return;
+  }
+
+  // Confirmar eliminación
+  const result = await Swal.fire({
+    title: '¿Eliminar imagen?',
+    text: 'Esta acción no se puede deshacer',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#d33',
+    cancelButtonColor: '#3085d6',
+    confirmButtonText: 'Sí, eliminar',
+    cancelButtonText: 'Cancelar'
+  });
+
+  if (!result.isConfirmed) {
+    return;
+  }
+
+  try {
+    Swal.fire({
+      title: 'Eliminando...',
+      allowOutsideClick: false,
+      didOpen: () => Swal.showLoading()
+    });
+
+    // Obtener el ID de la imagen desde la URL
+    const imageId = this.extractImageIdFromUrl(imageUrl);
+
+    if (imageId) {
+      // Eliminar el registro de la colección images
+      await this.inspectionService.pb.collection('images').delete(imageId);
+    }
+
+    // Actualizar la inspección sin esta imagen
+    const inspection = await this.inspectionService.pb.collection('inspections').getOne(id);
+    const currentImages = inspection['images'] || [];
+    const updatedImages = currentImages.filter((imgId: string) => imgId !== imageId);
+
+    await this.inspectionService.pb.collection('inspections').update(id, {
+      images: updatedImages
+    });
+
+    // Recargar las imágenes
+    await this.loadInspectionImages(id);
+
+    Swal.fire('Eliminado', 'La imagen ha sido eliminada', 'success');
+    this.hasChanges = false;
+
+  } catch (error) {
+    console.error('Error al eliminar imagen:', error);
+    Swal.fire('Error', 'No se pudo eliminar la imagen', 'error');
+  } finally {
+    Swal.close();
+  }
+}
+
+/**
+ * Extrae el ID de la imagen desde la URL de PocketBase
+ */
+private extractImageIdFromUrl(url: string): string | null {
+  // Formato típico: /api/files/{collectionId}/{recordId}/{filename}
+  const parts = url.split('/');
+  if (parts.length >= 3) {
+    return parts[parts.length - 2];
+  }
+  return null;
+}
+
+
+/**
+ * Remueve una imagen de los previews (antes de subir)
+ */
+removePreviewImage(index: number): void {
+  this.selectedFiles.splice(index, 1);
+  this.imagePreviews.splice(index, 1);
+}
+
+/**
+ * Detiene la propagación del evento click
+ */
+stopPropagation(event: Event): void {
+  event.stopPropagation();
+}
   // Referencias a los elementos del DOM para los selectores de fecha
   @ViewChild('fechaInspeccion') fechaInspeccionInput!: ElementRef<HTMLInputElement>;
   @ViewChild('fechaVigencia') fechaVigenciaInput!: ElementRef<HTMLInputElement>;
@@ -104,7 +327,7 @@ export class Detail implements OnInit, AfterViewInit {
       fecha_vencimiento_licencia: ['', Validators.required],
       fecha_vencimiento_soat: ['', Validators.required],
       fecha_vencimiento_revision_tecnomecanica: ['', Validators.required],
-      fecha_vencimiento_tarjeta_operacion: ['', Validators.required],
+      // fecha_vencimiento_tarjeta_operacion: ['', Validators.required],
       propietario: ['', [Validators.required]],
       documento_propietario: ['', [Validators.required]],
 
@@ -126,7 +349,7 @@ export class Detail implements OnInit, AfterViewInit {
       licencia_transito: [''],
       revision_tecnomecanica: [''],
       clase_vehiculo: [''],
-      tarjeta_operacion: [''],
+      // tarjeta_operacion: [''],
 
       // Sección: Estado y observaciones
       estado: ['borrador'],
@@ -254,7 +477,95 @@ export class Detail implements OnInit, AfterViewInit {
       telefono: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]]
     });
   }
+async triggerImageUpload(): Promise<void> {
+  // Detectar si es dispositivo móvil
+  const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+  
+  if (isMobile) {
+    // Mostrar SweetAlert para elegir opción
+    const { value: action } = await Swal.fire({
+      title: 'Agregar Imágenes',
+      html: `
+        <div class="text-center">
+          <p class="mb-3">¿Cómo deseas agregar las imágenes?</p>
+          <div class="d-flex flex-column gap-2">
+            <button id="swal-camera" class="btn btn-success btn-lg w-100">
+              <i class="fas fa-camera d-block mb-1"></i>
+              <span>Tomar Foto</span>
+            </button>
+            <button id="swal-gallery" class="btn btn-primary btn-lg w-100">
+              <i class="fas fa-images d-block mb-1"></i>
+              <span>Seleccionar de Galería</span>
+            </button>
+          </div>
+        </div>
+      `,
+      showConfirmButton: false,
+      showCancelButton: true,
+      cancelButtonText: 'Cancelar',
+      didOpen: () => {
+        const cameraBtn = document.getElementById('swal-camera');
+        const galleryBtn = document.getElementById('swal-gallery');
+        
+        cameraBtn?.addEventListener('click', () => {
+          Swal.close({ value: 'camera' });
+        });
+        
+        galleryBtn?.addEventListener('click', () => {
+          Swal.close({ value: 'gallery' });
+        });
+      }
+    });
 
+    if (action === 'camera') {
+      this.openCamera();
+    } else if (action === 'gallery') {
+      this.openGallery();
+    }
+  } else {
+    // En escritorio, abrir explorador de archivos normal
+    this.openGallery();
+  }
+}
+/**
+ * Abre la cámara del dispositivo
+ */
+openCamera(): void {
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = 'image/*';
+  input.capture = 'environment'; // Usa la cámara trasera
+  input.multiple = true;
+  
+  input.onchange = async (e: Event) => {
+    const target = e.target as HTMLInputElement;
+    if (target.files && target.files.length > 0) {
+      await this.onFilesSelected({ target: { files: target.files, value: '' } });
+    }
+  };
+  
+  input.click();
+}
+
+/**
+ * Abre la galería de imágenes
+ */
+openGallery(): void {
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = 'image/*';
+  input.multiple = true;
+  // Sin capture attribute = abre galería
+  
+  input.onchange = async (e: Event) => {
+    const target = e.target as HTMLInputElement;
+    if (target.files && target.files.length > 0) {
+      await this.onFilesSelected({ target: { files: target.files, value: '' } });
+    }
+  };
+  
+  input.click();
+}
   /**
    * Inicializa el componente y se suscribe a los cambios en los parámetros de la ruta
    * Se ejecuta cuando el componente es inicializado
@@ -763,8 +1074,8 @@ export class Detail implements OnInit, AfterViewInit {
     // Formatear fechas al formato YYYY-MM-DD para compatibilidad con flatpickr
     const dateFields = [
       'fecha_inspeccion', 'fecha_vigencia', 
-      'fecha_vencimiento_soat', 'fecha_vencimiento_revision_tecnomecanica',
-      'fecha_vencimiento_tarjeta_operacion'
+      'fecha_vencimiento_soat', 'fecha_vencimiento_revision_tecnomecanica'
+      // 'fecha_vencimiento_tarjeta_operacion'
     ];
 
     dateFields.forEach(field => {
@@ -1147,8 +1458,8 @@ export class Detail implements OnInit, AfterViewInit {
       'fecha_vigencia',
     
       'fecha_vencimiento_soat',
-      'fecha_vencimiento_revision_tecnomecanica',
-      'fecha_vencimiento_tarjeta_operacion'
+      'fecha_vencimiento_revision_tecnomecanica'
+      // 'fecha_vencimiento_tarjeta_operacion'
     ];
 
     // Formatea todas las fechas al formato YYYY-MM-DD
@@ -1386,13 +1697,13 @@ getFieldClass(fieldName: string): string {
         kilometraje: this.inspectionForm.get('kilometraje')?.value,
         soat: this.inspectionForm.get('soat')?.value,
         revision_tecnomecanica: this.inspectionForm.get('revision_tecnomecanica')?.value,
-        tarjeta_operacion: this.inspectionForm.get('tarjeta_operacion')?.value,
+        // tarjeta_operacion: this.inspectionForm.get('tarjeta_operacion')?.value,
         licencia_transito: this.inspectionForm.get('licencia_transito')?.value,
         fecha_inspeccion: this.inspectionForm.get('fecha_inspeccion')?.value,
         fecha_vigencia: this.inspectionForm.get('fecha_vigencia')?.value,
         fecha_vencimiento_soat: this.inspectionForm.get('fecha_vencimiento_soat')?.value,
         fecha_vencimiento_revision_tecnomecanica: this.inspectionForm.get('fecha_vencimiento_revision_tecnomecanica')?.value,
-        fecha_vencimiento_tarjeta_operacion: this.inspectionForm.get('fecha_vencimiento_tarjeta_operacion')?.value,
+        // fecha_vencimiento_tarjeta_operacion: this.inspectionForm.get('fecha_vencimiento_tarjeta_operacion')?.value,
 
         // 👨‍✈️ DATOS DEL CONDUCTOR
         nombres_conductor: this.inspectionForm.get('nombres_conductor')?.value,

@@ -145,10 +145,10 @@ firmaInspectorBase64: string | null = null;
         licencia_transito: ['',Validators.required],
         revision_tecnomecanica: ['',Validators.required],
         clase_vehiculo: [''],
-        tarjeta_operacion: ['',Validators.required],
+        // tarjeta_operacion: ['',Validators.required],
         fecha_vencimiento_soat: ['', Validators.required],
         fecha_vencimiento_revision_tecnomecanica: ['', Validators.required],
-        fecha_vencimiento_tarjeta_operacion: ['', Validators.required],
+        // fecha_vencimiento_tarjeta_operacion: ['', Validators.required],
 
         // Sección: Estado y observaciones
         observaciones: [''],
@@ -491,7 +491,7 @@ firmaInspectorBase64: string | null = null;
     private initStep3DatePickers() {
       if (this.flatpickrInstances['fecha_vencimiento_soat']) return;
       if (this.flatpickrInstances['fecha_vencimiento_revision_tecnomecanica']) return;
-      if (this.flatpickrInstances['fecha_vencimiento_tarjeta_operacion']) return;
+      // if (this.flatpickrInstances['fecha_vencimiento_tarjeta_operacion']) return;
 
       const flatpickrOptions = this.getFlatpickrOptions();
 
@@ -517,17 +517,17 @@ firmaInspectorBase64: string | null = null;
       }
       );
 
-      this.flatpickrInstances['fecha_vencimiento_tarjeta_operacion'] = flatpickr(
-        this.fechaVencimientoTarjetaOperacionInput.nativeElement, {
-        ...flatpickrOptions,
-        minDate: 'today',
-        onChange: (selectedDates: Date[], dateStr: string) => {
-          this.fechaVencimientoTarjetaOperacion = dateStr;
-          this.inspectionForm.patchValue({ fecha_vencimiento_tarjeta_operacion: dateStr });
-          this.inspectionForm.get('fecha_vencimiento_tarjeta_operacion')?.markAsTouched();
-        }
-      }
-      );
+      // this.flatpickrInstances['fecha_vencimiento_tarjeta_operacion'] = flatpickr(
+      //   this.fechaVencimientoTarjetaOperacionInput.nativeElement, {
+      //   ...flatpickrOptions,
+      //   minDate: 'today',
+      //   onChange: (selectedDates: Date[], dateStr: string) => {
+      //     this.fechaVencimientoTarjetaOperacion = dateStr;
+      //     this.inspectionForm.patchValue({ fecha_vencimiento_tarjeta_operacion: dateStr });
+      //     this.inspectionForm.get('fecha_vencimiento_tarjeta_operacion')?.markAsTouched();
+      //   }
+      // }
+      // );
     }
 
     private getFlatpickrOptions(): any {
@@ -796,8 +796,8 @@ onDibujoInicioInspector(event: MouseEvent | Touch) {
         'licencia_transito',
         'revision_tecnomecanica',
         'fecha_vencimiento_revision_tecnomecanica',
-        'tarjeta_operacion',
-        'fecha_vencimiento_tarjeta_operacion',
+        // 'tarjeta_operacion',
+        // 'fecha_vencimiento_tarjeta_operacion',
         'capacidad_pasajeros'
       ];
 
@@ -818,7 +818,87 @@ onDibujoInicioInspector(event: MouseEvent | Touch) {
 
       return true;
     }
+async selectImageSource(): Promise<void> {
+  const { value: action } = await Swal.fire({
+    title: 'Registro Fotográfico',
+    html: `
+      <div class="text-center">
+        <p class="mb-3">¿Cómo deseas agregar las imágenes?</p>
+        <div class="d-flex justify-content-center gap-2">
+          <button id="swal-camera" class="btn btn-success btn-lg" style="flex: 1;">
+            <i class="fas fa-camera d-block mb-1"></i>
+            <small>Tomar Foto</small>
+          </button>
+          <button id="swal-gallery" class="btn btn-primary btn-lg" style="flex: 1;">
+            <i class="fas fa-images d-block mb-1"></i>
+            <small>Galería</small>
+          </button>
+        </div>
+      </div>
+    `,
+    showConfirmButton: false,
+    showCancelButton: true,
+    cancelButtonText: 'Cancelar',
+    didOpen: () => {
+      const cameraBtn = document.getElementById('swal-camera');
+      const galleryBtn = document.getElementById('swal-gallery');
+      
+      cameraBtn?.addEventListener('click', () => {
+        Swal.close({ value: 'camera' });
+      });
+      
+      galleryBtn?.addEventListener('click', () => {
+        Swal.close({ value: 'gallery' });
+      });
+    }
+  });
 
+  if (action === 'camera') {
+    this.openCamera();
+  } else if (action === 'gallery') {
+    this.openGallery();
+  }
+}
+
+/**
+ * Abre la cámara del dispositivo
+ */
+openCamera(): void {
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = 'image/*';
+  input.capture = 'environment'; // Usa la cámara trasera
+  input.multiple = true;
+  
+  input.onchange = async (e: Event) => {
+    const target = e.target as HTMLInputElement;
+    if (target.files && target.files.length > 0) {
+      await this.onFilesSelected({ target: { files: target.files, value: '' } });
+    }
+  };
+  
+  input.click();
+}
+
+/**
+ * Abre la galería de imágenes
+ */
+openGallery(): void {
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = 'image/*';
+  input.multiple = true;
+  // Sin capture attribute = abre galería
+  
+  input.onchange = async (e: Event) => {
+    const target = e.target as HTMLInputElement;
+    if (target.files && target.files.length > 0) {
+      await this.onFilesSelected({ target: { files: target.files, value: '' } });
+    }
+  };
+  
+  input.click();
+}
     /**
      * Muestra un mensaje de error para el paso actual
      */
@@ -1036,7 +1116,7 @@ onDibujoInicioInspector(event: MouseEvent | Touch) {
             // fecha_vencimiento_licencia: formatDateForAPI(inspectionData.fecha_vencimiento_licencia),
             fecha_vencimiento_soat: formatDateForAPI(inspectionData.fecha_vencimiento_soat),
             fecha_vencimiento_revision_tecnomecanica: formatDateForAPI(inspectionData.fecha_vencimiento_revision_tecnomecanica),
-            fecha_vencimiento_tarjeta_operacion: formatDateForAPI(inspectionData.fecha_vencimiento_tarjeta_operacion),
+            // fecha_vencimiento_tarjeta_operacion: formatDateForAPI(inspectionData.fecha_vencimiento_tarjeta_operacion),
             created_by: this.currentUser,
             estado: estado,
             kilometraje: Number(inspectionData.kilometraje),
