@@ -219,6 +219,9 @@
   <h6 class="card-title mb-0">Recientes</h6>
   <div class="d-flex align-items-center gap-2">
     <div id="dt_NewCustomers_Search"></div>
+      <button type="button" class="btn btn-primary waves-effect waves-light" (click)="openSearch()">
+        <i class="fi fi-rr-search text-2xs me-1"></i> 
+      </button>
     <button type="button" class="btn btn-primary waves-effect waves-light" routerLink="/inspections">
       <i class="fi fi-rr-eye text-2xs me-1"></i> Ver todas
     </button>
@@ -333,6 +336,7 @@
         <span class="fab-label">Camioneta</span>
         <span class="fab-option-icon">2</span>
       </a>
+   
       <!-- <a (click)="pending()" class="fab-option">
         <span class="fab-label text-warning">Pesados</span>
         <span class="fab-option-icon">3</span>

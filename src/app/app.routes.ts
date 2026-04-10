@@ -20,7 +20,10 @@ export const routes: Routes = [
     path: 'nueva',
     loadComponent: () => import('./pages/nueva/nueva').then(m => m.Nueva)
   },
-
+{
+  path: 'heredada',
+  loadComponent: () => import('./pages/heredada/heredada').then(m => m.Heredada)
+},
   {
     path: 'nueva',
     loadComponent: () =>

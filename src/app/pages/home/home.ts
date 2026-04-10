@@ -5,6 +5,7 @@ import { Router,ActivatedRoute, RouterLink, RouterModule } from '@angular/router
 import Swal from 'sweetalert2';
 import { Inspection } from '../../models/inspection.model';
 import { SharedService } from '../../services/shared.service';
+import { firstValueFrom } from 'rxjs';
 @Component({
   selector: 'app-home',
   imports: [CommonModule, RouterModule, RouterLink], standalone: true,
@@ -27,7 +28,150 @@ export class Home implements OnInit {
     public sharedService: SharedService,
     private route: ActivatedRoute  
   ) { }
+async openSearch(): Promise<void> {
+  const allInspections = await firstValueFrom(this.RealtimeInspectionsService.inspections$);
 
+  await Swal.fire({
+    title: 'Buscar por placa',
+    html: `
+      <div class="text-start">
+        <input id="swal-plate-search" class="swal2-input" placeholder="Ej: ABC123" style="margin: 0 auto 1rem auto;">
+        <div id="swal-search-results" style="
+          max-height: 350px;
+          overflow-y: auto;
+          text-align: left;
+          border: 1px solid #eee;
+          border-radius: 10px;
+          padding: 8px;
+          background: #fafafa;
+        ">
+          <div style="padding: 12px; color: #666;">Escribe una placa para buscar.</div>
+        </div>
+      </div>
+    `,
+    width: 800,
+    showConfirmButton: false,
+    showCancelButton: true,
+    cancelButtonText: 'Cerrar',
+    didOpen: () => {
+      const input = document.getElementById('swal-plate-search') as HTMLInputElement | null;
+      const resultsContainer = document.getElementById('swal-search-results');
+
+      if (!input || !resultsContainer) return;
+
+      const renderResults = (term: string) => {
+        const normalized = term.trim().toLowerCase();
+
+        if (!normalized) {
+          resultsContainer.innerHTML = `
+            <div style="padding: 12px; color: #666;">Escribe una placa para buscar.</div>
+          `;
+          return;
+        }
+
+        const matches = allInspections.filter((inspection) =>
+          (inspection.placa || '').toLowerCase().includes(normalized)
+        );
+
+        if (matches.length === 0) {
+          resultsContainer.innerHTML = `
+            <div style="padding: 12px; color: #999;">
+              No se encontraron inspecciones con esa placa.
+            </div>
+          `;
+          return;
+        }
+
+        resultsContainer.innerHTML = matches.map((inspection) => `
+          <div class="search-result-card" style="
+            border: 1px solid #e9ecef;
+            border-radius: 10px;
+            background: #fff;
+            padding: 12px;
+            margin-bottom: 10px;
+          ">
+            <div style="display:flex; justify-content:space-between; gap:10px; align-items:start; flex-wrap:wrap;">
+              <div>
+                <div style="font-weight:700; font-size:15px; color:#0d6efd;">
+                  ${inspection.placa || 'Sin placa'}
+                </div>
+                <div style="font-size:14px; color:#333; margin-top:4px;">
+                  <strong>Conductor:</strong> ${inspection.nombres_conductor || 'Sin nombre'}
+                </div>
+                <div style="font-size:14px; color:#333;">
+                  <strong>ID:</strong> ${inspection.identificacion || 'Sin identificación'}
+                </div>
+                <div style="font-size:13px; color:#666;">
+                  <strong>Estado:</strong> ${inspection.estado || 'borrador'}
+                </div>
+              </div>
+
+              <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                <button 
+                  class="swal-detail-btn btn btn-sm btn-outline-primary" 
+                  data-id="${inspection.id}">
+                  Ver detalle
+                </button>
+                <button 
+                  class="swal-heredar-btn btn btn-sm btn-primary" 
+                  data-id="${inspection.id}">
+                  Nueva heredada
+                </button>
+              </div>
+            </div>
+          </div>
+        `).join('');
+
+        resultsContainer.querySelectorAll('.swal-detail-btn').forEach((btn) => {
+          btn.addEventListener('click', (event: Event) => {
+            const target = event.currentTarget as HTMLElement;
+            const id = target.getAttribute('data-id');
+            if (!id) return;
+
+            Swal.close();
+            this.viewInspection(id);
+          });
+        });
+
+        resultsContainer.querySelectorAll('.swal-heredar-btn').forEach((btn) => {
+          btn.addEventListener('click', (event: Event) => {
+            const target = event.currentTarget as HTMLElement;
+            const id = target.getAttribute('data-id');
+            const selected = matches.find(x => x.id === id);
+
+            if (!selected) return;
+
+            Swal.close();
+            this.createInheritedInspection(selected);
+          });
+        });
+      };
+
+      input.addEventListener('input', () => {
+        renderResults(input.value);
+      });
+    }
+  });
+}
+
+createInheritedInspection(inspection: Inspection): void {
+  // this.router.navigate(['/heredada'], {
+  //   state: {
+  //     inheritedInspection: {
+  //       sourceInspectionId: inspection.id,
+  //       placa: inspection.placa || '',
+  //       nombres_conductor: inspection.nombres_conductor || '',
+  //       identificacion: inspection.identificacion || ''
+  //     }
+  //   }
+  // });
+  
+this.router.navigate(['/heredada'], {
+  state: {
+    inheritedInspection: inspection
+  }
+});
+}
   /**
    * Navega a la página de detalle de una inspección
    * @param id Identificador único de la inspección

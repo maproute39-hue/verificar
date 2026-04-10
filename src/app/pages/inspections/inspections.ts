@@ -78,22 +78,39 @@ private initializeData(): void {
     }
   });
 }
+onSearch(): void {
+  const term = this.searchTerm?.toLowerCase().trim() || '';
 
-  onSearch(): void {
-    if (!this.searchTerm.trim()) {
-      this.filteredInspections = [...this.inspections];
-      return;
-    }
-    
-    const term = this.searchTerm.toLowerCase().trim();
-    this.filteredInspections = this.inspections.filter(inspection => 
-      (inspection.id_inspeccion?.toLowerCase().includes(term)) ||
-      (inspection.estado?.toLowerCase().includes(term)) ||
-      (inspection.vehiculo?.placa?.toLowerCase().includes(term)) ||
-      (inspection.vehiculo?.marca?.toLowerCase().includes(term)) ||
-      (inspection.vehiculo?.modelo?.toLowerCase().includes(term))
-    );
+  if (!term) {
+    this.filteredInspections = [...this.inspections];
+    return;
   }
+
+  this.filteredInspections = this.inspections.filter((inspection) =>
+    (inspection.numero_certificado?.toLowerCase().includes(term)) ||
+    (inspection.nombres_conductor?.toLowerCase().includes(term)) ||
+    (inspection.placa?.toLowerCase().includes(term)) ||
+    (inspection.telefono?.toLowerCase().includes(term)) ||
+    (inspection.estado?.toLowerCase().includes(term)) ||
+    (inspection.marca?.toLowerCase().includes(term)) ||
+    (inspection.modelo?.toLowerCase().includes(term))
+  );
+}
+  // onSearch(): void {
+  //   if (!this.searchTerm.trim()) {
+  //     this.filteredInspections = [...this.inspections];
+  //     return;
+  //   }
+    
+  //   const term = this.searchTerm.toLowerCase().trim();
+  //   this.filteredInspections = this.inspections.filter(inspection => 
+  //     (inspection.id_inspeccion?.toLowerCase().includes(term)) ||
+  //     (inspection.estado?.toLowerCase().includes(term)) ||
+  //     (inspection.vehiculo?.placa?.toLowerCase().includes(term)) ||
+  //     (inspection.vehiculo?.marca?.toLowerCase().includes(term)) ||
+  //     (inspection.vehiculo?.modelo?.toLowerCase().includes(term))
+  //   );
+  // }
 
   viewInspection(id: string | undefined): void {
     if (!id) {
