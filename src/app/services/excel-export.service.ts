@@ -570,7 +570,9 @@ private base64ToArrayBuffer(base64: string): ArrayBuffer {
     this.setCell(worksheet, 'Y36', formData.presion_llanta_t_lde);  // LLanta T-LDE
     this.setCell(worksheet, 'U37', formData.presion_llanta_t_lii);  // LLanta T-LII
     this.setCell(worksheet, 'Y37', formData.presion_llanta_t_ldi);  // LLanta T-LDI
-    this.setCell(worksheet, 'D46:AA51', formData.observaciones);
+    this.setCell(worksheet, 'D44:AA51', formData.observaciones);
+
+    // this.setCell(worksheet, 'D46:AA51', formData.observaciones);
 
 
     console.log('✅ Hoja SECOND_PAGE procesada exitosamente');

@@ -9,13 +9,14 @@ export class GotenbergService {
   
   // ✅ Detecta si es producción o desarrollo
   private isProduction = window.location.hostname !== 'localhost';
-  
 
-    private gotenbergUrl = 'https://gotenberg.buckapi.online/forms/libreoffice/convert';
+ private  gotenbergUrl = 'https://dokploy.buckapi.online/forms/libreoffice/convert';
+    // private gotenbergUrl = 'https://gotenberg.buckapi.online/forms/libreoffice/convert';
 
-
-  private username = 'noah_gottlieb-barton38';
-  private password = '4frvcnwtdxtkx4pm';
+private username = 'tremaine.bogisich-reichert';
+ private password = 'zdbdb0zoq2nqy73t';
+  // private username = 'noah_gottlieb-barton38';
+  // private password = '4frvcnwtdxtkx4pm';
 
   constructor(private http: HttpClient) {}
 
@@ -77,7 +78,7 @@ export class GotenbergService {
   if (options.marginLeft) formData.append('marginLeft', options.marginLeft.toString());
   if (options.marginRight) formData.append('marginRight', options.marginRight.toString());
 
-  return this.http.post('https://gotenberg.buckapi.online/forms/chromium/convert/html', formData, {
+  return this.http.post('https://dokploy.buckapi.online/forms/chromium/convert/html', formData, {
     headers,
     responseType: 'blob'
   }).pipe(

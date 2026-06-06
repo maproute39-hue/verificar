@@ -2,7 +2,7 @@ import { Injectable, OnDestroy } from '@angular/core';
 import PocketBase, { RecordSubscription } from 'pocketbase';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { Inspection } from '../models/inspection.model';
-
+import Swal from 'sweetalert2'; 
 // Actualizamos la interfaz para extender de RecordSubscription
 export interface RealtimeEvent extends Omit<RecordSubscription<Inspection>, 'action'> {
   action: 'create' | 'update' | 'delete';
@@ -88,10 +88,15 @@ async deleteInspection(id: string): Promise<void> {
   }
 
 async subscribe(autoLoad: boolean = true): Promise<void> {
-  if (this.isSubscribed) {
-    console.log('[RealtimeInspectionsService] Ya está suscrito');
-    return;
+if (this.isSubscribed) {
+  console.log('[RealtimeInspectionsService] Ya está suscrito');
+
+  if (autoLoad && this.inspectionsSubject.value.length === 0) {
+    await this.loadInspections();
   }
+
+  return;
+}
 
   try {
     // ✅ Validación estricta de autenticación
@@ -172,19 +177,78 @@ private handleRealtimeEvent(event: RealtimeEvent): void {
   /**
    * Cargar lista completa de inspecciones
    */
-  async loadInspections(sort: string = '-created'): Promise<void> {
-    try {
-      const records = await this.pb
-        .collection(this.COLLECTION)
-        .getFullList<Inspection>(200, { sort });
-      
-      console.log(`[RealtimeInspectionsService] Cargadas ${records.length} inspecciones`);
-      this.inspectionsSubject.next(records);
-    } catch (error) {
-      this.handleError(error);
-      throw error;
-    }
+ async loadInspections(sort: string = '-created'): Promise<void> {
+  try {
+    this.loadingSubject.next(true);
+
+    Swal.fire({
+      title: 'Cargando inspecciones',
+      html: `
+        <p>Estamos consultando el servidor...</p>
+        <div style="width:100%; background:#eee; border-radius:12px; overflow:hidden;">
+          <div id="swal-progress-bar" style="
+            width:0%;
+            height:10px;
+            background:#1eb41e;
+            transition:width .3s ease;
+          "></div>
+        </div>
+        <small id="swal-progress-text">Preparando conexión...</small>
+      `,
+      allowOutsideClick: false,
+      allowEscapeKey: false,
+      showConfirmButton: false,
+      didOpen: () => {
+        Swal.showLoading();
+
+        let progress = 0;
+        const interval = setInterval(() => {
+          progress = Math.min(progress + 8, 90);
+
+          const bar = document.getElementById('swal-progress-bar');
+          const text = document.getElementById('swal-progress-text');
+
+          if (bar) bar.style.width = `${progress}%`;
+          if (text) text.innerText = `Cargando datos... ${progress}%`;
+
+          if (!Swal.isVisible()) clearInterval(interval);
+        }, 250);
+      }
+    });
+
+    const records = await this.pb
+      .collection(this.COLLECTION)
+      .getFullList<Inspection>(200, { sort });
+
+    this.inspectionsSubject.next(records);
+
+    const bar = document.getElementById('swal-progress-bar');
+    const text = document.getElementById('swal-progress-text');
+
+    if (bar) bar.style.width = '100%';
+    if (text) text.innerText = `Listo. ${records.length} inspecciones cargadas.`;
+
+    await new Promise(resolve => setTimeout(resolve, 500));
+
+    Swal.close();
+
+    console.log(`[RealtimeInspectionsService] Cargadas ${records.length} inspecciones`);
+
+  } catch (error) {
+    Swal.fire({
+      title: 'Error al cargar',
+      text: 'No se pudieron cargar las inspecciones desde el servidor.',
+      icon: 'error',
+      confirmButtonText: 'Aceptar'
+    });
+
+    this.handleError(error);
+    throw error;
+
+  } finally {
+    this.loadingSubject.next(false);
   }
+}
 
   /**
    * Obtener inspecciones con paginación
