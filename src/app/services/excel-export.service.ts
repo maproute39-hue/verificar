@@ -703,7 +703,7 @@ private async insertarFirmaConductor(
     console.log('✏️ Escribiendo datos en hoja:', worksheet.name);
 
     // ✅ DATOS DEL PROPIETARIO
-    this.setCell(worksheet, 'E11:M11', formData.propietario); // propietario
+    this.setCell(worksheet, 'E11:O11', formData.propietario); // propietario
     this.setCell(worksheet, 'V11:AA11', formData.documento_propietario); // documento propietario
 
     // // ✅ DATOS DEL VEHÍCULO (coordenadas verificadas con tu plantilla)
