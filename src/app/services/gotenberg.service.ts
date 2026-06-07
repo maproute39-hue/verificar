@@ -26,7 +26,7 @@ private username = 'tremaine.bogisich-reichert';
 
     const authHeader = 'Basic ' + btoa(`${this.username}:${this.password}`);
     const headers = new HttpHeaders({
-      // 'Authorization': authHeader,
+      'Authorization': authHeader,
       'Accept': 'application/pdf'
     });
 
