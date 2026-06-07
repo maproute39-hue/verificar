@@ -704,7 +704,7 @@ private async insertarFirmaConductor(
 
     // ✅ DATOS DEL PROPIETARIO
     this.setCell(worksheet, 'E11:M11', formData.propietario); // propietario
-    this.setCell(worksheet, 'P11:AA11', formData.documento_propietario); // documento propietario
+    this.setCell(worksheet, 'V11:AA11', formData.documento_propietario); // documento propietario
 
     // // ✅ DATOS DEL VEHÍCULO (coordenadas verificadas con tu plantilla)
     this.setCell(worksheet, 'E20:M20', formData.placa); // Placa
