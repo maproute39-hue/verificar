@@ -10,7 +10,7 @@ export class GotenbergService {
   // ✅ Detecta si es producción o desarrollo
   private isProduction = window.location.hostname !== 'localhost';
 
- private  gotenbergUrl = 'https://dokploy.buckapi.online/forms/libreoffice/convert';
+ private  gotenbergUrl = 'https://gotenberg.buckapi.online/forms/libreoffice/convert';
     // private gotenbergUrl = 'https://gotenberg.buckapi.online/forms/libreoffice/convert';
 
 private username = 'tremaine.bogisich-reichert';
@@ -78,7 +78,7 @@ private username = 'tremaine.bogisich-reichert';
   if (options.marginLeft) formData.append('marginLeft', options.marginLeft.toString());
   if (options.marginRight) formData.append('marginRight', options.marginRight.toString());
 
-  return this.http.post('https://dokploy.buckapi.online/forms/chromium/convert/html', formData, {
+  return this.http.post('https://gotenberg.buckapi.online/forms/chromium/convert/html', formData, {
     headers,
     responseType: 'blob'
   }).pipe(
