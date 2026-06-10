@@ -67,4 +67,38 @@ background-color: #0f0369 !important;
     background-color: #0f0369 !important;
   }
 }
-  
+  .sortable-header {
+  cursor: pointer;
+  user-select: none;
+  transition: background-color 0.2s ease;
+  position: relative;
+  padding-right: 20px !important;
+}
+
+.sortable-header:hover {
+  background-color: rgba(13, 110, 253, 0.05);
+}
+
+.sortable-header.active {
+  background-color: rgba(13, 110, 253, 0.1);
+  color: var(--bs-primary);
+  font-weight: 600;
+}
+
+.sortable-header i {
+  position: absolute;
+  right: 6px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 12px;
+  opacity: 0.5;
+}
+
+.sortable-header.active i {
+  opacity: 1;
+  color: var(--bs-primary);
+}
+
+.sortable-header:hover i {
+  opacity: 0.8;
+}

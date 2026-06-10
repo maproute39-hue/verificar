@@ -23,7 +23,7 @@
             <div class="card" style="min-height: 200px;">
               <div class="card-header d-flex align-items-center justify-content-between border-0 pb-0">
                 <div class="clearfix">
-                  <h6>  TOTAL:</h6>
+                  <h6> TOTAL:</h6>
                 </div>
                 <div class="d-none d-lg-flex align-items-center gap-2 position-relative">
                   <input type="checkbox" id="desktop-fab-check" class="fab-check">
@@ -54,19 +54,20 @@
                   <h2 class="mb-0 text-blue">{{ totalInspections | number:'1.0-0' }}</h2>
 
                 </div>
-                
-                
+
+
                 <div id="chartContacts" class="mb-n4 mt-n3"></div>
-                
+
               </div>
-              
+
               <div class="card-footer border-0 pt-0 mt-n1">
                 <div class="border-top pb-2"></div>
                 <div class="d-flex align-items-center justify-content-between">
                   <p class="mb-0">Este mes:
                     <span class="text-blue" style="font-size: 20px;">
-                    {{ currentMonthInspections | number:'1.0-0' }}  
-                    </span></p>
+                      {{ currentMonthInspections | number:'1.0-0' }}
+                    </span>
+                  </p>
 
 
                   <a class="btn-link">
@@ -205,7 +206,9 @@
       </div>
 
       <div class="col-xxl-12">
+
         <div class="card overflow-hidden">
+
           <!-- <div class="card-header d-flex flex-wrap gap-3 align-items-center justify-content-between border-0 pb-0">
             <h6 class="card-title mb-0">Inspecciones recientes</h6>
             <div class="d-flex flex-wrap gap-2">
@@ -215,35 +218,190 @@
               </button>
             </div>
           </div> -->
-          <div class="card-header d-flex align-items-center justify-content-between border-0 pb-0" style="flex-wrap: nowrap;">
-  <h6 class="card-title mb-0">Recientes</h6>
-  <div class="d-flex align-items-center gap-2">
-    <div id="dt_NewCustomers_Search"></div>
-      <button type="button" class="btn btn-primary waves-effect waves-light" (click)="openSearch()">
-        <i class="fi fi-rr-search text-2xs me-1"></i> 
-      </button>
-    <button type="button" class="btn btn-primary waves-effect waves-light" routerLink="/inspections">
-      <i class="fi fi-rr-eye text-2xs me-1"></i> Ver todas
-    </button>
-  </div>
-</div>
+
+
+          <div *ngIf="expiredCount > 0 || expiringSoonCount > 0 || 
+            soatExpiredCount > 0 || soatExpiringCount > 0 ||
+            tecnomecanicaExpiredCount > 0 || tecnomecanicaExpiringCount > 0 ||
+            tarjetaOperacionExpiredCount > 0 || tarjetaOperacionExpiringCount > 0 ||
+            licenciaExpiredCount > 0 || licenciaExpiringCount > 0"
+            class="alert alert-primary alert-dismissible fade show mb-3" role="alert">
+            <div class="d-flex align-items-start">
+              <i class="fi fi-rr-info fs-4 me-3 mt-1"></i>
+              <div class="flex-grow-1">
+                <strong class="d-block mb-2">Información de vencimientos</strong>
+
+                <!-- Leyenda de colores para Documentos Críticos -->
+                <div class="mb-3 p-2 bg-primary bg-opacity-10 rounded">
+                  <strong class="d-block mb-2 small text-primary">
+                    <i class="fi fi-rr-palette me-1"></i> Significado de colores en Documentos Críticos:
+                  </strong>
+                  <div class="row g-2">
+                    <div class="col-6 col-md-3">
+                      <span
+                        class="badge bg-danger-subtle text-danger border border-danger border-opacity-25 w-100 py-2">
+                        <i class="fi fi-rr-warning me-1"></i> Vencido
+                      </span>
+                      <small class="d-block text-muted mt-1" style="font-size: 11px;">Fecha ya pasó</small>
+                    </div>
+                    <div class="col-6 col-md-3">
+                      <span
+                        class="badge bg-warning-subtle text-warning border border-warning border-opacity-25 w-100 py-2">
+                        <i class="fi fi-rr-clock me-1"></i> Urgente
+                      </span>
+                      <small class="d-block text-muted mt-1" style="font-size: 11px;">Vence en 7 días o menos</small>
+                    </div>
+                    <div class="col-6 col-md-3">
+                      <span class="badge bg-info-subtle text-info border border-info border-opacity-25 w-100 py-2">
+                        <i class="fi fi-rr-info-circle me-1"></i> Próximo
+                      </span>
+                      <small class="d-block text-muted mt-1" style="font-size: 11px;">Vence en 8-30 días</small>
+                    </div>
+                    <div class="col-6 col-md-3">
+                      <span
+                        class="badge bg-success-subtle text-success border border-success border-opacity-25 w-100 py-2">
+                        <i class="fi fi-rr-check me-1"></i> Vigente
+                      </span>
+                      <small class="d-block text-muted mt-1" style="font-size: 11px;">Más de 30 días</small>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Detalle de vencimientos -->
+                <div class="row g-3">
+                  <!-- Inspecciones -->
+                  <div class="col-md-6 col-lg-4" *ngIf="expiredCount > 0 || expiringSoonCount > 0">
+                    <div class="fw-semibold text-primary mb-1">Inspecciones</div>
+                    <div *ngIf="expiredCount > 0" class="text-danger small">
+                      <i class="fi fi-rr-warning me-1"></i> <strong>{{ expiredCount }}</strong> vencida(s)
+                    </div>
+                    <div *ngIf="expiringSoonCount > 0" class="text-warning small">
+                      <i class="fi fi-rr-clock me-1"></i> <strong>{{ expiringSoonCount }}</strong> próxima(s) a vencer
+                      (30 días)
+                    </div>
+                  </div>
+
+                  <!-- SOAT -->
+                  <div class="col-md-6 col-lg-4" *ngIf="soatExpiredCount > 0 || soatExpiringCount > 0">
+                    <div class="fw-semibold text-primary mb-1">SOAT</div>
+                    <div *ngIf="soatExpiredCount > 0" class="text-danger small">
+                      <i class="fi fi-rr-warning me-1"></i> <strong>{{ soatExpiredCount }}</strong> vencido(s)
+                    </div>
+                    <div *ngIf="soatExpiringCount > 0" class="text-warning small">
+                      <i class="fi fi-rr-clock me-1"></i> <strong>{{ soatExpiringCount }}</strong> próximo(s) a vencer
+                    </div>
+                  </div>
+
+                  <!-- Tecnomecánica -->
+                  <div class="col-md-6 col-lg-4"
+                    *ngIf="tecnomecanicaExpiredCount > 0 || tecnomecanicaExpiringCount > 0">
+                    <div class="fw-semibold text-primary mb-1">Rev. Tecnomecánica</div>
+                    <div *ngIf="tecnomecanicaExpiredCount > 0" class="text-danger small">
+                      <i class="fi fi-rr-warning me-1"></i> <strong>{{ tecnomecanicaExpiredCount }}</strong> vencida(s)
+                    </div>
+                    <div *ngIf="tecnomecanicaExpiringCount > 0" class="text-warning small">
+                      <i class="fi fi-rr-clock me-1"></i> <strong>{{ tecnomecanicaExpiringCount }}</strong> próxima(s) a
+                      vencer
+                    </div>
+                  </div>
+
+                  <!-- Tarjeta de Operación -->
+                  <div class="col-md-6 col-lg-4"
+                    *ngIf="tarjetaOperacionExpiredCount > 0 || tarjetaOperacionExpiringCount > 0">
+                    <div class="fw-semibold text-primary mb-1">Tarjeta de Operación</div>
+                    <div *ngIf="tarjetaOperacionExpiredCount > 0" class="text-danger small">
+                      <i class="fi fi-rr-warning me-1"></i> <strong>{{ tarjetaOperacionExpiredCount }}</strong>
+                      vencida(s)
+                    </div>
+                    <div *ngIf="tarjetaOperacionExpiringCount > 0" class="text-warning small">
+                      <i class="fi fi-rr-clock me-1"></i> <strong>{{ tarjetaOperacionExpiringCount }}</strong>
+                      próxima(s) a vencer
+                    </div>
+                  </div>
+
+                  <!-- Licencia -->
+                  <div class="col-md-6 col-lg-4" *ngIf="licenciaExpiredCount > 0 || licenciaExpiringCount > 0">
+                    <div class="fw-semibold text-primary mb-1">Licencia de Conducción</div>
+                    <div *ngIf="licenciaExpiredCount > 0" class="text-danger small">
+                      <i class="fi fi-rr-warning me-1"></i> <strong>{{ licenciaExpiredCount }}</strong> vencida(s)
+                    </div>
+                    <div *ngIf="licenciaExpiringCount > 0" class="text-warning small">
+                      <i class="fi fi-rr-clock me-1"></i> <strong>{{ licenciaExpiringCount }}</strong> próxima(s) a
+                      vencer
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+
+          <div class="card-header d-flex align-items-center justify-content-between border-0 pb-0"
+            style="flex-wrap: nowrap;">
+            <h6 class="card-title mb-0">Recientes</h6>
+            <div class="d-flex align-items-center gap-2">
+              <div id="dt_NewCustomers_Search"></div>
+              <button type="button" class="btn btn-primary waves-effect waves-light" (click)="openSearch()">
+                <i class="fi fi-rr-search text-2xs me-1"></i>
+              </button>
+              <button type="button" class="btn btn-primary waves-effect waves-light" routerLink="/inspections">
+                <i class="fi fi-rr-eye text-2xs me-1"></i> Ver todas
+              </button>
+            </div>
+          </div>
           <div class="card-body px-1 pt-2 pb-2">
             <div class="table-responsive">
               <table id="dt_NewCustomers" class="table table-border-bottom-0 mb-0">
-                <thead >
+                <thead>
                   <tr>
-                    <th class="minw-75px">Placa</th>
-
+                    <th class="minw-75px sortable-header" (click)="sortBy('placa')"
+                      [class.active]="isSortedBy('placa')">
+                      Placa
+                      <i class="fi fi-rr-sort" *ngIf="!isSortedBy('placa')"></i>
+                      <i class="fi fi-rr-sort-up" *ngIf="isSortedBy('placa') && sortDirection === 'asc'"></i>
+                      <i class="fi fi-rr-sort-down" *ngIf="isSortedBy('placa') && sortDirection === 'desc'"></i>
+                    </th>
                     <th class="minw-180px">Teléfono</th>
-                    <th class="minw-200px">Conductor</th>
-                    <th class="minw-125px">Fecha</th>
-
-                    <th>Status</th>
-                    <th>Accion</th>
+                    <th class="minw-200px sortable-header" (click)="sortBy('nombres_conductor')"
+                      [class.active]="isSortedBy('nombres_conductor')">
+                      Conductor
+                      <i class="fi fi-rr-sort" *ngIf="!isSortedBy('nombres_conductor')"></i>
+                      <i class="fi fi-rr-sort-up"
+                        *ngIf="isSortedBy('nombres_conductor') && sortDirection === 'asc'"></i>
+                      <i class="fi fi-rr-sort-down"
+                        *ngIf="isSortedBy('nombres_conductor') && sortDirection === 'desc'"></i>
+                    </th>
+                    <th class="minw-125px sortable-header" (click)="sortBy('fecha_inspeccion')"
+                      [class.active]="isSortedBy('fecha_inspeccion')">
+                      Fecha
+                      <i class="fi fi-rr-sort" *ngIf="!isSortedBy('fecha_inspeccion')"></i>
+                      <i class="fi fi-rr-sort-up" *ngIf="isSortedBy('fecha_inspeccion') && sortDirection === 'asc'"></i>
+                      <i class="fi fi-rr-sort-down"
+                        *ngIf="isSortedBy('fecha_inspeccion') && sortDirection === 'desc'"></i>
+                    </th>
+                    <th class="sortable-header" (click)="sortBy('estado')" [class.active]="isSortedBy('estado')">
+                      Status
+                      <i class="fi fi-rr-sort" *ngIf="!isSortedBy('estado')"></i>
+                      <i class="fi fi-rr-sort-up" *ngIf="isSortedBy('estado') && sortDirection === 'asc'"></i>
+                      <i class="fi fi-rr-sort-down" *ngIf="isSortedBy('estado') && sortDirection === 'desc'"></i>
+                    </th>
+                    <th class="sortable-header active" (click)="sortBy('fecha_vigencia')"
+                      [class.active]="isSortedBy('fecha_vigencia')" title="Ordenado por defecto">
+                      Vigencia
+                      <i class="fi fi-rr-sort" *ngIf="!isSortedBy('fecha_vigencia')"></i>
+                      <i class="fi fi-rr-sort-up" *ngIf="isSortedBy('fecha_vigencia') && sortDirection === 'asc'"></i>
+                      <i class="fi fi-rr-sort-down"
+                        *ngIf="isSortedBy('fecha_vigencia') && sortDirection === 'desc'"></i>
+                    </th>
+                    <th>Documentos Críticos</th>
+                    <th>Acción</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let inspection of RealtimeInspectionsService.inspections$ | async" class="inspection-row">
+                  <!-- <tr *ngFor="let inspection of RealtimeInspectionsService.inspections$ | async" class="inspection-row"> -->
+                  <tr *ngFor="let inspection of sortedInspections" class="inspection-row">
+
                     <td (click)="viewInspection(inspection.id)">{{ inspection.placa || 'Sin placa' }}</td>
                     <td>
                       <div class="phone-cell">
@@ -271,7 +429,8 @@
                         {{ inspection.nombres_conductor || 'Sin nombre' }}
                       </div>
                     </td>
-                    <td (click)="viewInspection(inspection.id)">{{ (inspection.fecha_inspeccion | date: 'dd/MM/yyyy':'UTC')  ||
+                    <td (click)="viewInspection(inspection.id)">{{ (inspection.fecha_inspeccion | date:
+                      'dd/MM/yyyy':'UTC') ||
                       'Sin fecha' }}</td>
 
                     <td (click)="viewInspection(inspection.id)">
@@ -284,7 +443,53 @@
                         {{ inspection.estado || 'borrador' | titlecase }}
                       </span>
                     </td>
+                    <!-- Columna de Vigencia -->
+                    <td (click)="viewInspection(inspection.id)">
+                      <div class="d-flex flex-column">
+                        <span [ngClass]="{
+      'text-danger fw-bold': isExpired(inspection.fecha_vigencia),
+      'text-warning fw-semibold': isExpiringSoon(inspection.fecha_vigencia)
+    }">
+                          {{ (inspection.fecha_vigencia | date: 'dd/MM/yyyy':'UTC') || 'Sin vigencia' }}
+                        </span>
+                        <small class="text-muted" *ngIf="getDaysUntilExpiry(inspection.fecha_vigencia) !== null">
+                          <span *ngIf="getDaysUntilExpiry(inspection.fecha_vigencia)! < 0" class="text-danger">
+                            Venció hace {{ Math.abs(getDaysUntilExpiry(inspection.fecha_vigencia)!) }} días
+                          </span>
+                          <span
+                            *ngIf="getDaysUntilExpiry(inspection.fecha_vigencia)! >= 0 && getDaysUntilExpiry(inspection.fecha_vigencia)! <= 7"
+                            class="text-warning">
+                            Vence en {{ getDaysUntilExpiry(inspection.fecha_vigencia)! }} días
+                          </span>
+                        </small>
+                      </div>
+                    </td>
+
+                    <!-- Columna de Documentos Críticos -->
                     <td>
+                      <div class="d-flex flex-column gap-1">
+                        <span class="badge badge-sm"
+                          [ngClass]="getDocumentStatusClass(inspection.fecha_vencimiento_soat)"
+                          *ngIf="inspection.fecha_vencimiento_soat" title="SOAT">
+                          <i class="fi fi-rr-file me-1"></i>SOAT
+                        </span>
+                        <span class="badge badge-sm"
+                          [ngClass]="getDocumentStatusClass(inspection.fecha_vencimiento_revision_tecnomecanica)"
+                          *ngIf="inspection.fecha_vencimiento_revision_tecnomecanica" title="Tecnomecánica">
+                          <i class="fi fi-rr-file me-1"></i>Tecno
+                        </span>
+                        <span class="badge badge-sm" [ngClass]="getDocumentStatusClass(inspection.licencia_vencimiento)"
+                          *ngIf="inspection.licencia_vencimiento" title="Licencia">
+                          <i class="fi fi-rr-file me-1"></i>Licencia
+                        </span>
+                        <span class="text-muted small"
+                          *ngIf="!inspection.fecha_vencimiento_soat && !inspection.fecha_vencimiento_revision_tecnomecanica && !inspection.licencia_vencimiento">
+                          Sin datos
+                        </span>
+                      </div>
+                    </td>
+                    <td>
+
                       <div class="btn-group float-end" (click)="$event.stopPropagation()">
                         <button class="btn btn-subtle-primary btn-sm btn-shadow btn-icon waves-effect dropdown-toggle"
                           type="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -336,7 +541,7 @@
         <span class="fab-label">Camioneta</span>
         <span class="fab-option-icon">2</span>
       </a>
-   
+
       <!-- <a (click)="pending()" class="fab-option">
         <span class="fab-label text-warning">Pesados</span>
         <span class="fab-option-icon">3</span>
