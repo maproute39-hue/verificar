@@ -225,47 +225,14 @@
             tecnomecanicaExpiredCount > 0 || tecnomecanicaExpiringCount > 0 ||
             tarjetaOperacionExpiredCount > 0 || tarjetaOperacionExpiringCount > 0 ||
             licenciaExpiredCount > 0 || licenciaExpiringCount > 0"
-            class="alert alert-primary alert-dismissible fade show mb-3" role="alert">
+            class="alert alert-info alert-dismissible fade show mb-3" role="alert">
             <div class="d-flex align-items-start">
               <i class="fi fi-rr-info fs-4 me-3 mt-1"></i>
               <div class="flex-grow-1">
                 <strong class="d-block mb-2">Información de vencimientos</strong>
 
                 <!-- Leyenda de colores para Documentos Críticos -->
-                <div class="mb-3 p-2 bg-primary bg-opacity-10 rounded">
-                  <strong class="d-block mb-2 small text-primary">
-                    <i class="fi fi-rr-palette me-1"></i> Significado de colores en Documentos Críticos:
-                  </strong>
-                  <div class="row g-2">
-                    <div class="col-6 col-md-3">
-                      <span
-                        class="badge bg-danger-subtle text-danger border border-danger border-opacity-25 w-100 py-2">
-                        <i class="fi fi-rr-warning me-1"></i> Vencido
-                      </span>
-                      <small class="d-block text-muted mt-1" style="font-size: 11px;">Fecha ya pasó</small>
-                    </div>
-                    <div class="col-6 col-md-3">
-                      <span
-                        class="badge bg-warning-subtle text-warning border border-warning border-opacity-25 w-100 py-2">
-                        <i class="fi fi-rr-clock me-1"></i> Urgente
-                      </span>
-                      <small class="d-block text-muted mt-1" style="font-size: 11px;">Vence en 7 días o menos</small>
-                    </div>
-                    <div class="col-6 col-md-3">
-                      <span class="badge bg-info-subtle text-info border border-info border-opacity-25 w-100 py-2">
-                        <i class="fi fi-rr-info-circle me-1"></i> Próximo
-                      </span>
-                      <small class="d-block text-muted mt-1" style="font-size: 11px;">Vence en 8-30 días</small>
-                    </div>
-                    <div class="col-6 col-md-3">
-                      <span
-                        class="badge bg-success-subtle text-success border border-success border-opacity-25 w-100 py-2">
-                        <i class="fi fi-rr-check me-1"></i> Vigente
-                      </span>
-                      <small class="d-block text-muted mt-1" style="font-size: 11px;">Más de 30 días</small>
-                    </div>
-                  </div>
-                </div>
+              
 
                 <!-- Detalle de vencimientos -->
                 <div class="row g-3">
@@ -336,7 +303,40 @@
             </div>
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
           </div>
-
+  <div class="mb-3 p-2 bg-primary bg-opacity-10 rounded">
+                  <strong class="d-block mb-2 small ">
+                    <i class="fi fi-rr-palette me-1"></i> Significado de colores en Documentos Críticos:
+                  </strong>
+                  <div class="row g-2">
+                    <div class="col-6 col-md-3">
+                      <span
+                        class="badge bg-danger-subtle text-danger border border-danger border-opacity-25 w-100 py-2">
+                        <i class="fi fi-rr-warning me-1"></i> Vencido
+                      </span>
+                      <small class="d-block text-muted mt-1" style="font-size: 11px;">Fecha ya pasó</small>
+                    </div>
+                    <div class="col-6 col-md-3">
+                      <span
+                        class="badge bg-warning-subtle text-warning border border-warning border-opacity-25 w-100 py-2">
+                        <i class="fi fi-rr-clock me-1"></i> Urgente
+                      </span>
+                      <small class="d-block text-muted mt-1" style="font-size: 11px;">Vence en 7 días o menos</small>
+                    </div>
+                    <div class="col-6 col-md-3">
+                      <span class="badge bg-info-subtle text-info border border-info border-opacity-25 w-100 py-2">
+                        <i class="fi fi-rr-info-circle me-1"></i> Próximo
+                      </span>
+                      <small class="d-block text-muted mt-1" style="font-size: 11px;">Vence en 8-30 días</small>
+                    </div>
+                    <div class="col-6 col-md-3">
+                      <span
+                        class="badge bg-success-subtle text-success border border-success border-opacity-25 w-100 py-2">
+                        <i class="fi fi-rr-check me-1"></i> Vigente
+                      </span>
+                      <small class="d-block text-muted mt-1" style="font-size: 11px;">Más de 30 días</small>
+                    </div>
+                  </div>
+                </div>
           <div class="card-header d-flex align-items-center justify-content-between border-0 pb-0"
             style="flex-wrap: nowrap;">
             <h6 class="card-title mb-0">Recientes</h6>
