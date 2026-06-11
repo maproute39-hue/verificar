@@ -1,59 +1,131 @@
-# verificarApp
+# VerificarIT
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.0.3.
+Aplicación web PWA para la gestión y control de inspecciones vehiculares. Permite registrar, consultar y hacer seguimiento de las inspecciones técnicas de vehículos de transporte, con alertas automáticas de vencimiento de vigencias y documentos críticos.
 
-## Development server
+---
 
-To start a local development server, run:
+## ¿Qué hace la aplicación?
+
+### Gestión de inspecciones
+- Crear inspecciones vehiculares detalladas para busetas y camionetas.
+- Registrar información del conductor (nombre, identificación, teléfono, foto, licencia).
+- Registrar información del vehículo (placa, marca, modelo, color, clase, kilometraje, capacidad).
+- Adjuntar documentos: SOAT, licencia de tránsito, revisión tecnomecánica, tarjeta de operación.
+- Registrar el estado de más de 40 ítems de inspección: luces, frenos, carrocería, seguridad, kit de carretera, parte baja, entre otros.
+- Capturar firma digital del conductor.
+- Generar número de certificado secuencial por prefijo.
+- Exportar inspecciones a Excel y PDF.
+
+### Panel de inicio
+- Muestra las **10 inspecciones más recientes** al instante al entrar.
+- En segundo plano descarga el historial completo para tenerlo disponible sin bloquear la UI.
+- Botón **"Ver todas"** que se activa al terminar la descarga en segundo plano; muestra todas las inspecciones con **paginación de 20 por página** directamente en la misma pantalla.
+- **Alert de vencimientos** con conteo de inspecciones y documentos críticos vencidos o próximos a vencer. Al hacer clic filtra y muestra exclusivamente las inspecciones con problemas de vigencia.
+
+### Alertas de vencimiento
+Detecta y reporta problemas en cinco categorías:
+- Vigencia de la inspección
+- SOAT
+- Revisión tecnomecánica
+- Tarjeta de operación
+- Licencia de conducción
+
+Los documentos se clasifican visualmente con cuatro estados: **Vencido** (rojo), **Urgente — vence en ≤7 días** (amarillo), **Próximo — vence en 8–30 días** (azul), **Vigente** (verde).
+
+### Búsqueda rápida
+Búsqueda por placa con resultados en tiempo real. Desde el resultado se puede ir al detalle de la inspección o crear una nueva inspección heredando los datos del vehículo y conductor.
+
+### Inspecciones heredadas
+Permite crear una nueva inspección pre-cargada con los datos de una inspección anterior, útil para vehículos recurrentes.
+
+### Actualizaciones en tiempo real
+Usa **PocketBase Realtime** (WebSocket) para reflejar automáticamente cualquier creación, edición o eliminación hecha desde otro dispositivo sin necesidad de recargar la página.
+
+### PWA
+Instalable en dispositivos móviles y de escritorio. Funciona con soporte de Service Worker para caché y uso offline básico.
+
+---
+
+## Stack tecnológico
+
+| Capa | Tecnología |
+|---|---|
+| Framework | Angular 21 (standalone components) |
+| Backend / BDD | PocketBase |
+| Tiempo real | PocketBase WebSocket Subscriptions |
+| UI | Bootstrap 5 + iconos Flaticon |
+| Alertas | SweetAlert2 |
+| Firma digital | @almothafar/angular-signature-pad |
+| Exportación | ExcelJS, FileSaver, XLSX |
+| Datepicker | Flatpickr |
+| Galería | ngx-lightbox |
+| Tests | Vitest |
+| PWA | @angular/service-worker |
+
+---
+
+## Instalación y desarrollo
+
+### Requisitos
+- Node.js 20+
+- npm 10+
+- Angular CLI 21
+
+### Instalar dependencias
 
 ```bash
-ng serve
+npm install
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+### Servidor de desarrollo
 
 ```bash
-ng generate component component-name
+npm start
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+La app queda disponible en `http://localhost:4200/`. Se recarga automáticamente al guardar cambios.
+
+### Build de producción
 
 ```bash
-ng generate --help
+npm run build
 ```
 
-## Building
+Los artefactos quedan en `dist/`. El build de producción aplica optimizaciones de rendimiento y tree-shaking.
 
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+### Ejecutar tests
 
 ```bash
 ng test
 ```
 
-## Running end-to-end tests
+---
 
-For end-to-end (e2e) testing, run:
+## Estructura principal
 
-```bash
-ng e2e
+```
+src/app/
+├── pages/
+│   ├── home/          # Panel principal con listado de inspecciones
+│   ├── nueva/         # Formulario de nueva inspección
+│   ├── heredada/      # Inspección con datos heredados de una anterior
+│   ├── detail/        # Detalle y edición de una inspección
+│   ├── inspections/   # Listado completo de inspecciones
+│   ├── busetas/       # Vista específica para busetas
+│   └── login/         # Autenticación
+├── services/
+│   ├── inspections-realtime.ts   # Servicio principal: realtime, carga y CRUD
+│   ├── inspection.service.ts     # Servicio HTTP/PocketBase para operaciones CRUD
+│   └── shared.service.ts         # Estado compartido entre componentes
+└── models/
+    └── inspection.model.ts       # Interfaces Inspection, CreateInspectionDTO, UpdateInspectionDTO
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+---
 
-## Additional Resources
+## Variables de entorno / configuración
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+El backend apunta a `https://db.buckapi.site:8095`. Para cambiar la URL de PocketBase, edita la constante en:
+
+- `src/app/services/inspections-realtime.ts`
+- `src/app/services/inspection.service.ts`

@@ -84,10 +84,11 @@ async deleteInspection(id: string): Promise<void> {
         this.unsubscribeAll();
       }
     });
-    this.subscribe();
+    // Solo activa la suscripción realtime; la carga de datos la inicia el componente
+    this.subscribe(false);
   }
 
-async subscribe(autoLoad: boolean = true): Promise<void> {
+async subscribe(autoLoad: boolean = false): Promise<void> {
 if (this.isSubscribed) {
   console.log('[RealtimeInspectionsService] Ya está suscrito');
 
@@ -174,6 +175,46 @@ private handleRealtimeEvent(event: RealtimeEvent): void {
       break;
   }
 }
+  /**
+   * Cargar todas las inspecciones en segundo plano sin mostrar modal Swal
+   * Útil para tener los datos disponibles sin interrumpir la UX
+   */
+  async loadAllInspectionsBackground(sort: string = '-created'): Promise<Inspection[]> {
+    try {
+      const records = await this.pb
+        .collection(this.COLLECTION)
+        .getFullList<Inspection>(800, { sort });
+
+      this.inspectionsSubject.next(records);
+      console.log(`[RealtimeInspectionsService] Background: ${records.length} inspecciones cargadas`);
+      return records;
+    } catch (error) {
+      this.handleError(error);
+      throw error;
+    }
+  }
+
+  /**
+   * Cargar las N inspecciones más recientes (carga inicial rápida)
+   */
+  async loadRecentInspections(limit: number = 10, sort: string = '-created'): Promise<Inspection[]> {
+    try {
+      this.loadingSubject.next(true);
+      const response = await this.pb
+        .collection(this.COLLECTION)
+        .getList<Inspection>(1, limit, { sort });
+
+      this.inspectionsSubject.next(response.items);
+      console.log(`[RealtimeInspectionsService] ${response.items.length} inspecciones recientes cargadas`);
+      return response.items;
+    } catch (error) {
+      this.handleError(error);
+      throw error;
+    } finally {
+      this.loadingSubject.next(false);
+    }
+  }
+
   /**
    * Cargar lista completa de inspecciones
    */

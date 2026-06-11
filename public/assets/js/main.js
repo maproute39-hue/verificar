@@ -441,12 +441,16 @@ const ThemeSwitcher = () => {
 	const setStoredTheme = (theme) => setCookie('theme', theme);
 
 	// Preferred theme
-	const getPreferredTheme = () => {
-	  const storedTheme = getStoredTheme();
-	  if (storedTheme) return storedTheme;
-	  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-	};
-
+	// const getPreferredTheme = () => {
+	//   const storedTheme = getStoredTheme();
+	//   if (storedTheme) return storedTheme;
+	//   return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+	// };
+const getPreferredTheme = () => {
+  const storedTheme = getStoredTheme();
+  // ✅ Si no hay tema guardado, usar 'light' por defecto
+  return storedTheme || 'light';
+};
 	// Apply theme
 	const setTheme = (theme) => {
 	  document.documentElement.setAttribute('data-bs-theme', theme);
