@@ -3,15 +3,28 @@
   transition: all 0.3s ease;
   cursor: pointer;
 
+  // Colores alternados (zebra)
+  &:nth-child(odd) {
+    background-color: #ffffff;
+  }
+
+  &:nth-child(even) {
+    background-color: #e6ecf1;
+  }
+
+  // Hover: tono azul clarito para toda la fila
   &:hover {
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     z-index: 1;
     position: relative;
+    background-color: #e3f2fd !important; // Azul clarito
+
+    // Asegurar que las celdas sticky también cambien de color
+    td {
+      background-color: #e3f2fd !important;
+    }
   }
-
-  // Asegurar que las celdas tengan un fondo blanco para el efecto de elevación
-
 }
 
 // Asegurar que los botones dentro de la fila no afecten el cursor
@@ -31,6 +44,7 @@
     color: #0f0369;
   }
 }
+
 // En detail.scss
 :host ::ng-deep {
   .table-responsive {
@@ -45,6 +59,7 @@
     z-index: 9999 !important;
   }
 }
+
 td a {
   color: #25D366; // Color WhatsApp
   font-weight: 500;
@@ -55,19 +70,23 @@ td a {
     text-decoration: underline !important;
   }
 }
-.text-blue{
+
+.text-blue {
   color: #1300af !important;
   font-weight: 900;
 }
-.bg-blue{    color: #fff   !important;
-background-color: #0f0369 !important;
-  
+
+.bg-blue {
+  color: #fff !important;
+  background-color: #0f0369 !important;
+
   [data-bs-theme="dark"] & {
     color: white !important;
     background-color: #0f0369 !important;
   }
 }
-  .sortable-header {
+
+.sortable-header {
   cursor: pointer;
   user-select: none;
   transition: background-color 0.2s ease;
@@ -101,4 +120,10 @@ background-color: #0f0369 !important;
 
 .sortable-header:hover i {
   opacity: 0.8;
+}
+
+// ── Actualizar estilos de columnas sticky para el hover ───────────────
+.inspection-row:hover .td-sticky-left,
+.inspection-row:hover .td-sticky-vigencia {
+  background-color: #e3f2fd !important;
 }

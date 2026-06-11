@@ -2,8 +2,8 @@
 
   <div class="container-fluid">
 
-    <div class="app-page-head d-flex align-items-center justify-content-between">
-      <nav aria-label="breadcrumb">
+    <div class="app-page-head d-flex align-items-center justify-content-between" *ngIF="viewMode==='recent'">
+      <nav aria-label="breadcrumb" [hidden]="viewMode!=='recent'">
         <ol class="breadcrumb mb-0 ">
           <li class="breadcrumb-item">
             <a href="index.html" class="text-lg">
@@ -17,7 +17,7 @@
     <div class="row">
 
       <div class="col-xxl-6 col-lg-6 col-5">
-        <div class="row">
+        <div class="row" [hidden]="viewMode !=='recent'" >
           <div class=" ">
             <div class="card" style="min-height: 200px;">
               <div class="card-header d-flex align-items-center justify-content-between border-0 pb-0">
@@ -74,7 +74,7 @@
         </div>
       </div>
 
-      <div class="col-xxl-6 col-lg-6 col-7">
+      <div class="col-xxl-6 col-lg-6 col-7" [hidden]="viewMode !=='recent'">
         <div class="row">
           <div class="col-12">
             <div class="card overflow-hidden bg-primary border-0 ovarlay-primary-gradient"
@@ -124,7 +124,7 @@
             tarjetaOperacionExpiredCount > 0 || tarjetaOperacionExpiringCount > 0 ||
             licenciaExpiredCount > 0 || licenciaExpiringCount > 0"
             class="alert alert-info alert-dismissible fade show mb-0 rounded-0" role="alert"
-            style="cursor: pointer;" (click)="showExpiryIssues()">
+            style="cursor: pointer;" (click)="showExpiryIssues()" [hidden]="viewMode !=='recent'">
             <div class="d-flex align-items-start">
               <i class="fi fi-rr-info fs-4 me-3 mt-1"></i>
               <div class="flex-grow-1">
@@ -237,18 +237,15 @@
               <ng-container *ngIf="viewMode === 'recent'">
                 Recientes <span class="badge bg-secondary-subtle text-secondary ms-1">10</span>
               </ng-container>
-              <ng-container *ngIf="viewMode === 'all'">
+              <!-- <ng-container *ngIf="viewMode === 'all'">
                 Todas las inspecciones
                 <span class="badge bg-secondary-subtle text-secondary ms-1">{{ allInspections.length }}</span>
-              </ng-container>
+              </ng-container> -->
               <ng-container *ngIf="viewMode === 'expiry-issues'">
-                <span class="text-danger">
-                  <i class="fi fi-rr-warning me-1"></i>
-                  Problemas de vigencia
-                  <span class="badge bg-danger ms-1">{{ expiryIssueInspections.length }}</span>
-                </span>
+                
               </ng-container>
             </h6>
+<br>
 
             <div class="d-flex align-items-center gap-2">
               <!-- Botón buscar -->
@@ -282,6 +279,16 @@
 
           <!-- ─── Tabla ───────────────────────────────────────────────────── -->
           <div class="card-body px-1 pt-2 pb-2">
+            <h6  class="card-title mb-0"  *ngIf="viewMode === 'expiry-issues'"> Con problemas de vigencia  <span class="text-danger">
+                  <i class="fi fi-rr-warning me-1"></i>
+                 
+                  <span class="badge bg-danger ms-1"> {{ expiryIssueInspections.length }}</span>
+                </span></h6>
+                <h6  class="card-title mb-0"  *ngIf="viewMode === 'all'"> Mostrando todas las inspecciones  <span class="text-danger">
+                  <i class="fi fi-rr-warning me-1"></i>
+                 
+                  <span class="badge bg-info ms-1"> {{ allInspections.length }}</span>
+                </span></h6>
             <div class="table-responsive-md">
               <table id="dt_NewCustomers" class="table table-border-bottom-0 mb-0">
                 <thead>
@@ -437,15 +444,15 @@
         </span>
         <small class="text-muted" *ngIf="getDaysUntilExpiry(inspection.fecha_vigencia) !== null">
           <span *ngIf="getDaysUntilExpiry(inspection.fecha_vigencia)! < 0" class="text-danger">
-            Venció hace {{ Math.abs(getDaysUntilExpiry(inspection.fecha_vigencia)!) }} días
+            Inspección Venció hace {{ Math.abs(getDaysUntilExpiry(inspection.fecha_vigencia)!) }} días
           </span>
           <span *ngIf="getDaysUntilExpiry(inspection.fecha_vigencia)! >= 0 && getDaysUntilExpiry(inspection.fecha_vigencia)! <= 7"
             class="text-danger fw-semibold">
-            Vence en {{ getDaysUntilExpiry(inspection.fecha_vigencia)! }} días
+           Inspección Vence en {{ getDaysUntilExpiry(inspection.fecha_vigencia)! }} días
           </span>
           <span *ngIf="getDaysUntilExpiry(inspection.fecha_vigencia)! > 7 && getDaysUntilExpiry(inspection.fecha_vigencia)! <= 30"
             class="text-warning">
-            Vence en {{ getDaysUntilExpiry(inspection.fecha_vigencia)! }} días
+          Inspección  Vence en {{ getDaysUntilExpiry(inspection.fecha_vigencia)! }} días
           </span>
         </small>
         <!-- Alertas detalladas: solo visibles en modo expiry-issues -->
