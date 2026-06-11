@@ -452,7 +452,8 @@
       </span>
     </td>
     <td (click)="viewInspection(inspection.id)">
-      <div class="d-flex flex-column">
+      <div class="d-flex flex-column gap-1">
+        <!-- Fecha de vigencia de la inspección -->
         <span [ngClass]="{
           'text-danger fw-bold': isExpired(inspection.fecha_vigencia),
           'text-warning fw-semibold': isExpiringSoon(inspection.fecha_vigencia)
@@ -464,10 +465,44 @@
             Venció hace {{ Math.abs(getDaysUntilExpiry(inspection.fecha_vigencia)!) }} días
           </span>
           <span *ngIf="getDaysUntilExpiry(inspection.fecha_vigencia)! >= 0 && getDaysUntilExpiry(inspection.fecha_vigencia)! <= 7"
+            class="text-danger fw-semibold">
+            Vence en {{ getDaysUntilExpiry(inspection.fecha_vigencia)! }} días
+          </span>
+          <span *ngIf="getDaysUntilExpiry(inspection.fecha_vigencia)! > 7 && getDaysUntilExpiry(inspection.fecha_vigencia)! <= 30"
             class="text-warning">
             Vence en {{ getDaysUntilExpiry(inspection.fecha_vigencia)! }} días
           </span>
         </small>
+
+        <!-- Alertas detalladas: solo visibles en modo expiry-issues -->
+        <ng-container *ngIf="viewMode === 'expiry-issues'">
+          <ng-container *ngFor="let alert of getExpiryAlerts(inspection)">
+            <span *ngIf="alert.diff < 0"
+              class="badge bg-danger-subtle text-danger border border-danger border-opacity-25 py-1 px-2 mt-1"
+              style="white-space: normal; text-align: left; font-size: 11px;">
+              <i class="fi fi-rr-warning me-1"></i>
+              <strong>{{ alert.label }}</strong>: venció hace {{ Math.abs(alert.diff) }} día(s)
+            </span>
+            <span *ngIf="alert.diff === 0"
+              class="badge bg-danger-subtle text-danger border border-danger border-opacity-25 py-1 px-2 mt-1"
+              style="white-space: normal; text-align: left; font-size: 11px;">
+              <i class="fi fi-rr-warning me-1"></i>
+              <strong>{{ alert.label }}</strong>: vence hoy
+            </span>
+            <span *ngIf="alert.diff > 0 && alert.diff <= 7"
+              class="badge bg-warning-subtle text-warning border border-warning border-opacity-25 py-1 px-2 mt-1"
+              style="white-space: normal; text-align: left; font-size: 11px;">
+              <i class="fi fi-rr-clock me-1"></i>
+              <strong>{{ alert.label }}</strong>: vence en {{ alert.diff }} día(s)
+            </span>
+            <span *ngIf="alert.diff > 7 && alert.diff < 30"
+              class="badge bg-info-subtle text-info border border-info border-opacity-25 py-1 px-2 mt-1"
+              style="white-space: normal; text-align: left; font-size: 11px;">
+              <i class="fi fi-rr-info-circle me-1"></i>
+              <strong>{{ alert.label }}</strong>: vence en {{ alert.diff }} día(s)
+            </span>
+          </ng-container>
+        </ng-container>
       </div>
     </td>
     <td>

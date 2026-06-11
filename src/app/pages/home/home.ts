@@ -164,7 +164,7 @@ export class Home implements OnInit, OnDestroy {
     const hoy = new Date();
     hoy.setHours(0, 0, 0, 0);
     const diffDays = Math.ceil((vencimiento.getTime() - hoy.getTime()) / (1000 * 60 * 60 * 24));
-    return diffDays >= 0 && diffDays <= 7;
+    return diffDays >= 0 && diffDays <= 30;
   }
 
   getDaysUntilExpiry(fecha: string | undefined): number | null {
@@ -226,15 +226,43 @@ export class Home implements OnInit, OnDestroy {
       return criticalFields.some((campo) => {
         const val = (insp as any)[campo];
         if (!val) return false;
-        const fecha = new Date(val);
-        const diff = fecha.getTime() - hoy.getTime();
-        // vencida o vence en los próximos 30 días
+        const diff = new Date(val).getTime() - hoy.getTime();
         return diff < threshold30;
       });
     });
 
     this.viewMode = 'expiry-issues';
     this.cdr.detectChanges();
+  }
+
+  /**
+   * Devuelve alertas únicamente de documentos críticos (NO de fecha_vigencia,
+   * que ya se muestra con color y texto en la celda de Vigencia).
+   * Usado en el modo expiry-issues para informar qué documento específico tiene el problema.
+   */
+  getExpiryAlerts(insp: Inspection): { label: string; diff: number }[] {
+    const hoy = new Date();
+    hoy.setHours(0, 0, 0, 0);
+
+    const fields: { campo: string; label: string }[] = [
+      { campo: 'fecha_vencimiento_soat',                   label: 'SOAT' },
+      { campo: 'fecha_vencimiento_revision_tecnomecanica', label: 'Tecnomecánica' },
+      { campo: 'fecha_vencimiento_tarjeta_operacion',      label: 'Tarjeta operación' },
+      { campo: 'licencia_vencimiento',                     label: 'Licencia conducción' },
+    ];
+
+    const alerts: { label: string; diff: number }[] = [];
+
+    for (const { campo, label } of fields) {
+      const val = (insp as any)[campo];
+      if (!val) continue;
+      const diff = Math.ceil((new Date(val).getTime() - hoy.getTime()) / 86400000);
+      if (diff < 30) {
+        alerts.push({ label, diff });
+      }
+    }
+
+    return alerts;
   }
 
   // ── Inicialización ───────────────────────────────────────────────────────────
