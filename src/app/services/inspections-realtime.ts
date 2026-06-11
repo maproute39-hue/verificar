@@ -2,11 +2,17 @@ import { Injectable, OnDestroy } from '@angular/core';
 import PocketBase, { RecordSubscription } from 'pocketbase';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { Inspection } from '../models/inspection.model';
-import Swal from 'sweetalert2'; 
-// Actualizamos la interfaz para extender de RecordSubscription
+import Swal from 'sweetalert2';
+
 export interface RealtimeEvent extends Omit<RecordSubscription<Inspection>, 'action'> {
   action: 'create' | 'update' | 'delete';
   record: Inspection;
+}
+
+/** Estructura guardada en localStorage */
+interface CacheEntry {
+  data: Inspection[];
+  timestamp: number; // ms epoch
 }
 
 @Injectable({
@@ -16,23 +22,72 @@ export class RealtimeInspectionsService implements OnDestroy {
   private pb: PocketBase;
   private readonly COLLECTION = 'inspections';
   private isSubscribed = false;
-  
-  // Subject para la lista completa de inspecciones
+
+  // ── Caché localStorage ───────────────────────────────────────────────────────
+  private readonly CACHE_KEY = 'inspections_cache';
+  /** Tiempo de vida del caché en milisegundos (5 minutos) */
+  private readonly CACHE_TTL_MS = 5 * 60 * 1000;
+
+  // ── Subjects ─────────────────────────────────────────────────────────────────
   private inspectionsSubject = new BehaviorSubject<Inspection[]>([]);
   public inspections$: Observable<Inspection[]> = this.inspectionsSubject.asObservable();
-  
-  // Subject para eventos en tiempo real individuales
+
   private eventsSubject = new Subject<RealtimeEvent>();
   public events$: Observable<RealtimeEvent> = this.eventsSubject.asObservable();
-  
-  // Subject para errores
+
   private errorSubject = new Subject<Error>();
   public errors$: Observable<Error> = this.errorSubject.asObservable();
 
   private loadingSubject = new BehaviorSubject<boolean>(false);
-
   public get isLoading$(): Observable<boolean> {
     return this.loadingSubject.asObservable();
+  }
+
+  // ── Métodos de caché ─────────────────────────────────────────────────────────
+
+  /** Lee el caché; retorna null si no existe o está expirado */
+  private readCache(): Inspection[] | null {
+    try {
+      const raw = localStorage.getItem(this.CACHE_KEY);
+      if (!raw) return null;
+      const entry: CacheEntry = JSON.parse(raw);
+      const age = Date.now() - entry.timestamp;
+      if (age > this.CACHE_TTL_MS) {
+        localStorage.removeItem(this.CACHE_KEY);
+        return null;
+      }
+      return entry.data;
+    } catch {
+      return null;
+    }
+  }
+
+  /** Guarda la lista en localStorage con timestamp */
+  private writeCache(data: Inspection[]): void {
+    try {
+      const entry: CacheEntry = { data, timestamp: Date.now() };
+      localStorage.setItem(this.CACHE_KEY, JSON.stringify(entry));
+    } catch (e) {
+      // localStorage puede fallar en modo privado o si está lleno; ignorar silenciosamente
+      console.warn('[Cache] No se pudo escribir en localStorage:', e);
+    }
+  }
+
+  /** Invalida el caché (llamado al crear, actualizar o eliminar) */
+  invalidateCache(): void {
+    localStorage.removeItem(this.CACHE_KEY);
+  }
+
+  /** Cuántos ms hace que se cargó el caché; null si no hay caché */
+  cacheAge(): number | null {
+    try {
+      const raw = localStorage.getItem(this.CACHE_KEY);
+      if (!raw) return null;
+      const entry: CacheEntry = JSON.parse(raw);
+      return Date.now() - entry.timestamp;
+    } catch {
+      return null;
+    }
   }
 
   /**
@@ -154,39 +209,49 @@ private handleRealtimeEvent(event: RealtimeEvent): void {
 
   switch (event.action) {
     case 'create':
-      // Agregar al inicio (más reciente primero)
-      this.inspectionsSubject.next([event.record, ...currentInspections]);
+      const newList = [event.record, ...currentInspections];
+      this.inspectionsSubject.next(newList);
+      this.writeCache(newList);
       break;
 
     case 'update':
-      // Buscar y actualizar el registro usando event.record.id (estándar PocketBase)
       const updatedList = currentInspections.map(insp =>
         insp.id === event.record.id ? event.record : insp
       );
       this.inspectionsSubject.next(updatedList);
+      this.writeCache(updatedList);
       break;
 
     case 'delete':
-      // ✅ Eliminar usando event.record.id (NO id_inspeccion)
-      this.inspectionsSubject.next(
-        currentInspections.filter(insp => insp.id !== event.record.id)
-      );
+      const filteredList = currentInspections.filter(insp => insp.id !== event.record.id);
+      this.inspectionsSubject.next(filteredList);
+      this.writeCache(filteredList);
       console.log(`[Realtime] Inspección ${event.record.id} eliminada de la lista local`);
       break;
   }
 }
   /**
-   * Cargar todas las inspecciones en segundo plano sin mostrar modal Swal
-   * Útil para tener los datos disponibles sin interrumpir la UX
+   * Cargar todas las inspecciones en segundo plano sin mostrar modal Swal.
+   * Si hay caché válido lo usa directamente; si no, va al servidor.
    */
   async loadAllInspectionsBackground(sort: string = '-created'): Promise<Inspection[]> {
+    // Intentar desde caché primero
+    const cached = this.readCache();
+    if (cached && cached.length > 0) {
+      console.log(`[Cache] Usando caché con ${cached.length} inspecciones`);
+      this.inspectionsSubject.next(cached);
+      return cached;
+    }
+
+    // Sin caché válido: pedir al servidor
     try {
       const records = await this.pb
         .collection(this.COLLECTION)
         .getFullList<Inspection>(800, { sort });
 
       this.inspectionsSubject.next(records);
-      console.log(`[RealtimeInspectionsService] Background: ${records.length} inspecciones cargadas`);
+      this.writeCache(records);
+      console.log(`[RealtimeInspectionsService] Background: ${records.length} inspecciones cargadas y cacheadas`);
       return records;
     } catch (error) {
       this.handleError(error);
@@ -195,9 +260,23 @@ private handleRealtimeEvent(event: RealtimeEvent): void {
   }
 
   /**
-   * Cargar las N inspecciones más recientes (carga inicial rápida)
+   * Cargar las N inspecciones más recientes (carga inicial rápida).
+   * Si hay caché válido, toma los primeros N registros del caché.
+   * Retorna { items, fromCache } para que el componente sepa si ya tiene el set completo.
    */
-  async loadRecentInspections(limit: number = 10, sort: string = '-created'): Promise<Inspection[]> {
+  async loadRecentInspections(
+    limit: number = 10,
+    sort: string = '-created'
+  ): Promise<{ items: Inspection[]; fromCache: boolean }> {
+    // Intentar desde caché primero
+    const cached = this.readCache();
+    if (cached && cached.length > 0) {
+      console.log(`[Cache] Recientes desde caché (${cached.length} total)`);
+      this.inspectionsSubject.next(cached); // publicar el set completo
+      return { items: cached.slice(0, limit), fromCache: true };
+    }
+
+    // Sin caché: pedir solo los N al servidor
     try {
       this.loadingSubject.next(true);
       const response = await this.pb
@@ -206,7 +285,7 @@ private handleRealtimeEvent(event: RealtimeEvent): void {
 
       this.inspectionsSubject.next(response.items);
       console.log(`[RealtimeInspectionsService] ${response.items.length} inspecciones recientes cargadas`);
-      return response.items;
+      return { items: response.items, fromCache: false };
     } catch (error) {
       this.handleError(error);
       throw error;

@@ -252,7 +252,7 @@
 
             <div class="d-flex align-items-center gap-2">
               <!-- Botón buscar -->
-              <button type="button" class="btn btn-primary waves-effect waves-light" (click)="openSearch()">
+              <button type="button" class="btn btn-secondary waves-effect waves-light" (click)="openSearch()">
                 <i class="fi fi-rr-search text-2xs me-1"></i>
               </button>
 
@@ -282,10 +282,12 @@
 
           <!-- ─── Tabla ───────────────────────────────────────────────────── -->
           <div class="card-body px-1 pt-2 pb-2">
-            <div class="table-responsive">
+            <div class="table-responsive-md">
               <table id="dt_NewCustomers" class="table table-border-bottom-0 mb-0">
                 <thead>
                   <tr>
+                    <th [class.th-sticky-left]="viewMode !== 'expiry-issues'" style="min-width:110px;">Certificado</th>
+                 
                     <th class="minw-75px sortable-header" (click)="sortBy('placa')" [class.active]="isSortedBy('placa')">
                       Placa
                       <i class="fi fi-rr-sort" *ngIf="!isSortedBy('placa')"></i>
@@ -310,12 +312,6 @@
                       <i class="fi fi-rr-sort" *ngIf="!isSortedBy('estado')"></i>
                       <i class="fi fi-rr-sort-up" *ngIf="isSortedBy('estado') && sortDirection === 'asc'"></i>
                       <i class="fi fi-rr-sort-down" *ngIf="isSortedBy('estado') && sortDirection === 'desc'"></i>
-                    </th>
-                    <th class="sortable-header active" (click)="sortBy('fecha_vigencia')" [class.active]="isSortedBy('fecha_vigencia')" title="Ordenado por defecto">
-                      Vigencia
-                      <i class="fi fi-rr-sort" *ngIf="!isSortedBy('fecha_vigencia')"></i>
-                      <i class="fi fi-rr-sort-up" *ngIf="isSortedBy('fecha_vigencia') && sortDirection === 'asc'"></i>
-                      <i class="fi fi-rr-sort-down" *ngIf="isSortedBy('fecha_vigencia') && sortDirection === 'desc'"></i>
                     </th>
                     <th>Documentos Críticos</th>
                     <th>Acción</th>
@@ -415,45 +411,24 @@
 
   <!-- Fila de tabla reutilizable -->
   <ng-template #inspectionRow let-inspection>
-    <td (click)="viewInspection(inspection.id)">{{ inspection.placa || 'Sin placa' }}</td>
-    <td>
-      <div class="phone-cell">
-        <div class="d-flex align-items-center mb-1">
-          <i class="fi fi-rr-phone me-2 text-primary"></i>
-          <span>{{ formatPhone(inspection.telefono) }}</span>
-          <a *ngIf="inspection.whatsapp"
-            [href]="'https://wa.me/57' + inspection.telefono?.replace(/\D/g, '')" target="_blank"
-            class="whatsapp-link btn btn-sm btn-success-subtle" title="Contactar por WhatsApp">
-            <i class="fi fi-brands-whatsapp me-1"></i>
-          </a>
-        </div>
-      </div>
-    </td>
-    <td (click)="viewInspection(inspection.id)">
-      <div class="d-flex align-items-center">
-        <div class="avatar avatar-xxs rounded-circle me-2">
-          <img [src]="inspection.foto_conductor || 'assets/images/avatar/avatar2.webp'"
-            alt="Foto del conductor" class="img-fluid">
-        </div>
-        {{ inspection.nombres_conductor || 'Sin nombre' }}
-      </div>
-    </td>
-    <td (click)="viewInspection(inspection.id)">
-      {{ (inspection.fecha_inspeccion | date: 'dd/MM/yyyy':'UTC') || 'Sin fecha' }}
-    </td>
-    <td (click)="viewInspection(inspection.id)">
-      <span class="badge badge-lg" [ngClass]="{
-        'bg-success-subtle text-success': inspection.estado === 'aprobada',
-        'bg-warning-subtle text-warning': inspection.estado === 'borrador',
-        'bg-danger-subtle text-danger': inspection.estado === 'rechazada',
-        'bg-primary-subtle text-primary': !inspection.estado
-      }">
-        {{ inspection.estado || 'borrador' | titlecase }}
+
+    <!-- Col 1: Certificado (sticky left solo en modos recent/all) -->
+    <td [class.td-sticky-left]="viewMode !== 'expiry-issues'" style="min-width:110px;" (click)="viewInspection(inspection.id)">
+      <span class="badge bg-primary-subtle text-primary border border-primary border-opacity-25 px-2 py-1"
+        *ngIf="inspection.numero_certificado; else sinCert">
+        {{ inspection.numero_certificado }}
       </span>
+      <ng-template #sinCert>
+        <span class="text-muted small">—</span>
+      </ng-template>
     </td>
-    <td (click)="viewInspection(inspection.id)">
+
+    <!-- Col 2: Vigencia (solo en modos all y expiry-issues) -->
+    <td *ngIf="viewMode === 'expiry-issues' "
+      [class.td-sticky-vigencia]="viewMode !== 'expiry-issues'"
+      [class.td-vigencia-expiry]="viewMode === 'expiry-issues'"
+      (click)="viewInspection(inspection.id)">
       <div class="d-flex flex-column gap-1">
-        <!-- Fecha de vigencia de la inspección -->
         <span [ngClass]="{
           'text-danger fw-bold': isExpired(inspection.fecha_vigencia),
           'text-warning fw-semibold': isExpiringSoon(inspection.fecha_vigencia)
@@ -473,7 +448,6 @@
             Vence en {{ getDaysUntilExpiry(inspection.fecha_vigencia)! }} días
           </span>
         </small>
-
         <!-- Alertas detalladas: solo visibles en modo expiry-issues -->
         <ng-container *ngIf="viewMode === 'expiry-issues'">
           <ng-container *ngFor="let alert of getExpiryAlerts(inspection)">
@@ -505,6 +479,54 @@
         </ng-container>
       </div>
     </td>
+
+    <!-- Col 3: Placa -->
+    <td (click)="viewInspection(inspection.id)">{{ inspection.placa || 'Sin placa' }}</td>
+
+    <!-- Col 4: Teléfono -->
+    <td>
+      <div class="phone-cell">
+        <div class="d-flex align-items-center mb-1">
+          <i class="fi fi-rr-phone me-2 text-primary"></i>
+          <span>{{ formatPhone(inspection.telefono) }}</span>
+          <a *ngIf="inspection.whatsapp"
+            [href]="'https://wa.me/57' + inspection.telefono?.replace(/\D/g, '')" target="_blank"
+            class="whatsapp-link btn btn-sm btn-success-subtle" title="Contactar por WhatsApp">
+            <i class="fi fi-brands-whatsapp me-1"></i>
+          </a>
+        </div>
+      </div>
+    </td>
+
+    <!-- Col 5: Conductor -->
+    <td (click)="viewInspection(inspection.id)">
+      <div class="d-flex align-items-center">
+        <div class="avatar avatar-xxs rounded-circle me-2">
+          <img [src]="inspection.foto_conductor || 'assets/images/avatar/avatar2.webp'"
+            alt="Foto del conductor" class="img-fluid">
+        </div>
+        {{ inspection.nombres_conductor || 'Sin nombre' }}
+      </div>
+    </td>
+
+    <!-- Col 6: Fecha inspección -->
+    <td (click)="viewInspection(inspection.id)">
+      {{ (inspection.fecha_inspeccion | date: 'dd/MM/yyyy':'UTC') || 'Sin fecha' }}
+    </td>
+
+    <!-- Col 7: Status -->
+    <td (click)="viewInspection(inspection.id)">
+      <span class="badge badge-lg" [ngClass]="{
+        'bg-success-subtle text-success': inspection.estado === 'aprobada',
+        'bg-warning-subtle text-warning': inspection.estado === 'borrador',
+        'bg-danger-subtle text-danger': inspection.estado === 'rechazada',
+        'bg-primary-subtle text-primary': !inspection.estado
+      }">
+        {{ inspection.estado || 'borrador' | titlecase }}
+      </span>
+    </td>
+
+    <!-- Col 8: Documentos Críticos -->
     <td>
       <div class="d-flex flex-column gap-1">
         <span class="badge badge-sm" [ngClass]="getDocumentStatusClass(inspection.fecha_vencimiento_soat)"
@@ -525,6 +547,8 @@
         </span>
       </div>
     </td>
+
+    <!-- Col 9: Acción -->
     <td>
       <div class="btn-group float-end" (click)="$event.stopPropagation()">
         <button class="btn btn-subtle-primary btn-sm btn-shadow btn-icon waves-effect dropdown-toggle"
@@ -547,6 +571,7 @@
         </ul>
       </div>
     </td>
+
   </ng-template>
 
   <!-- Floating Action Button for Mobile/Tablet -->
@@ -653,5 +678,58 @@
     }
 
     @media (min-width: 992px) { .floating-action { display: none; } }
+
+    /* ── Columna sticky izquierda: Certificado (siempre) ─────────────── */
+    .th-sticky-left,
+    .td-sticky-left {
+      position: sticky;
+      left: 0;
+      z-index: 2;
+      background: #fff;
+      border-right: 1px solid var(--bs-border-color, #dee2e6);
+      white-space: nowrap;
+    }
+
+    .th-sticky-left { z-index: 3; }
+
+    /* ── Columna sticky izquierda: Vigencia (siempre) ─────────────────── */
+    .th-sticky-vigencia,
+    .td-sticky-vigencia {
+      position: sticky;
+      left: 110px;
+      z-index: 2;
+      background: #fff;
+      border-right: 1px solid var(--bs-border-color, #dee2e6);
+      min-width: 274px;
+    }
+
+    /* ── Columna Vigencia en modo expiry-issues (ancho doble, sin sticky) */
+    .th-vigencia-expiry,
+    .td-vigencia-expiry {
+      min-width: 274px;
+    }
+
+    .th-sticky-vigencia { z-index: 3; }
+
+    /* Fondo en filas hover/striped para mantener coherencia con sticky */
+    .inspection-row:hover .td-sticky-left,
+    .inspection-row:hover .td-sticky-vigencia {
+      background: var(--bs-table-hover-bg, #f8f9fa);
+    }
+
+    /* Sombra compartida — borde derecho suave en ambas columnas fijas */
+    .th-sticky-left::after,
+    .td-sticky-left::after,
+    .th-sticky-vigencia::after,
+    .td-sticky-vigencia::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: -6px;
+      width: 6px;
+      height: 100%;
+      background: linear-gradient(to left, transparent, rgba(0,0,0,0.07));
+      pointer-events: none;
+    }
   </style>
 </main>

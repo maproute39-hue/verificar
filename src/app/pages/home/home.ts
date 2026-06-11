@@ -1,7 +1,7 @@
 import { Component, OnInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { RealtimeInspectionsService } from '../../services/inspections-realtime';
 import { CommonModule } from '@angular/common';
-import { Router, ActivatedRoute, RouterLink, RouterModule } from '@angular/router';
+import { Router, ActivatedRoute, RouterModule } from '@angular/router';
 import Swal from 'sweetalert2';
 import { Inspection } from '../../models/inspection.model';
 import { SharedService } from '../../services/shared.service';
@@ -12,7 +12,7 @@ type ViewMode = 'recent' | 'all' | 'expiry-issues';
 
 @Component({
   selector: 'app-home',
-  imports: [CommonModule, RouterModule, RouterLink],
+  imports: [CommonModule, RouterModule],
   standalone: true,
   templateUrl: './home.html',
   styleUrl: './home.scss',
@@ -275,63 +275,70 @@ export class Home implements OnInit, OnDestroy {
 
   private async initializeData(): Promise<void> {
     try {
-      // 1. Cargar y mostrar las 10 más recientes inmediatamente
-      const recent = await this.RealtimeInspectionsService.loadRecentInspections(10, '-created');
-      this.recentInspections = recent;
-      this.totalInspections = recent.length; // placeholder; se actualiza abajo
-      this._computeStats(recent);
-      this.cdr.detectChanges();
-
-      // 2. En segundo plano: cargar todas las inspecciones
-      this._loadAllBackground();
-
-      // 3. Suscribirse a cambios en tiempo real para mantener la lista actualizada
+      // 1. Suscribirse PRIMERO
       const sub = this.RealtimeInspectionsService.inspections$.subscribe({
         next: (data) => {
           const list = Array.isArray(data) ? data : [];
-          if (list.length > 10) {
-            // ya tenemos todas las inspecciones del background load
+          if (list.length === 0) return;
+
+          const sortedByDate = [...list].sort((a, b) => {
+            const da = new Date((a as any)['created'] || '').getTime();
+            const db = new Date((b as any)['created'] || '').getTime();
+            return db - da;
+          });
+
+          this.recentInspections = sortedByDate.slice(0, 10);
+          this.totalInspections = list.length;
+
+          if (this._fullDataAvailable) {
             this.allInspections = list;
-            this.totalInspections = list.length;
             this.allInspectionsLoaded = true;
-            // Actualizar también recientes (las 10 más recientes del set completo)
-            const sortedByDate = [...list].sort((a, b) => {
-              const da = new Date((a as any)['created'] || '').getTime();
-              const db = new Date((b as any)['created'] || '').getTime();
-              return db - da;
-            });
-            this.recentInspections = sortedByDate.slice(0, 10);
-          } else if (list.length > 0 && !this.allInspectionsLoaded) {
-            // Todavía son las recientes
-            this.recentInspections = list;
+            this._computeStats(list);
+          } else {
+            // Solo recientes: no actualizar contadores del alert aún
+            this.currentMonthInspections = list.filter((i) => {
+              if (!i.fecha_inspeccion) return false;
+              const d = new Date(i.fecha_inspeccion);
+              const now = new Date();
+              return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
+            }).length;
           }
-          this._computeStats(this.allInspectionsLoaded ? this.allInspections : this.recentInspections);
+
           this.cdr.detectChanges();
         },
-        error: (error) => {
-          console.error('Error al cargar inspecciones:', error);
-        },
+        error: (error) => console.error('Error al cargar inspecciones:', error),
       });
       this.subscriptions.add(sub);
+
+      // 2. Cargar datos iniciales
+      const { fromCache } = await this.RealtimeInspectionsService.loadRecentInspections(10, '-created');
+
+      if (fromCache) {
+        this._fullDataAvailable = true;
+        this.allInspections = this.RealtimeInspectionsService['inspectionsSubject'].value;
+        this.allInspectionsLoaded = true;
+        this._computeStats(this.allInspections);
+        this.cdr.detectChanges();
+      } else {
+        this._loadAllBackground();
+      }
+
     } catch (error) {
       console.error('Error en initializeData:', error);
     }
   }
 
+  /** Flag interno: indica que el próximo emit del BehaviorSubject es el set completo */
+  private _fullDataAvailable = false;
+
   private async _loadAllBackground(): Promise<void> {
     try {
+      this._fullDataAvailable = true;
       const all = await this.RealtimeInspectionsService.loadAllInspectionsBackground('-created');
+      // El emit ya ocurrió en loadAllInspectionsBackground vía inspectionsSubject.next()
+      // pero forzamos aquí también por si la suscripción no disparó cdr
       this.allInspections = all;
-      this.totalInspections = all.length;
       this.allInspectionsLoaded = true;
-
-      // Actualizar recientes con el set completo
-      const sortedByDate = [...all].sort((a, b) => {
-        const da = new Date((a as any)['created'] || '').getTime();
-        const db = new Date((b as any)['created'] || '').getTime();
-        return db - da;
-      });
-      this.recentInspections = sortedByDate.slice(0, 10);
       this._computeStats(all);
       this.cdr.detectChanges();
     } catch (error) {
