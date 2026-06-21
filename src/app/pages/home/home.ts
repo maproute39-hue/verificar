@@ -187,18 +187,61 @@ export class Home implements OnInit, OnDestroy {
     return 'bg-success-subtle text-success';
   }
 
+  private getInspectionDateTime(inspection: Inspection): number {
+    const candidates = [
+      inspection.fecha_inspeccion,
+      inspection.created,
+      inspection.updated,
+    ];
+
+    for (const value of candidates) {
+      if (!value) continue;
+      const time = new Date(value).getTime();
+      if (!Number.isNaN(time)) return time;
+    }
+
+    return 0;
+  }
+
+  getLatestInspectionsByPlate(inspections: Inspection[]): Inspection[] {
+    const latestByPlate = new Map<string, Inspection>();
+    const withoutPlate: Inspection[] = [];
+
+    for (const inspection of inspections) {
+      const plate = (inspection.placa || '').trim().toUpperCase();
+
+      if (!plate) {
+        withoutPlate.push(inspection);
+        continue;
+      }
+
+      const current = latestByPlate.get(plate);
+      if (!current || this.getInspectionDateTime(inspection) > this.getInspectionDateTime(current)) {
+        latestByPlate.set(plate, inspection);
+      }
+    }
+
+    return [...latestByPlate.values(), ...withoutPlate];
+  }
+
   // ── Modos de vista ───────────────────────────────────────────────────────────
 
   /** Cambiar a modo "ver todas" con paginación */
-  showAll(): void {
-    this.viewMode = 'all';
-    this.currentPage = 1;
-    this.cdr.detectChanges();
-  }
+/** Cambiar a modo "ver todas" con paginación */
+showAll(): void {
+  this.viewMode = 'all';
+  this.currentPage = 1;
+  // Ordenar por número de certificado
+  this.sortField = 'numero_certificado';
+  this.sortDirection = 'desc';
+  this.cdr.detectChanges();
+}
 
   /** Volver al listado de las 10 recientes */
   showRecent(): void {
     this.viewMode = 'recent';
+      this.sortField = 'fecha_vigencia';
+  this.sortDirection = 'asc';
     this.cdr.detectChanges();
   }
 
@@ -209,6 +252,7 @@ export class Home implements OnInit, OnDestroy {
    */
   showExpiryIssues(): void {
     const source = this.allInspectionsLoaded ? this.allInspections : this.recentInspections;
+    const latestInspections = this.getLatestInspectionsByPlate(source);
 
     const hoy = new Date();
     hoy.setHours(0, 0, 0, 0);
@@ -222,7 +266,7 @@ export class Home implements OnInit, OnDestroy {
       'licencia_vencimiento',
     ];
 
-    this.expiryIssueInspections = source.filter((insp) => {
+    this.expiryIssueInspections = latestInspections.filter((insp) => {
       return criticalFields.some((campo) => {
         const val = (insp as any)[campo];
         if (!val) return false;
@@ -290,7 +334,7 @@ export class Home implements OnInit, OnDestroy {
           this.recentInspections = sortedByDate.slice(0, 10);
           this.totalInspections = list.length;
 
-          if (this._fullDataAvailable) {
+          if (this._fullDataAvailable || this.RealtimeInspectionsService.hasFullInspectionsLoaded()) {
             this.allInspections = list;
             this.allInspectionsLoaded = true;
             this._computeStats(list);
@@ -311,11 +355,26 @@ export class Home implements OnInit, OnDestroy {
       this.subscriptions.add(sub);
 
       // 2. Cargar datos iniciales
+      const cachedFullInspections = this.RealtimeInspectionsService.getCachedFullInspections();
+      if (cachedFullInspections && cachedFullInspections.length > 0) {
+        this._fullDataAvailable = true;
+        this.allInspections = cachedFullInspections;
+        this.allInspectionsLoaded = true;
+        this._computeStats(cachedFullInspections);
+        this.cdr.detectChanges();
+        return;
+      }
+
+      if (this.RealtimeInspectionsService.isFullLoadInProgress()) {
+        await this._loadAllBackground();
+        return;
+      }
+
       const { fromCache } = await this.RealtimeInspectionsService.loadRecentInspections(10, '-created');
 
       if (fromCache) {
         this._fullDataAvailable = true;
-        this.allInspections = this.RealtimeInspectionsService['inspectionsSubject'].value;
+        this.allInspections = this.RealtimeInspectionsService.getCurrentInspectionsSnapshot();
         this.allInspectionsLoaded = true;
         this._computeStats(this.allInspections);
         this.cdr.detectChanges();
@@ -349,6 +408,7 @@ export class Home implements OnInit, OnDestroy {
   private _computeStats(data: Inspection[]): void {
     const hoy = new Date();
     hoy.setHours(0, 0, 0, 0);
+    const latestInspections = this.getLatestInspectionsByPlate(data);
 
     this.currentMonthInspections = data.filter((inspection) => {
       if (!inspection.fecha_inspeccion) return false;
@@ -357,25 +417,25 @@ export class Home implements OnInit, OnDestroy {
       return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
     }).length;
 
-    this.expiredCount = data.filter((i) => {
+    this.expiredCount = latestInspections.filter((i) => {
       if (!i.fecha_vigencia) return false;
       return new Date(i.fecha_vigencia) < hoy;
     }).length;
 
-    this.expiringSoonCount = data.filter((i) => {
+    this.expiringSoonCount = latestInspections.filter((i) => {
       if (!i.fecha_vigencia) return false;
       const diff = Math.ceil((new Date(i.fecha_vigencia).getTime() - hoy.getTime()) / 86400000);
       return diff >= 0 && diff <= 30;
     }).length;
 
-    this.soatExpiredCount = this.countExpiredDocuments(data, 'fecha_vencimiento_soat');
-    this.soatExpiringCount = this.countExpiringDocuments(data, 'fecha_vencimiento_soat', 30);
-    this.tecnomecanicaExpiredCount = this.countExpiredDocuments(data, 'fecha_vencimiento_revision_tecnomecanica');
-    this.tecnomecanicaExpiringCount = this.countExpiringDocuments(data, 'fecha_vencimiento_revision_tecnomecanica', 30);
-    this.tarjetaOperacionExpiredCount = this.countExpiredDocuments(data, 'fecha_vencimiento_tarjeta_operacion');
-    this.tarjetaOperacionExpiringCount = this.countExpiringDocuments(data, 'fecha_vencimiento_tarjeta_operacion', 30);
-    this.licenciaExpiredCount = this.countExpiredDocuments(data, 'licencia_vencimiento');
-    this.licenciaExpiringCount = this.countExpiringDocuments(data, 'licencia_vencimiento', 30);
+    this.soatExpiredCount = this.countExpiredDocuments(latestInspections, 'fecha_vencimiento_soat');
+    this.soatExpiringCount = this.countExpiringDocuments(latestInspections, 'fecha_vencimiento_soat', 30);
+    this.tecnomecanicaExpiredCount = this.countExpiredDocuments(latestInspections, 'fecha_vencimiento_revision_tecnomecanica');
+    this.tecnomecanicaExpiringCount = this.countExpiringDocuments(latestInspections, 'fecha_vencimiento_revision_tecnomecanica', 30);
+    this.tarjetaOperacionExpiredCount = this.countExpiredDocuments(latestInspections, 'fecha_vencimiento_tarjeta_operacion');
+    this.tarjetaOperacionExpiringCount = this.countExpiringDocuments(latestInspections, 'fecha_vencimiento_tarjeta_operacion', 30);
+    this.licenciaExpiredCount = this.countExpiredDocuments(latestInspections, 'licencia_vencimiento');
+    this.licenciaExpiringCount = this.countExpiringDocuments(latestInspections, 'licencia_vencimiento', 30);
   }
 
   private countExpiredDocuments(data: Inspection[], campo: string): number {

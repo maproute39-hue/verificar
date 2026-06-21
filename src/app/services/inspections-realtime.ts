@@ -13,6 +13,7 @@ export interface RealtimeEvent extends Omit<RecordSubscription<Inspection>, 'act
 interface CacheEntry {
   data: Inspection[];
   timestamp: number; // ms epoch
+  complete?: boolean;
 }
 
 @Injectable({
@@ -27,6 +28,8 @@ export class RealtimeInspectionsService implements OnDestroy {
   private readonly CACHE_KEY = 'inspections_cache';
   /** Tiempo de vida del caché en milisegundos (5 minutos) */
   private readonly CACHE_TTL_MS = 5 * 60 * 1000;
+  private allInspectionsLoaded = false;
+  private fullLoadPromise: Promise<Inspection[]> | null = null;
 
   // ── Subjects ─────────────────────────────────────────────────────────────────
   private inspectionsSubject = new BehaviorSubject<Inspection[]>([]);
@@ -45,12 +48,13 @@ export class RealtimeInspectionsService implements OnDestroy {
 
   // ── Métodos de caché ─────────────────────────────────────────────────────────
 
-  /** Lee el caché; retorna null si no existe o está expirado */
+  /** Lee el caché completo; retorna null si no existe o está expirado */
   private readCache(): Inspection[] | null {
     try {
       const raw = localStorage.getItem(this.CACHE_KEY);
       if (!raw) return null;
       const entry: CacheEntry = JSON.parse(raw);
+      if (entry.complete === false) return null;
       const age = Date.now() - entry.timestamp;
       if (age > this.CACHE_TTL_MS) {
         localStorage.removeItem(this.CACHE_KEY);
@@ -63,9 +67,9 @@ export class RealtimeInspectionsService implements OnDestroy {
   }
 
   /** Guarda la lista en localStorage con timestamp */
-  private writeCache(data: Inspection[]): void {
+  private writeCache(data: Inspection[], complete: boolean = true): void {
     try {
-      const entry: CacheEntry = { data, timestamp: Date.now() };
+      const entry: CacheEntry = { data, timestamp: Date.now(), complete };
       localStorage.setItem(this.CACHE_KEY, JSON.stringify(entry));
     } catch (e) {
       // localStorage puede fallar en modo privado o si está lleno; ignorar silenciosamente
@@ -76,6 +80,33 @@ export class RealtimeInspectionsService implements OnDestroy {
   /** Invalida el caché (llamado al crear, actualizar o eliminar) */
   invalidateCache(): void {
     localStorage.removeItem(this.CACHE_KEY);
+    this.allInspectionsLoaded = false;
+  }
+
+  hasFullInspectionsCache(): boolean {
+    if (this.allInspectionsLoaded && this.inspectionsSubject.value.length > 0) return true;
+    return !!this.readCache();
+  }
+
+  hasFullInspectionsLoaded(): boolean {
+    return this.allInspectionsLoaded && this.inspectionsSubject.value.length > 0;
+  }
+
+  isFullLoadInProgress(): boolean {
+    return this.fullLoadPromise !== null;
+  }
+
+  getCurrentInspectionsSnapshot(): Inspection[] {
+    return this.inspectionsSubject.value;
+  }
+
+  getCachedFullInspections(): Inspection[] | null {
+    const cached = this.readCache();
+    if (!cached || cached.length === 0) return null;
+
+    this.allInspectionsLoaded = true;
+    this.inspectionsSubject.next(cached);
+    return cached;
   }
 
   /** Cuántos ms hace que se cargó el caché; null si no hay caché */
@@ -211,7 +242,11 @@ private handleRealtimeEvent(event: RealtimeEvent): void {
     case 'create':
       const newList = [event.record, ...currentInspections];
       this.inspectionsSubject.next(newList);
-      this.writeCache(newList);
+      if (this.allInspectionsLoaded) {
+        this.writeCache(newList);
+      } else {
+        localStorage.removeItem(this.CACHE_KEY);
+      }
       break;
 
     case 'update':
@@ -219,13 +254,21 @@ private handleRealtimeEvent(event: RealtimeEvent): void {
         insp.id === event.record.id ? event.record : insp
       );
       this.inspectionsSubject.next(updatedList);
-      this.writeCache(updatedList);
+      if (this.allInspectionsLoaded) {
+        this.writeCache(updatedList);
+      } else {
+        localStorage.removeItem(this.CACHE_KEY);
+      }
       break;
 
     case 'delete':
       const filteredList = currentInspections.filter(insp => insp.id !== event.record.id);
       this.inspectionsSubject.next(filteredList);
-      this.writeCache(filteredList);
+      if (this.allInspectionsLoaded) {
+        this.writeCache(filteredList);
+      } else {
+        localStorage.removeItem(this.CACHE_KEY);
+      }
       console.log(`[Realtime] Inspección ${event.record.id} eliminada de la lista local`);
       break;
   }
@@ -235,27 +278,44 @@ private handleRealtimeEvent(event: RealtimeEvent): void {
    * Si hay caché válido lo usa directamente; si no, va al servidor.
    */
   async loadAllInspectionsBackground(sort: string = '-created'): Promise<Inspection[]> {
+    if (this.allInspectionsLoaded && this.inspectionsSubject.value.length > 0) {
+      return this.inspectionsSubject.value;
+    }
+
     // Intentar desde caché primero
     const cached = this.readCache();
     if (cached && cached.length > 0) {
       console.log(`[Cache] Usando caché con ${cached.length} inspecciones`);
+      this.allInspectionsLoaded = true;
       this.inspectionsSubject.next(cached);
       return cached;
     }
 
+    if (this.fullLoadPromise) {
+      console.log('[RealtimeInspectionsService] Reutilizando carga completa en curso');
+      return this.fullLoadPromise;
+    }
+
     // Sin caché válido: pedir al servidor
-    try {
+    this.fullLoadPromise = (async () => {
       const records = await this.pb
         .collection(this.COLLECTION)
         .getFullList<Inspection>(800, { sort });
 
+      this.allInspectionsLoaded = true;
       this.inspectionsSubject.next(records);
       this.writeCache(records);
       console.log(`[RealtimeInspectionsService] Background: ${records.length} inspecciones cargadas y cacheadas`);
       return records;
+    })();
+
+    try {
+      return await this.fullLoadPromise;
     } catch (error) {
       this.handleError(error);
       throw error;
+    } finally {
+      this.fullLoadPromise = null;
     }
   }
 
@@ -272,6 +332,7 @@ private handleRealtimeEvent(event: RealtimeEvent): void {
     const cached = this.readCache();
     if (cached && cached.length > 0) {
       console.log(`[Cache] Recientes desde caché (${cached.length} total)`);
+      this.allInspectionsLoaded = true;
       this.inspectionsSubject.next(cached); // publicar el set completo
       return { items: cached.slice(0, limit), fromCache: true };
     }
@@ -284,6 +345,7 @@ private handleRealtimeEvent(event: RealtimeEvent): void {
         .getList<Inspection>(1, limit, { sort });
 
       this.inspectionsSubject.next(response.items);
+      this.allInspectionsLoaded = false;
       console.log(`[RealtimeInspectionsService] ${response.items.length} inspecciones recientes cargadas`);
       return { items: response.items, fromCache: false };
     } catch (error) {
@@ -298,6 +360,17 @@ private handleRealtimeEvent(event: RealtimeEvent): void {
    * Cargar lista completa de inspecciones
    */
  async loadInspections(sort: string = '-created'): Promise<void> {
+  const cached = this.getCachedFullInspections();
+  if (cached && cached.length > 0) {
+    console.log(`[Cache] Carga completa desde caché (${cached.length} inspecciones)`);
+    return;
+  }
+
+  if (this.fullLoadPromise) {
+    await this.fullLoadPromise;
+    return;
+  }
+
   try {
     this.loadingSubject.next(true);
 
@@ -336,11 +409,15 @@ private handleRealtimeEvent(event: RealtimeEvent): void {
       }
     });
 
-    const records = await this.pb
+    this.fullLoadPromise = this.pb
       .collection(this.COLLECTION)
       .getFullList<Inspection>(200, { sort });
 
+    const records = await this.fullLoadPromise;
+
+    this.allInspectionsLoaded = true;
     this.inspectionsSubject.next(records);
+    this.writeCache(records);
 
     const bar = document.getElementById('swal-progress-bar');
     const text = document.getElementById('swal-progress-text');
@@ -366,6 +443,7 @@ private handleRealtimeEvent(event: RealtimeEvent): void {
     throw error;
 
   } finally {
+    this.fullLoadPromise = null;
     this.loadingSubject.next(false);
   }
 }
@@ -449,6 +527,8 @@ private handleRealtimeEvent(event: RealtimeEvent): void {
     this.unsubscribeAll();
     this.pb.authStore.clear();
     this.inspectionsSubject.next([]);
+    this.allInspectionsLoaded = false;
+    this.fullLoadPromise = null;
     console.log('[RealtimeInspectionsService] ✓ Sesión cerrada');
   }
 
