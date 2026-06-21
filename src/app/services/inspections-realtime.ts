@@ -9,6 +9,32 @@ export interface RealtimeEvent extends Omit<RecordSubscription<Inspection>, 'act
   record: Inspection;
 }
 
+const INSPECTION_LIST_FIELDS = [
+  'id',
+  'created',
+  'updated',
+  'numero_certificado',
+  'placa',
+  'telefono',
+  'whatsapp',
+  'nombres_conductor',
+  'identificacion',
+  'foto_conductor',
+  'fecha_inspeccion',
+  'fecha_vigencia',
+  'estado',
+  'fecha_vencimiento_soat',
+  'fecha_vencimiento_revision_tecnomecanica',
+  'fecha_vencimiento_tarjeta_operacion',
+  'licencia_vencimiento',
+  'fecha_vencimiento_licencia',
+  'clase_vehiculo',
+  'marca',
+  'modelo',
+  'color',
+  'codigo_vehiculo',
+].join(',');
+
 /** Estructura guardada en localStorage */
 interface CacheEntry {
   data: Inspection[];
@@ -46,6 +72,18 @@ export class RealtimeInspectionsService implements OnDestroy {
     return this.loadingSubject.asObservable();
   }
 
+  private sanitizeListInspection(inspection: Inspection): Inspection {
+    return {
+      ...inspection,
+      firma_conductor: undefined,
+      firma_inspector: undefined,
+    } as Inspection;
+  }
+
+  private sanitizeListInspections(inspections: Inspection[]): Inspection[] {
+    return inspections.map((inspection) => this.sanitizeListInspection(inspection));
+  }
+
   // ── Métodos de caché ─────────────────────────────────────────────────────────
 
   /** Lee el caché completo; retorna null si no existe o está expirado */
@@ -60,7 +98,16 @@ export class RealtimeInspectionsService implements OnDestroy {
         localStorage.removeItem(this.CACHE_KEY);
         return null;
       }
-      return entry.data;
+      const sanitizedData = this.sanitizeListInspections(entry.data);
+      try {
+        localStorage.setItem(
+          this.CACHE_KEY,
+          JSON.stringify({ ...entry, data: sanitizedData })
+        );
+      } catch {
+        // Si no se puede compactar el caché, al menos devolvemos datos sin firmas.
+      }
+      return sanitizedData;
     } catch {
       return null;
     }
@@ -69,7 +116,11 @@ export class RealtimeInspectionsService implements OnDestroy {
   /** Guarda la lista en localStorage con timestamp */
   private writeCache(data: Inspection[], complete: boolean = true): void {
     try {
-      const entry: CacheEntry = { data, timestamp: Date.now(), complete };
+      const entry: CacheEntry = {
+        data: this.sanitizeListInspections(data),
+        timestamp: Date.now(),
+        complete,
+      };
       localStorage.setItem(this.CACHE_KEY, JSON.stringify(entry));
     } catch (e) {
       // localStorage puede fallar en modo privado o si está lleno; ignorar silenciosamente
@@ -197,9 +248,11 @@ if (this.isSubscribed) {
     // ✅ Suscribirse a eventos realtime
     this.pb.collection(this.COLLECTION).subscribe('*', (event: RecordSubscription<Inspection>) => {
       if (['create', 'update', 'delete'].includes(event.action)) {
+        const sanitizedRecord = this.sanitizeListInspection(event.record);
         const mappedEvent: RealtimeEvent = {
           ...event,
-          action: event.action as 'create' | 'update' | 'delete'
+          action: event.action as 'create' | 'update' | 'delete',
+          record: sanitizedRecord,
         };
         console.log('[Realtime] Evento recibido:', mappedEvent.action, mappedEvent.record.id);
         this.eventsSubject.next(mappedEvent);
@@ -237,10 +290,11 @@ unsubscribe(): void {
  */
 private handleRealtimeEvent(event: RealtimeEvent): void {
   const currentInspections = this.inspectionsSubject.value;
+  const sanitizedRecord = this.sanitizeListInspection(event.record);
 
   switch (event.action) {
     case 'create':
-      const newList = [event.record, ...currentInspections];
+      const newList = [sanitizedRecord, ...currentInspections];
       this.inspectionsSubject.next(newList);
       if (this.allInspectionsLoaded) {
         this.writeCache(newList);
@@ -251,7 +305,7 @@ private handleRealtimeEvent(event: RealtimeEvent): void {
 
     case 'update':
       const updatedList = currentInspections.map(insp =>
-        insp.id === event.record.id ? event.record : insp
+        insp.id === sanitizedRecord.id ? sanitizedRecord : insp
       );
       this.inspectionsSubject.next(updatedList);
       if (this.allInspectionsLoaded) {
@@ -300,13 +354,17 @@ private handleRealtimeEvent(event: RealtimeEvent): void {
     this.fullLoadPromise = (async () => {
       const records = await this.pb
         .collection(this.COLLECTION)
-        .getFullList<Inspection>(800, { sort });
+        .getFullList<Inspection>(800, {
+          sort,
+          fields: INSPECTION_LIST_FIELDS,
+        });
+      const sanitizedRecords = this.sanitizeListInspections(records);
 
       this.allInspectionsLoaded = true;
-      this.inspectionsSubject.next(records);
-      this.writeCache(records);
-      console.log(`[RealtimeInspectionsService] Background: ${records.length} inspecciones cargadas y cacheadas`);
-      return records;
+      this.inspectionsSubject.next(sanitizedRecords);
+      this.writeCache(sanitizedRecords);
+      console.log(`[RealtimeInspectionsService] Background: ${sanitizedRecords.length} inspecciones cargadas y cacheadas`);
+      return sanitizedRecords;
     })();
 
     try {
@@ -342,12 +400,16 @@ private handleRealtimeEvent(event: RealtimeEvent): void {
       this.loadingSubject.next(true);
       const response = await this.pb
         .collection(this.COLLECTION)
-        .getList<Inspection>(1, limit, { sort });
+        .getList<Inspection>(1, limit, {
+          sort,
+          fields: INSPECTION_LIST_FIELDS,
+        });
+      const items = this.sanitizeListInspections(response.items);
 
-      this.inspectionsSubject.next(response.items);
+      this.inspectionsSubject.next(items);
       this.allInspectionsLoaded = false;
-      console.log(`[RealtimeInspectionsService] ${response.items.length} inspecciones recientes cargadas`);
-      return { items: response.items, fromCache: false };
+      console.log(`[RealtimeInspectionsService] ${items.length} inspecciones recientes cargadas`);
+      return { items, fromCache: false };
     } catch (error) {
       this.handleError(error);
       throw error;
@@ -411,9 +473,12 @@ private handleRealtimeEvent(event: RealtimeEvent): void {
 
     this.fullLoadPromise = this.pb
       .collection(this.COLLECTION)
-      .getFullList<Inspection>(200, { sort });
+      .getFullList<Inspection>(200, {
+        sort,
+        fields: INSPECTION_LIST_FIELDS,
+      });
 
-    const records = await this.fullLoadPromise;
+    const records = this.sanitizeListInspections(await this.fullLoadPromise);
 
     this.allInspectionsLoaded = true;
     this.inspectionsSubject.next(records);
@@ -460,11 +525,12 @@ private handleRealtimeEvent(event: RealtimeEvent): void {
     try {
       const response = await this.pb.collection(this.COLLECTION).getList(page, perPage, {
         sort,
-        filter
+        filter,
+        fields: INSPECTION_LIST_FIELDS,
       });
       
       return {
-        items: response.items as Inspection[],
+        items: this.sanitizeListInspections(response.items as Inspection[]),
         totalItems: response.totalItems,
         totalPages: response.totalPages
       };

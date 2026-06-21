@@ -4,6 +4,32 @@ import { catchError, map } from 'rxjs/operators';
 import { Inspection, CreateInspectionDTO, UpdateInspectionDTO } from '../models/inspection.model';
 import PocketBase from 'pocketbase';
 
+const INSPECTION_LIST_FIELDS = [
+  'id',
+  'created',
+  'updated',
+  'numero_certificado',
+  'placa',
+  'telefono',
+  'whatsapp',
+  'nombres_conductor',
+  'identificacion',
+  'foto_conductor',
+  'fecha_inspeccion',
+  'fecha_vigencia',
+  'estado',
+  'fecha_vencimiento_soat',
+  'fecha_vencimiento_revision_tecnomecanica',
+  'fecha_vencimiento_tarjeta_operacion',
+  'licencia_vencimiento',
+  'fecha_vencimiento_licencia',
+  'clase_vehiculo',
+  'marca',
+  'modelo',
+  'color',
+  'codigo_vehiculo',
+].join(',');
+
 @Injectable({
   providedIn: 'root'
 })
@@ -13,6 +39,18 @@ export class InspectionService {
   
   constructor() {
     this.pb = new PocketBase('https://db.buckapi.site:8095');
+  }
+
+  private sanitizeListInspection(inspection: Inspection): Inspection {
+    return {
+      ...inspection,
+      firma_conductor: undefined,
+      firma_inspector: undefined,
+    } as Inspection;
+  }
+
+  private sanitizeListInspections(inspections: Inspection[]): Inspection[] {
+    return inspections.map((inspection) => this.sanitizeListInspection(inspection));
   }
   // async uploadImage(file: File, metadata?: {
   //   type?: string;
@@ -101,11 +139,12 @@ async uploadImage(file: File, metadata?: any): Promise<string> {
       this.pb.collection(this.COLLECTION).getList(page, perPage, {
         sort,
         filter,
+        fields: INSPECTION_LIST_FIELDS,
         $autoCancel: false
       })
     ).pipe(
       map(response => ({
-        items: response.items as unknown as Inspection[],
+        items: this.sanitizeListInspections(response.items as unknown as Inspection[]),
         totalItems: response.totalItems,
         totalPages: response.totalPages,
         page: response.page

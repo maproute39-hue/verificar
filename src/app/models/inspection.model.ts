@@ -134,6 +134,7 @@ export interface Inspection {
   silenciadores?: string;
   tanques_compresor?: string;
   firma_conductor?: string;
+  firma_inspector?: string;
 
   // Medidas de llantas
   llanta_d_ld?: number;
