@@ -1,6 +1,7 @@
 import PocketBase, { RecordModel } from 'pocketbase';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { requireConfigValue } from '../config/app-config';
 export interface User extends RecordModel {
     username: string;
     email: string;
@@ -17,7 +18,7 @@ export interface User extends RecordModel {
     providedIn: 'root'
 })
 export class AuthService {
-    private pb = new PocketBase('https://db.buckapi.site:8095');
+    private pb = new PocketBase(requireConfigValue('pocketbaseUrl'));
     constructor(private router: Router) {
         this.pb.authStore.loadFromCookie(document.cookie);
     }

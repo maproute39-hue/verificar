@@ -3,6 +3,7 @@ import { Observable, from, throwError, forkJoin } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { Inspection, CreateInspectionDTO, UpdateInspectionDTO } from '../models/inspection.model';
 import PocketBase from 'pocketbase';
+import { requireConfigValue } from '../config/app-config';
 const INSPECTION_LIST_FIELDS = [
     'id',
     'created',
@@ -35,7 +36,7 @@ export class InspectionService {
     public pb: PocketBase;
     private readonly COLLECTION = 'inspections';
     constructor() {
-        this.pb = new PocketBase('https://db.buckapi.site:8095');
+        this.pb = new PocketBase(requireConfigValue('pocketbaseUrl'));
     }
     private sanitizeListInspection(inspection: Inspection): Inspection {
         return {
@@ -130,7 +131,7 @@ export class InspectionService {
         if (!imageIds || imageIds.length === 0)
             return [];
         const urls: string[] = [];
-        const collectionId = '5bjt6wpqfj0rnsl';
+        const collectionId = requireConfigValue('imagesCollectionId');
         for (const imageId of imageIds) {
             try {
                 const record = await this.pb.collection('images').getOne(imageId);

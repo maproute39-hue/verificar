@@ -186,6 +186,25 @@
     h3 { margin: 24px 0 10px; font-size: 1.08rem; }
     p { margin: 0 0 14px; }
     .lead { color: var(--muted); max-width: 900px; font-size: 1.05rem; }
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 22px 0 0;
+    }
+    .hero-actions a {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+      color: var(--text);
+      padding: 10px 13px;
+      font-weight: 700;
+      font-size: .92rem;
+    }
+    .hero-actions a:first-child {
+      border-color: color-mix(in srgb, var(--accent) 72%, var(--line));
+      background: color-mix(in srgb, var(--accent) 14%, var(--panel));
+    }
     .grid {
       display: grid;
       grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -339,6 +358,11 @@
         <p class="lead">
           VerificarIT es una PWA para crear, consultar, editar y exportar inspecciones vehiculares. El proyecto está depurado para entrega y conserva únicamente páginas, servicios y flujos activos.
         </p>
+        <div class="hero-actions" aria-label="Referencias del proyecto">
+          <a href="https://github.com/maproute39-hue/verificar">Repositorio GitHub</a>
+          <a href="../README.md">README</a>
+          <a href="pb_schema.json">Schema PocketBase</a>
+        </div>
         <div class="grid">
           <div class="card"><small>Frontend</small><strong>Angular 21 standalone</strong></div>
           <div class="card"><small>Backend</small><strong>PocketBase v0.19.0</strong></div>
@@ -350,7 +374,7 @@
       <section id="arquitectura">
         <h2>Arquitectura</h2>
         <p class="lead">
-          La aplicación es un frontend estático. Angular consume PocketBase y Gotenberg directamente desde el navegador; no existe backend Node dentro del repositorio.
+          La aplicación es un frontend estático. Angular consume PocketBase y un endpoint de PDF definidos por configuración runtime; no existe backend Node dentro del repositorio.
         </p>
         <pre><code>Navegador/PWA
   |
@@ -371,7 +395,7 @@
       |-- /forms/libreoffice/convert
       `-- /forms/chromium/convert/html</code></pre>
         <div class="callout warn">
-          Los secretos de Gotenberg y credenciales demo están actualmente en frontend. Para producción deben rotarse y moverse fuera del bundle Angular.
+          Los secretos expuestos históricamente deben rotarse fuera del repositorio. Angular ya no debe incluir credenciales demo ni Basic Auth de Gotenberg.
         </div>
       </section>
 
@@ -514,11 +538,11 @@
           <table>
             <thead><tr><th>Elemento</th><th>Ubicación actual</th><th>Recomendación</th></tr></thead>
             <tbody>
-              <tr><td>PocketBase URL</td><td>Servicios de PocketBase</td><td>`environment.pocketbaseUrl`.</td></tr>
-              <tr><td>Gotenberg URL</td><td>`GotenbergService`</td><td>`environment.gotenbergUrl` o backend.</td></tr>
-              <tr><td>Basic Auth Gotenberg</td><td>Frontend y proxy</td><td>Secret manager o proxy privado.</td></tr>
-              <tr><td>Credenciales demo</td><td>`Login`</td><td>Eliminar antes de producción.</td></tr>
-              <tr><td>Collection ID imágenes</td><td>`InspectionService`</td><td>Configurable por ambiente.</td></tr>
+              <tr><td>PocketBase URL</td><td><code>public/config/app-config.js</code></td><td>Configurable por ambiente.</td></tr>
+              <tr><td>Gotenberg base URL</td><td><code>public/config/app-config.js</code></td><td>Proxy/backend, por defecto <code>/gotenberg</code>.</td></tr>
+              <tr><td>Basic Auth Gotenberg</td><td>Fuera de Angular</td><td>Secret manager, proxy privado o gateway.</td></tr>
+              <tr><td>Credenciales demo</td><td>No aplica</td><td>Retiradas del login.</td></tr>
+              <tr><td>Collection ID imágenes</td><td><code>public/config/app-config.js</code></td><td>Configurable por ambiente.</td></tr>
             </tbody>
           </table>
         </div>
@@ -570,9 +594,9 @@ frontend:
           Todo secreto incluido en Angular queda expuesto en el navegador. Gotenberg no debería autenticarse directamente desde frontend en producción.
         </div>
         <ul>
-          <li>Rotar credenciales expuestas históricamente.</li>
-          <li>Eliminar credenciales demo del login.</li>
-          <li>Mover URLs y secretos a configuración segura.</li>
+          <li>Rotar credenciales expuestas históricamente en PocketBase, Gotenberg, Dokploy y proxies.</li>
+          <li>Invalidar cuentas demo, contraseñas compartidas y tokens antiguos.</li>
+          <li>Mantener URLs en configuración runtime y secretos en infraestructura segura.</li>
           <li>Versionar reglas de PocketBase.</li>
           <li>Aplicar CORS estricto.</li>
           <li>Agregar control server-side para permisos críticos.</li>

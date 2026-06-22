@@ -3,6 +3,7 @@ import PocketBase, { RecordSubscription } from 'pocketbase';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { Inspection } from '../models/inspection.model';
 import Swal from 'sweetalert2';
+import { requireConfigValue } from '../config/app-config';
 export interface RealtimeEvent extends Omit<RecordSubscription<Inspection>, 'action'> {
     action: 'create' | 'update' | 'delete';
     record: Inspection;
@@ -156,7 +157,7 @@ export class RealtimeInspectionsService implements OnDestroy {
         }
     }
     constructor() {
-        this.pb = new PocketBase('https://db.buckapi.site:8095');
+        this.pb = new PocketBase(requireConfigValue('pocketbaseUrl'));
         this.pb.authStore.onChange((token, model) => {
             if (!token && this.isSubscribed) {
                 console.warn('[RealtimeInspectionsService] Sesión expirada, suscripciones pausadas');

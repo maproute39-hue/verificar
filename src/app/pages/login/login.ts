@@ -18,10 +18,7 @@ export class Login implements OnInit {
     showPassword = false;
     errorMessage: string = '';
     isSubmitting = false;
-    constructor(private router: Router, private authService: AuthService) {
-        this.loginData.email = 'david@appverificar.site';
-        this.loginData.password = 'appverificar0126';
-    }
+    constructor(private router: Router, private authService: AuthService) { }
     ngOnInit(): void {
         if (this.authService.isAuthenticated()) {
             const currentUser = this.authService.getCurrentUser();

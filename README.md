@@ -1,13 +1,39 @@
-# VerificarIT
+<p align="center">
+  <img src="docs/logo.svg" alt="VerificarIT" width="92">
+</p>
+
+<h1 align="center">VerificarIT</h1>
+
+<p align="center">
+  <strong>PWA Angular para inspecciones vehiculares, evidencias, vencimientos y generación de PDF.</strong>
+</p>
+
+<p align="center">
+  <img alt="Angular 21" src="https://img.shields.io/badge/Angular-21-DD0031?logo=angular&logoColor=white">
+  <img alt="PocketBase 0.19.0" src="https://img.shields.io/badge/PocketBase-0.19.0-B8DBE4?logo=pocketbase&logoColor=111827">
+  <img alt="Gotenberg" src="https://img.shields.io/badge/PDF-Gotenberg-22c55e">
+  <img alt="PWA" src="https://img.shields.io/badge/PWA-ready-5A0FC8?logo=pwa&logoColor=white">
+  <img alt="TypeScript" src="https://img.shields.io/badge/TypeScript-5.9-3178C6?logo=typescript&logoColor=white">
+</p>
+
+<p align="center">
+  <a href="docs/index.html">Documentación técnica</a>
+  ·
+  <a href="docs/pb_schema.json">Schema PocketBase</a>
+  ·
+  <a href="https://github.com/maproute39-hue/verificar">Repositorio</a>
+</p>
+
+## Resumen
 
 VerificarIT es una PWA en Angular para la gestión de inspecciones vehiculares. La aplicación permite autenticar usuarios, crear inspecciones, capturar firmas, adjuntar fotografías, consultar historiales por placa, controlar vencimientos documentales y generar reportes PDF a partir de una plantilla Excel.
 
-La solución actual funciona como frontend estático Angular conectado directamente a PocketBase y Gotenberg:
+La solución actual funciona como frontend estático Angular conectado a PocketBase y a un endpoint de conversión PDF configurable:
 
 - Angular 21 standalone como cliente web/PWA.
 - PocketBase como backend de autenticación, datos, archivos y realtime.
 - ExcelJS para completar plantillas XLSX en el navegador.
-- Gotenberg para convertir XLSX/HTML a PDF.
+- Gotenberg para convertir XLSX/HTML a PDF, preferiblemente detrás de un proxy/backend que inyecte credenciales fuera del navegador.
 
 ## Estado Del Proyecto
 
@@ -56,7 +82,7 @@ Navegador/PWA
       `-- /forms/chromium/convert/html
 ```
 
-No hay backend Node dentro del repositorio. El frontend consume PocketBase y Gotenberg directamente desde el navegador.
+No hay backend Node dentro del repositorio. El frontend consume PocketBase y un endpoint de PDF definidos por configuración runtime; cualquier secreto debe residir fuera del bundle Angular.
 
 ## Stack Técnico
 
@@ -152,7 +178,9 @@ dist/verificar-app/browser
 │   ├── main.ts
 │   ├── index.html
 │   ├── styles.scss
+│   ├── environments/
 │   └── app/
+│       ├── config/
 │       ├── app.config.ts
 │       ├── app.routes.ts
 │       ├── components/
@@ -260,26 +288,27 @@ La aplicación usa el SDK de PocketBase; las rutas siguientes son equivalentes R
 
 ## Configuración Actual
 
-Actualmente no existen archivos `environment.ts`. Las URLs y credenciales están en servicios del frontend.
+La configuración se carga desde `public/config/app-config.js` mediante `window.__APP_CONFIG__`, con fallback en `src/environments/environment.ts`. El archivo runtime permite cambiar endpoints por ambiente sin recompilar Angular.
 
 | Valor | Ubicación | Estado |
 |---|---|---|
-| PocketBase URL | `auth.service.ts`, `inspection.service.ts`, `inspections-realtime.ts` | Hardcodeado |
-| Gotenberg URL | `gotenberg.service.ts` | Hardcodeado |
-| Basic Auth Gotenberg | `gotenberg.service.ts`, `proxy.conf.json` | Debe retirarse del frontend |
-| Collection ID de imágenes | `inspection.service.ts` | Hardcodeado |
-| Credenciales de login demo | `login.ts` | Deben eliminarse antes de producción |
+| PocketBase URL | `public/config/app-config.js` | Configurable por ambiente. |
+| Gotenberg base URL | `public/config/app-config.js` | Configurable; por defecto apunta a `/gotenberg`. |
+| Collection ID de imágenes | `public/config/app-config.js` | Configurable por ambiente. |
+| Secretos Gotenberg | Fuera de Angular | Deben vivir en proxy/backend, Dokploy o secret manager. |
+| Credenciales demo | No aplica | Retiradas del formulario de login. |
 
-Recomendación para entrega productiva:
+Plantilla runtime:
 
-```ts
-export const environment = {
-  production: true,
+```js
+window.__APP_CONFIG__ = {
   pocketbaseUrl: 'https://db.example.com',
-  gotenbergUrl: 'https://pdf.example.com',
+  gotenbergBaseUrl: '/gotenberg',
   imagesCollectionId: 'collection_id'
 };
 ```
+
+El endpoint `/gotenberg` debe resolver a un proxy seguro. Si Gotenberg requiere Basic Auth, esa cabecera debe agregarse en el proxy o gateway, nunca en Angular.
 
 ## PDF
 
@@ -409,10 +438,10 @@ services:
 
 Antes de producción:
 
-- Rotar credenciales expuestas históricamente en el repositorio.
-- Eliminar credenciales demo del login.
-- Sacar Basic Auth de Gotenberg del frontend.
-- Mover URLs y constantes a configuración por ambiente.
+- Rotar en PocketBase, Gotenberg, Dokploy y cualquier proxy las credenciales expuestas históricamente en el repositorio.
+- Invalidar sesiones/tokens asociados a usuarios demo o cuentas compartidas.
+- Mantener Basic Auth de Gotenberg fuera del frontend.
+- Mantener URLs y constantes por ambiente en `public/config/app-config.js` o en el mecanismo de configuración del despliegue.
 - Versionar reglas y schema de PocketBase.
 - Restringir CORS a dominios conocidos.
 - Mantener HTTPS en frontend, PocketBase y Gotenberg.

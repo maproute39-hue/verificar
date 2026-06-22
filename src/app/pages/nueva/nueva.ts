@@ -7,6 +7,7 @@ import { RouterModule } from '@angular/router';
 import { Router, ActivatedRoute } from '@angular/router';
 import { SharedService } from '../../services/shared.service';
 import { SignaturePadComponent, NgSignaturePadOptions } from '@almothafar/angular-signature-pad';
+import { AuthService } from '../../services/auth.service';
 declare const flatpickr: any;
 interface FlatpickrOptions {
     locale?: any;
@@ -69,9 +70,9 @@ export class Nueva implements AfterViewInit, OnInit {
         [key: string]: any;
     } = {};
     isLoading: boolean = false;
-    currentUser: string = 'admin';
+    currentUser: string = '';
     nextCertificateNumber: string = '';
-    constructor(private fb: FormBuilder, private inspectionService: InspectionService, private router: Router, private route: ActivatedRoute, public sharedService: SharedService) {
+    constructor(private fb: FormBuilder, private inspectionService: InspectionService, private router: Router, private route: ActivatedRoute, public sharedService: SharedService, private authService: AuthService) {
         this.inspectionForm = this.fb.group({
             fecha_inspeccion: ['', Validators.required],
             fecha_vigencia: ['', Validators.required],
@@ -300,6 +301,7 @@ export class Nueva implements AfterViewInit, OnInit {
     }
     ngOnInit() {
         this.sharedService.currentRoute = this.route.snapshot.url[0].path;
+        this.currentUser = this.authService.getCurrentUserId() || '';
         this.phoneForm.get('telefono')?.valueChanges.subscribe(value => {
             if (value) {
                 this.inspectionForm.patchValue({ telefono: value });
