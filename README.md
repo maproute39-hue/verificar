@@ -17,9 +17,9 @@
 </p>
 
 <p align="center">
-  <a href="docs/index.html">Documentación técnica</a>
+  <a href="https://maproute39-hue.github.io/verificar/">Documentación técnica</a>
   ·
-  <a href="docs/pb_schema.json">Schema PocketBase</a>
+  <a href="https://maproute39-hue.github.io/verificar/docs/pb_schema.json">Schema PocketBase</a>
   ·
   <a href="https://github.com/maproute39-hue/verificar">Repositorio</a>
 </p>
