@@ -1,97 +1,87 @@
 # VerificarIT
 
-VerificarIT es una aplicación web PWA construida con Angular para la gestión de inspecciones vehiculares. Permite crear inspecciones, capturar firmas digitales, adjuntar fotografías, consultar historiales por placa, validar vencimientos de documentos críticos y generar reportes PDF a partir de una plantilla Excel.
+VerificarIT es una PWA en Angular para la gestión de inspecciones vehiculares. La aplicación permite autenticar usuarios, crear inspecciones, capturar firmas, adjuntar fotografías, consultar historiales por placa, controlar vencimientos documentales y generar reportes PDF a partir de una plantilla Excel.
 
-El backend principal detectado en el código es PocketBase. La generación de PDFs se realiza con Gotenberg mediante conversión de archivos XLSX generados en el navegador con ExcelJS.
+La solución actual funciona como frontend estático Angular conectado directamente a PocketBase y Gotenberg:
 
-> Estado de este documento: generado a partir del código fuente del repositorio. Las secciones marcadas como **Pendiente de configuración** no tienen suficiente información verificable en el código.
+- Angular 21 standalone como cliente web/PWA.
+- PocketBase como backend de autenticación, datos, archivos y realtime.
+- ExcelJS para completar plantillas XLSX en el navegador.
+- Gotenberg para convertir XLSX/HTML a PDF.
 
-## Descripción General
+## Estado Del Proyecto
 
-La aplicación cubre el flujo operativo de inspecciones vehiculares para camionetas y vehículos de transporte:
+El repositorio fue depurado para entrega:
 
-- Autenticación de usuarios con PocketBase.
-- Creación de inspecciones nuevas.
-- Creación de inspecciones heredadas desde una inspección previa.
-- Captura de firmas digitales de conductor e inspector.
-- Captura y gestión de imágenes de inspección.
-- Listado de inspecciones recientes y completas.
-- Búsqueda por placa con historial y alertas de vigencia.
-- Validación de documentos críticos: vigencia, SOAT, revisión tecnomecánica, tarjeta de operación y licencia.
-- Detalle y edición de inspecciones.
-- Generación de reportes Excel/PDF con imágenes y firmas.
-- Soporte PWA mediante Angular Service Worker.
+- Se eliminaron flujos obsoletos, servicios sin uso, guards no conectados, utilidades vacías y archivos locales de respaldo.
+- `src/app` contiene solo componentes, páginas y servicios activos.
+- La documentación técnica autocontenida está disponible en `docs/index.html`.
+- La validación TypeScript pasa con `npx tsc -p tsconfig.app.json --noEmit`.
+- El build requiere Node `>=20.19` o `>=22.12`; con Node 18 Angular CLI no ejecuta.
 
-## Arquitectura de la Solución
+## Funcionalidades
+
+- Login con PocketBase.
+- Dashboard con inspecciones recientes, carga completa en segundo plano y métricas.
+- Búsqueda por placa con historial e inspección heredada.
+- Formulario multipaso para nuevas inspecciones.
+- Captura de firmas de conductor e inspector.
+- Carga y gestión de imágenes de inspección.
+- Detalle y edición de inspecciones existentes.
+- Cálculo de estado de inspección: `borrador`, `aprobada`, `rechazada`.
+- Alertas de vencimiento para vigencia, SOAT, tecnomecánica y licencia.
+- Exportación de PDF con datos, firmas e imágenes.
+- PWA con manifest y service worker de Angular.
+
+## Arquitectura
 
 ```text
-Usuario navegador/PWA
-        |
-        v
-Angular 21 standalone app
-        |
-        |-- PocketBase SDK
-        |     |-- Auth users
-        |     |-- CRUD inspections
-        |     |-- Realtime WebSocket
-        |     |-- Files/images
-        |     `-- Secuencias de certificados
-        |
-        |-- ExcelJS
-        |     `-- Genera XLSX desde public/assets/templates/inspection.xlsx
-        |
-        `-- Gotenberg
-              |-- /forms/libreoffice/convert para XLSX -> PDF
-              `-- /forms/chromium/convert/html para HTML -> PDF
+Navegador/PWA
+  |
+  |-- Angular 21 standalone
+  |   |-- routes: login, home, nueva, heredada, inspections, detail/:id
+  |   |-- services: auth, inspections, realtime, excel, gotenberg, pwa
+  |   `-- assets/templates/inspection.xlsx
+  |
+  |-- PocketBase HTTPS
+  |   |-- users
+  |   |-- inspections
+  |   |-- images
+  |   `-- secuencias
+  |
+  `-- Gotenberg HTTPS
+      |-- /forms/libreoffice/convert
+      `-- /forms/chromium/convert/html
 ```
 
-Componentes principales:
+No hay backend Node dentro del repositorio. El frontend consume PocketBase y Gotenberg directamente desde el navegador.
 
-- `Home`: dashboard, estadísticas, búsqueda por placa, alertas y listado paginado.
-- `Nueva`: formulario wizard para crear inspecciones.
-- `Heredada`: crea una nueva inspección usando una inspección base.
-- `Detail`: visualización, edición, imágenes, firmas y exportación a PDF.
-- `Inspections`: listado general con búsqueda y eliminación.
-
-Servicios principales:
-
-- `AuthService`: autenticación con PocketBase (`users`).
-- `RealtimeInspectionsService`: carga optimizada, cache local, realtime y CRUD de listados.
-- `InspectionService`: CRUD general, imágenes, secuencias y detalle completo.
-- `ExcelExportService`: generación de XLSX y PDFs.
-- `GotenbergService`: cliente HTTP para Gotenberg.
-
-## Tecnologías Utilizadas
+## Stack Técnico
 
 | Capa | Tecnología |
 |---|---|
 | Frontend | Angular 21, standalone components |
 | Lenguaje | TypeScript 5.9 |
 | PWA | `@angular/service-worker`, `ngsw-config.json`, `public/manifest.json` |
-| Backend | PocketBase vía SDK JS `pocketbase@^0.26.6` |
+| Datos | PocketBase SDK `pocketbase@^0.26.6` |
 | Realtime | PocketBase realtime subscriptions |
-| Formularios | Angular Reactive Forms |
+| Formularios | Angular Reactive Forms, FormsModule |
 | Firmas | `@almothafar/angular-signature-pad` |
 | Fechas | Flatpickr |
-| Alertas/modales | SweetAlert2 |
+| Modales | SweetAlert2 |
 | Excel | ExcelJS, xlsx |
 | Descargas | file-saver |
 | PDF | Gotenberg |
 | Galería | ngx-lightbox |
-| UI/assets | Bootstrap-like template assets, FontAwesome, Lucide, Flaticon |
+| UI | Assets locales en `public/assets` |
 
-## Requisitos Previos
+## Requisitos
 
-Recomendado para Angular 21:
-
-- Node.js `>= 20.19` o `>= 22.12`.
-- npm `>= 10`.
+- Node.js `>=20.19` o `>=22.12`.
+- npm `>=10`.
 - Angular CLI compatible con Angular 21.
-- Servidor PocketBase accesible por HTTPS.
-- Servicio Gotenberg accesible por HTTPS.
-- Nginx o servidor HTTP equivalente para producción.
-
-Verificar versiones:
+- PocketBase accesible por HTTPS.
+- Gotenberg accesible por HTTPS.
 
 ```bash
 node --version
@@ -99,332 +89,22 @@ npm --version
 npx ng version
 ```
 
-## Instalación Desde Cero
+## Instalación
 
 ```bash
-git clone <URL_DEL_REPOSITORIO>
-cd appverificar
-npm install
+npm ci
 ```
 
-Ejecutar en desarrollo:
+Desarrollo:
 
 ```bash
 npm start
 ```
 
-La aplicación queda disponible en:
+La app queda disponible en:
 
 ```text
 http://localhost:4200
-```
-
-Compilar para producción:
-
-```bash
-npm run build
-```
-
-Salida detectada:
-
-```text
-dist/verificar-app/browser
-```
-
-Verificación TypeScript:
-
-```bash
-npx tsc -p tsconfig.app.json --noEmit
-```
-
-## Configuración de Variables de Entorno
-
-Actualmente el proyecto **no usa archivos `environment.ts` ni variables de entorno Angular**. Las URLs y credenciales están hardcodeadas en servicios.
-
-Valores detectados:
-
-| Configuración | Archivo | Valor detectado |
-|---|---|---|
-| PocketBase URL | `src/app/services/auth.service.ts` | `https://db.buckapi.site:8095` |
-| PocketBase URL | `src/app/services/inspection.service.ts` | `https://db.buckapi.site:8095` |
-| PocketBase URL | `src/app/services/inspections-realtime.ts` | `https://db.buckapi.site:8095` |
-| Gotenberg LibreOffice | `src/app/services/gotenberg.service.ts` | `https://gotenberg.buckapi.online/forms/libreoffice/convert` |
-| Gotenberg Chromium | `src/app/services/gotenberg.service.ts` | `https://gotenberg.buckapi.online/forms/chromium/convert/html` |
-
-**Pendiente de configuración:** migrar estas constantes a configuración por ambiente. Ejemplo recomendado:
-
-```ts
-export const environment = {
-  production: false,
-  pocketbaseUrl: 'https://db.example.com',
-  gotenbergLibreOfficeUrl: 'https://gotenberg.example.com/forms/libreoffice/convert',
-  gotenbergChromiumUrl: 'https://gotenberg.example.com/forms/chromium/convert/html',
-};
-```
-
-**Importante de seguridad:** el código contiene credenciales hardcodeadas de Gotenberg y credenciales de prueba en login. Deben rotarse y eliminarse antes de producción.
-
-## Configuración de PocketBase
-
-### Versión Recomendada
-
-**Pendiente de configuración.** El repositorio usa el SDK JavaScript `pocketbase@^0.26.6`, pero no incluye la versión del servidor PocketBase. Use una versión de servidor compatible con ese SDK y valide realtime/files/auth antes de producción.
-
-### URL Base
-
-Detectada en código:
-
-```text
-https://db.buckapi.site:8095
-```
-
-### Colecciones Requeridas
-
-Inferidas desde el código:
-
-| Colección | Uso |
-|---|---|
-| `users` | Autenticación, perfiles y roles. |
-| `inspections` | Colección principal de inspecciones vehiculares. |
-| `images` | Archivos/fotos asociadas a inspecciones. |
-| `secuencias` | Secuencias para números de certificado por prefijo. |
-
-### Campos Mínimos Inferidos para `inspections`
-
-El modelo contiene muchos campos de inspección. Campos críticos usados por listados, búsqueda y alertas:
-
-```text
-id
-created
-updated
-numero_certificado
-placa
-telefono
-whatsapp
-nombres_conductor
-identificacion
-foto_conductor
-fecha_inspeccion
-fecha_vigencia
-estado
-fecha_vencimiento_soat
-fecha_vencimiento_revision_tecnomecanica
-fecha_vencimiento_tarjeta_operacion
-licencia_vencimiento
-fecha_vencimiento_licencia
-clase_vehiculo
-marca
-modelo
-color
-codigo_vehiculo
-firma_conductor
-firma_inspector
-images
-```
-
-Campos de detalle/formulario incluyen sistemas eléctricos, mecánicos, carrocería, cabina, seguridad, kit de carretera, parte baja, llantas, frenos y observaciones. Ver `src/app/models/inspection.model.ts`, `src/app/pages/nueva/nueva.ts` y `src/app/pages/detail/detail.ts`.
-
-### Optimización de Listados
-
-Los listados usan `fields` para no traer firmas base64:
-
-```ts
-fields: INSPECTION_LIST_FIELDS
-```
-
-Los campos `firma_conductor` y `firma_inspector` se limpian antes de insertar datos en el `BehaviorSubject` y cache local. El detalle se carga con `getOne(id)` sin `fields`, por lo que conserva firmas.
-
-### Colección `images`
-
-Uso detectado:
-
-- Campo file: `image`.
-- Los IDs de imágenes se guardan en `inspections.images`.
-- El código usa el ID de colección `5bjt6wpqfj0rnsl` para construir URLs de archivos.
-
-**Pendiente de configuración:** confirmar si `images` es relación múltiple, array de IDs o campo JSON en PocketBase.
-
-### Colección `secuencias`
-
-Uso detectado:
-
-```ts
-getFirstListItem(`prefijo="${prefix}"`)
-update(secuencia.id, { ultimo_numero: nuevoNumero })
-```
-
-Campos inferidos:
-
-```text
-prefijo
-ultimo_numero
-```
-
-Prefijos usados:
-
-- `U` para inspecciones nuevas/heredadas.
-
-### Reglas de Acceso
-
-**Pendiente de configuración.** El repositorio no incluye export de reglas PocketBase.
-
-Recomendación mínima:
-
-- `users`: autenticación con email/usuario y contraseña.
-- `inspections`: lectura/escritura solo para usuarios autenticados.
-- `images`: lectura/escritura solo para usuarios autenticados.
-- `secuencias`: lectura/escritura solo para usuarios autenticados o rol administrativo.
-- Realtime habilitado para `inspections` si se requiere actualización en vivo.
-
-Ejemplo conceptual:
-
-```text
-@request.auth.id != ""
-```
-
-Adapte reglas por rol (`role`) si se requiere separación entre administradores e inspectores.
-
-## Configuración de Gotenberg
-
-### Propósito
-
-Gotenberg se usa para generar PDF desde archivos creados en el navegador:
-
-1. Angular recopila datos de la inspección.
-2. `ExcelExportService` carga `public/assets/templates/inspection.xlsx`.
-3. ExcelJS escribe datos, imágenes y firmas en la plantilla.
-4. Se genera un XLSX en memoria.
-5. `GotenbergService` envía el XLSX a Gotenberg.
-6. Gotenberg convierte el XLSX a PDF mediante LibreOffice.
-7. El navegador descarga el PDF.
-
-### Endpoints Detectados
-
-```text
-https://gotenberg.buckapi.online/forms/libreoffice/convert
-https://gotenberg.buckapi.online/forms/chromium/convert/html
-```
-
-### Despliegue con Docker
-
-Ejemplo básico:
-
-```bash
-docker run -d \
-  --name gotenberg \
-  --restart unless-stopped \
-  -p 3000:3000 \
-  gotenberg/gotenberg:8
-```
-
-Endpoint local:
-
-```text
-http://localhost:3000/forms/libreoffice/convert
-```
-
-Con Docker Compose:
-
-```yaml
-services:
-  gotenberg:
-    image: gotenberg/gotenberg:8
-    restart: unless-stopped
-    ports:
-      - "3000:3000"
-```
-
-### Autenticación
-
-El código actual envía Basic Auth desde `GotenbergService` y `proxy.conf.json`.
-
-**Pendiente de configuración:** definir si el Gotenberg productivo debe estar detrás de Nginx/Traefik con Basic Auth, API gateway o red privada.
-
-No deje credenciales en el bundle de Angular: cualquier valor dentro del frontend es visible para el usuario. Para producción, use un backend intermedio para firmar/autenticar la conversión.
-
-### Proxy de Desarrollo
-
-Existe `proxy.conf.json`:
-
-```json
-{
-  "/gotenberg": {
-    "target": "https://gotenberg.buckapi.online",
-    "secure": false,
-    "changeOrigin": true,
-    "pathRewrite": { "^/gotenberg": "" }
-  }
-}
-```
-
-El código actual no usa `/gotenberg`; llama directamente a la URL HTTPS. Para usar el proxy:
-
-```bash
-npx ng serve --proxy-config proxy.conf.json
-```
-
-Y cambie el servicio a `/gotenberg/forms/libreoffice/convert`.
-
-## Configuración de Firebase
-
-No se detectó configuración Firebase, `firebaseConfig`, SDK Firebase ni archivos de ambiente relacionados.
-
-**Estado:** no aplica actualmente.
-
-## Dominios y CORS Detectados
-
-Dominios externos detectados:
-
-- `https://db.buckapi.site:8095` - PocketBase.
-- `https://gotenberg.buckapi.online` - Gotenberg.
-- `https://wa.me` - apertura de WhatsApp desde búsqueda/listados.
-- `https://fonts.googleapis.com` y `https://fonts.gstatic.com` - fuentes en `index.html`.
-- URLs de assets demo dentro de archivos estáticos del template en `public/assets`.
-
-Requisitos CORS:
-
-- PocketBase debe permitir el dominio donde se sirva Angular.
-- Gotenberg o el proxy delante de Gotenberg debe permitir el origen del frontend si se llama directamente desde navegador.
-- Las imágenes de PocketBase deben permitir `fetch` con CORS porque `ExcelExportService` descarga imágenes para incrustarlas en XLSX.
-
-## Comandos de Desarrollo
-
-Instalar:
-
-```bash
-npm install
-```
-
-Servidor local:
-
-```bash
-npm start
-# equivalente:
-npx ng serve
-```
-
-Servidor local con proxy de Gotenberg:
-
-```bash
-npx ng serve --proxy-config proxy.conf.json
-```
-
-Build producción:
-
-```bash
-npm run build
-```
-
-Build desarrollo:
-
-```bash
-npm run watch
-```
-
-Tests:
-
-```bash
-npm test
 ```
 
 Validación TypeScript:
@@ -433,97 +113,33 @@ Validación TypeScript:
 npx tsc -p tsconfig.app.json --noEmit
 ```
 
-## Despliegue en Servidor Linux
-
-Ejemplo con Ubuntu, Nginx y build estático.
-
-### 1. Preparar servidor
+Build productivo:
 
 ```bash
-sudo apt update
-sudo apt install -y nginx git curl
-curl -fsSL https://deb.nodesource.com/setup_22.x | sudo -E bash -
-sudo apt install -y nodejs
-node --version
-npm --version
-```
-
-### 2. Descargar e instalar
-
-```bash
-sudo mkdir -p /var/www/verificar
-sudo chown "$USER":"$USER" /var/www/verificar
-git clone <URL_DEL_REPOSITORIO> /var/www/verificar/source
-cd /var/www/verificar/source
-npm ci
 npm run build
 ```
 
-### 3. Publicar build
+Salida del build:
 
-```bash
-sudo mkdir -p /var/www/verificar/html
-sudo rsync -a --delete dist/verificar-app/browser/ /var/www/verificar/html/
+```text
+dist/verificar-app/browser
 ```
 
-### 4. Configurar Nginx
-
-```nginx
-server {
-    listen 80;
-    server_name appverificar.example.com;
-
-    root /var/www/verificar/html;
-    index index.html;
-
-    location / {
-        try_files $uri $uri/ /index.html;
-    }
-
-    location ~* \.(?:js|css|png|jpg|jpeg|gif|svg|webp|ico|woff2?)$ {
-        expires 30d;
-        add_header Cache-Control "public, immutable";
-        try_files $uri =404;
-    }
-}
-```
-
-Activar:
-
-```bash
-sudo ln -s /etc/nginx/sites-available/verificar /etc/nginx/sites-enabled/verificar
-sudo nginx -t
-sudo systemctl reload nginx
-```
-
-### 5. HTTPS con Certbot
-
-```bash
-sudo apt install -y certbot python3-certbot-nginx
-sudo certbot --nginx -d appverificar.example.com
-```
-
-### 6. Verificar PWA
-
-Después de servir por HTTPS:
-
-- Abrir DevTools > Application.
-- Confirmar `manifest.json`.
-- Confirmar service worker `ngsw-worker.js`.
-- Probar recarga y navegación directa a `/home`, `/detail/:id`.
-
-## Estructura de Carpetas
+## Estructura
 
 ```text
 .
 ├── angular.json
 ├── ngsw-config.json
 ├── proxy.conf.json
+├── docs/
+│   └── index.html
 ├── public/
 │   ├── manifest.json
 │   └── assets/
-│       ├── templates/inspection.xlsx
-│       ├── templates/resultado.pdf
+│       ├── templates/
+│       │   ├── inspection.xlsx
+│       │   └── resultado.pdf
 │       ├── images/
 │       ├── icons/
 │       ├── libs/
@@ -536,100 +152,257 @@ Después de servir por HTTPS:
 │       ├── app.config.ts
 │       ├── app.routes.ts
 │       ├── components/
+│       │   ├── footer/
 │       │   ├── header/
-│       │   ├── sidebar/
-│       │   └── footer/
-│       ├── guards/
+│       │   └── sidebar/
 │       ├── models/
 │       ├── pages/
-│       │   ├── login/
-│       │   ├── home/
-│       │   ├── nueva/
-│       │   ├── heredada/
 │       │   ├── detail/
+│       │   ├── heredada/
+│       │   ├── home/
 │       │   ├── inspections/
-│       ├── services/
-│       └── utils/
+│       │   ├── login/
+│       │   └── nueva/
+│       └── services/
 └── package.json
 ```
 
-## Dependencias Críticas y Función
+## Rutas
 
-| Dependencia | Función |
+| Ruta | Componente | Propósito |
+|---|---|---|
+| `/` | Redirect | Redirige a `/login`. |
+| `/login` | `Login` | Autenticación de usuario. |
+| `/home` | `Home` | Dashboard, métricas, búsqueda, alertas e historial. |
+| `/nueva` | `Nueva` | Creación de inspección. |
+| `/heredada` | `Heredada` | Nueva inspección desde una inspección base. |
+| `/inspections` | `Inspections` | Listado general con búsqueda y eliminación. |
+| `/detail/:id` | `Detail` | Detalle, edición, imágenes, firmas y PDF. |
+
+## Servicios Principales
+
+| Servicio | Responsabilidad |
 |---|---|
-| `@angular/*` | Framework SPA/PWA. |
-| `pocketbase` | Auth, CRUD, realtime y archivos. |
-| `@almothafar/angular-signature-pad` | Captura de firmas digitales en canvas. |
-| `exceljs` | Lectura/escritura de plantilla XLSX. |
-| `file-saver` | Descarga de archivos generados. |
-| `sweetalert2` | Modales y confirmaciones. |
-| `flatpickr` | Selectores de fecha. |
-| `ngx-lightbox` | Galería de imágenes en detalle. |
-| `ngx-mask` | Máscaras de entrada. |
-| `rxjs` | Observables y flujos async. |
-| `xlsx` | Utilidades Excel adicionales. |
+| `AuthService` | Login, logout, usuario actual, perfil y recuperación de contraseña. |
+| `InspectionService` | CRUD principal, imágenes, secuencias y URLs de archivos. |
+| `RealtimeInspectionsService` | Realtime, caché local, carga progresiva y eliminación. |
+| `ExcelExportService` | Generación de XLSX y PDF desde plantilla. |
+| `GotenbergService` | Conversión XLSX/HTML a PDF y descarga de blobs. |
+| `PwaInstallService` | Instalación PWA desde `beforeinstallprompt`. |
+| `SharedService` | Estado simple de ruta actual usado por layout. |
 
-## Flujo Funcional de la Aplicación
+## Modelo De Datos
 
-1. Usuario ingresa por `/login`.
-2. `AuthService` autentica contra `users` en PocketBase.
-3. Usuario navega a `/home`.
-4. `Home` carga inspecciones recientes y luego historial completo con cache.
-5. PocketBase realtime actualiza la lista al crear/editar/eliminar.
-6. Desde Home puede:
-   - buscar por placa,
-   - ver detalle,
-   - crear inspección heredada,
-   - revisar alertas de vencimientos.
-7. En `/nueva` se crea una inspección con datos, firmas e imágenes.
-8. En `/detail/:id` se carga el registro completo, incluyendo firmas.
-9. En detalle se pueden editar datos, gestionar imágenes y exportar PDF.
-10. Para PDF, ExcelJS genera XLSX y Gotenberg lo convierte a PDF.
+El repositorio no contiene migraciones ni export del schema de PocketBase. El modelo se infiere desde `src/app/models/inspection.model.ts`, formularios y servicios.
 
-## Proceso de Generación de PDFs
+Colecciones requeridas:
 
-Archivo base:
+| Colección | Uso |
+|---|---|
+| `users` | Autenticación, perfiles y roles. |
+| `inspections` | Registro principal de inspecciones. |
+| `images` | Archivos/fotografías. |
+| `secuencias` | Consecutivos de certificados por prefijo. |
 
-```text
-public/assets/templates/inspection.xlsx
+Campos principales de `inspections`:
+
+- Identificación: `id`, `numero_certificado`, `created`, `updated`.
+- Conductor: `nombres_conductor`, `identificacion`, `telefono`, `whatsapp`, `fecha_vencimiento_licencia`.
+- Propietario: `propietario`, `documento_propietario`, `tipo_propietario`.
+- Vehículo: `placa`, `marca`, `modelo`, `color`, `clase_vehiculo`, `codigo_vehiculo`, `capacidad_pasajeros`, `kilometraje`.
+- Documentos: `soat`, `licencia_transito`, `revision_tecnomecanica`, `tarjeta_operacion`.
+- Fechas: `fecha_inspeccion`, `fecha_vigencia`, `fecha_vencimiento_soat`, `fecha_vencimiento_revision_tecnomecanica`, `fecha_vencimiento_tarjeta_operacion`.
+- Estado: `estado`, `status`, `observaciones`, `created_by`.
+- Checklist: sistema eléctrico, motor, carrocería, cabina, seguridad, kit de carretera, parte baja, frenos, dirección y llantas.
+- Evidencia: `firma_conductor`, `firma_inspector`, `images`.
+
+Los listados limitan campos con `INSPECTION_LIST_FIELDS` y eliminan firmas base64 para reducir peso en memoria, realtime y `localStorage`.
+
+## Endpoints Consumidos
+
+La aplicación usa el SDK de PocketBase; las rutas siguientes son equivalentes REST de las operaciones:
+
+| Servicio | Operación | Ruta |
+|---|---|---|
+| PocketBase | Login | `POST /api/collections/users/auth-with-password` |
+| PocketBase | Crear usuario | `POST /api/collections/users/records` |
+| PocketBase | Actualizar usuario | `PATCH /api/collections/users/records/{id}` |
+| PocketBase | Reset password | `POST /api/collections/users/request-password-reset` |
+| PocketBase | Confirmar reset | `POST /api/collections/users/confirm-password-reset` |
+| PocketBase | Crear inspección | `POST /api/collections/inspections/records` |
+| PocketBase | Listar inspecciones | `GET /api/collections/inspections/records` |
+| PocketBase | Obtener inspección | `GET /api/collections/inspections/records/{id}` |
+| PocketBase | Actualizar inspección | `PATCH /api/collections/inspections/records/{id}` |
+| PocketBase | Eliminar inspección | `DELETE /api/collections/inspections/records/{id}` |
+| PocketBase | Subir imagen | `POST /api/collections/images/records` |
+| PocketBase | Leer archivo | `GET /api/files/{collectionId}/{recordId}/{filename}` |
+| PocketBase | Realtime | `/api/realtime` |
+| PocketBase | Secuencias | `/api/collections/secuencias/records` |
+| Gotenberg | XLSX a PDF | `POST /forms/libreoffice/convert` |
+| Gotenberg | HTML a PDF | `POST /forms/chromium/convert/html` |
+
+## Configuración Actual
+
+Actualmente no existen archivos `environment.ts`. Las URLs y credenciales están en servicios del frontend.
+
+| Valor | Ubicación | Estado |
+|---|---|---|
+| PocketBase URL | `auth.service.ts`, `inspection.service.ts`, `inspections-realtime.ts` | Hardcodeado |
+| Gotenberg URL | `gotenberg.service.ts` | Hardcodeado |
+| Basic Auth Gotenberg | `gotenberg.service.ts`, `proxy.conf.json` | Debe retirarse del frontend |
+| Collection ID de imágenes | `inspection.service.ts` | Hardcodeado |
+| Credenciales de login demo | `login.ts` | Deben eliminarse antes de producción |
+
+Recomendación para entrega productiva:
+
+```ts
+export const environment = {
+  production: true,
+  pocketbaseUrl: 'https://db.example.com',
+  gotenbergUrl: 'https://pdf.example.com',
+  imagesCollectionId: 'collection_id'
+};
 ```
 
-Flujo técnico:
+## PDF
 
-1. `Detail` valida que la inspección no esté en estado borrador.
+Flujo principal:
+
+1. `Detail.imprimirInspeccion()` valida que la inspección no esté en `borrador`.
 2. Se recopilan datos del formulario, firmas e imágenes.
-3. `ExcelExportService.generarXlsxConductorConImagenes()`:
-   - carga la plantilla Excel,
-   - procesa hoja `FIRST_PAGE`,
-   - procesa hoja `SECOND_PAGE`,
-   - inserta firmas,
-   - descarga/inserta hasta 3 imágenes.
-4. `GotenbergService.convertXlsxToPdf()` envía el XLSX a:
+3. `ExcelExportService` carga `public/assets/templates/inspection.xlsx`.
+4. ExcelJS procesa `FIRST_PAGE` y `SECOND_PAGE`.
+5. Se insertan datos, checks, firmas e imágenes.
+6. Se genera un XLSX en memoria.
+7. `GotenbergService.convertXlsxToPdf()` envía el XLSX a Gotenberg.
+8. Gotenberg devuelve un PDF.
+9. `downloadBlob()` descarga el archivo.
+
+Nombre de salida:
 
 ```text
-/forms/libreoffice/convert
+Inspeccion_<placa>_<fecha>_CON_SECOND_PAGE.pdf
 ```
 
-5. Gotenberg devuelve un PDF.
-6. `downloadBlob()` descarga:
+## Realtime Y Caché
+
+`RealtimeInspectionsService` suscribe la colección `inspections` con `subscribe('*')`.
+
+- Caché local: `localStorage`, clave `inspections_cache`.
+- TTL: 5 minutos.
+- Los datos cacheados se sanitizan para excluir firmas.
+- La carga inicial prioriza inspecciones recientes y luego completa el historial en segundo plano.
+- Crear, actualizar o eliminar inspecciones invalida la caché.
+
+## Despliegue Frontend En AWS Amplify
+
+Configuración sugerida:
+
+```yaml
+version: 1
+frontend:
+  phases:
+    preBuild:
+      commands:
+        - npm ci
+    build:
+      commands:
+        - npm run build
+  artifacts:
+    baseDirectory: dist/verificar-app/browser
+    files:
+      - '**/*'
+  cache:
+    paths:
+      - node_modules/**/*
+```
+
+Configurar rewrite SPA:
 
 ```text
-Inspeccion_<placa>_<fecha>.pdf
+/<*> -> /index.html -> 200
 ```
 
-## Integraciones Externas Detectadas
+Validar después del despliegue:
 
-- PocketBase: backend, realtime, auth, archivos.
-- Gotenberg: conversión XLSX/HTML a PDF.
-- WhatsApp: links `wa.me`.
-- Google Fonts.
-- Plantilla UI con assets locales de FontAwesome, Lucide, Flaticon, ApexCharts, DataTables, Leaflet y otros. No todos están necesariamente usados por los componentes actuales.
+- Login.
+- Navegación directa a `/home`, `/nueva`, `/detail/:id`.
+- Carga de assets PWA.
+- Conexión a PocketBase.
+- Conversión PDF.
 
-## Solución de Problemas Comunes
+## Despliegue PocketBase En EC2
 
-### Angular CLI exige Node más nuevo
+Recomendaciones mínimas:
 
-Síntoma:
+- Ejecutar PocketBase como servicio systemd.
+- Servir detrás de HTTPS con Nginx, Caddy o balanceador.
+- Persistir y respaldar `pb_data`.
+- Exportar y versionar schema/reglas.
+- Restringir CORS al dominio de la app.
+- Validar permisos por colección y rol.
+
+Servicio systemd de referencia:
+
+```ini
+[Unit]
+Description=PocketBase
+After=network.target
+
+[Service]
+WorkingDirectory=/opt/pocketbase
+ExecStart=/opt/pocketbase/pocketbase serve --http=127.0.0.1:8090
+Restart=always
+User=pocketbase
+
+[Install]
+WantedBy=multi-user.target
+```
+
+## Despliegue Gotenberg En Dokploy
+
+Imagen recomendada:
+
+```text
+gotenberg/gotenberg:8
+```
+
+Checklist:
+
+- Dominio HTTPS propio para Gotenberg.
+- Basic Auth o protección equivalente en proxy.
+- Tamaño máximo de request suficiente para XLSX con imágenes.
+- CORS restringido si el navegador llama directo.
+- Preferible: backend intermedio para no exponer credenciales en Angular.
+
+Compose base:
+
+```yaml
+services:
+  gotenberg:
+    image: gotenberg/gotenberg:8
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+```
+
+## Seguridad Pendiente
+
+Antes de producción:
+
+- Rotar credenciales expuestas históricamente en el repositorio.
+- Eliminar credenciales demo del login.
+- Sacar Basic Auth de Gotenberg del frontend.
+- Mover URLs y constantes a configuración por ambiente.
+- Versionar reglas y schema de PocketBase.
+- Restringir CORS a dominios conocidos.
+- Mantener HTTPS en frontend, PocketBase y Gotenberg.
+- Revisar assets demo en `public/assets` y eliminar lo no utilizado.
+- Agregar control de acceso server-side; no confiar solo en rutas Angular.
+
+## Troubleshooting
+
+### Angular CLI exige Node nuevo
 
 ```text
 The Angular CLI requires a minimum Node.js version of v20.19 or v22.12.
@@ -643,97 +416,60 @@ nvm use 22
 npm ci
 ```
 
-### Error CORS con PocketBase
-
-Síntoma: login/listados fallan desde dominio productivo.
+### Login falla
 
 Revisar:
 
-- Dominio permitido en PocketBase.
-- HTTPS válido.
-- Reglas de colección.
-- Token/cookie de sesión.
+- URL de PocketBase.
+- Usuario en colección `users`.
+- Reglas de autenticación.
+- Cookie `pb_auth`.
+- HTTPS y CORS.
 
-### Error CORS con Gotenberg
+### Realtime no actualiza
 
-Soluciones:
+Revisar:
 
-- Configurar CORS en proxy/Nginx/Traefik.
-- Usar `proxy.conf.json` en desarrollo.
-- En producción, preferir un backend intermedio para no exponer credenciales.
+- Sesión válida.
+- Reglas de lectura sobre `inspections`.
+- `/api/realtime`.
+- Proxy o firewall.
 
 ### PDF no se genera
 
 Revisar:
 
-- Gotenberg activo.
 - Endpoint `/forms/libreoffice/convert`.
-- Basic Auth si aplica.
-- Plantilla `public/assets/templates/inspection.xlsx`.
-- Hoja `FIRST_PAGE` y `SECOND_PAGE`.
-- CORS de imágenes.
+- Autenticación de Gotenberg.
+- CORS.
+- Plantilla `inspection.xlsx`.
+- Hojas `FIRST_PAGE` y `SECOND_PAGE`.
+- Tamaño de payload.
 
 ### Imágenes no aparecen en PDF
 
 Revisar:
 
 - Colección `images`.
-- Campo file `image`.
+- Campo archivo `image`.
 - IDs guardados en `inspections.images`.
-- Permisos de lectura de archivos en PocketBase.
-- CORS para `fetch(imageUrl, { mode: 'cors' })`.
+- Permisos de lectura de `/api/files`.
+- CORS para descarga de imágenes.
 
-### Realtime no actualiza
+### Rutas fallan al refrescar
 
-Revisar:
+Configurar fallback SPA en hosting:
 
-- Usuario autenticado.
-- Reglas realtime/lectura de `inspections`.
-- WebSocket permitido por proxy/firewall.
-- URL PocketBase correcta.
-
-### Service Worker no actualiza cambios
-
-Soluciones:
-
-```bash
-npm run build
-sudo rsync -a --delete dist/verificar-app/browser/ /var/www/verificar/html/
+```text
+try_files $uri $uri/ /index.html
 ```
 
-Luego limpiar cache del navegador o esperar actualización de `ngsw`.
+## Documentación Extendida
 
-## Consideraciones de Seguridad
+Abrir:
 
-Puntos detectados que deben corregirse antes de producción:
+```text
+docs/index.html
+```
 
-- Hay credenciales hardcodeadas en código frontend para Gotenberg. Todo secreto dentro de Angular es visible en el navegador.
-- Hay credenciales de prueba prellenadas en `login.ts`. Deben eliminarse.
-- Existe un archivo con nombre tipo comando curl bajo `src/app/pages/nueva/` que contiene credenciales. Debe eliminarse y rotar credenciales.
-- `AuthService` exporta cookie con `httpOnly: false`; esto es normal desde frontend pero aumenta exposición ante XSS.
-- Las reglas PocketBase no están versionadas en el repo. Exportarlas y documentarlas.
-- Mover URLs y credenciales a configuración segura.
-- Usar HTTPS en frontend, PocketBase y Gotenberg.
-- Restringir CORS a dominios conocidos.
-- Proteger Gotenberg detrás de backend/proxy privado, no exponer Basic Auth al cliente.
-- Limitar payload de listados con `fields`; esto ya está implementado para evitar firmas base64 en listados.
-
-## Mantenimiento
-
-Tareas recomendadas:
-
-- Crear archivos de ambiente (`environment.ts`, `environment.prod.ts`) y retirar hardcoding.
-- Versionar schema y reglas de PocketBase.
-- Automatizar despliegue con CI/CD.
-- Agregar tests unitarios para servicios críticos.
-- Revisar y eliminar assets demo no usados.
-- Rotar credenciales expuestas.
-- Auditar dependencias y assets de terceros.
-
-## Créditos
-
-Proyecto: VerificarIT.
-
-Mantenimiento: **Pendiente de configuración**.
-
-Responsables técnicos, contactos operativos, dominio definitivo, repositorio remoto y procedimiento de soporte deben completarse antes de producción.
+El archivo es autocontenido y puede abrirse directamente en el navegador. Incluye sidebar, tema claro/oscuro y detalle técnico operativo.

@@ -6,34 +6,34 @@
   <title>VerificarIT | Documentación técnica</title>
   <style>
     :root {
-      --bg: #0f172a;
-      --surface: #111827;
-      --surface-2: #1f2937;
+      --bg: #0b1020;
+      --panel: #111827;
+      --panel-2: #172033;
       --text: #e5e7eb;
       --muted: #9ca3af;
-      --border: #334155;
+      --line: #334155;
       --accent: #22c55e;
       --accent-2: #38bdf8;
-      --warning: #f59e0b;
+      --warn: #f59e0b;
       --danger: #ef4444;
-      --code-bg: #020617;
-      --shadow: 0 18px 50px rgba(0, 0, 0, .35);
-      --sidebar-width: 304px;
+      --code: #020617;
+      --shadow: 0 18px 48px rgba(0, 0, 0, .28);
+      --sidebar: 304px;
     }
 
     [data-theme="light"] {
       --bg: #f8fafc;
-      --surface: #ffffff;
-      --surface-2: #eef2f7;
+      --panel: #ffffff;
+      --panel-2: #eef2f7;
       --text: #0f172a;
       --muted: #475569;
-      --border: #dbe3ee;
+      --line: #d7e0eb;
       --accent: #16a34a;
       --accent-2: #0284c7;
-      --warning: #b45309;
+      --warn: #b45309;
       --danger: #dc2626;
-      --code-bg: #0f172a;
-      --shadow: 0 18px 50px rgba(15, 23, 42, .12);
+      --code: #0f172a;
+      --shadow: 0 18px 48px rgba(15, 23, 42, .1);
     }
 
     * { box-sizing: border-box; }
@@ -43,108 +43,84 @@
       background: var(--bg);
       color: var(--text);
       font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      line-height: 1.65;
+      line-height: 1.62;
     }
-
     a { color: inherit; text-decoration: none; }
     code, pre { font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace; }
-    pre {
-      overflow: auto;
-      background: var(--code-bg);
-      color: #e5e7eb;
-      border-radius: 8px;
-      padding: 16px;
-      border: 1px solid rgba(148, 163, 184, .25);
-      font-size: .88rem;
-      line-height: 1.55;
-    }
     code {
-      background: color-mix(in srgb, var(--surface-2) 82%, transparent);
-      border: 1px solid var(--border);
+      background: color-mix(in srgb, var(--panel-2) 80%, transparent);
+      border: 1px solid var(--line);
       border-radius: 5px;
       padding: 1px 5px;
       font-size: .9em;
     }
-    pre code {
-      background: transparent;
-      border: 0;
-      padding: 0;
-      font-size: inherit;
+    pre {
+      margin: 14px 0 22px;
+      overflow: auto;
+      background: var(--code);
+      color: #e5e7eb;
+      border: 1px solid rgba(148, 163, 184, .25);
+      border-radius: 8px;
+      padding: 16px;
+      font-size: .88rem;
+      line-height: 1.55;
     }
+    pre code { background: transparent; border: 0; padding: 0; }
 
     .layout {
       display: grid;
-      grid-template-columns: var(--sidebar-width) minmax(0, 1fr);
+      grid-template-columns: var(--sidebar) minmax(0, 1fr);
       min-height: 100vh;
     }
-
     .sidebar {
       position: sticky;
       top: 0;
       height: 100vh;
       overflow: auto;
-      border-right: 1px solid var(--border);
-      background: color-mix(in srgb, var(--surface) 94%, var(--bg));
+      border-right: 1px solid var(--line);
+      background: color-mix(in srgb, var(--panel) 94%, var(--bg));
       padding: 22px 18px;
     }
-
     .brand {
       display: flex;
       align-items: center;
       gap: 12px;
-      margin-bottom: 22px;
+      margin-bottom: 18px;
     }
-
-    .brand-mark {
+    .mark {
+      width: 40px;
+      height: 40px;
       display: grid;
       place-items: center;
-      width: 38px;
-      height: 38px;
       border-radius: 8px;
       background: linear-gradient(135deg, var(--accent), var(--accent-2));
-      color: #001018;
+      color: #041016;
       font-weight: 900;
-      letter-spacing: 0;
     }
-
-    .brand h1 {
-      margin: 0;
-      font-size: 1rem;
-      line-height: 1.1;
-    }
-
-    .brand span {
-      display: block;
-      color: var(--muted);
-      font-size: .78rem;
-      margin-top: 3px;
-    }
-
-    .theme-toggle {
+    .brand strong { display: block; line-height: 1.1; }
+    .brand span { color: var(--muted); font-size: .78rem; }
+    .theme {
       width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel-2);
+      color: var(--text);
+      cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 10px;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      background: var(--surface-2);
-      color: var(--text);
       padding: 10px 12px;
-      cursor: pointer;
-      margin-bottom: 20px;
+      margin: 16px 0 22px;
       font: inherit;
-      font-size: .88rem;
+      font-size: .9rem;
     }
-
-    .nav-group { margin: 18px 0; }
     .nav-title {
+      margin: 20px 0 8px;
       color: var(--muted);
-      text-transform: uppercase;
       font-size: .68rem;
       font-weight: 800;
       letter-spacing: .08em;
-      margin: 0 0 8px;
+      text-transform: uppercase;
     }
     .nav-link {
       display: block;
@@ -153,164 +129,132 @@
       padding: 8px 10px;
       font-size: .9rem;
     }
-    .nav-link:hover,
-    .nav-link.active {
+    .nav-link:hover, .nav-link.active {
       color: var(--text);
-      background: color-mix(in srgb, var(--accent-2) 16%, transparent);
+      background: color-mix(in srgb, var(--accent-2) 17%, transparent);
     }
-
-    .content {
-      min-width: 0;
-      padding: 48px clamp(20px, 5vw, 70px) 80px;
+    .topbar {
+      display: none;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: var(--panel);
+      border-bottom: 1px solid var(--line);
+      padding: 10px 14px;
+      align-items: center;
+      justify-content: space-between;
     }
-
+    .topbar button {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel-2);
+      color: var(--text);
+      padding: 8px 12px;
+      font: inherit;
+    }
+    main { min-width: 0; padding: 48px clamp(18px, 5vw, 72px) 86px; }
+    section { max-width: 1120px; margin: 0 0 48px; scroll-margin-top: 26px; }
     .hero {
       max-width: 1120px;
-      padding-bottom: 26px;
-      border-bottom: 1px solid var(--border);
-      margin-bottom: 34px;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 28px;
+      margin-bottom: 36px;
     }
-
     .eyebrow {
+      margin: 0 0 12px;
       color: var(--accent);
-      text-transform: uppercase;
-      letter-spacing: .08em;
       font-size: .78rem;
       font-weight: 800;
-      margin: 0 0 12px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
     }
-
-    .hero h2 {
+    h1 {
       margin: 0;
-      font-size: clamp(2rem, 5vw, 4.6rem);
+      font-size: clamp(2.2rem, 5vw, 4.8rem);
       line-height: 1;
       letter-spacing: 0;
-      max-width: 880px;
+      max-width: 900px;
     }
-
-    .hero p {
-      color: var(--muted);
-      font-size: 1.08rem;
-      max-width: 850px;
-      margin: 18px 0 0;
+    h2 {
+      margin: 0 0 14px;
+      font-size: clamp(1.55rem, 2.4vw, 2.25rem);
+      line-height: 1.14;
+      letter-spacing: 0;
     }
-
-    .meta-grid,
-    .cards {
+    h3 { margin: 24px 0 10px; font-size: 1.08rem; }
+    p { margin: 0 0 14px; }
+    .lead { color: var(--muted); max-width: 900px; font-size: 1.05rem; }
+    .grid {
       display: grid;
       grid-template-columns: repeat(4, minmax(0, 1fr));
       gap: 14px;
-      max-width: 1120px;
       margin: 24px 0 0;
     }
-
-    .meta,
     .card {
-      border: 1px solid var(--border);
+      border: 1px solid var(--line);
       border-radius: 8px;
-      background: var(--surface);
+      background: var(--panel);
       box-shadow: var(--shadow);
       padding: 16px;
     }
-
-    .meta strong,
-    .card strong {
+    .card small {
       display: block;
-      font-size: .78rem;
       color: var(--muted);
+      font-weight: 800;
       text-transform: uppercase;
       letter-spacing: .06em;
       margin-bottom: 6px;
     }
-
-    .meta span,
-    .card span {
-      font-size: 1rem;
-      font-weight: 700;
-    }
-
-    section {
-      max-width: 1120px;
-      margin: 0 0 48px;
-      scroll-margin-top: 24px;
-    }
-
-    h3 {
-      font-size: clamp(1.55rem, 2.4vw, 2.25rem);
-      line-height: 1.15;
-      letter-spacing: 0;
-      margin: 0 0 14px;
-    }
-
-    h4 {
-      font-size: 1.08rem;
-      margin: 24px 0 10px;
-    }
-
-    p { margin: 0 0 14px; }
-    .lead { color: var(--muted); max-width: 900px; }
+    .card strong { display: block; font-size: 1rem; }
     .callout {
-      border: 1px solid var(--border);
+      border: 1px solid var(--line);
       border-left: 4px solid var(--accent-2);
       border-radius: 8px;
-      background: var(--surface);
+      background: var(--panel);
       padding: 14px 16px;
       margin: 18px 0;
     }
-    .callout.warning { border-left-color: var(--warning); }
+    .callout.warn { border-left-color: var(--warn); }
     .callout.danger { border-left-color: var(--danger); }
-
-    .table-wrap {
+    .table {
       overflow-x: auto;
-      border: 1px solid var(--border);
+      border: 1px solid var(--line);
       border-radius: 8px;
-      background: var(--surface);
+      background: var(--panel);
       margin: 16px 0 24px;
     }
-
     table {
       width: 100%;
-      border-collapse: collapse;
       min-width: 760px;
+      border-collapse: collapse;
       font-size: .92rem;
     }
-
     th, td {
+      border-bottom: 1px solid var(--line);
       padding: 11px 13px;
-      border-bottom: 1px solid var(--border);
-      vertical-align: top;
       text-align: left;
+      vertical-align: top;
     }
-
     th {
       color: var(--muted);
-      background: color-mix(in srgb, var(--surface-2) 68%, transparent);
+      background: color-mix(in srgb, var(--panel-2) 70%, transparent);
       font-size: .76rem;
-      text-transform: uppercase;
       letter-spacing: .06em;
+      text-transform: uppercase;
       white-space: nowrap;
     }
-
     tr:last-child td { border-bottom: 0; }
     ul, ol { padding-left: 22px; margin: 10px 0 18px; }
     li { margin: 6px 0; }
-
-    .flow {
-      counter-reset: step;
-      display: grid;
-      gap: 12px;
-      margin: 18px 0;
-    }
-
+    .flow { display: grid; gap: 12px; counter-reset: step; }
     .step {
       position: relative;
-      border: 1px solid var(--border);
+      border: 1px solid var(--line);
       border-radius: 8px;
-      background: var(--surface);
+      background: var(--panel);
       padding: 14px 16px 14px 58px;
     }
-
-    .step::before {
+    .step:before {
       counter-increment: step;
       content: counter(step);
       position: absolute;
@@ -320,385 +264,249 @@
       height: 28px;
       display: grid;
       place-items: center;
-      border-radius: 50%;
+      border-radius: 999px;
       background: var(--accent);
-      color: #001018;
+      color: #041016;
       font-weight: 900;
-      line-height: 1;
     }
-
-    .step strong { display: block; margin-bottom: 3px; }
-
-    .mobile-topbar {
-      display: none;
-      position: sticky;
-      top: 0;
-      z-index: 5;
-      border-bottom: 1px solid var(--border);
-      background: var(--surface);
-      padding: 10px 14px;
-    }
-
-    .mobile-topbar button {
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      background: var(--surface-2);
-      color: var(--text);
-      padding: 9px 12px;
-      font: inherit;
-      cursor: pointer;
-    }
-
-    .kbd {
-      display: inline-block;
-      min-width: 1.6em;
-      text-align: center;
-      border: 1px solid var(--border);
-      border-bottom-width: 2px;
-      border-radius: 5px;
-      padding: 0 5px;
-      background: var(--surface-2);
-      font-size: .82em;
-    }
-
+    .step strong { display: block; }
     @media (max-width: 980px) {
       .layout { display: block; }
-      .mobile-topbar { display: flex; align-items: center; justify-content: space-between; }
+      .topbar { display: flex; }
       .sidebar {
         position: fixed;
-        z-index: 20;
+        z-index: 30;
         inset: 0 auto 0 0;
-        width: min(86vw, var(--sidebar-width));
+        width: min(86vw, var(--sidebar));
         transform: translateX(-105%);
         transition: transform .2s ease;
       }
       .sidebar.open { transform: translateX(0); }
-      .content { padding-top: 28px; }
-      .meta-grid,
-      .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      main { padding-top: 28px; }
+      .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     }
-
     @media (max-width: 640px) {
-      .content { padding-left: 16px; padding-right: 16px; }
-      .meta-grid,
-      .cards { grid-template-columns: 1fr; }
-      .hero h2 { font-size: 2.3rem; }
+      main { padding-left: 16px; padding-right: 16px; }
+      .grid { grid-template-columns: 1fr; }
+      h1 { font-size: 2.35rem; }
       table { min-width: 680px; }
     }
   </style>
 </head>
 <body>
-  <div class="mobile-topbar">
-    <button type="button" id="menuButton" aria-label="Abrir navegación">☰ Navegación</button>
+  <div class="topbar">
+    <button id="menuButton" type="button">Navegación</button>
     <span>VerificarIT Docs</span>
   </div>
   <div class="layout">
     <aside class="sidebar" id="sidebar">
       <div class="brand">
-        <div class="brand-mark">V</div>
+        <div class="mark">V</div>
         <div>
-          <h1>VerificarIT</h1>
+          <strong>VerificarIT</strong>
           <span>Documentación técnica</span>
         </div>
       </div>
-      <button class="theme-toggle" type="button" id="themeToggle">
+      <button class="theme" type="button" id="themeToggle">
         <span>Tema</span>
         <strong id="themeLabel">Oscuro</strong>
       </button>
-      <nav aria-label="Contenido">
-        <div class="nav-group">
-          <p class="nav-title">Proyecto</p>
-          <a class="nav-link" href="#resumen">Resumen</a>
-          <a class="nav-link" href="#arquitectura">Arquitectura</a>
-          <a class="nav-link" href="#estructura">Estructura</a>
-          <a class="nav-link" href="#rutas">Rutas Angular</a>
-        </div>
-        <div class="nav-group">
-          <p class="nav-title">Datos y APIs</p>
-          <a class="nav-link" href="#modelo">Modelo de datos</a>
-          <a class="nav-link" href="#endpoints">Endpoints consumidos</a>
-          <a class="nav-link" href="#realtime">Realtime y caché</a>
-        </div>
-        <div class="nav-group">
-          <p class="nav-title">Operación</p>
-          <a class="nav-link" href="#pdf">Generación PDF</a>
-          <a class="nav-link" href="#entorno">Variables de entorno</a>
-          <a class="nav-link" href="#despliegue">Despliegue</a>
-          <a class="nav-link" href="#troubleshooting">Troubleshooting</a>
-          <a class="nav-link" href="#seguridad">Seguridad</a>
-        </div>
+      <nav>
+        <div class="nav-title">Proyecto</div>
+        <a class="nav-link" href="#resumen">Resumen</a>
+        <a class="nav-link" href="#arquitectura">Arquitectura</a>
+        <a class="nav-link" href="#estructura">Estructura</a>
+        <a class="nav-link" href="#rutas">Rutas</a>
+        <div class="nav-title">Datos</div>
+        <a class="nav-link" href="#modelo">Modelo</a>
+        <a class="nav-link" href="#endpoints">Endpoints</a>
+        <a class="nav-link" href="#realtime">Realtime</a>
+        <div class="nav-title">Operación</div>
+        <a class="nav-link" href="#pdf">PDF</a>
+        <a class="nav-link" href="#configuracion">Configuración</a>
+        <a class="nav-link" href="#despliegue">Despliegue</a>
+        <a class="nav-link" href="#seguridad">Seguridad</a>
+        <a class="nav-link" href="#troubleshooting">Troubleshooting</a>
       </nav>
     </aside>
 
-    <main class="content">
+    <main>
       <header class="hero" id="resumen">
         <p class="eyebrow">Angular + PocketBase + Gotenberg</p>
-        <h2>Documentación técnica de VerificarIT</h2>
-        <p>
-          VerificarIT es una PWA Angular para gestionar inspecciones vehiculares: autenticación,
-          creación y edición de inspecciones, carga de fotografías, firmas digitales, consulta por
-          placa, realtime con PocketBase y generación de reportes PDF mediante Gotenberg.
+        <h1>Documentación técnica de VerificarIT</h1>
+        <p class="lead">
+          VerificarIT es una PWA para crear, consultar, editar y exportar inspecciones vehiculares. El proyecto está depurado para entrega y conserva únicamente páginas, servicios y flujos activos.
         </p>
-        <div class="meta-grid">
-          <div class="meta"><strong>Frontend</strong><span>Angular 21 PWA</span></div>
-          <div class="meta"><strong>Backend</strong><span>PocketBase en EC2</span></div>
-          <div class="meta"><strong>PDF</strong><span>Gotenberg en Dokploy</span></div>
-          <div class="meta"><strong>Datos</strong><span>SDK PocketBase JS</span></div>
+        <div class="grid">
+          <div class="card"><small>Frontend</small><strong>Angular 21 standalone</strong></div>
+          <div class="card"><small>Backend</small><strong>PocketBase HTTPS</strong></div>
+          <div class="card"><small>Reportes</small><strong>ExcelJS + Gotenberg</strong></div>
+          <div class="card"><small>Estado</small><strong>Código depurado</strong></div>
         </div>
       </header>
 
       <section id="arquitectura">
-        <h3>Arquitectura</h3>
+        <h2>Arquitectura</h2>
         <p class="lead">
-          La aplicación es un cliente Angular standalone. No existe un backend Node intermedio en el
-          repositorio: Angular consume PocketBase directamente desde el navegador y envía archivos a
-          Gotenberg para la conversión a PDF.
+          La aplicación es un frontend estático. Angular consume PocketBase y Gotenberg directamente desde el navegador; no existe backend Node dentro del repositorio.
         </p>
-        <pre><code>Usuario navegador/PWA
-  ├─ Angular 21 standalone + Service Worker
-  │   ├─ AuthService: sesión PocketBase en cookie pb_auth
-  │   ├─ InspectionService: CRUD inspections, images, secuencias
-  │   ├─ RealtimeInspectionsService: subscribe('*') + localStorage
-  │   └─ ExcelExportService + GotenbergService: XLSX -> PDF
-  ├─ PocketBase EC2: https://db.buckapi.site:8095
-  │   ├─ users
-  │   ├─ inspections
-  │   ├─ images
-  │   └─ secuencias
-  └─ Gotenberg Dokploy: https://gotenberg.buckapi.online
-      ├─ /forms/libreoffice/convert
-      └─ /forms/chromium/convert/html</code></pre>
-        <div class="cards">
-          <div class="card"><strong>UI</strong><span>Componentes standalone, formularios reactivos, SweetAlert2, Flatpickr, Signature Pad.</span></div>
-          <div class="card"><strong>Persistencia</strong><span>PocketBase SDK con HTTPS directo desde el cliente.</span></div>
-          <div class="card"><strong>Archivos</strong><span>Imágenes en colección `images`, URLs vía `/api/files`.</span></div>
-          <div class="card"><strong>Reportes</strong><span>Plantilla XLSX en assets, ExcelJS y conversión LibreOffice.</span></div>
+        <pre><code>Navegador/PWA
+  |
+  |-- Angular 21 standalone
+  |   |-- pages: login, home, nueva, heredada, inspections, detail
+  |   |-- services: auth, inspection, realtime, excel, gotenberg, pwa
+  |   `-- public/assets/templates/inspection.xlsx
+  |
+  |-- PocketBase
+  |   |-- users
+  |   |-- inspections
+  |   |-- images
+  |   `-- secuencias
+  |
+  `-- Gotenberg
+      |-- /forms/libreoffice/convert
+      `-- /forms/chromium/convert/html</code></pre>
+        <div class="callout warn">
+          Los secretos de Gotenberg y credenciales demo están actualmente en frontend. Para producción deben rotarse y moverse fuera del bundle Angular.
         </div>
       </section>
 
       <section id="estructura">
-        <h3>Estructura de carpetas</h3>
-        <div class="table-wrap">
+        <h2>Estructura</h2>
+        <div class="table">
           <table>
-            <thead><tr><th>Ruta</th><th>Rol</th><th>Notas</th></tr></thead>
+            <thead><tr><th>Ruta</th><th>Rol</th><th>Observación</th></tr></thead>
             <tbody>
-              <tr><td><code>src/app/pages/login</code></td><td>Autenticación</td><td>Login contra colección `users`.</td></tr>
-              <tr><td><code>src/app/pages/home</code></td><td>Listado principal</td><td>Consulta inspecciones, filtros y apertura WhatsApp.</td></tr>
-              <tr><td><code>src/app/pages/nueva</code></td><td>Alta de inspección</td><td>Formulario multipaso, fotos, certificado con prefijo `U`.</td></tr>
-              <tr><td><code>src/app/pages/detail</code></td><td>Detalle y edición</td><td>Gestión de imágenes, estado, validación y exportación PDF.</td></tr>
-              <tr><td><code>src/app/services</code></td><td>Capa de integración</td><td>PocketBase, realtime, Gotenberg, Excel y utilidades PWA.</td></tr>
-              <tr><td><code>src/app/models</code></td><td>Contratos TypeScript</td><td>`Inspection`, `CreateInspectionDTO`, `UpdateInspectionDTO`.</td></tr>
-              <tr><td><code>public/assets/templates</code></td><td>Plantillas</td><td>XLSX y PDF base usados por los reportes.</td></tr>
-              <tr><td><code>public/assets</code></td><td>Estáticos</td><td>Imágenes, iconos PWA, JS/CSS del tema visual.</td></tr>
-              <tr><td><code>dist/</code></td><td>Build generado</td><td>No debe editarse manualmente ni usarse como fuente documental.</td></tr>
+              <tr><td><code>src/app/components</code></td><td>Layout</td><td>Header, sidebar y footer.</td></tr>
+              <tr><td><code>src/app/pages/login</code></td><td>Acceso</td><td>Autenticación con PocketBase.</td></tr>
+              <tr><td><code>src/app/pages/home</code></td><td>Dashboard</td><td>Métricas, búsqueda, historial y alertas.</td></tr>
+              <tr><td><code>src/app/pages/nueva</code></td><td>Alta</td><td>Formulario multipaso con firmas e imágenes.</td></tr>
+              <tr><td><code>src/app/pages/heredada</code></td><td>Reuso</td><td>Crea inspección a partir de una base.</td></tr>
+              <tr><td><code>src/app/pages/detail</code></td><td>Detalle</td><td>Edición, evidencias y PDF.</td></tr>
+              <tr><td><code>src/app/pages/inspections</code></td><td>Listado</td><td>Búsqueda y eliminación.</td></tr>
+              <tr><td><code>src/app/services</code></td><td>Integración</td><td>PocketBase, realtime, Excel, Gotenberg y PWA.</td></tr>
+              <tr><td><code>public/assets/templates</code></td><td>Plantillas</td><td>`inspection.xlsx` y `resultado.pdf`.</td></tr>
+              <tr><td><code>dist/</code></td><td>Build</td><td>Generado por Angular, no es fuente.</td></tr>
             </tbody>
           </table>
-        </div>
-        <div class="callout warning">
-          <code>dist/</code> es un build generado y no debe considerarse fuente principal.
-          La documentación se basa en los archivos activos de <code>src/app</code>.
         </div>
       </section>
 
       <section id="rutas">
-        <h3>Rutas Angular</h3>
-        <p class="lead">
-          Las rutas están en <code>src/app/app.routes.ts</code> y usan carga diferida de componentes.
-        </p>
-        <div class="table-wrap">
+        <h2>Rutas Angular</h2>
+        <div class="table">
           <table>
-            <thead><tr><th>Ruta</th><th>Componente</th><th>Función</th></tr></thead>
+            <thead><tr><th>Ruta</th><th>Componente</th><th>Propósito</th></tr></thead>
             <tbody>
-              <tr><td><code>/</code></td><td>Redirect</td><td>Redirige a <code>/login</code>.</td></tr>
-              <tr><td><code>/login</code></td><td><code>Login</code></td><td>Autenticación de usuarios.</td></tr>
-              <tr><td><code>/home</code></td><td><code>Home</code></td><td>Dashboard/listado de inspecciones.</td></tr>
-              <tr><td><code>/nueva</code></td><td><code>Nueva</code></td><td>Crear inspección general.</td></tr>
-              <tr><td><code>/heredada</code></td><td><code>Heredada</code></td><td>Formulario heredado o alterno.</td></tr>
-              <tr><td><code>/inspections</code></td><td><code>Inspections</code></td><td>Vista de inspecciones.</td></tr>
-              <tr><td><code>/detail/:id</code></td><td><code>Detail</code></td><td>Detalle, edición, imágenes y PDF.</td></tr>
+              <tr><td><code>/</code></td><td>Redirect</td><td>Envía a `/login`.</td></tr>
+              <tr><td><code>/login</code></td><td><code>Login</code></td><td>Inicio de sesión.</td></tr>
+              <tr><td><code>/home</code></td><td><code>Home</code></td><td>Panel operativo.</td></tr>
+              <tr><td><code>/nueva</code></td><td><code>Nueva</code></td><td>Crear inspección.</td></tr>
+              <tr><td><code>/heredada</code></td><td><code>Heredada</code></td><td>Crear inspección heredada.</td></tr>
+              <tr><td><code>/inspections</code></td><td><code>Inspections</code></td><td>Listado general.</td></tr>
+              <tr><td><code>/detail/:id</code></td><td><code>Detail</code></td><td>Detalle y exportación.</td></tr>
             </tbody>
           </table>
         </div>
       </section>
 
       <section id="modelo">
-        <h3>Modelo de datos</h3>
+        <h2>Modelo De Datos</h2>
         <p class="lead">
-          No hay migraciones ni export de schema PocketBase versionados en este repositorio. El modelo
-          siguiente se deriva de <code>inspection.model.ts</code>, formularios reactivos y servicios.
-          Debe validarse contra el panel de PocketBase antes de cambios productivos.
+          El schema de PocketBase no está versionado en el repositorio. El modelo documentado se infiere desde servicios, formularios y `inspection.model.ts`.
         </p>
-
-        <h4>Colecciones inferidas</h4>
-        <div class="table-wrap">
+        <div class="table">
           <table>
-            <thead><tr><th>Colección</th><th>Uso</th><th>Campos clave</th></tr></thead>
+            <thead><tr><th>Colección</th><th>Uso</th><th>Campos relevantes</th></tr></thead>
             <tbody>
-              <tr><td><code>users</code></td><td>Autenticación y perfiles.</td><td>`username`, `email`, `name`, `role`, `phone`, `avatar`, `type`, `status`, `verified`, `emailVisibility`.</td></tr>
-              <tr><td><code>inspections</code></td><td>Inspecciones generales.</td><td>Datos de conductor, vehículo, documentos, fechas, estado, firmas, imágenes y checklist.</td></tr>
-              <tr><td><code>images</code></td><td>Archivos fotográficos.</td><td>`image` como campo archivo; el código asume collectionId `5bjt6wpqfj0rnsl` para construir URLs.</td></tr>
-              <tr><td><code>secuencias</code></td><td>Consecutivos de certificados.</td><td>`prefijo`, `ultimo_numero`; se consulta por prefijo y se incrementa de forma optimista.</td></tr>
+              <tr><td><code>users</code></td><td>Autenticación</td><td>`email`, `username`, `name`, `role`, `phone`, `avatar`, `verified`.</td></tr>
+              <tr><td><code>inspections</code></td><td>Inspecciones</td><td>Conductor, propietario, vehículo, documentos, checklist, firmas e imágenes.</td></tr>
+              <tr><td><code>images</code></td><td>Archivos</td><td>Campo file `image`; los IDs se referencian desde inspecciones.</td></tr>
+              <tr><td><code>secuencias</code></td><td>Consecutivos</td><td>`prefijo`, `ultimo_numero`.</td></tr>
             </tbody>
           </table>
         </div>
-
-        <h4>Campos principales de inspección</h4>
-        <div class="table-wrap">
-          <table>
-            <thead><tr><th>Grupo</th><th>Campos</th><th>Validación/observación</th></tr></thead>
-            <tbody>
-              <tr><td>Identificadores</td><td>`id`, `id_inspeccion`, `numero_certificado`, `collectionId`, `collectionName`, `created`, `updated`.</td><td>`numero_certificado` se genera con `secuencias`.</td></tr>
-              <tr><td>Conductor/propietario</td><td>`nombres_conductor`, `identificacion`, `telefono`, `whatsapp`, `fecha_vencimiento_licencia`, `propietario`, `documento_propietario`, `tipo_propietario`.</td><td>Identificación numérica, teléfono de 10 dígitos, nombres mínimos 3 caracteres.</td></tr>
-              <tr><td>Vehículo</td><td>`placa`, `marca`, `modelo`, `color`, `clase_vehiculo`, `codigo_vehiculo`, `capacidad_pasajeros`, `kilometraje`.</td><td>Placa patrón `^[A-Z0-9]{6,8}$`; kilometraje no negativo.</td></tr>
-              <tr><td>Documentos</td><td>`soat`, `licencia_transito`, `revision_tecnomecanica`/`tecnicomecanica`, `tarjeta_operacion`.</td><td>SOAT, licencia de tránsito y revisión son requeridos en alta general.</td></tr>
-              <tr><td>Fechas</td><td>`fecha_inspeccion`, `fecha_vigencia`, `fecha_vencimiento_soat`, `fecha_vencimiento_revision_tecnomecanica`, `fecha_vencimiento_tarjeta_operacion`.</td><td>Flatpickr usa formato `Y-m-d`.</td></tr>
-              <tr><td>Estado</td><td>`estado`, `status`, `observaciones`, `created_by`.</td><td>`borrador` bloquea exportación PDF; el tipo acepta `aprbada`, `rechazada`, `borrador` y otros strings.</td></tr>
-              <tr><td>Sistema eléctrico</td><td>`luces_navegacion`, `luces_frenado`, `luces_direccionales`, `luz_reversa`, `luces_estacionamiento`, `luces_posicion`, `luz_antineblina`, `luz_placa`, `tablero_instrumentos`, `bocina`, `bateria`, `aire_acondicionado`.</td><td>Valores UI: `ok`, `negativo`, `na`.</td></tr>
-              <tr><td>Motor/mecánico</td><td>`aceite_motor`, `aceite_transmision`, `liquido_refrigerante`, `filtro_aire`, `hidraulico_direccion`, `tension_correas`, `liquido_frenos`, `pedal_frenos`, `bomba_frenos`.</td><td>Checklist cualitativo.</td></tr>
-              <tr><td>Carrocería/cabina</td><td>`parachoque_delantero`, `parachoque_trasero`, `vidrios_seguridad`, `vidrios_laterales`, `limpia_brisas`, `guardabarros`, `estribos_laterales`, `placa_adhesivo`, `chapa_compuerta`, `tapiceria`, `manijas_seguros`, `vidrios_electricos`, `antideslizantes_pedales`, `freno_mano`, `tablero_instrumentos_interno`.</td><td>Checklist cualitativo.</td></tr>
-              <tr><td>Seguridad</td><td>`sistema_frenos`, `abs`, `sistema_direccion`, `espejos_laterales`, `espejo_interno`, `freno_mano_seguridad`, `cinturones_seguridad`, `airbags`, `cadena_sujecion`, `columna_direccion`, `apoyacabezas`, `barra_antivuelco`, `rejilla_vidrio_trasero`.</td><td>Activa y pasiva.</td></tr>
-              <tr><td>Kit carretera</td><td>`conos_triangular`, `botiquin`, `extintor`, `cunas`, `llanta_repuesto`, `caja_herramientas`, `linterna`, `gato`.</td><td>Checklist cualitativo.</td></tr>
-              <tr><td>Parte baja</td><td>`buies_barra`, `buies_tiera`, `cuna_motor`, `guardapolvo_axiales`, `amortiguadores`, `hojas_muelles`, `silenciadores`, `tanques_compresor`, `caja_deposito`, `barras_bujes`, `protectores`, `terminales`.</td><td>Checklist cualitativo.</td></tr>
-              <tr><td>Llantas</td><td>`llanta_di`, `llanta_dd`, `llanta_tie`, `llanta_tde`, `llanta_tii`, `llanta_tdi`, `presion_llanta_d_li`, `presion_llanta_d_ld`, `presion_llanta_t_lie`, `presion_llanta_t_lde`, `presion_llanta_t_lii`, `presion_llanta_t_ldi`.</td><td>Profundidad de labrado y presión.</td></tr>
-              <tr><td>Firmas e imágenes</td><td>`firma_conductor`, `firma_inspector`, `images`.</td><td>Firmas se omiten en listados para reducir tamaño; imágenes se expanden o se resuelven por ID.</td></tr>
-            </tbody>
-          </table>
-        </div>
-
-        <div class="callout warning">
-          Brecha de versionamiento: falta exportar el schema de PocketBase, reglas de lectura/escritura,
-          índices y migraciones. Para producción, agregue `pb_migrations/` o un export JSON verificable.
-        </div>
+        <h3>Grupos De Campos De Inspección</h3>
+        <ul>
+          <li>Identificación: `id`, `numero_certificado`, `created`, `updated`.</li>
+          <li>Conductor y propietario: nombres, identificación, teléfono, WhatsApp, licencia, propietario y documento.</li>
+          <li>Vehículo: placa, marca, modelo, color, clase, código, capacidad y kilometraje.</li>
+          <li>Documentos: SOAT, licencia de tránsito, revisión tecnomecánica y tarjeta de operación.</li>
+          <li>Checklist: eléctrico, motor, carrocería, cabina, seguridad, kit, parte baja, frenos, dirección y llantas.</li>
+          <li>Evidencias: firmas base64 e imágenes asociadas.</li>
+        </ul>
       </section>
 
       <section id="endpoints">
-        <h3>Endpoints consumidos</h3>
-        <p class="lead">
-          El código usa el SDK de PocketBase, por lo que varias rutas REST quedan encapsuladas.
-          La tabla muestra la intención funcional y la ruta HTTP equivalente.
-        </p>
-        <div class="table-wrap">
+        <h2>Endpoints Consumidos</h2>
+        <div class="table">
           <table>
-            <thead><tr><th>Servicio</th><th>Operación</th><th>Endpoint/base</th><th>Uso</th></tr></thead>
+            <thead><tr><th>Servicio</th><th>Operación</th><th>Ruta</th></tr></thead>
             <tbody>
-              <tr><td>PocketBase</td><td>Auth password</td><td><code>POST /api/collections/users/auth-with-password</code></td><td>Login con email/usuario y contraseña.</td></tr>
-              <tr><td>PocketBase</td><td>Crear usuario</td><td><code>POST /api/collections/users/records</code></td><td>Registro desde `AuthService.register`.</td></tr>
-              <tr><td>PocketBase</td><td>Actualizar usuario</td><td><code>PATCH /api/collections/users/records/{id}</code></td><td>Perfil y cambio de contraseña.</td></tr>
-              <tr><td>PocketBase</td><td>Password reset</td><td><code>POST /api/collections/users/request-password-reset</code> y confirmación</td><td>Recuperación de contraseña.</td></tr>
-              <tr><td>PocketBase</td><td>Crear inspección</td><td><code>POST /api/collections/inspections/records</code></td><td>Alta general.</td></tr>
-              <tr><td>PocketBase</td><td>Listar inspecciones</td><td><code>GET /api/collections/inspections/records</code></td><td>Paginación, sort, filtros y selección de campos.</td></tr>
-              <tr><td>PocketBase</td><td>Detalle inspección</td><td><code>GET /api/collections/inspections/records/{id}</code></td><td>Detalle y formulario de edición.</td></tr>
-              <tr><td>PocketBase</td><td>Actualizar inspección</td><td><code>PATCH /api/collections/inspections/records/{id}</code></td><td>Guardar edición, estado e IDs de imágenes.</td></tr>
-              <tr><td>PocketBase</td><td>Eliminar inspección</td><td><code>DELETE /api/collections/inspections/records/{id}</code></td><td>Eliminación individual o múltiple.</td></tr>
-              <tr><td>PocketBase</td><td>Subir imagen</td><td><code>POST /api/collections/images/records</code></td><td>Campo archivo `image`.</td></tr>
-              <tr><td>PocketBase</td><td>Leer imagen</td><td><code>GET /api/collections/images/records/{id}</code></td><td>Resolver filename antes de construir URL.</td></tr>
-              <tr><td>PocketBase</td><td>Archivo</td><td><code>GET /api/files/{collectionId}/{recordId}/{filename}?thumb=0x0</code></td><td>Mostrar o descargar imágenes para XLSX.</td></tr>
-              <tr><td>PocketBase</td><td>Secuencia</td><td><code>GET/PATCH /api/collections/secuencias/records</code></td><td>Buscar por `prefijo` e incrementar `ultimo_numero`.</td></tr>
-              <tr><td>PocketBase</td><td>Realtime</td><td><code>/api/realtime</code></td><td>Suscripción `collection('inspections').subscribe('*')`.</td></tr>
-              <tr><td>Gotenberg</td><td>XLSX a PDF</td><td><code>POST /forms/libreoffice/convert</code></td><td>Convierte `inspeccion.xlsx` a PDF.</td></tr>
-              <tr><td>Gotenberg</td><td>HTML a PDF</td><td><code>POST /forms/chromium/convert/html</code></td><td>Soporta opciones Chromium aunque el flujo principal usa LibreOffice.</td></tr>
-              <tr><td>WhatsApp</td><td>Abrir chat</td><td><code>https://wa.me/57{telefono}</code></td><td>Enlaces desde listados.</td></tr>
-              <tr><td>Google Fonts</td><td>Fuente</td><td><code>fonts.googleapis.com</code>, <code>fonts.gstatic.com</code></td><td>Carga de Instrument Sans en `src/index.html`.</td></tr>
+              <tr><td>PocketBase</td><td>Login</td><td><code>POST /api/collections/users/auth-with-password</code></td></tr>
+              <tr><td>PocketBase</td><td>Usuarios</td><td><code>/api/collections/users/records</code></td></tr>
+              <tr><td>PocketBase</td><td>Inspecciones</td><td><code>/api/collections/inspections/records</code></td></tr>
+              <tr><td>PocketBase</td><td>Imágenes</td><td><code>/api/collections/images/records</code></td></tr>
+              <tr><td>PocketBase</td><td>Archivos</td><td><code>/api/files/{collectionId}/{recordId}/{filename}</code></td></tr>
+              <tr><td>PocketBase</td><td>Realtime</td><td><code>/api/realtime</code></td></tr>
+              <tr><td>PocketBase</td><td>Secuencias</td><td><code>/api/collections/secuencias/records</code></td></tr>
+              <tr><td>Gotenberg</td><td>XLSX a PDF</td><td><code>/forms/libreoffice/convert</code></td></tr>
+              <tr><td>Gotenberg</td><td>HTML a PDF</td><td><code>/forms/chromium/convert/html</code></td></tr>
+              <tr><td>WhatsApp</td><td>Abrir chat</td><td><code>https://wa.me/{telefono}</code></td></tr>
             </tbody>
           </table>
         </div>
       </section>
 
       <section id="realtime">
-        <h3>Realtime y caché</h3>
+        <h2>Realtime Y Caché</h2>
         <p>
-          <code>RealtimeInspectionsService</code> mantiene una lista observable de inspecciones,
-          eventos realtime y errores. La colección suscrita es <code>inspections</code> con acción
-          comodín <code>*</code>. La caché local usa <code>localStorage</code> con clave
-          <code>inspections_cache</code>, TTL de 5 minutos y sanitización de firmas para no inflar
-          los listados.
+          `RealtimeInspectionsService` usa `subscribe('*')` sobre `inspections`, mantiene observables para lista, eventos y errores, y cachea inspecciones en `localStorage`.
         </p>
         <ul>
-          <li>Al crear, actualizar o eliminar se invalida caché para evitar lecturas antiguas.</li>
-          <li>El servicio pausa suscripciones si la sesión se queda sin token.</li>
-          <li>Los listados limitan campos con `INSPECTION_LIST_FIELDS` y excluyen firmas.</li>
+          <li>Clave de caché: `inspections_cache`.</li>
+          <li>TTL: 5 minutos.</li>
+          <li>Los listados excluyen firmas base64.</li>
+          <li>La carga completa puede ejecutarse en segundo plano.</li>
+          <li>La caché se invalida al crear, actualizar o eliminar.</li>
         </ul>
       </section>
 
       <section id="pdf">
-        <h3>Flujo de generación de PDF</h3>
-        <p class="lead">
-          El flujo principal está en <code>Detail.imprimirInspeccion()</code>,
-          <code>ExcelExportService.exportarDatosConductorComoPdfConImagenes()</code> y
-          <code>GotenbergService.convertXlsxToPdf()</code>.
-        </p>
+        <h2>Generación PDF</h2>
         <div class="flow">
-          <div class="step"><strong>Validación de estado</strong>Si `estado` es `borrador`, se muestra una alerta con campos pendientes y se detiene la exportación.</div>
-          <div class="step"><strong>Recolección de datos</strong>El componente `Detail` arma un objeto plano desde `inspectionForm`, incluyendo conductor, vehículo, documentos, checklist, llantas, firmas y observaciones.</div>
-          <div class="step"><strong>Imágenes existentes</strong>Se usa `this.inspectionImages`, que contiene URLs de archivos PocketBase ya resueltas.</div>
-          <div class="step"><strong>Carga de plantilla</strong>`ExcelExportService` carga la plantilla XLSX desde `public/assets/templates` y busca la hoja `FIRST_PAGE`.</div>
-          <div class="step"><strong>Procesamiento XLSX</strong>ExcelJS escribe valores, radios, imágenes y firmas preservando estilos de la plantilla.</div>
-          <div class="step"><strong>Blob en memoria</strong>El workbook se serializa como Blob `application/vnd.openxmlformats-officedocument.spreadsheetml.sheet`.</div>
-          <div class="step"><strong>Conversión Gotenberg</strong>`GotenbergService` envía multipart/form-data con campo `files=inspeccion.xlsx`, `Accept: application/pdf` y Basic Auth.</div>
-          <div class="step"><strong>Descarga</strong>El PDF Blob recibido se descarga con nombre `Inspeccion_{placa}_{fecha}_CON_SECOND_PAGE.pdf`.</div>
-        </div>
-        <pre><code>FormData Gotenberg:
-files = inspeccion.xlsx
-
-Headers:
-Authorization: Basic ...
-Accept: application/pdf
-
-Endpoint:
-https://gotenberg.buckapi.online/forms/libreoffice/convert</code></pre>
-        <div class="callout">
-          Existe también `convertHtmlToPdf()` contra Chromium con opciones como `printBackground`,
-          `waitForSelector`, `landscape`, tamaños de papel y márgenes. No es el camino principal
-          de `imprimirInspeccion()`.
+          <div class="step"><strong>Validar estado</strong>El detalle bloquea exportación si la inspección está en `borrador`.</div>
+          <div class="step"><strong>Recolectar datos</strong>Se arma un objeto con conductor, vehículo, documentos, checklist, firmas e imágenes.</div>
+          <div class="step"><strong>Cargar plantilla</strong>ExcelJS abre `public/assets/templates/inspection.xlsx`.</div>
+          <div class="step"><strong>Procesar hojas</strong>Se completan `FIRST_PAGE` y `SECOND_PAGE`.</div>
+          <div class="step"><strong>Insertar evidencias</strong>Se agregan firmas e imágenes descargadas desde PocketBase.</div>
+          <div class="step"><strong>Convertir</strong>Gotenberg recibe el XLSX en `/forms/libreoffice/convert`.</div>
+          <div class="step"><strong>Descargar</strong>El navegador descarga el PDF generado.</div>
         </div>
       </section>
 
-      <section id="entorno">
-        <h3>Variables de entorno</h3>
+      <section id="configuracion">
+        <h2>Configuración</h2>
         <p class="lead">
-          El proyecto actual no define `src/environments/environment.ts`; las URLs y credenciales de
-          Gotenberg están hardcodeadas en servicios/proxy. Para despliegue profesional deben moverse
-          a configuración por ambiente y secretos de plataforma.
+          La configuración actual está hardcodeada. Para producción debe moverse a archivos de ambiente, secretos de plataforma o un backend intermedio.
         </p>
-        <div class="table-wrap">
+        <div class="table">
           <table>
-            <thead><tr><th>Variable recomendada</th><th>Valor actual detectado</th><th>Uso</th></tr></thead>
+            <thead><tr><th>Elemento</th><th>Ubicación actual</th><th>Recomendación</th></tr></thead>
             <tbody>
-              <tr><td><code>POCKETBASE_URL</code></td><td><code>https://db.buckapi.site:8095</code></td><td>Base URL del SDK PocketBase.</td></tr>
-              <tr><td><code>GOTENBERG_URL</code></td><td><code>https://gotenberg.buckapi.online</code></td><td>Base URL de Gotenberg.</td></tr>
-              <tr><td><code>GOTENBERG_LIBREOFFICE_PATH</code></td><td><code>/forms/libreoffice/convert</code></td><td>XLSX a PDF.</td></tr>
-              <tr><td><code>GOTENBERG_CHROMIUM_PATH</code></td><td><code>/forms/chromium/convert/html</code></td><td>HTML a PDF.</td></tr>
-              <tr><td><code>GOTENBERG_BASIC_AUTH</code></td><td>Hardcodeado en código/proxy</td><td>Debe almacenarse como secreto, no en Git.</td></tr>
-              <tr><td><code>IMAGES_COLLECTION_ID</code></td><td><code>5bjt6wpqfj0rnsl</code></td><td>ID usado al construir URLs de archivos.</td></tr>
+              <tr><td>PocketBase URL</td><td>Servicios de PocketBase</td><td>`environment.pocketbaseUrl`.</td></tr>
+              <tr><td>Gotenberg URL</td><td>`GotenbergService`</td><td>`environment.gotenbergUrl` o backend.</td></tr>
+              <tr><td>Basic Auth Gotenberg</td><td>Frontend y proxy</td><td>Secret manager o proxy privado.</td></tr>
+              <tr><td>Credenciales demo</td><td>`Login`</td><td>Eliminar antes de producción.</td></tr>
+              <tr><td>Collection ID imágenes</td><td>`InspectionService`</td><td>Configurable por ambiente.</td></tr>
             </tbody>
           </table>
-        </div>
-        <pre><code>export const environment = {
-  production: false,
-  pocketbaseUrl: 'https://db.example.com',
-  gotenbergUrl: 'https://gotenberg.example.com',
-  gotenbergLibreOfficePath: '/forms/libreoffice/convert',
-  gotenbergChromiumPath: '/forms/chromium/convert/html',
-  imagesCollectionId: '...',
-};</code></pre>
-        <div class="callout danger">
-          Recomendación inmediata: rotar credenciales expuestas, retirarlas del repositorio y poner
-          Gotenberg detrás de un proxy controlado por dominio/CORS o una función backend que firme la
-          solicitud.
         </div>
       </section>
 
       <section id="despliegue">
-        <h3>Guía de despliegue</h3>
-        <h4>Frontend en AWS Amplify</h4>
-        <ol>
-          <li>Conectar el repositorio y seleccionar la rama productiva.</li>
-          <li>Configurar build: <code>npm ci</code> y <code>npm run build</code>.</li>
-          <li>Publicar artefacto desde <code>dist/verificar-app/browser</code>.</li>
-          <li>Configurar redirección SPA: todas las rutas a <code>/index.html</code> con 200.</li>
-          <li>Permitir el dominio Amplify en reglas/CORS de PocketBase y Gotenberg.</li>
-          <li>Validar Service Worker, manifest, iconos PWA y caché después del primer despliegue.</li>
-        </ol>
+        <h2>Despliegue</h2>
+        <h3>Frontend En Amplify</h3>
         <pre><code>version: 1
 frontend:
   phases:
@@ -715,119 +523,88 @@ frontend:
   cache:
     paths:
       - node_modules/**/*</code></pre>
-
-        <h4>PocketBase en EC2</h4>
-        <ol>
-          <li>Instalar PocketBase compatible con el SDK `pocketbase@0.26.6`.</li>
-          <li>Ejecutarlo como servicio systemd con volumen persistente para <code>pb_data</code>.</li>
-          <li>Exponerlo detrás de HTTPS con Nginx/Caddy o balanceador.</li>
-          <li>Importar/crear colecciones `users`, `inspections`, `images`, `secuencias`.</li>
-          <li>Configurar reglas de acceso y CORS para el dominio Amplify.</li>
-          <li>Programar backups de <code>pb_data</code> y probar restauración.</li>
-        </ol>
-        <pre><code>[Unit]
-Description=PocketBase
-After=network.target
-
-[Service]
-WorkingDirectory=/opt/pocketbase
-ExecStart=/opt/pocketbase/pocketbase serve --http=127.0.0.1:8090
-Restart=always
-User=pocketbase
-
-[Install]
-WantedBy=multi-user.target</code></pre>
-
-        <h4>Gotenberg en Dokploy</h4>
-        <ol>
-          <li>Crear app Docker en Dokploy con imagen <code>gotenberg/gotenberg:8</code>.</li>
-          <li>Asignar dominio HTTPS, por ejemplo <code>gotenberg.example.com</code>.</li>
-          <li>Activar protección por Basic Auth en proxy/Dokploy o delante de Traefik.</li>
-          <li>Permitir payloads suficientes para XLSX con imágenes.</li>
-          <li>Probar <code>/forms/libreoffice/convert</code> con un XLSX mínimo.</li>
-          <li>Configurar CORS si el navegador llama directo al servicio.</li>
-        </ol>
-        <pre><code>services:
-  gotenberg:
-    image: gotenberg/gotenberg:8
-    restart: unless-stopped
-    ports:
-      - "3000:3000"</code></pre>
-      </section>
-
-      <section id="troubleshooting">
-        <h3>Troubleshooting</h3>
-        <div class="table-wrap">
-          <table>
-            <thead><tr><th>Síntoma</th><th>Causa probable</th><th>Acción</th></tr></thead>
-            <tbody>
-              <tr><td>Login falla con 401</td><td>Credenciales inválidas, cookie corrupta o reglas PocketBase.</td><td>Limpiar `pb_auth`, verificar usuario en `users`, revisar HTTPS y hora del cliente.</td></tr>
-              <tr><td>Listados muy lentos</td><td>Campos grandes como firmas o imágenes en consultas.</td><td>Usar `INSPECTION_LIST_FIELDS`, no traer blobs/base64 en listados, agregar índices por placa/estado/created.</td></tr>
-              <tr><td>Realtime no actualiza</td><td>WebSocket/SSE bloqueado, token expirado o CORS.</td><td>Revisar `/api/realtime`, proxy HTTPS, logs de PocketBase y renovación de sesión.</td></tr>
-              <tr><td>PDF no se genera</td><td>Gotenberg inaccesible, Basic Auth incorrecto, endpoint equivocado.</td><td>Probar `POST /forms/libreoffice/convert`, revisar CORS, tamaño de request y credenciales.</td></tr>
-              <tr><td>Imágenes no aparecen en PDF</td><td>URLs PocketBase sin permisos, CORS de archivos o formato no soportado.</td><td>Validar lectura pública/autenticada de `/api/files`, convertir imagen descargada a formato compatible con ExcelJS.</td></tr>
-              <tr><td>Plantilla falla</td><td>No existe hoja `FIRST_PAGE` o asset no publicado.</td><td>Verificar `public/assets/templates`, nombre de hoja y ruta en build Amplify.</td></tr>
-              <tr><td>Certificado duplicado</td><td>Incremento de `secuencias` sin transacción.</td><td>Implementar bloqueo/endpoint backend o regla server-side para incremento atómico.</td></tr>
-              <tr><td>Rutas dan 404 en Amplify</td><td>Falta rewrite SPA.</td><td>Redirigir `/<*>` a `/index.html` con status 200.</td></tr>
-              <tr><td>PWA no actualiza</td><td>Service Worker cacheando build anterior.</td><td>Forzar refresh, revisar `ngsw-config.json`, confirmar hash de build y headers de cache.</td></tr>
-            </tbody>
-          </table>
-        </div>
+        <p>Configurar rewrite SPA: `/<*>` hacia `/index.html` con estado 200.</p>
+        <h3>PocketBase En EC2</h3>
+        <ul>
+          <li>Ejecutar como servicio systemd.</li>
+          <li>Servir detrás de HTTPS.</li>
+          <li>Persistir y respaldar `pb_data`.</li>
+          <li>Versionar schema y reglas.</li>
+          <li>Restringir CORS.</li>
+        </ul>
+        <h3>Gotenberg En Dokploy</h3>
+        <ul>
+          <li>Imagen recomendada: `gotenberg/gotenberg:8`.</li>
+          <li>Dominio HTTPS.</li>
+          <li>Basic Auth o protección equivalente.</li>
+          <li>Límite de request suficiente para XLSX con imágenes.</li>
+          <li>Preferible usar backend intermedio para ocultar credenciales.</li>
+        </ul>
       </section>
 
       <section id="seguridad">
-        <h3>Seguridad y deuda técnica</h3>
+        <h2>Seguridad Pendiente</h2>
+        <div class="callout danger">
+          Todo secreto incluido en Angular queda expuesto en el navegador. Gotenberg no debería autenticarse directamente desde frontend en producción.
+        </div>
         <ul>
-          <li>Las credenciales de Gotenberg están en el frontend; cualquier usuario puede extraerlas del bundle. Deben rotarse y moverse fuera del cliente.</li>
-          <li>El token PocketBase se exporta a cookie con <code>httpOnly: false</code>, una limitación normal desde frontend pero sensible ante XSS.</li>
-          <li>Las reglas de PocketBase no están versionadas; sin ellas no se puede auditar autorización real.</li>
-          <li>Evitar hardcodear collection IDs como `images`; exponerlos desde configuración o resolverlos por metadata.</li>
-          <li>Evitar archivos temporales o credenciales accidentales en el repositorio antes de publicar.</li>
+          <li>Rotar credenciales expuestas históricamente.</li>
+          <li>Eliminar credenciales demo del login.</li>
+          <li>Mover URLs y secretos a configuración segura.</li>
+          <li>Versionar reglas de PocketBase.</li>
+          <li>Aplicar CORS estricto.</li>
+          <li>Agregar control server-side para permisos críticos.</li>
+          <li>Auditar assets demo en `public/assets`.</li>
         </ul>
+      </section>
+
+      <section id="troubleshooting">
+        <h2>Troubleshooting</h2>
+        <div class="table">
+          <table>
+            <thead><tr><th>Síntoma</th><th>Causa probable</th><th>Acción</th></tr></thead>
+            <tbody>
+              <tr><td>Angular CLI no builda</td><td>Node 18</td><td>Usar Node 22 o versión compatible con Angular 21.</td></tr>
+              <tr><td>Login falla</td><td>Credenciales, CORS o reglas</td><td>Validar usuario, URL PocketBase y reglas de `users`.</td></tr>
+              <tr><td>Realtime no actualiza</td><td>Sesión o `/api/realtime`</td><td>Revisar token, proxy, firewall y permisos.</td></tr>
+              <tr><td>PDF no se genera</td><td>Gotenberg, Basic Auth o CORS</td><td>Probar `/forms/libreoffice/convert` con XLSX mínimo.</td></tr>
+              <tr><td>Sin imágenes en PDF</td><td>Permisos o CORS de archivos</td><td>Validar `/api/files` y campo `image`.</td></tr>
+              <tr><td>Rutas 404 al refrescar</td><td>Falta fallback SPA</td><td>Redirigir rutas a `index.html`.</td></tr>
+              <tr><td>PWA no actualiza</td><td>Service worker cacheado</td><td>Limpiar caché o publicar nuevo build con hashes.</td></tr>
+            </tbody>
+          </table>
+        </div>
       </section>
     </main>
   </div>
 
   <script>
     const root = document.documentElement;
-    const themeToggle = document.getElementById('themeToggle');
-    const themeLabel = document.getElementById('themeLabel');
-    const savedTheme = localStorage.getItem('docs-theme');
-    if (savedTheme === 'light' || savedTheme === 'dark') {
-      root.dataset.theme = savedTheme;
-    }
-    function syncThemeLabel() {
-      themeLabel.textContent = root.dataset.theme === 'dark' ? 'Oscuro' : 'Claro';
-    }
-    syncThemeLabel();
-    themeToggle.addEventListener('click', () => {
-      root.dataset.theme = root.dataset.theme === 'dark' ? 'light' : 'dark';
-      localStorage.setItem('docs-theme', root.dataset.theme);
-      syncThemeLabel();
-    });
-
     const sidebar = document.getElementById('sidebar');
+    const label = document.getElementById('themeLabel');
+    const saved = localStorage.getItem('verificar-docs-theme');
+    if (saved === 'dark' || saved === 'light') root.dataset.theme = saved;
+    function syncTheme() {
+      label.textContent = root.dataset.theme === 'dark' ? 'Oscuro' : 'Claro';
+    }
+    syncTheme();
+    document.getElementById('themeToggle').addEventListener('click', () => {
+      root.dataset.theme = root.dataset.theme === 'dark' ? 'light' : 'dark';
+      localStorage.setItem('verificar-docs-theme', root.dataset.theme);
+      syncTheme();
+    });
     document.getElementById('menuButton').addEventListener('click', () => {
       sidebar.classList.toggle('open');
     });
-    sidebar.querySelectorAll('a').forEach(link => {
-      link.addEventListener('click', () => sidebar.classList.remove('open'));
-    });
-
-    const links = [...document.querySelectorAll('.nav-link')];
-    const sections = links
-      .map(link => document.querySelector(link.getAttribute('href')))
-      .filter(Boolean);
+    const links = Array.from(document.querySelectorAll('.nav-link'));
+    links.forEach((link) => link.addEventListener('click', () => sidebar.classList.remove('open')));
     const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
+      entries.forEach((entry) => {
         if (!entry.isIntersecting) return;
-        links.forEach(link => link.classList.toggle(
-          'active',
-          link.getAttribute('href') === '#' + entry.target.id
-        ));
+        links.forEach((link) => link.classList.toggle('active', link.getAttribute('href') === '#' + entry.target.id));
       });
-    }, { rootMargin: '-20% 0px -70% 0px', threshold: 0 });
-    sections.forEach(section => observer.observe(section));
+    }, { rootMargin: '-22% 0px -70% 0px' });
+    links.map((link) => document.querySelector(link.getAttribute('href'))).filter(Boolean).forEach((section) => observer.observe(section));
   </script>
 </body>
 </html>
