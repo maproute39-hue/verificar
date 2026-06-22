@@ -338,6 +338,8 @@
         <a class="nav-link" href="#arquitectura">Arquitectura</a>
         <a class="nav-link" href="#estructura">Estructura</a>
         <a class="nav-link" href="#rutas">Rutas</a>
+        <a class="nav-link" href="#servicios">Servicios</a>
+        <a class="nav-link" href="#desarrollo">Desarrollo</a>
         <div class="nav-title">Datos</div>
         <a class="nav-link" href="#modelo">Modelo</a>
         <a class="nav-link" href="#endpoints">Endpoints</a>
@@ -347,7 +349,7 @@
         <a class="nav-link" href="#configuracion">Configuración</a>
         <a class="nav-link" href="#despliegue">Despliegue</a>
         <a class="nav-link" href="#seguridad">Seguridad</a>
-        <a class="nav-link" href="#troubleshooting">Troubleshooting</a>
+        <a class="nav-link" href="#diagnostico">Diagnóstico</a>
       </nav>
     </aside>
 
@@ -395,7 +397,7 @@
       |-- /forms/libreoffice/convert
       `-- /forms/chromium/convert/html</code></pre>
         <div class="callout warn">
-          Los secretos expuestos históricamente deben rotarse fuera del repositorio. Angular no debe incluir credenciales demo ni Basic Auth de Gotenberg en builds productivos.
+          El frontend no debe contener secretos productivos. Las credenciales de servicios externos deben resolverse desde infraestructura segura o desde un backend/proxy.
         </div>
       </section>
 
@@ -413,7 +415,8 @@
               <tr><td><code>src/app/pages/detail</code></td><td>Detalle</td><td>Edición, evidencias y PDF.</td></tr>
               <tr><td><code>src/app/pages/inspections</code></td><td>Listado</td><td>Búsqueda y eliminación.</td></tr>
               <tr><td><code>src/app/services</code></td><td>Integración</td><td>PocketBase, realtime, Excel, Gotenberg y PWA.</td></tr>
-              <tr><td><code>public/assets/templates</code></td><td>Plantillas</td><td>`inspection.xlsx` y `resultado.pdf`.</td></tr>
+              <tr><td><code>public/config/app-config.js</code></td><td>Configuración</td><td>Endpoints runtime para ambiente desplegado.</td></tr>
+              <tr><td><code>public/assets/templates</code></td><td>Plantillas</td><td><code>inspection.xlsx</code> y <code>resultado.pdf</code>.</td></tr>
               <tr><td><code>dist/</code></td><td>Build</td><td>Generado por Angular, no es fuente.</td></tr>
             </tbody>
           </table>
@@ -426,13 +429,52 @@
           <table>
             <thead><tr><th>Ruta</th><th>Componente</th><th>Propósito</th></tr></thead>
             <tbody>
-              <tr><td><code>/</code></td><td>Redirect</td><td>Envía a `/login`.</td></tr>
+              <tr><td><code>/</code></td><td>Redirect</td><td>Envía a <code>/login</code>.</td></tr>
               <tr><td><code>/login</code></td><td><code>Login</code></td><td>Inicio de sesión.</td></tr>
               <tr><td><code>/home</code></td><td><code>Home</code></td><td>Panel operativo.</td></tr>
               <tr><td><code>/nueva</code></td><td><code>Nueva</code></td><td>Crear inspección.</td></tr>
               <tr><td><code>/heredada</code></td><td><code>Heredada</code></td><td>Crear inspección heredada.</td></tr>
               <tr><td><code>/inspections</code></td><td><code>Inspections</code></td><td>Listado general.</td></tr>
               <tr><td><code>/detail/:id</code></td><td><code>Detail</code></td><td>Detalle y exportación.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="servicios">
+        <h2>Servicios Principales</h2>
+        <div class="table">
+          <table>
+            <thead><tr><th>Servicio</th><th>Responsabilidad</th></tr></thead>
+            <tbody>
+              <tr><td><code>AuthService</code></td><td>Autenticación, sesión local, usuario actual, perfil y recuperación de contraseña.</td></tr>
+              <tr><td><code>InspectionService</code></td><td>CRUD de inspecciones, carga de imágenes, secuencias y URLs de archivos de PocketBase.</td></tr>
+              <tr><td><code>RealtimeInspectionsService</code></td><td>Suscripción realtime, caché local, eventos de cambio y carga progresiva de inspecciones.</td></tr>
+              <tr><td><code>ExcelExportService</code></td><td>Construcción de XLSX desde plantilla, inserción de datos, firmas e imágenes, y generación de PDF.</td></tr>
+              <tr><td><code>GotenbergService</code></td><td>Conversión XLSX/HTML a PDF contra el endpoint configurado y descarga de blobs.</td></tr>
+              <tr><td><code>PwaInstallService</code></td><td>Gestión del evento <code>beforeinstallprompt</code> para instalación PWA.</td></tr>
+              <tr><td><code>SharedService</code></td><td>Estado simple compartido por componentes de layout.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="desarrollo">
+        <h2>Desarrollo Local</h2>
+        <p class="lead">
+          El proyecto requiere Node.js compatible con Angular 21. Usar Node <code>&gt;=20.19</code> o <code>&gt;=22.12</code>.
+        </p>
+        <pre><code>npm ci
+npm start
+npx tsc -p tsconfig.app.json --noEmit
+npm run build</code></pre>
+        <div class="table">
+          <table>
+            <thead><tr><th>Comando</th><th>Uso</th></tr></thead>
+            <tbody>
+              <tr><td><code>npm start</code></td><td>Levanta la app en <code>http://localhost:4200</code>.</td></tr>
+              <tr><td><code>npx tsc -p tsconfig.app.json --noEmit</code></td><td>Valida tipos sin emitir archivos.</td></tr>
+              <tr><td><code>npm run build</code></td><td>Genera el build productivo en <code>dist/verificar-app/browser</code>.</td></tr>
             </tbody>
           </table>
         </div>
@@ -453,13 +495,13 @@
               <tr><td><code>secuencias</code></td><td>Consecutivos</td><td><code>ultimo_numero</code>, <code>tipo_inspeccion</code>, <code>prefijo</code>.</td></tr>
               <tr><td><code>files</code></td><td>Archivos auxiliares</td><td><code>image</code>, <code>type</code>, <code>userId</code>.</td></tr>
               <tr><td><code>firmas</code></td><td>Firmas</td><td><code>image</code>, <code>numero_certificado</code>.</td></tr>
-              <tr><td><code>inspections_busetas</code></td><td>Legado backend</td><td>98 campos históricos; el componente Angular de busetas fue retirado para la entrega.</td></tr>
+              <tr><td><code>inspections_busetas</code></td><td>Compatibilidad de schema</td><td>Colección incluida en el export de PocketBase; no participa en las rutas Angular activas.</td></tr>
             </tbody>
           </table>
         </div>
         <h3>Grupos De Campos De Inspección</h3>
         <ul>
-          <li>Identificación: `id`, `numero_certificado`, `created`, `updated`.</li>
+          <li>Identificación: <code>id</code>, <code>numero_certificado</code>, <code>created</code>, <code>updated</code>.</li>
           <li>Conductor y propietario: nombres, identificación, teléfono, WhatsApp, número y vigencia de licencia, propietario y documento.</li>
           <li>Vehículo: placa, marca, modelo, color, clase, código, capacidad y kilometraje.</li>
           <li>Documentos: SOAT, licencia de tránsito, revisión tecnomecánica y tarjeta de operación.</li>
@@ -505,10 +547,10 @@
       <section id="realtime">
         <h2>Realtime Y Caché</h2>
         <p>
-          `RealtimeInspectionsService` usa `subscribe('*')` sobre `inspections`, mantiene observables para lista, eventos y errores, y cachea inspecciones en `localStorage`.
+          <code>RealtimeInspectionsService</code> usa <code>subscribe('*')</code> sobre <code>inspections</code>, mantiene observables para lista, eventos y errores, y cachea inspecciones en <code>localStorage</code>.
         </p>
         <ul>
-          <li>Clave de caché: `inspections_cache`.</li>
+          <li>Clave de caché: <code>inspections_cache</code>.</li>
           <li>TTL: 5 minutos.</li>
           <li>Los listados excluyen firmas base64.</li>
           <li>La carga completa puede ejecutarse en segundo plano.</li>
@@ -519,12 +561,12 @@
       <section id="pdf">
         <h2>Generación PDF</h2>
         <div class="flow">
-          <div class="step"><strong>Validar estado</strong>El detalle bloquea exportación si la inspección está en `borrador`.</div>
+          <div class="step"><strong>Validar estado</strong>El detalle bloquea exportación si la inspección está en <code>borrador</code>.</div>
           <div class="step"><strong>Recolectar datos</strong>Se arma un objeto con conductor, vehículo, documentos, checklist, firmas e imágenes.</div>
-          <div class="step"><strong>Cargar plantilla</strong>ExcelJS abre `public/assets/templates/inspection.xlsx`.</div>
-          <div class="step"><strong>Procesar hojas</strong>Se completan `FIRST_PAGE` y `SECOND_PAGE`.</div>
+          <div class="step"><strong>Cargar plantilla</strong>ExcelJS abre <code>public/assets/templates/inspection.xlsx</code>.</div>
+          <div class="step"><strong>Procesar hojas</strong>Se completan <code>FIRST_PAGE</code> y <code>SECOND_PAGE</code>.</div>
           <div class="step"><strong>Insertar evidencias</strong>Se agregan firmas e imágenes descargadas desde PocketBase.</div>
-          <div class="step"><strong>Convertir</strong>Gotenberg recibe el XLSX en `/forms/libreoffice/convert`.</div>
+          <div class="step"><strong>Convertir</strong>Gotenberg recibe el XLSX en <code>/forms/libreoffice/convert</code>.</div>
           <div class="step"><strong>Descargar</strong>El navegador descarga el PDF generado.</div>
         </div>
       </section>
@@ -532,7 +574,7 @@
       <section id="configuracion">
         <h2>Configuración</h2>
         <p class="lead">
-          La app combina configuración runtime en <code>public/config/app-config.js</code> con valores de fallback en <code>src/environments/*</code>. Para producción, los secretos deben moverse a infraestructura segura o a un backend intermedio.
+          La app combina configuración runtime en <code>public/config/app-config.js</code> con valores de fallback en <code>src/environments/*</code>. La configuración runtime permite cambiar endpoints por ambiente sin recompilar Angular.
         </p>
         <div class="table">
           <table>
@@ -540,26 +582,24 @@
             <tbody>
               <tr><td>PocketBase URL</td><td><code>public/config/app-config.js</code></td><td>Configurable por ambiente.</td></tr>
               <tr><td>Gotenberg base URL</td><td><code>public/config/app-config.js</code> / <code>src/environments/*</code></td><td>Configurable por ambiente.</td></tr>
-              <tr><td>Basic Auth Gotenberg</td><td><code>src/environments/*</code> temporalmente</td><td>Secret manager, proxy privado o gateway antes de producción.</td></tr>
-              <tr><td>Credenciales demo</td><td>No aplica en el formulario de login</td><td>Rotar cualquier cuenta demo existente en PocketBase.</td></tr>
               <tr><td>Collection ID imágenes</td><td><code>public/config/app-config.js</code></td><td>Configurable por ambiente.</td></tr>
+              <tr><td>Autenticación de PDF</td><td>Proxy/backend recomendado</td><td>No incluir credenciales de Gotenberg en el bundle Angular.</td></tr>
             </tbody>
           </table>
         </div>
-        <div class="callout warn">
-          <strong>Valores sensibles que deben rotarse o retirarse antes de producción:</strong>
-          <ul>
-            <li>Login demo: <code>david@appverificar.site</code> / <code>appverificar0126</code>.</li>
-            <li>Gotenberg Basic Auth: <code>tremaine.bogisich-reichert</code> / <code>zdbdb0zoq2nqy73t</code>.</li>
-            <li>Gotenberg URL: <code>https://gotenberg.buckapi.online</code>.</li>
-            <li>Collection ID de imágenes: <code>5bjt6wpqfj0rnsl</code>.</li>
-          </ul>
-        </div>
+        <pre><code>window.__APP_CONFIG__ = {
+  pocketbaseUrl: 'https://db.example.com',
+  gotenbergBaseUrl: 'https://pdf.example.com',
+  imagesCollectionId: 'collection_id'
+};</code></pre>
       </section>
 
       <section id="despliegue">
         <h2>Despliegue</h2>
-        <h3>Frontend En Amplify</h3>
+        <h3>Frontend Estático</h3>
+        <p>
+          Publicar el contenido generado por Angular en <code>dist/verificar-app/browser</code>. El hosting debe servir assets estáticos y redirigir rutas SPA a <code>index.html</code>.
+        </p>
         <pre><code>version: 1
 frontend:
   phases:
@@ -576,56 +616,54 @@ frontend:
   cache:
     paths:
       - node_modules/**/*</code></pre>
-        <p>Configurar rewrite SPA: `/<*>` hacia `/index.html` con estado 200.</p>
-        <h3>PocketBase En EC2</h3>
+        <p>Rewrite SPA recomendado: <code>/&lt;*&gt; -&gt; /index.html -&gt; 200</code>.</p>
+        <h3>PocketBase</h3>
         <ul>
           <li>Usar PocketBase server <code>v0.19.0</code> para mantener compatibilidad con <code>docs/pb_schema.json</code>.</li>
-          <li>Ejecutar como servicio systemd.</li>
           <li>Servir detrás de HTTPS.</li>
-          <li>Persistir y respaldar `pb_data`.</li>
+          <li>Persistir y respaldar <code>pb_data</code>.</li>
           <li>Importar o validar <code>docs/pb_schema.json</code> antes de liberar.</li>
           <li>Versionar schema y reglas después de cada cambio operativo.</li>
-          <li>Restringir CORS.</li>
+          <li>Restringir CORS al dominio de la aplicación.</li>
         </ul>
-        <h3>Gotenberg En Dokploy</h3>
+        <h3>Gotenberg</h3>
         <ul>
-          <li>Imagen recomendada: `gotenberg/gotenberg:8`.</li>
+          <li>Imagen recomendada: <code>gotenberg/gotenberg:8</code>.</li>
           <li>Dominio HTTPS.</li>
-          <li>Basic Auth o protección equivalente.</li>
+          <li>Basic Auth, red privada o protección equivalente.</li>
           <li>Límite de request suficiente para XLSX con imágenes.</li>
-          <li>Preferible usar backend intermedio para ocultar credenciales.</li>
+          <li>Preferible exponerlo mediante backend/proxy para ocultar credenciales al navegador.</li>
         </ul>
       </section>
 
       <section id="seguridad">
-        <h2>Seguridad Pendiente</h2>
+        <h2>Seguridad</h2>
         <div class="callout danger">
-          Todo secreto incluido en Angular queda expuesto en el navegador. Gotenberg no debería autenticarse directamente desde frontend en producción.
+          Todo secreto incluido en Angular queda expuesto en el navegador. No usar el frontend para custodiar credenciales de servicios externos.
         </div>
         <ul>
-          <li>Rotar credenciales expuestas históricamente en PocketBase, Gotenberg, Dokploy y proxies.</li>
-          <li>Rotar específicamente el login demo <code>david@appverificar.site</code>, la contraseña <code>appverificar0126</code> y el Basic Auth de Gotenberg <code>tremaine.bogisich-reichert</code> / <code>zdbdb0zoq2nqy73t</code>.</li>
-          <li>Invalidar cuentas demo, contraseñas compartidas y tokens antiguos.</li>
-          <li>Mantener URLs en configuración runtime y secretos en infraestructura segura.</li>
+          <li>Mantener credenciales y tokens fuera del bundle Angular.</li>
+          <li>Usar HTTPS en frontend, PocketBase y conversión PDF.</li>
+          <li>Aplicar reglas de lectura/escritura por colección en PocketBase.</li>
           <li>Versionar reglas de PocketBase.</li>
           <li>Aplicar CORS estricto.</li>
           <li>Agregar control server-side para permisos críticos.</li>
-          <li>Auditar assets demo en `public/assets`.</li>
+          <li>Auditar assets en <code>public/assets</code> antes de publicar.</li>
         </ul>
       </section>
 
-      <section id="troubleshooting">
-        <h2>Troubleshooting</h2>
+      <section id="diagnostico">
+        <h2>Diagnóstico</h2>
         <div class="table">
           <table>
             <thead><tr><th>Síntoma</th><th>Causa probable</th><th>Acción</th></tr></thead>
             <tbody>
               <tr><td>Angular CLI no builda</td><td>Node 18</td><td>Usar Node 22 o versión compatible con Angular 21.</td></tr>
-              <tr><td>Login falla</td><td>Credenciales, CORS o reglas</td><td>Validar usuario, URL PocketBase y reglas de `users`.</td></tr>
-              <tr><td>Realtime no actualiza</td><td>Sesión o `/api/realtime`</td><td>Revisar token, proxy, firewall y permisos.</td></tr>
-              <tr><td>PDF no se genera</td><td>Gotenberg, Basic Auth o CORS</td><td>Probar `/forms/libreoffice/convert` con XLSX mínimo.</td></tr>
-              <tr><td>Sin imágenes en PDF</td><td>Permisos o CORS de archivos</td><td>Validar `/api/files` y campo `image`.</td></tr>
-              <tr><td>Rutas 404 al refrescar</td><td>Falta fallback SPA</td><td>Redirigir rutas a `index.html`.</td></tr>
+              <tr><td>Login falla</td><td>Credenciales, CORS o reglas</td><td>Validar usuario, URL PocketBase y reglas de <code>users</code>.</td></tr>
+              <tr><td>Realtime no actualiza</td><td>Sesión o <code>/api/realtime</code></td><td>Revisar token, proxy, firewall y permisos.</td></tr>
+              <tr><td>PDF no se genera</td><td>Gotenberg, autenticación o CORS</td><td>Probar <code>/forms/libreoffice/convert</code> con XLSX mínimo.</td></tr>
+              <tr><td>Sin imágenes en PDF</td><td>Permisos o CORS de archivos</td><td>Validar <code>/api/files</code> y campo <code>image</code>.</td></tr>
+              <tr><td>Rutas 404 al refrescar</td><td>Falta fallback SPA</td><td>Redirigir rutas a <code>index.html</code>.</td></tr>
               <tr><td>PWA no actualiza</td><td>Service worker cacheado</td><td>Limpiar caché o publicar nuevo build con hashes.</td></tr>
             </tbody>
           </table>
