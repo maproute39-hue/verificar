@@ -12,21 +12,21 @@
             </div>
             <div class="text-center mb-5">
               <h5 class="mb-1" style="font-size: 25px;">Inicio de Sesión</h5>
-           
+
             </div>
             <form (ngSubmit)="onSubmit()" #loginForm="ngForm">
               <div class="mb-4">
                 <label class="form-label" for="loginEmail">Correo Electrónico</label>
-                <input type="email" class="form-control" id="loginEmail" 
+                <input type="email" class="form-control" id="loginEmail"
                        [(ngModel)]="loginData.email" name="email" required>
               </div>
               <div class="mb-4">
                 <label class="form-label" for="loginPassword">Contraseña</label>
                 <div class="password-wrapper">
-                  <input type="password" class="form-control password-input" id="loginPassword" 
+                  <input type="password" class="form-control password-input" id="loginPassword"
                          [(ngModel)]="loginData.password" name="password" required>
-                  <button type="button" id="togglePassword" class="toggle-password" 
-                          (click)="togglePassword()" aria-pressed="false" 
+                  <button type="button" id="togglePassword" class="toggle-password"
+                          (click)="togglePassword()" aria-pressed="false"
                           aria-label="Mostrar contraseña" title="Mostrar contraseña">
                     <i class="close fi fi-rr-eye-crossed" aria-hidden="true"></i>
                     <i class="open fi fi-rr-eye" aria-hidden="true"></i>
@@ -34,7 +34,7 @@
                 </div>
               </div>
               <div class="mb-3">
-                <button type="submit" class="btn btn-primary text-white w-100" 
+                <button type="submit" class="btn btn-primary text-white w-100"
                         [disabled]="!loginForm.form.valid">
                   Iniciar Sesión
                 </button>

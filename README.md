@@ -8,7 +8,7 @@ El backend principal detectado en el código es PocketBase. La generación de PD
 
 ## Descripción General
 
-La aplicación cubre el flujo operativo de inspecciones vehiculares para camionetas, busetas y vehículos de transporte:
+La aplicación cubre el flujo operativo de inspecciones vehiculares para camionetas y vehículos de transporte:
 
 - Autenticación de usuarios con PocketBase.
 - Creación de inspecciones nuevas.
@@ -52,7 +52,6 @@ Componentes principales:
 - `Heredada`: crea una nueva inspección usando una inspección base.
 - `Detail`: visualización, edición, imágenes, firmas y exportación a PDF.
 - `Inspections`: listado general con búsqueda y eliminación.
-- `Busetas`: flujo alterno para colección `inspections_busetas`.
 
 Servicios principales:
 
@@ -149,14 +148,12 @@ Valores detectados:
 | PocketBase URL | `src/app/services/auth.service.ts` | `https://db.buckapi.site:8095` |
 | PocketBase URL | `src/app/services/inspection.service.ts` | `https://db.buckapi.site:8095` |
 | PocketBase URL | `src/app/services/inspections-realtime.ts` | `https://db.buckapi.site:8095` |
-| PocketBase URL | `src/app/services/inspection_busetas.service.ts` | `https://db.buckapi.site:8095` |
 | Gotenberg LibreOffice | `src/app/services/gotenberg.service.ts` | `https://gotenberg.buckapi.online/forms/libreoffice/convert` |
 | Gotenberg Chromium | `src/app/services/gotenberg.service.ts` | `https://gotenberg.buckapi.online/forms/chromium/convert/html` |
 
 **Pendiente de configuración:** migrar estas constantes a configuración por ambiente. Ejemplo recomendado:
 
 ```ts
-// src/environments/environment.ts
 export const environment = {
   production: false,
   pocketbaseUrl: 'https://db.example.com',
@@ -189,7 +186,6 @@ Inferidas desde el código:
 |---|---|
 | `users` | Autenticación, perfiles y roles. |
 | `inspections` | Colección principal de inspecciones vehiculares. |
-| `inspections_busetas` | Flujo alterno para busetas. |
 | `images` | Archivos/fotos asociadas a inspecciones. |
 | `secuencias` | Secuencias para números de certificado por prefijo. |
 
@@ -552,7 +548,6 @@ Después de servir por HTTPS:
 │       │   ├── heredada/
 │       │   ├── detail/
 │       │   ├── inspections/
-│       │   └── busetas/
 │       ├── services/
 │       └── utils/
 └── package.json
@@ -731,7 +726,7 @@ Tareas recomendadas:
 - Versionar schema y reglas de PocketBase.
 - Automatizar despliegue con CI/CD.
 - Agregar tests unitarios para servicios críticos.
-- Revisar y eliminar archivos `.bak`, backups y assets demo no usados.
+- Revisar y eliminar assets demo no usados.
 - Rotar credenciales expuestas.
 - Auditar dependencias y assets de terceros.
 

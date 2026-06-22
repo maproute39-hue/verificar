@@ -36,14 +36,14 @@ font-size: 13px !important;
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  
+
   img {
     width: 100%;
     height: 150px;
     object-fit: cover;
     display: block;
   }
-  
+
   .btn-remove {
     position: absolute;
     top: 5px;
@@ -60,11 +60,11 @@ font-size: 13px !important;
     display: flex;
     align-items: center;
     justify-content: center;
-    
+
     &:hover:not(:disabled) {
       background: rgba(220, 53, 69, 1);
     }
-    
+
     &:disabled {
       opacity: 0.5;
       cursor: not-allowed;
@@ -87,24 +87,24 @@ font-size: 13px !important;
 }
 .form-control {
   transition: all 0.3s ease;
-  
+
   &.field-filled {
-    background-color: transparent !important;  // Verde claro
-    border-color: transparent !important;       // Verde
+    background-color: transparent !important;
+    border-color: transparent !important;
     color: #155724;
-    
+
     &:focus {
       background-color: #c3e6cb !important;
       border-color: transparent !important;
       box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
     }
   }
-  
+
   &.field-empty {
-    background-color: #e7f3ff !important;  // Azul claro
-    border-color: transparent !important;       // Azul
+    background-color: #e7f3ff !important;
+    border-color: transparent !important;
     color: #004085;
-    
+
     &:focus {
       background-color: #d4e9ff !important;
       border-color: transparent !important;
@@ -113,20 +113,20 @@ font-size: 13px !important;
   }
 }
 
-// Para los datepickers de flatpickr
+
 .flatpickr-input {
   &.field-filled {
     background-color: transparent !important;
     border-color: transparent !important;
   }
-  
+
   &.field-empty {
     background-color: #e7f3ff !important;
     border-color: transparent !important;
   }
 }
 
-// Animación suave al completar
+
 @keyframes pulse-green {
   0% { box-shadow: 0 0 0 0 rgba(40, 167, 69, 0.4); }
   70% { box-shadow: 0 0 0 6px rgba(40, 167, 69, 0); }
@@ -139,7 +139,7 @@ font-size: 13px !important;
 .firma-section {
   border: 2px dashed #dee2e6 !important;
   transition: border-color 0.2s;
-  
+
   &:hover {
     border-color: #0d6efd !important;
   }
@@ -150,7 +150,7 @@ signature-pad {
   width: 50%;
   max-width: 100%;
   margin: 0 auto;
-  
+
   ::ng-deep canvas {
     width: 100% !important;
     height: 200px !important;
@@ -158,16 +158,16 @@ signature-pad {
     border-radius: 6px;
     background: #fff;
     cursor: crosshair;
-    
+
     @media (max-width: 576px) {
       height: 180px !important;
     }
   }
 }
 
-// Ajuste para móviles: que el canvas sea táctil
+
 signature-pad canvas {
-  touch-action: none; // Evita scroll mientras se firma
+  touch-action: none;
 }
 
 .firma-section {
@@ -176,7 +176,7 @@ signature-pad canvas {
   padding: 20px;
   border-radius: 8px;
   background: #f8f9fa;
-  
+
   &:hover {
     border-color: #0d6efd !important;
   }
@@ -184,34 +184,34 @@ signature-pad canvas {
 
 signature-pad {
   display: block;
-  width: 100% !important;  // ✅ Cambiado de 50% a 100%
+  width: 100% !important;
   max-width: 100%;
   margin: 0 auto;
-  
+
   ::ng-deep canvas {
     width: 100% !important;
-    height: 250px !important;  // ✅ Altura consistente
+    height: 250px !important;
     border: 1px solid #ced4da;
     border-radius: 6px;
     background: #fff;
     cursor: crosshair;
-    touch-action: none;  // ✅ Previene scroll en móviles
+    touch-action: none;
     image-rendering: -webkit-optimize-contrast;
     image-rendering: crisp-edges;
-    
+
     @media (max-width: 768px) {
       height: 200px !important;
     }
   }
 }
 
-// Contenedor de la firma
+
 .firma-container {
   position: relative;
   width: 100%;
   height: 250px;
   margin: 20px 0;
-  
+
   @media (max-width: 768px) {
     height: 200px;
   }

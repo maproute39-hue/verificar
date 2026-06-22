@@ -3,11 +3,7 @@
     <div class="app-page-head">
       <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
-          <!-- <li class="breadcrumb-item">
-            <a routerLink="/inspecciones">
-              <i class="fi fi-rr-home"></i> Inspecciones
-            </a>
-          </li> -->
+
           <li class="text-dark" aria-current="page">Nueva Inspeccion
             <span style="color:red; font-size: 20px !important; font-weight:bold !important;">
               {{nextCertificateNumber}}
@@ -28,7 +24,7 @@
     </div>
 
     <form [formGroup]="inspectionForm" class="row">
-      <!-- PROGRESS BAR -->
+
       <div class="col-12 mb-4">
         <div class="card">
           <div class="card-body">
@@ -39,63 +35,14 @@
                 {{getProgressPercentage() | number:'1.0-0'}}%
               </div>
             </div>
-            <!-- <div class="mt-3 text-center">
-              <h6 class="fw-bold border-bottom titulo">{{getStepName(currentStep)}}</h6>
-            </div> -->
+
           </div>
         </div>
       </div>
 
-      <!-- STEP INDICATORS -->
-      <!-- <div class="col-12 mb-4">
-        <ul class="nav nav-pills nav-justified mb-3" role="tablist">
-          <li class="nav-item" role="presentation">
-            <button 
-              class="nav-link" 
-              [class.active]="currentStep === 1" 
-              [class.disabled]="currentStep < 1"
-              type="button"
-              (click)="currentStep = 1">
-              <i class="fi fi-rr-calendar-check me-1"></i>
-              <small>Datos Generales</small>
-            </button>
-          </li>
-          <li class="nav-item" role="presentation">
-            <button 
-              class="nav-link" 
-              [class.active]="currentStep === 2" 
-              [class.disabled]="currentStep < 2"
-              type="button"
-              (click)="currentStep >= 2 ? currentStep = 2 : null">
-              <i class="fi fi-rr-user me-2"></i>
-              <small>Datos del Conductor</small>
-            </button>
-          </li>
-          <li class="nav-item" role="presentation">
-            <button 
-              class="nav-link" 
-              [class.active]="currentStep === 3" 
-              [class.disabled]="currentStep < 3"
-              type="button"
-              (click)="currentStep >= 3 ? currentStep = 3 : null">
-               <i class="fi fi-rr-car me-2"></i>
-              <small>Datos del Vehículo</small>
-            </button>
-          </li>
-          <li class="nav-item" role="presentation">
-            <button 
-              class="nav-link" 
-              [class.active]="currentStep === 4" 
-              [class.disabled]="currentStep < 4"
-              type="button"
-              (click)="currentStep >= 4 ? currentStep = 4 : null">
-              <i class="fi fi-rr-clipboard-list-check me-2"></i>
-              <small>Inspección Vehicular</small>
-            </button>
-          </li>
-        </ul>
-      </div> -->
-      <!-- STEP 1: DATOS GENERALES -->
+
+
+
       <div *ngIf="currentStep === 1" class="Datos Generales col-12 mb-3">
         <div class="card">
           <div class="card-header">
@@ -180,7 +127,7 @@
         </div>
       </div>
 
-      <!-- STEP 2: DATOS DEL CONDUCTOR -->
+
       <div *ngIf="currentStep === 2" class="col-12 mb-3">
         <div class="card">
           <div class="card-header">
@@ -250,11 +197,9 @@
               </div>
               <div class="col-lg-4 mb-3">
                 <label class="form-label">V / Licencia conducción
-                  <!-- <span class="text-danger">*</span> NO ES OBLIGATORIO A PETICION DEL CLIENTE -->
+
                 </label>
-                <!-- <input #fechaLicencia type="text" class="form-control date-picker"
-                  [ngClass]="getFieldClass('fecha_vencimiento_licencia')" formControlName="fecha_vencimiento_licencia"
-                  placeholder="Fecha vencimiento licencia" readonly> -->
+
                 <input #fechaLicencia type="text" class="form-control"
                   [ngClass]="getFieldClass('fecha_vencimiento_licencia')" formControlName="fecha_vencimiento_licencia"
                   placeholder="Fecha vencimiento licencia">
@@ -269,7 +214,7 @@
         </div>
       </div>
 
-      <!-- STEP 3: DATOS DEL VEHÍCULO -->
+
       <div *ngIf="currentStep === 3" class="col-12 mb-3">
         <div class="card">
           <div class="card-header">
@@ -382,29 +327,7 @@
                 <input type="text" formControlName="clase_vehiculo" class="form-control text-uppercase"
                   [ngClass]="getFieldClass('clase_vehiculo')" placeholder="Clase de vehículo">
               </div>
-              <!-- <div class="col-lg-3 mb-3">
-                <label class="form-label">Tarjeta de Operación
-                  <span class="text-danger">*</span>
-                </label>
-                <input type="number" formControlName="tarjeta_operacion" class="form-control"
-                  [ngClass]="getFieldClass('tarjeta_operacion')" placeholder="Tarjeta de operación">
-                           <div
-                  *ngIf="inspectionForm.get('tarjeta_operacion')?.touched && inspectionForm.get('tarjeta_operacion')?.errors?.['required']"
-                  class="text-danger small">
-                  Este campo es requerido
-                </div>
-              </div>
-              <div class="col-lg-3 mb-3">
-                <label class="form-label">V / Tarjeta de Operación <span class="text-danger">*</span></label>
-                <input #fechaVencimientoTarjetaOperacion type="text" class="form-control date-picker"
-                  [ngClass]="getFieldClass('fecha_vencimiento_tarjeta_operacion')"
-                  formControlName="fecha_vencimiento_tarjeta_operacion" placeholder="Seleccione fecha" readonly>
-                <div
-                  *ngIf="inspectionForm.get('fecha_vencimiento_tarjeta_operacion')?.touched && inspectionForm.get('fecha_vencimiento_tarjeta_operacion')?.errors?.['required']"
-                  class="text-danger small">
-                  Este campo es requerido
-                </div>
-              </div> -->
+
               <div class="col-lg-3 mb-3">
                 <label class="form-label">Color</label>
                 <input type="text" formControlName="color" class="form-control text-uppercase"
@@ -433,7 +356,7 @@
       </div>
 
 
-      <!-- STEP 4: INSPECCIÓN DEL VEHÍCULO -->
+
       <div *ngIf="currentStep === 4" class="col-12 mb-3">
         <div class="card">
           <div class="card-header ">
@@ -1466,42 +1389,42 @@
                     <div class="tab-pane fade" id="profundidad" role="tabpanel"
                       aria-labelledby="profundidad-tabPillsFill" tabindex="0">
                       <div class="row">
-                        <!-- Llanta Delantera Izquierda - FALTABA -->
+
                         <div class="col-lg-6 mb-3">
                           <label class="form-label">Llanta DI / Ej: 2,3 mm</label>
                           <input type="number" class="form-control" inputmode="decimal" pattern="[0-9,.]*"
                             placeholder="0" formControlName="llanta_di">
                         </div>
 
-                        <!-- Llanta Delantera Derecha -->
+
                         <div class="col-lg-6 mb-3">
                           <label class="form-label">Llanta DD / Ej: 2,5 mm</label>
                           <input type="number" class="form-control" inputmode="decimal" pattern="[0-9,.]*"
                             placeholder="0" formControlName="llanta_dd">
                         </div>
 
-                        <!-- Llanta Trasera Izquierda Exterior -->
+
                         <div class="col-lg-6 mb-3">
                           <label class="form-label">Llanta TIE / Ej: 3,4 mm</label>
                           <input type="number" class="form-control" inputmode="decimal" pattern="[0-9,.]*"
                             placeholder="0" formControlName="llanta_tie">
                         </div>
 
-                        <!-- Llanta Trasera Derecha Exterior - FALTABA -->
+
                         <div class="col-lg-6 mb-3">
                           <label class="form-label">Llanta TDE / Ej: 3,2 mm</label>
                           <input type="number" class="form-control" inputmode="decimal" pattern="[0-9,.]*"
                             placeholder="0" formControlName="llanta_tde">
                         </div>
 
-                        <!-- Llanta Trasera Izquierda Interior -->
+
                         <div class="col-lg-6 mb-3">
                           <label class="form-label">Llanta TII / Ej: 2,8 mm</label>
                           <input type="number" class="form-control" inputmode="decimal" pattern="[0-9,.]*"
                             placeholder="0" formControlName="llanta_tii">
                         </div>
 
-                        <!-- Llanta Trasera Derecha Interior -->
+
                         <div class="col-lg-6 mb-3">
                           <label class="form-label">Llanta TDI / Ej: 3,1 mm</label>
                           <input type="number" class="form-control" inputmode="decimal" pattern="[0-9,.]*"
@@ -1513,42 +1436,42 @@
                     <div class="tab-pane fade" id="presion" role="tabpanel" aria-labelledby="presion-tabPillsFill"
                       tabindex="0">
                       <div class="row">
-                        <!-- Llanta Delantera Izquierda -->
+
                         <div class="col-lg-6 mb-3">
                           <label class="form-label">Llanta D LI / Ej: 32 PSI</label>
                           <input type="number" class="form-control" inputmode="decimal" pattern="[0-9,.]*"
                             placeholder="0" formControlName="presion_llanta_d_li">
                         </div>
 
-                        <!-- Llanta Delantera Derecha -->
+
                         <div class="col-lg-6 mb-3">
                           <label class="form-label">Llanta D LD / Ej: 32 PSI</label>
                           <input type="number" class="form-control" inputmode="decimal" pattern="[0-9,.]*"
                             placeholder="0" formControlName="presion_llanta_d_ld">
                         </div>
 
-                        <!-- Llanta Trasera Izquierda Exterior -->
+
                         <div class="col-lg-6 mb-3">
                           <label class="form-label">Llanta T LIE / Ej: 35 PSI</label>
                           <input type="number" class="form-control" inputmode="decimal" pattern="[0-9,.]*"
                             placeholder="0" formControlName="presion_llanta_t_lie">
                         </div>
 
-                        <!-- Llanta Trasera Derecha Exterior -->
+
                         <div class="col-lg-6 mb-3">
                           <label class="form-label">Llanta T LDE / Ej: 35 PSI</label>
                           <input type="number" class="form-control" inputmode="decimal" pattern="[0-9,.]*"
                             placeholder="0" formControlName="presion_llanta_t_lde">
                         </div>
 
-                        <!-- Llanta Trasera Izquierda Interior -->
+
                         <div class="col-lg-6 mb-3">
                           <label class="form-label">Llanta T LII / Ej: 35 PSI</label>
                           <input type="number" class="form-control" inputmode="decimal" pattern="[0-9,.]*"
                             placeholder="0" formControlName="presion_llanta_t_lii">
                         </div>
 
-                        <!-- Llanta Trasera Derecha Interior -->
+
                         <div class="col-lg-6 mb-3">
                           <label class="form-label">Llanta T LDI / Ej: 35 PSI</label>
                           <input type="number" class="form-control" inputmode="decimal" pattern="[0-9,.]*"
@@ -1716,7 +1639,7 @@
         </div>
 
       </div>
-      <!-- ✅ STEP 5: OBSERVACIONES Y REGISTRO FOTOGRÁFICO (NUEVO) -->
+
       <div *ngIf="currentStep === 5" class="col-12 mb-3">
         <div class="card">
           <div class="card-header bg-light">
@@ -1731,12 +1654,12 @@
 
               Registro Fotográfico
             </h5>
-            <!-- Sección de Observaciones -->
+
             <div class="image-upload-section">
 
 
 
-              <!-- Sección de Registro Fotográfico -->
+
 
 
               <div class="form-group">
@@ -1758,7 +1681,7 @@
                 </div>
 
               </div>
-              <!-- Preview de imágenes -->
+
               <div class="selected-images d-flex flex-wrap gap-2 mt-3" *ngIf="imagePreviews.length > 0">
                 <div *ngFor="let preview of imagePreviews; let i = index" class="image-preview position-relative"
                   style="width: 150px; height: 150px;">
@@ -1770,13 +1693,13 @@
                 </div>
               </div>
 
-              <!-- Contador de imágenes -->
+
               <div class="image-count mt-2" *ngIf="selectedFiles.length > 0">
                 <span class="badge bg-primary">{{ selectedFiles.length }} imagen(es) seleccionada(s)</span>
               </div>
             </div>
 
-            <!-- observaciones -->
+
             <div class=" mt-4">
               <div class=" bg-light">
                 <h6 class="">
@@ -1796,7 +1719,7 @@
                 </div>
               </div>
             </div>
-            <!-- 🔹 SECCIÓN DE FIRMA DEL CONDUCTOR -->
+
             <div class="firma-section mt-4 p-3 border rounded bg-light">
               <h6 class="fw-bold mb-3">
                 <i class="fi fi-rr-signature me-2"></i>
@@ -1818,7 +1741,7 @@
                 </button>
               </div>
 
-              <!-- Preview de la firma capturada -->
+
               <div *ngIf="firmaBase64" class="text-center mt-3">
                 <small class="text-success fw-bold">
                   <i class="fi fi-rr-check-circle me-1"></i> Firma capturada
@@ -1828,13 +1751,13 @@
                 </div>
               </div>
 
-              <!-- Mensaje de error si está vacío al enviar -->
+
               <div *ngIf="inspectionForm.touched && !firmaBase64 && isLastStep()" class="text-danger small mt-2">
                 <i class="fi fi-rr-exclamation-triangle me-1"></i>
                 La firma es requerida para finalizar
               </div>
             </div>
-            <!-- Firma del Inspector (nuevo) -->
+
             <div class="firma-section mt-4 p-3 border rounded bg-light">
               <h6 class="fw-bold mb-3">
                 <i class="fi fi-rr-signature me-2"></i>
@@ -1854,7 +1777,7 @@
                 </button>
               </div>
 
-              <!-- ✅ PREVIEW - Esto es lo que probablemente falta -->
+
               <div *ngIf="firmaInspectorBase64" class="text-center mt-3">
                 <small class="text-success fw-bold">
                   <i class="fi fi-rr-check-circle me-1"></i> Firma capturada
@@ -1864,7 +1787,7 @@
                 </div>
               </div>
 
-              <!-- Mensaje de error -->
+
               <div *ngIf="inspectionForm.touched && !firmaInspectorBase64 && isLastStep()"
                 class="text-danger small mt-2">
                 <i class="fi fi-rr-exclamation-triangle me-1"></i>
@@ -1875,8 +1798,8 @@
           </div>
         </div>
       </div>
-      <!-- NAVIGATION BUTTONS -->
-      <!-- NAVIGATION BUTTONS -->
+
+
       <div class="col-12 mt-4">
         <div class="d-flex justify-content-between">
           <button type="button" class="btn btn-secondary" *ngIf="!isFirstStep()" (click)="prevStep()">
@@ -1903,188 +1826,4 @@
     </form>
   </div>
 </main>
-<!-- <style>
-  /* Estilos mejorados para las píldoras de navegación */
-  .nav-pills {
-    gap: 8px;
-  }
-  
-  .nav-pills .nav-link {
-    color: #495057;
-    border-radius: 50px;
-    border: 2px solid #dee2e6;
-    margin-bottom: 8px;
-    padding: 10px 20px;
-    font-weight: 500;
-    transition: all 0.3s ease;
-    background-color: #f8f9fa;
-    text-align: center;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 100px;
-  }
-  
-  .nav-pills .nav-link:hover:not(.active) {
-    background-color: #e9ecef;
-    border-color: #ced4da;
-    transform: translateY(-2px);
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  }
-  
-  .nav-pills .nav-link.active {
-    color: #fff;
-    background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%);
-    border-color: #0a58ca;
-    box-shadow: 0 2px 8px rgba(13, 110, 253, 0.3);
-    font-weight: 600;
-  }
-  
-  .nav-pills .nav-link.disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-    background-color: #e9ecef;
-  }
-  
-  /* Estilos para los botones de opción */
-  .btn-group {
-    gap: 8px;
-    flex-wrap: wrap;
-  }
-  
-  .btn-group .btn {
-    border-radius: 50px;
-    padding: 10px 20px;
-    font-weight: 500;
-    transition: all 0.3s ease;
-    position: relative;
-    overflow: hidden;
-  }
-  
-  .btn-group .btn::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(255, 255, 255, 0.1);
-    opacity: 0;
-    transition: opacity 0.3s ease;
-  }
-  
-  .btn-group .btn:hover::before {
-    opacity: 1;
-  }
-  
-  /* Estilos para los botones de opción seleccionados */
-  .btn-check:checked + .btn-outline-success {
-    background: linear-gradient(135deg, #198754 0%, #157347 100%);
-    border-color: #198754;
-    color: white;
-    box-shadow: 0 2px 8px rgba(25, 135, 84, 0.3);
-  }
-  
-  .btn-check:checked + .btn-outline-danger {
-    background: linear-gradient(135deg, #dc3545 0%, #b02a37 100%);
-    border-color: #dc3545;
-    color: white;
-    box-shadow: 0 2px 8px rgba(220, 53, 69, 0.3);
-  }
-  
-  .btn-check:checked + .btn-outline-secondary {
-    background: linear-gradient(135deg, #6c757d 0%, #5a6268 100%);
-    border-color: #6c757d;
-    color: white;
-    box-shadow: 0 2px 8px rgba(108, 117, 125, 0.3);
-  }
-  
-  /* Efecto de pulso para opciones seleccionadas */
-  @keyframes pulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.05); }
-    100% { transform: scale(1); }
-  }
-  
-  .btn-check:checked + .btn {
-    animation: pulse 0.5s ease;
-  }
-  
-  /* Estilos para el texto "NO APLICA" */
-  .noaplica {
-    color: #0d6efd;
-    font-weight: 600;
-    position: relative;
-    padding-left: 24px;
-  }
-  
-  .noaplica::before {
-    content: '→';
-    position: absolute;
-    left: 0;
-    animation: bounce 1s infinite;
-  }
-  
-  @keyframes bounce {
-    0%, 100% { transform: translateX(0); }
-    50% { transform: translateX(5px); }
-  }
-  
-  /* Efecto hover mejorado para los botones */
-  .btn-outline-success:hover {
-    background-color: rgba(25, 135, 84, 0.1);
-    color: #198754;
-  }
-  
-  .btn-outline-danger:hover {
-    background-color: rgba(220, 53, 69, 0.1);
-    color: #dc3545;
-  }
-  
-  .btn-outline-secondary:hover {
-    background-color: rgba(108, 117, 125, 0.1);
-    color: #6c757d;
-  }
-</style> -->
-<!-- <style>
-  .nav-pills .nav-link {
-    color: #495057;
-    border-radius: 0;
-    border-left: 3px solid transparent;
-    margin-bottom: 5px;
-  }
-  
-  .nav-pills .nav-link.active {
-    color: #fff;
-    background-color: #0d6efd;
-    border-left-color: #0d6efd;
-  }
-  
-  .nav-pills .nav-link.disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
-  
-  .btn-check:checked + .btn-outline-success {
-    background-color: #198754;
-    border-color: #198754;
-    color: white;
-  }
-  
-  .btn-check:checked + .btn-outline-danger {
-    background-color: #dc3545;
-    border-color: #dc3545;
-    color: white;
-  }
-  
-  .btn-check:checked + .btn-outline-secondary {
-    background-color: #6c757d;
-    border-color: #6c757d;
-    color: white;
-  }
-  
-  .noaplica {
-    color: #0d6efd;
-    font-weight: bold;
-  }
-</style> -->
+

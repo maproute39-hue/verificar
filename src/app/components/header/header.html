@@ -1,31 +1,24 @@
 <header class="app-header">
       <div class="app-header-inner">
-        <!-- Desktop back button (visible only on desktop) -->
+
         <button class="app-toggler desktop-only" type="button" aria-label="app toggler">
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M7.66699 12.6668L3.66699 8.00016L7.66699 3.3335" stroke="#1C274C" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" />
             <path opacity="0.5" d="M12.667 12.6668L8.66699 8.00016L12.667 3.3335" stroke="#1C274C" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" />
           </svg>
         </button>
-        
-        <!-- Mobile home button (visible only on mobile/tablet) -->
-        <!-- <a routerLink="/" class="mobile-home-btn" style="padding-left: 30px;" aria-label="Ir al inicio">
-          <i class="fi fi-rr-home"></i>
-        </a> -->
+
+
+
         <div style="padding-left: 20px; padding-top: 10px;" [hidden]="sharedService.currentRoute === 'home'">
          <a routerLink="/" class="btn btn-icon btn-white btn-xl"  data-bs-toggle="tooltip" data-bs-placement="top"   >
                 <i class="fi fi-rr-home"></i>
               </a>
         </div>
-        
+
       <div class="app-header-start d-none d-md-flex">
-          <!-- <form class="d-flex align-items-center h-100 w-lg-250px w-xxl-300px position-relative" >
-            <button type="button" class="btn btn-sm border-0 position-absolute start-0 ms-3 p-0">
-              <i class="fi fi-rr-search"></i>
-            </button>
-            <input type="text" class="form-control form-control-fill ps-5" placeholder="Search anything's" data-bs-toggle="modal" data-bs-target="#searchResultsModal">
-          </form> -->
-          
+
+
         </div>
         <div class="app-header-end">
           <div class="px-lg-4 px-2 ps-0 d-flex align-items-center">
@@ -49,17 +42,9 @@
             </a>
           </div>
           <div class="px-lg-4 px-2 ps-0 d-flex align-items-center" *ngIf="showInstallButton">
-            <!-- <button type="button" class="btn btn-icon btn-action-gray rounded-circle waves-effect waves-light position-relative" (click)="installPwa()" title="Instalar aplicación">
-              <svg width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M12 2.5L2 7.5L12 12.5L22 7.5L12 2.5Z" stroke="var(--bs-heading-color)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M2 17.5L12 22.5L22 17.5" stroke="var(--bs-heading-color)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M2 12.5L12 17.5L22 12.5" stroke="var(--bs-heading-color)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </button> -->
 
-            <!-- <button type="button" class="btn btn-icon btn-action-gray rounded-circle waves-effect waves-light position-relative" (click)="installPwa()" title="Instalar aplicación">
-            <i class="fi fi-rr-download"></i>
-             </button> -->
+
+
 
                 <a href="javascript:void(0);" class="btn btn-icon btn-white btn-xl" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="fi fi-rr-download"  (click)="installPwa()">
                 <i class="fi fi-rr-download"></i>
@@ -92,7 +77,7 @@
               <li>
                 <div class="dropdown-divider my-1"></div>
               </li>
-              
+
               <li>
                 <a class="dropdown-item d-flex align-items-center gap-2 text-danger" href="#" (click)="$event.preventDefault(); logout($event)">
                   <i class="fi fi-sr-exit scale-1x"></i> Salir

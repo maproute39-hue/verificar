@@ -1,4 +1,4 @@
-// === ESTILOS DE NAVEGACIÓN (tus estilos originales) ===
+
 .nav-link {
   font-size: 13px !important;
 }
@@ -32,7 +32,7 @@
   border-radius: 10px !important;
 }
 
-// === GALERÍA DE IMÁGENES (versión corregida) ===
+
 .image-gallery-section {
   margin: 30px 0;
   padding: 20px;
@@ -170,7 +170,7 @@
   width: 100% !important;
   text-align: center !important;
 }
-// Contenedor del botón flotante
+
 .floating-save-container {
   position: fixed;
   bottom: 25px;
@@ -178,30 +178,30 @@
   width: 100%;
   display: flex;
   justify-content: center;
-  z-index: 1050; // Por encima de modales y otros elementos
-  pointer-events: none; // Permite clicks a través del contenedor vacío
+  z-index: 1050;
+  pointer-events: none;
   padding: 0 15px;
 }
 
-// Estilo del botón
+
 .btn-save-floating {
-  pointer-events: auto; // Reactiva los clicks en el botón
+  pointer-events: auto;
   padding: 14px 35px;
   font-size: 1.1rem;
   font-weight: 600;
   border-radius: 50px;
-  // 🟢 Gradiente verde profesional (ajusta los tonos según tu logo)
+
   background: linear-gradient(135deg, #198754 0%, #157347 100%);
   border: none;
-  color: white; // Texto blanco para contraste
-  box-shadow: 0 6px 20px rgba(25, 135, 84, 0.4); // Sombra con tono verde
+  color: white;
+  box-shadow: 0 6px 20px rgba(25, 135, 84, 0.4);
   transition: all 0.25s ease;
   animation: slideUpFade 0.3s ease-out;
 
   &:hover {
     transform: translateY(-3px);
     box-shadow: 0 8px 25px rgba(25, 135, 84, 0.6);
-    // Verde un poco más oscuro al hacer hover
+
     background: linear-gradient(135deg, #157347 0%, #146c43 100%);
   }
 
@@ -215,7 +215,7 @@
   }
 }
 
-// Animación de entrada
+
 @keyframes slideUpFade {
   from {
     opacity: 0;
@@ -227,13 +227,13 @@
   }
 }
 
-// Ajustes para móviles
+
 @media (max-width: 768px) {
   .floating-save-container {
     bottom: 15px;
     padding: 0 10px;
   }
-  
+
   .btn-save-floating {
     width: 90%;
     max-width: 400px;
@@ -241,27 +241,27 @@
     font-size: 1rem;
   }
 }
-// Estados de validación visual
+
 .form-control {
   transition: all 0.3s ease;
-  
+
   &.field-filled {
-    background-color: #d4edda96 !important;  // Verde claro
-    border-color: transparent !important;       // Verde
+    background-color: #d4edda96 !important;
+    border-color: transparent !important;
     color: #155724;
-    
+
     &:focus {
       background-color: #c3e6cb !important;
       border-color: transparent !important;
       box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
     }
   }
-  
+
   &.field-empty {
-    background-color: #e7f3ff !important;  // Azul claro
-    border-color: transparent !important;       // Azul
+    background-color: #e7f3ff !important;
+    border-color: transparent !important;
     color: #004085;
-    
+
     &:focus {
       background-color: #d4e9ff98 !important;
       border-color: transparent !important;
@@ -270,20 +270,20 @@
   }
 }
 
-// Para los datepickers de flatpickr
+
 .flatpickr-input {
   &.field-filled {
     background-color: #d4edda96 !important;
     border-color: transparent !important;
   }
-  
+
   &.field-empty {
     background-color: #e7f3ff !important;
     border-color: transparent !important;
   }
 }
 
-// Para los radio buttons de inspección
+
 .form-check-input {
   &:checked + .form-check-label {
     color: #155724;
@@ -291,25 +291,25 @@
   }
 }
 
-// Sección de inspección - botones de radio
+
 .btn-check {
   &:checked + .btn {
-    &.btn-success { // C - Cumple
+    &.btn-success {
       background-color: transparent !important;
       border-color: transparent !important;
     }
-    &.btn-danger { // N/C - No Cumple
+    &.btn-danger {
       background-color: #dc3545 !important;
       border-color: #dc3545 !important;
     }
-    &.btn-info { // N/A - No Aplica
+    &.btn-info {
       background-color: #17a2b8 !important;
       border-color: #17a2b8 !important;
     }
   }
 }
 
-// Animación suave
+
 @keyframes pulse-green {
   0% { box-shadow: 0 0 0 0 rgba(40, 167, 69, 0.4); }
   70% { box-shadow: 0 0 0 6px rgba(40, 167, 69, 0); }
@@ -319,7 +319,7 @@
 .field-filled {
   animation: pulse-green 0.5s ease-in-out;
 }
-/* === ESTILOS PARA GALERÍA DE IMÁGENES === */
+
 .images-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
@@ -335,7 +335,7 @@
   transition: transform 0.2s ease;
   background: white;
   border: 1px solid #e9ecef;
-  
+
   &:hover {
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
@@ -345,10 +345,10 @@
 .image-wrapper {
   position: relative;
   width: 100%;
-  padding-top: 75%; /* Aspect ratio 4:3 */
+  padding-top: 75%;
   overflow: hidden;
   cursor: pointer;
-  
+
   img {
     position: absolute;
     top: 0;
@@ -358,11 +358,11 @@
     object-fit: cover;
     transition: transform 0.3s ease;
   }
-  
+
   &:hover img {
     transform: scale(1.05);
   }
-  
+
   .overlay {
     position: absolute;
     top: 0;
@@ -377,23 +377,23 @@
     opacity: 0;
     transition: opacity 0.3s ease;
     color: white;
-    
+
     i {
       font-size: 1.8rem;
       margin-bottom: 5px;
     }
-    
+
     span {
       font-size: 0.85rem;
     }
   }
-  
+
   &:hover .overlay {
     opacity: 1;
   }
 }
 
-/* Botón de eliminar imagen */
+
 .btn-delete-image {
   position: absolute;
   top: 8px;
@@ -413,12 +413,12 @@
   transition: all 0.2s ease;
   z-index: 10;
   padding: 0;
-  
+
   &:hover {
     background: #dc3545;
     transform: scale(1.1);
   }
-  
+
   i {
     font-size: 0.85rem;
   }
@@ -429,7 +429,7 @@
   transform: scale(1);
 }
 
-/* Badge para previews */
+
 .image-badge {
   position: absolute;
   top: 8px;
@@ -441,7 +441,7 @@
   z-index: 10;
 }
 
-/* Número de imagen */
+
 .image-number {
   padding: 6px 10px;
   text-align: center;
@@ -451,29 +451,29 @@
   border-top: 1px solid #e9ecef;
 }
 
-/* Preview card styles */
+
 .preview-card {
   border: 2px dashed #0d6efd;
-  
+
   .image-badge {
     background: #0d6efd;
   }
 }
 
-/* No images message */
+
 .no-images {
   text-align: center;
   padding: 35px 20px;
   background: #f8f9fa;
   border-radius: 8px;
   border: 2px dashed #dee2e6;
-  
+
   i {
     font-size: 2.5rem;
     color: #6c757d;
     margin-bottom: 12px;
   }
-  
+
   p {
     color: #6c757d;
     margin-bottom: 12px;
@@ -481,7 +481,7 @@
   }
 }
 
-/* Section title */
+
 .section-title {
   font-size: 1rem;
   color: #333;
@@ -489,20 +489,20 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  
+
   .badge {
     font-size: 0.85rem;
     padding: 0.4em 0.7em;
   }
 }
 
-/* Responsive */
+
 @media (max-width: 768px) {
   .images-grid {
     grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
     gap: 10px;
   }
-  
+
   .btn-delete-image {
     opacity: 1;
     transform: scale(1);

@@ -27,9 +27,9 @@
       </nav>
     </div>
     <form [formGroup]="inspectionForm" class="row">
-      <!-- columna izquierda -->
+
       <div class="col-lg-6 mb-3">
-        <!-- Encabezado General -->
+
         <div class="col-12 mb-3">
           <h6 class="fw-bold border-bottom titulo ">DATOS GENERALES</h6>
         </div>
@@ -120,13 +120,7 @@
 
             <div class="col-lg-4 mb-3">
               <label class="form-label">V / Licencia conducción <span class="text-danger">*</span></label>
-              <!-- <input #fechaLicencia 
-            type="text" 
-            class="form-control date-picker"
-            [ngClass]="getFieldClass('fecha_vencimiento_licencia')"
-            formControlName="fecha_vencimiento_licencia" 
-            placeholder="Fecha vencimiento licencia" 
-            readonly> -->
+
               <input #fechaLicencia type="text" class="form-control"
                 [ngClass]="getFieldClass('fecha_vencimiento_licencia')" formControlName="fecha_vencimiento_licencia"
                 placeholder="Fecha vencimiento licencia">
@@ -138,7 +132,7 @@
             </div>
           </div>
 
-          <!-- DATOS DEL VEHÍCULO -->
+
           <div class="col-12 mb-3">
             <h6 class="fw-bold border-bottom titulo">DATOS DEL VEHÍCULO</h6>
           </div>
@@ -221,24 +215,7 @@
                 [ngClass]="getFieldClass('clase_vehiculo')" placeholder="Clase de vehículo">
             </div>
 
-            <!-- <div class="col-lg-4 mb-3 col-6">
-      <label class="form-label">Tarjeta de Operación</label>
-      <input type="text" 
-            formControlName="tarjeta_operacion" 
-            class="form-control"
-            [ngClass]="getFieldClass('tarjeta_operacion')"
-            placeholder="Tarjeta de operación">
-    </div>
-    <div class="col-lg-4 mb-3 col-6">
-      <label class="form-label">V / Tarj. de Oper. <span class="text-danger">*</span></label>
-      <input #fechaVencimientoTarjetaOperacion 
-            type="text" 
-            class="form-control date-picker"
-            [ngClass]="getFieldClass('fecha_vencimiento_tarjeta_operacion')"
-            formControlName="fecha_vencimiento_tarjeta_operacion" 
-            placeholder="Seleccione fecha" 
-            readonly>
-    </div> -->
+
 
             <div class="col-lg-4 mb-3 col-6">
               <label class="form-label">Color</label>
@@ -360,7 +337,7 @@
 
         </div>
       </div>
-      <!-- columna derecha -->
+
       <div class="col-lg-6 mb-3">
         <h6 class="fw-bold border-bottom titulo">INSPECCIÓN DEL VEHÍCULO</h6>
         <p class="medium text-muted fw-bold">Indique según el estado del ítem verificado:
@@ -657,20 +634,7 @@
                       </div>
                     </div>
 
-                    <!-- <div class="col-lg-6 mb-3">
-                        <label class="form-label">Nivel de líquido de frenos</label>
-                        <div class="btn-group w-100" role="group">
-                          <input type="radio" class="btn-check" name="liquido_frenos" id="liquido_frenos_ok"
-                            [value]="'ok'" formControlName="liquido_frenos" autocomplete="off">
-                          <label class="btn btn-outline-success" for="liquido_frenos_ok">C</label>
-                          <input type="radio" class="btn-check" name="liquido_frenos" id="liquido_frenos_neg"
-                            [value]="'negativo'" formControlName="liquido_frenos" autocomplete="off">
-                          <label class="btn btn-outline-danger" for="liquido_frenos_neg">N/C</label>
-                          <input type="radio" class="btn-check" name="liquido_frenos" id="liquido_frenos_na"
-                            [value]="'na'" formControlName="liquido_frenos" autocomplete="off">
-                          <label class="btn btn-outline-secondary" for="liquido_frenos_na">N/A</label>
-                        </div>
-                      </div> -->
+
 
                     <div class="col-lg-6 mb-3">
                       <label class="form-label">Filtro de Aire</label>
@@ -937,20 +901,7 @@
                 <div class="tab-pane fade" id="seguridadActiva" role="tabpanel"
                   aria-labelledby="seguridadActiva-tabPillsFill" tabindex="0">
                   <div class="row">
-                    <!-- <div class="col-lg-6 mb-3">
-                        <label class="form-label">Sistema de frenos</label>
-                        <div class="btn-group w-100" role="group">
-                          <input type="radio" class="btn-check" name="sistema_frenos" id="sistema_frenos_ok"
-                            [value]="'ok'" formControlName="sistema_frenos" autocomplete="off">
-                          <label class="btn btn-outline-success" for="sistema_frenos_ok">C</label>
-                          <input type="radio" class="btn-check" name="sistema_frenos" id="sistema_frenos_neg"
-                            [value]="'negativo'" formControlName="sistema_frenos" autocomplete="off">
-                          <label class="btn btn-outline-danger" for="sistema_frenos_neg">N/C</label>
-                          <input type="radio" class="btn-check" name="sistema_frenos" id="sistema_frenos_na"
-                            [value]="'na'" formControlName="sistema_frenos" autocomplete="off">
-                          <label class="btn btn-outline-secondary" for="sistema_frenos_na">N/A</label>
-                        </div>
-                      </div> -->
+
 
                     <div class="col-lg-6 mb-3">
                       <label class="form-label">Sistema ABS (anti-block sistema)</label>
@@ -967,20 +918,7 @@
                       </div>
                     </div>
 
-                    <!-- <div class="col-lg-6 mb-3">
-                        <label class="form-label">Sistema de dirección</label>
-                        <div class="btn-group w-100" role="group">
-                          <input type="radio" class="btn-check" name="sistema_direccion" id="sistema_direccion_ok"
-                            [value]="'ok'" formControlName="sistema_direccion" autocomplete="off">
-                          <label class="btn btn-outline-success" for="sistema_direccion_ok">C</label>
-                          <input type="radio" class="btn-check" name="sistema_direccion" id="sistema_direccion_neg"
-                            [value]="'negativo'" formControlName="sistema_direccion" autocomplete="off">
-                          <label class="btn btn-outline-danger" for="sistema_direccion_neg">N/C</label>
-                          <input type="radio" class="btn-check" name="sistema_direccion" id="sistema_direccion_na"
-                            [value]="'na'" formControlName="sistema_direccion" autocomplete="off">
-                          <label class="btn btn-outline-secondary" for="sistema_direccion_na">N/A</label>
-                        </div>
-                      </div> -->
+
 
                     <div class="col-lg-6 mb-3">
                       <label class="form-label">Espejos retrovisores laterales</label>
@@ -1369,69 +1307,46 @@
                 </div>
 
 
-                <!-- <div class="tab-pane fade" id="profundidad" role="tabpanel" aria-labelledby="profundidad-tabPillsFill"
-                    tabindex="0">
-                    <div class="row">
-                      <div class="col-lg-6 mb-3">
-                        <label class="form-label">Llanta D LD / Ej: 2,3 mm</label>
-                        <input type="number" class="form-control" inputmode="decimal" pattern="[0-9,.]*" placeholder="0 ">
-                      </div>
 
-                      <div class="col-lg-6 mb-3">
-                        <label class="form-label">Llanta T LIE / Ej: 3,4 mm</label>
-                        <input type="number" class="form-control" inputmode="decimal" pattern="[0-9,.]*" placeholder="0 ">
-                      </div>
-
-                      <div class="col-lg-6 mb-3">
-                        <label class="form-label">Llanta T LII / Ej: 2,8 mm</label>
-                        <input type="number" class="form-control" inputmode="decimal" pattern="[0-9,.]*" placeholder="0 ">
-                      </div>
-
-                      <div class="col-lg-6 mb-3">
-                        <label class="form-label">Llanta T LID / Ej: 3,1 mm</label>
-                        <input type="number" class="form-control" inputmode="decimal" pattern="[0-9,.]*" placeholder="0 ">
-                      </div>
-                    </div>
-                  </div> -->
                 <div class="tab-pane fade" id="profundidad" role="tabpanel" aria-labelledby="profundidad-tabPillsFill"
                   tabindex="0">
                   <div class="row">
-                    <!-- Llanta Delantera Izquierda - FALTABA -->
+
                     <div class="col-lg-6 mb-3">
                       <label class="form-label">Llanta DI / Ej: 2,3 mm</label>
                       <input type="number" class="form-control" inputmode="decimal" pattern="[0-9,.]*" placeholder="0"
                         formControlName="llanta_di">
                     </div>
 
-                    <!-- Llanta Delantera Derecha -->
+
                     <div class="col-lg-6 mb-3">
                       <label class="form-label">Llanta DD / Ej: 2,5 mm</label>
                       <input type="number" class="form-control" inputmode="decimal" pattern="[0-9,.]*" placeholder="0"
                         formControlName="llanta_dd">
                     </div>
 
-                    <!-- Llanta Trasera Izquierda Exterior -->
+
                     <div class="col-lg-6 mb-3">
                       <label class="form-label">Llanta TIE / Ej: 3,4 mm</label>
                       <input type="number" class="form-control" inputmode="decimal" pattern="[0-9,.]*" placeholder="0"
                         formControlName="llanta_tie">
                     </div>
 
-                    <!-- Llanta Trasera Derecha Exterior - FALTABA -->
+
                     <div class="col-lg-6 mb-3">
                       <label class="form-label">Llanta TDE / Ej: 3,2 mm</label>
                       <input type="number" class="form-control" inputmode="decimal" pattern="[0-9,.]*" placeholder="0"
                         formControlName="llanta_tde">
                     </div>
 
-                    <!-- Llanta Trasera Izquierda Interior -->
+
                     <div class="col-lg-6 mb-3">
                       <label class="form-label">Llanta TII / Ej: 2,8 mm</label>
                       <input type="number" class="form-control" inputmode="decimal" pattern="[0-9,.]*" placeholder="0"
                         formControlName="llanta_tii">
                     </div>
 
-                    <!-- Llanta Trasera Derecha Interior -->
+
                     <div class="col-lg-6 mb-3">
                       <label class="form-label">Llanta TDI / Ej: 3,1 mm</label>
                       <input type="number" class="form-control" inputmode="decimal" pattern="[0-9,.]*" placeholder="0"
@@ -1443,42 +1358,42 @@
                 <div class="tab-pane fade" id="presion" role="tabpanel" aria-labelledby="presion-tabPillsFill"
                   tabindex="0">
                   <div class="row">
-                    <!-- Llanta Delantera Izquierda -->
+
                     <div class="col-lg-6 mb-3">
                       <label class="form-label">Llanta D LI / Ej: 32 PSI</label>
                       <input type="number" class="form-control" inputmode="decimal" pattern="[0-9,.]*" placeholder="0"
                         formControlName="presion_llanta_d_li">
                     </div>
 
-                    <!-- Llanta Delantera Derecha -->
+
                     <div class="col-lg-6 mb-3">
                       <label class="form-label">Llanta D LD / Ej: 32 PSI</label>
                       <input type="number" class="form-control" inputmode="decimal" pattern="[0-9,.]*" placeholder="0"
                         formControlName="presion_llanta_d_ld">
                     </div>
 
-                    <!-- Llanta Trasera Izquierda Exterior -->
+
                     <div class="col-lg-6 mb-3">
                       <label class="form-label">Llanta T LIE / Ej: 35 PSI</label>
                       <input type="number" class="form-control" inputmode="decimal" pattern="[0-9,.]*" placeholder="0"
                         formControlName="presion_llanta_t_lie">
                     </div>
 
-                    <!-- Llanta Trasera Derecha Exterior -->
+
                     <div class="col-lg-6 mb-3">
                       <label class="form-label">Llanta T LDE / Ej: 35 PSI</label>
                       <input type="number" class="form-control" inputmode="decimal" pattern="[0-9,.]*" placeholder="0"
                         formControlName="presion_llanta_t_lde">
                     </div>
 
-                    <!-- Llanta Trasera Izquierda Interior -->
+
                     <div class="col-lg-6 mb-3">
                       <label class="form-label">Llanta T LII / Ej: 35 PSI</label>
                       <input type="number" class="form-control" inputmode="decimal" pattern="[0-9,.]*" placeholder="0"
                         formControlName="presion_llanta_t_lii">
                     </div>
 
-                    <!-- Llanta Trasera Derecha Interior -->
+
                     <div class="col-lg-6 mb-3">
                       <label class="form-label">Llanta T LDI / Ej: 35 PSI</label>
                       <input type="number" class="form-control" inputmode="decimal" pattern="[0-9,.]*" placeholder="0"
@@ -1487,20 +1402,7 @@
                   </div>
                 </div>
                 <div class="tab-pane fade" id="frenos" role="tabpanel" aria-labelledby="frenos-tabPillsFill">
-                  <!-- <div class="col-lg-6 mb-3">
-                        <label class="form-label">Freno de seguridad de mano (parqueo)</label>
-                        <div class="btn-group w-100" role="group">
-                          <input type="radio" class="btn-check" name="freno_mano" id="freno_mano_ok" [value]="'ok'"
-                            formControlName="freno_mano" autocomplete="off">
-                          <label class="btn btn-outline-success" for="freno_mano_ok">C</label>
-                          <input type="radio" class="btn-check" name="freno_mano" id="freno_mano_neg" [value]="'negativo'"
-                            formControlName="freno_mano" autocomplete="off">
-                          <label class="btn btn-outline-danger" for="freno_mano_neg">N/C</label>
-                          <input type="radio" class="btn-check" name="freno_mano" id="freno_mano_na" [value]="'na'"
-                            formControlName="freno_mano" autocomplete="off">
-                          <label class="btn btn-outline-secondary" for="freno_mano_na">N/A</label>
-                        </div>
-                      </div> -->
+
                   <div class="col-lg-6 mb-3">
                     <label class="form-label">Freno de seguridad de mano (parqueo)</label>
                     <div class="btn-group w-100" role="group">
@@ -1661,7 +1563,7 @@
                 </button>
               </div>
 
-              <!-- Previews de imágenes seleccionadas (antes de subir) -->
+
               <div *ngIf="imagePreviews.length > 0" class="images-grid mt-3">
                 <div *ngFor="let preview of imagePreviews; let i = index" class="image-card preview-card">
                   <div class="image-wrapper">
@@ -1675,14 +1577,14 @@
                 </div>
               </div>
 
-              <!-- Sección de imágenes cargadas -->
+
               <div class="image-gallery-section mt-3">
                 <h3 class="section-title" *ngIf="inspectionImages.length > 0 || isLoadingImages">
                   <span class="badge" *ngIf="inspectionImages.length > 0">{{ inspectionImages.length }}</span>
                   <i class="fas fa-images"></i> Fotografías cargadas
                 </h3>
 
-                <!-- Loading state -->
+
                 <div *ngIf="isLoadingImages" class="text-center py-4">
                   <div class="spinner-border text-primary" role="status">
                     <span class="visually-hidden">Cargando...</span>
@@ -1690,7 +1592,7 @@
                   <p class="mt-2">Cargando imágenes...</p>
                 </div>
 
-                <!-- Images grid -->
+
                 <div *ngIf="!isLoadingImages && inspectionImages.length > 0" class="images-grid">
                   <div *ngFor="let imageUrl of inspectionImages; let i = index" class="image-card">
                     <div class="image-wrapper" (click)="openImageModal(imageUrl, i)">
@@ -1701,7 +1603,7 @@
                       </div>
                     </div>
 
-                    <!-- Botón de eliminar -->
+
                     <button type="button" class="btn-delete-image"
                       (click)="deleteImage(imageUrl, i); $event.stopPropagation()" title="Eliminar imagen">
                       <i class="fas fa-trash-alt"></i>
@@ -1713,7 +1615,7 @@
                   </div>
                 </div>
 
-                <!-- No images message -->
+
                 <div *ngIf="!isLoadingImages && inspectionImages.length === 0 && imagePreviews.length === 0"
                   class="no-images">
                   <i class="fas fa-image"></i>
@@ -1726,9 +1628,7 @@
             </div>
             <div class="col-12 text-end">
 
-              <!-- <button type="button" class="btn btn-primary" (click)="testGotenberg()">
-              <i class="fi fi-rr-print"></i> Test Gotenberg
-            </button> -->
+
 
 
             </div>
@@ -1736,14 +1636,10 @@
         </div>
       </div>
 
-      <!-- Botón de envío -->
+
 
     </form>
-    <!-- <div class="row mt-4">
-        <button type="button" class="btn btn-primary" (click)="imprimirInspeccion()">
-          <i class="fi fi-rr-print"></i> Imprimir
-        </button>
-      </div> -->
+
   </div>
   <div class="floating-action " *ngIf="!hasChanges">
     <input type="checkbox" id="fab-check" class="fab-check">
@@ -1753,7 +1649,7 @@
       </span>
       <span class="fab-icon-close">
         <span>x</span>
-        <!-- <i class="fi fi-rr-cross"></i> -->
+
       </span>
     </label>
     <div class="fab-options">
@@ -1768,15 +1664,12 @@
         [hidden]="inspectionForm.value.estado !== 'borrador'">
         <span class="fab-label">Exportar a PDF</span>
         <i class="fab-option-icon fi fi-rs-download"></i>
-        <!-- <i class="fab-option-icon fi fi-rs-info"></i>  -->
+
       </a>
-      <!-- <a (click)="pending()" class="fab-option">
-          <span class="fab-label text-warning">Pesados</span>
-          <span class="fab-option-icon">3</span>
-        </a> -->
+
     </div>
   </div>
-  <!-- Indicador de estado pendiente (dentro del botón flotante o cerca) -->
+
 
   <style>
     .floating-action {

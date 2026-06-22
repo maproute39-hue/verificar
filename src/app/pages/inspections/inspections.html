@@ -32,15 +32,12 @@
               <span class="fab-label">Camioneta</span>
               <span class="fab-option-icon">2</span>
             </a>
-            <!-- <a (click)="pending()" class="fab-option" (click)="$event.stopPropagation()">
-              <span class="fab-label text-warning">Pesados</span>
-              <span class="fab-option-icon">3</span>
-            </a> -->
+
           </div>
         </div>
       </div>
       <div class="d-block d-lg-none">
-        <!-- Aquí podrías añadir un botón de menú móvil si es necesario -->
+
       </div>
     </div>
 
@@ -59,7 +56,7 @@
                 <thead class="">
                   <tr>
                     <th class="minw-10px">Nro. Inspeccion</th>
-             
+
                     <th class="minw-200px">Conductor</th>
                     <th class="minw-150px">Placa del vehículo</th>
                     <th class="minw-150px">Teléfono</th>
@@ -111,10 +108,7 @@
                           (click)="$event.stopPropagation(); viewInspection(inspection.id)" title="Ver">
                           <i class="fi fi-rr-eye"></i>
                         </button>
-                        <!-- <button class="btn btn-sm btn-icon btn-soft-info" (click)="$event.stopPropagation();"
-                          title="Editar">
-                          <i class="fi fi-rr-edit"></i>
-                        </button> -->
+
                         <button class="btn btn-sm btn-icon btn-soft-danger"
                           (click)="deleteInspection($event, inspection.id)" title="Eliminar">
                           <i class="fi fi-rr-trash"></i>
@@ -139,7 +133,7 @@
       </div>
     </div>
   </div>
-    <!-- Floating Action Button for Mobile/Tablet -->
+
   <div class="floating-action d-lg-none">
     <input type="checkbox" id="fab-check" class="fab-check">
     <label class="fab" for="fab-check">

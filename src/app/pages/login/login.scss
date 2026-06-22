@@ -1,8 +1,6 @@
-/* ==========================================
-   SweetAlert2 - Estilos personalizados
-   ========================================== */
 
-/* Estilos principales del popup */
+
+
 .swal2-popup {
   font-family: 'Roboto', sans-serif !important;
   border-radius: 12px !important;
@@ -10,7 +8,7 @@
   overflow: hidden !important;
   padding: 2rem !important;
 
-  /* Título */
+
   .swal2-title {
     font-size: 1.5rem !important;
     font-weight: 600 !important;
@@ -19,7 +17,7 @@
     padding: 0 !important;
   }
 
-  /* Texto del mensaje */
+
   .swal2-html-container {
     font-size: 1rem !important;
     color: #555 !important;
@@ -28,12 +26,12 @@
     padding: 0 !important;
   }
 
-  /* Contenedor de acciones (botones) */
+
   .swal2-actions {
     margin: 1.5rem auto 0.5rem !important;
     padding: 0 !important;
 
-    /* Botón de confirmación - ESTILO MORADO CON GRADIENTE */
+
     .swal2-confirm {
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
       color: white !important;
@@ -63,7 +61,7 @@
       }
     }
 
-    /* Botón de cancelar (si existe) */
+
     .swal2-cancel {
       background-color: #f5f5f5 !important;
       color: #333 !important;
@@ -87,7 +85,7 @@
     }
   }
 
-  /* Iconos */
+
   .swal2-icon {
     margin: 1rem auto 1rem !important;
     border-width: 3px !important;
@@ -127,7 +125,7 @@
   }
 }
 
-/* Soporte para modo oscuro */
+
 @media (prefers-color-scheme: dark) {
   .swal2-popup {
     background-color: #2d2d2d !important;

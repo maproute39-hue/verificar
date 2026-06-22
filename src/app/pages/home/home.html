@@ -113,11 +113,11 @@
         </div>
       </div>
 
-      <!-- ─── Tarjeta de inspecciones ──────────────────────────────────────── -->
+
       <div class="col-xxl-12">
         <div class="card overflow-hidden">
 
-          <!-- Alert de vencimientos: al hacer clic filtra y muestra las problemáticas -->
+
           <div *ngIf="expiredCount > 0 || expiringSoonCount > 0 ||
             soatExpiredCount > 0 || soatExpiringCount > 0 ||
             tecnomecanicaExpiredCount > 0 || tecnomecanicaExpiringCount > 0 ||
@@ -134,7 +134,7 @@
                 </strong>
 
                 <div class="row g-2">
-                  <!-- Inspecciones -->
+
                   <div class="col-md-6 col-lg-4" *ngIf="expiredCount > 0 || expiringSoonCount > 0">
                     <div class="fw-semibold text-primary mb-1">Inspecciones</div>
                     <div *ngIf="expiredCount > 0" class="text-danger small">
@@ -145,7 +145,7 @@
                     </div>
                   </div>
 
-                  <!-- SOAT -->
+
                   <div class="col-md-6 col-lg-4" *ngIf="soatExpiredCount > 0 || soatExpiringCount > 0">
                     <div class="fw-semibold text-primary mb-1">SOAT</div>
                     <div *ngIf="soatExpiredCount > 0" class="text-danger small">
@@ -156,7 +156,7 @@
                     </div>
                   </div>
 
-                  <!-- Tecnomecánica -->
+
                   <div class="col-md-6 col-lg-4" *ngIf="tecnomecanicaExpiredCount > 0 || tecnomecanicaExpiringCount > 0">
                     <div class="fw-semibold text-primary mb-1">Rev. Tecnomecánica</div>
                     <div *ngIf="tecnomecanicaExpiredCount > 0" class="text-danger small">
@@ -167,7 +167,7 @@
                     </div>
                   </div>
 
-                  <!-- Tarjeta de Operación -->
+
                   <div class="col-md-6 col-lg-4" *ngIf="tarjetaOperacionExpiredCount > 0 || tarjetaOperacionExpiringCount > 0">
                     <div class="fw-semibold text-primary mb-1">Tarjeta de Operación</div>
                     <div *ngIf="tarjetaOperacionExpiredCount > 0" class="text-danger small">
@@ -178,7 +178,7 @@
                     </div>
                   </div>
 
-                  <!-- Licencia -->
+
                   <div class="col-md-6 col-lg-4" *ngIf="licenciaExpiredCount > 0 || licenciaExpiringCount > 0">
                     <div class="fw-semibold text-primary mb-1">Licencia de Conducción</div>
                     <div *ngIf="licenciaExpiredCount > 0" class="text-danger small">
@@ -227,40 +227,37 @@
               </div>
             </div>
           </div>
-          <!-- /Alert de vencimientos -->
 
-          <!-- Encabezado de la tarjeta -->
+
+
           <div class="card-header d-flex align-items-center justify-content-between border-0 pb-0" style="flex-wrap: nowrap;">
 
-            <!-- Título dinámico según modo -->
+
             <h6 class="card-title mb-0">
               <ng-container *ngIf="viewMode === 'recent'">
                 Recientes <span class="badge bg-secondary-subtle text-secondary ms-1">10</span>
               </ng-container>
-              <!-- <ng-container *ngIf="viewMode === 'all'">
-                Todas las inspecciones
-                <span class="badge bg-secondary-subtle text-secondary ms-1">{{ allInspections.length }}</span>
-              </ng-container> -->
+
               <ng-container *ngIf="viewMode === 'expiry-issues'">
-                
+
               </ng-container>
             </h6>
 <br>
 
             <div class="d-flex align-items-center gap-2">
-              <!-- Botón buscar -->
+
               <button type="button" class="btn btn-secondary waves-effect waves-light" (click)="openSearch()">
                 <i class="fi fi-rr-search text-2xs me-1"></i>
               </button>
 
-              <!-- Botón volver a recientes (visible en modos all / expiry-issues) -->
+
               <button *ngIf="viewMode !== 'recent'"
                 type="button" class="btn btn-outline-secondary waves-effect waves-light"
                 (click)="showRecent()">
                 <i class="fi fi-rr-arrow-left text-2xs me-1"></i> Recientes
               </button>
 
-              <!-- Botón "Ver todas" con estado de carga -->
+
               <button *ngIf="viewMode === 'recent'"
                 type="button"
                 class="btn btn-primary waves-effect waves-light"
@@ -277,16 +274,16 @@
             </div>
           </div>
 
-          <!-- ─── Tabla ───────────────────────────────────────────────────── -->
+
           <div class="card-body px-1 pt-2 pb-2">
             <h6  class="card-title mb-0"  *ngIf="viewMode === 'expiry-issues'"> Con problemas de vigencia  <span class="text-danger">
                   <i class="fi fi-rr-warning me-1"></i>
-                 
+
                   <span class="badge bg-danger ms-1"> {{ expiryIssueInspections.length }}</span>
                 </span></h6>
                 <h6  class="card-title mb-0"  *ngIf="viewMode === 'all'"> Mostrando todas las inspecciones  <span class="text-danger">
                   <i class="fi fi-rr-warning me-1"></i>
-                 
+
                   <span class="badge bg-info ms-1"> {{ allInspections.length }}</span>
                 </span></h6>
             <div class="table-responsive-md">
@@ -294,7 +291,7 @@
                 <thead>
                   <tr>
                     <th [class.th-sticky-left]="viewMode !== 'expiry-issues'" style="min-width:110px;">Certificado</th>
-                 
+
                     <th class="minw-75px sortable-header" (click)="sortBy('placa')" [class.active]="isSortedBy('placa')">
                       Placa
                       <i class="fi fi-rr-sort" *ngIf="!isSortedBy('placa')"></i>
@@ -326,7 +323,7 @@
                 </thead>
                 <tbody>
 
-                  <!-- ── Modo: recientes (10) ──────────────────────────────── -->
+
                   <ng-container *ngIf="viewMode === 'recent'">
                     <tr *ngFor="let inspection of sortedRecentInspections" class="inspection-row">
                       <ng-container *ngTemplateOutlet="inspectionRow; context: { $implicit: inspection }"></ng-container>
@@ -338,7 +335,7 @@
                     </tr>
                   </ng-container>
 
-                  <!-- ── Modo: todas (paginado) ────────────────────────────── -->
+
                   <ng-container *ngIf="viewMode === 'all'">
                     <tr *ngIf="!allInspectionsLoaded">
                       <td colspan="8" class="text-center py-4 text-muted">
@@ -353,7 +350,7 @@
                     </tr>
                   </ng-container>
 
-                  <!-- ── Modo: problemas de vigencia ──────────────────────── -->
+
                   <ng-container *ngIf="viewMode === 'expiry-issues'">
                     <tr *ngFor="let inspection of sortedExpiryIssues" class="inspection-row">
                       <ng-container *ngTemplateOutlet="inspectionRow; context: { $implicit: inspection }"></ng-container>
@@ -370,7 +367,7 @@
               </table>
             </div>
 
-            <!-- ─── Paginación (solo en modo "all") ─────────────────────── -->
+
             <div *ngIf="viewMode === 'all' && allInspectionsLoaded && totalPages > 1"
               class="d-flex align-items-center justify-content-between px-3 pt-3 pb-1">
               <small class="text-muted">
@@ -385,7 +382,7 @@
                     </a>
                   </li>
                   <ng-container *ngFor="let p of pagesArray">
-                    <!-- Mostrar solo páginas cercanas a la actual -->
+
                     <li *ngIf="p === 1 || p === totalPages || (p >= currentPage - 2 && p <= currentPage + 2)"
                       class="page-item" [class.active]="p === currentPage">
                       <a class="page-link" (click)="goToPage(p)" style="cursor:pointer;">{{ p }}</a>
@@ -405,21 +402,21 @@
             </div>
 
           </div>
-          <!-- /card-body -->
+
 
         </div>
-        <!-- /card -->
+
       </div>
 
     </div>
-    <!-- /row -->
+
 
   </div>
 
-  <!-- Fila de tabla reutilizable -->
+
   <ng-template #inspectionRow let-inspection>
 
-    <!-- Col 1: Certificado (sticky left solo en modos recent/all) -->
+
     <td [class.td-sticky-left]="viewMode !== 'expiry-issues'" style="min-width:110px;" (click)="viewInspection(inspection.id)">
       <span class="badge bg-primary-subtle text-primary border border-primary border-opacity-25 px-2 py-1"
         *ngIf="inspection.numero_certificado; else sinCert">
@@ -430,7 +427,7 @@
       </ng-template>
     </td>
 
-    <!-- Col 2: Vigencia (solo en modos all y expiry-issues) -->
+
     <td *ngIf="viewMode === 'expiry-issues' "
       [class.td-sticky-vigencia]="viewMode !== 'expiry-issues'"
       [class.td-vigencia-expiry]="viewMode === 'expiry-issues'"
@@ -455,7 +452,7 @@
           Inspección  Vence en {{ getDaysUntilExpiry(inspection.fecha_vigencia)! }} días
           </span>
         </small>
-        <!-- Alertas detalladas: solo visibles en modo expiry-issues -->
+
         <ng-container *ngIf="viewMode === 'expiry-issues'">
           <ng-container *ngFor="let alert of getExpiryAlerts(inspection)">
             <span *ngIf="alert.diff < 0"
@@ -487,14 +484,14 @@
       </div>
     </td>
 
-    <!-- Col 3: Placa -->
+
     <td (click)="viewInspection(inspection.id)">{{ inspection.placa || 'Sin placa' }}
 
 
-      
+
     </td>
 
-    <!-- Col 4: Teléfono -->
+
     <td>
       <div class="phone-cell">
         <div class="d-flex align-items-center mb-1">
@@ -509,7 +506,7 @@
       </div>
     </td>
 
-    <!-- Col 5: Conductor -->
+
     <td (click)="viewInspection(inspection.id)">
       <div class="d-flex align-items-center">
         <div class="avatar avatar-xxs rounded-circle me-2">
@@ -520,12 +517,12 @@
       </div>
     </td>
 
-    <!-- Col 6: Fecha inspección -->
+
     <td (click)="viewInspection(inspection.id)">
       {{ (inspection.fecha_inspeccion | date: 'dd/MM/yyyy':'UTC') || 'Sin fecha' }}
     </td>
 
-    <!-- Col 7: Status -->
+
     <td (click)="viewInspection(inspection.id)">
       <span class="badge badge-lg" [ngClass]="{
         'bg-success-subtle text-success': inspection.estado === 'aprobada',
@@ -537,7 +534,7 @@
       </span>
     </td>
 
-    <!-- Col 8: Documentos Críticos -->
+
     <td>
       <div class="d-flex flex-column gap-1">
         <span class="badge badge-sm" [ngClass]="getDocumentStatusClass(inspection.fecha_vencimiento_soat)"
@@ -559,7 +556,7 @@
       </div>
     </td>
 
-    <!-- Col 9: Acción -->
+
     <td>
       <div class="btn-group float-end" (click)="$event.stopPropagation()">
         <button class="btn btn-subtle-primary btn-sm btn-shadow btn-icon waves-effect dropdown-toggle"
@@ -585,7 +582,7 @@
 
   </ng-template>
 
-  <!-- Floating Action Button for Mobile/Tablet -->
+
   <div class="floating-action d-lg-none">
     <input type="checkbox" id="fab-check" class="fab-check">
     <label class="fab" for="fab-check">
@@ -690,7 +687,7 @@
 
     @media (min-width: 992px) { .floating-action { display: none; } }
 
-    /* ── Columna sticky izquierda: Certificado (siempre) ─────────────── */
+
     .th-sticky-left,
     .td-sticky-left {
       position: sticky;
@@ -703,7 +700,7 @@
 
     .th-sticky-left { z-index: 3; }
 
-    /* ── Columna sticky izquierda: Vigencia (siempre) ─────────────────── */
+
     .th-sticky-vigencia,
     .td-sticky-vigencia {
       position: sticky;
@@ -714,7 +711,7 @@
       min-width: 274px;
     }
 
-    /* ── Columna Vigencia en modo expiry-issues (ancho doble, sin sticky) */
+
     .th-vigencia-expiry,
     .td-vigencia-expiry {
       min-width: 274px;
@@ -722,13 +719,13 @@
 
     .th-sticky-vigencia { z-index: 3; }
 
-    /* Fondo en filas hover/striped para mantener coherencia con sticky */
+
     .inspection-row:hover .td-sticky-left,
     .inspection-row:hover .td-sticky-vigencia {
       background: var(--bs-table-hover-bg, #f8f9fa);
     }
 
-    /* Sombra compartida — borde derecho suave en ambas columnas fijas */
+
     .th-sticky-left::after,
     .td-sticky-left::after,
     .th-sticky-vigencia::after,

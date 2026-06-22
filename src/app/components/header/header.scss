@@ -1,13 +1,13 @@
-/* Desktop back button (hidden on mobile/tablet) */
+
 .desktop-only {
   display: none;
-  
+
   @media (min-width: 1024px) {
     display: block;
   }
 }
 
-/* Mobile home button (hidden on desktop) */
+
 .mobile-home-btn {
   display: flex;
   align-items: center;
@@ -16,11 +16,11 @@
  color: rgb(20 3 172);
   text-decoration: none;
   font-size: 1.25rem;
-  
+
   @media (min-width: 1024px) {
     display: none;
   }
-  
+
   i {
     display: flex;
     align-items: center;
