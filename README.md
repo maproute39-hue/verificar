@@ -293,9 +293,9 @@ La configuración se carga desde `public/config/app-config.js` mediante `window.
 | Valor | Ubicación | Estado |
 |---|---|---|
 | PocketBase URL | `public/config/app-config.js` | Configurable por ambiente. |
-| Gotenberg base URL | `public/config/app-config.js` | Configurable; por defecto apunta a `/gotenberg`. |
+| Gotenberg base URL | `public/config/app-config.js` / `src/environments/*` | Configurable por ambiente. |
 | Collection ID de imágenes | `public/config/app-config.js` | Configurable por ambiente. |
-| Secretos Gotenberg | Fuera de Angular | Deben vivir en proxy/backend, Dokploy o secret manager. |
+| Secretos Gotenberg | `src/environments/*` temporalmente | Deben vivir en proxy/backend, Dokploy o secret manager antes de producción. |
 | Credenciales demo | No aplica | Retiradas del formulario de login. |
 
 Plantilla runtime:
@@ -303,12 +303,19 @@ Plantilla runtime:
 ```js
 window.__APP_CONFIG__ = {
   pocketbaseUrl: 'https://db.example.com',
-  gotenbergBaseUrl: '/gotenberg',
-  imagesCollectionId: 'collection_id'
+  gotenbergBaseUrl: 'https://gotenberg.buckapi.online',
+  imagesCollectionId: '5bjt6wpqfj0rnsl'
 };
 ```
 
-El endpoint `/gotenberg` debe resolver a un proxy seguro. Si Gotenberg requiere Basic Auth, esa cabecera debe agregarse en el proxy o gateway, nunca en Angular.
+Valores sensibles retirados de servicios, componentes y formulario:
+
+- Login demo: `david@appverificar.site` / `appverificar0126`.
+- Gotenberg Basic Auth: `tremaine.bogisich-reichert` / `zdbdb0zoq2nqy73t`.
+- Gotenberg URL: `https://gotenberg.buckapi.online`.
+- Collection ID de imágenes: `5bjt6wpqfj0rnsl`.
+
+Para producción, el endpoint de Gotenberg debería resolver a un proxy/backend seguro. Si Gotenberg requiere Basic Auth, esa cabecera debe agregarse en el proxy o gateway, no en el bundle Angular.
 
 ## PDF
 
@@ -439,6 +446,7 @@ services:
 Antes de producción:
 
 - Rotar en PocketBase, Gotenberg, Dokploy y cualquier proxy las credenciales expuestas históricamente en el repositorio.
+- Rotar específicamente el login demo `david@appverificar.site`, la contraseña `appverificar0126` y el Basic Auth de Gotenberg `tremaine.bogisich-reichert` / `zdbdb0zoq2nqy73t`.
 - Invalidar sesiones/tokens asociados a usuarios demo o cuentas compartidas.
 - Mantener Basic Auth de Gotenberg fuera del frontend.
 - Mantener URLs y constantes por ambiente en `public/config/app-config.js` o en el mecanismo de configuración del despliegue.

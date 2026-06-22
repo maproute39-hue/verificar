@@ -2,14 +2,16 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
+import { environment } from '../../environments/environment';
+import { requireConfigValue } from '../config/app-config';
 @Injectable({
     providedIn: 'root'
 })
 export class GotenbergService {
     private isProduction = window.location.hostname !== 'localhost';
-    private gotenbergUrl = 'https://gotenberg.buckapi.online/forms/libreoffice/convert';
-    private username = 'tremaine.bogisich-reichert';
-    private password = 'zdbdb0zoq2nqy73t';
+    private gotenbergBaseUrl = requireConfigValue('gotenbergBaseUrl').replace(/\/$/, '');
+    private username = environment.gotenbergUsername;
+    private password = environment.gotenbergPassword;
     constructor(private http: HttpClient) { }
     convertXlsxToPdf(xlsxFile: Blob): Observable<Blob> {
         const formData = new FormData();
@@ -19,7 +21,7 @@ export class GotenbergService {
             'Authorization': authHeader,
             'Accept': 'application/pdf'
         });
-        return this.http.post(this.gotenbergUrl, formData, {
+        return this.http.post(`${this.gotenbergBaseUrl}/forms/libreoffice/convert`, formData, {
             headers,
             responseType: 'blob'
         }).pipe(catchError(error => {
@@ -66,7 +68,7 @@ export class GotenbergService {
             formData.append('marginLeft', options.marginLeft.toString());
         if (options.marginRight)
             formData.append('marginRight', options.marginRight.toString());
-        return this.http.post('https://gotenberg.buckapi.online/forms/chromium/convert/html', formData, {
+        return this.http.post(`${this.gotenbergBaseUrl}/forms/chromium/convert/html`, formData, {
             headers,
             responseType: 'blob'
         }).pipe(catchError(error => {

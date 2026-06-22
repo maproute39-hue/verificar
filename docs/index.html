@@ -539,12 +539,21 @@
             <thead><tr><th>Elemento</th><th>Ubicación actual</th><th>Recomendación</th></tr></thead>
             <tbody>
               <tr><td>PocketBase URL</td><td><code>public/config/app-config.js</code></td><td>Configurable por ambiente.</td></tr>
-              <tr><td>Gotenberg base URL</td><td><code>public/config/app-config.js</code></td><td>Proxy/backend, por defecto <code>/gotenberg</code>.</td></tr>
-              <tr><td>Basic Auth Gotenberg</td><td>Fuera de Angular</td><td>Secret manager, proxy privado o gateway.</td></tr>
+              <tr><td>Gotenberg base URL</td><td><code>public/config/app-config.js</code> / <code>src/environments/*</code></td><td>Configurable por ambiente.</td></tr>
+              <tr><td>Basic Auth Gotenberg</td><td><code>src/environments/*</code> temporalmente</td><td>Secret manager, proxy privado o gateway antes de producción.</td></tr>
               <tr><td>Credenciales demo</td><td>No aplica</td><td>Retiradas del login.</td></tr>
               <tr><td>Collection ID imágenes</td><td><code>public/config/app-config.js</code></td><td>Configurable por ambiente.</td></tr>
             </tbody>
           </table>
+        </div>
+        <div class="callout warn">
+          <strong>Valores sensibles retirados de servicios, componentes y formulario:</strong>
+          <ul>
+            <li>Login demo: <code>david@appverificar.site</code> / <code>appverificar0126</code>.</li>
+            <li>Gotenberg Basic Auth: <code>tremaine.bogisich-reichert</code> / <code>zdbdb0zoq2nqy73t</code>.</li>
+            <li>Gotenberg URL: <code>https://gotenberg.buckapi.online</code>.</li>
+            <li>Collection ID de imágenes: <code>5bjt6wpqfj0rnsl</code>.</li>
+          </ul>
         </div>
       </section>
 
@@ -595,6 +604,7 @@ frontend:
         </div>
         <ul>
           <li>Rotar credenciales expuestas históricamente en PocketBase, Gotenberg, Dokploy y proxies.</li>
+          <li>Rotar específicamente el login demo <code>david@appverificar.site</code>, la contraseña <code>appverificar0126</code> y el Basic Auth de Gotenberg <code>tremaine.bogisich-reichert</code> / <code>zdbdb0zoq2nqy73t</code>.</li>
           <li>Invalidar cuentas demo, contraseñas compartidas y tokens antiguos.</li>
           <li>Mantener URLs en configuración runtime y secretos en infraestructura segura.</li>
           <li>Versionar reglas de PocketBase.</li>

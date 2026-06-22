@@ -1,5 +1,5 @@
 window.__APP_CONFIG__ = {
   pocketbaseUrl: '',
-  gotenbergBaseUrl: '/gotenberg',
-  imagesCollectionId: ''
+  gotenbergBaseUrl: 'https://gotenberg.buckapi.online',
+  imagesCollectionId: '5bjt6wpqfj0rnsl'
 };

@@ -12,6 +12,7 @@ import { ChangeDetectorRef } from '@angular/core';
 import { NgZone } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { SignaturePadComponent, NgSignaturePadOptions } from '@almothafar/angular-signature-pad';
+import { requireConfigValue } from '../../config/app-config';
 declare const flatpickr: any;
 interface FlatpickrOptions {
     locale?: any;
@@ -33,6 +34,7 @@ interface FlatpickrOptions {
     providers: [DatePipe]
 })
 export class Detail implements OnInit, AfterViewInit {
+    private readonly imagesCollectionId = requireConfigValue('imagesCollectionId');
     @ViewChild('signaturePad')
     signaturePad!: SignaturePadComponent;
     @ViewChild('signaturePadInspector')
@@ -161,7 +163,6 @@ export class Detail implements OnInit, AfterViewInit {
                 didOpen: () => Swal.showLoading()
             });
             const uploadedImageIds: string[] = [];
-            const collectionId = '5bjt6wpqfj0rnsl';
             for (const file of this.selectedFiles) {
                 const formData = new FormData();
                 formData.append('image', file);
@@ -479,14 +480,13 @@ export class Detail implements OnInit, AfterViewInit {
         try {
             const inspection = await this.inspectionService.pb.collection('inspections').getOne(inspectionId);
             const imageIds = inspection['images'] || [];
-            const collectionId = '5bjt6wpqfj0rnsl';
             if (imageIds.length > 0) {
                 const imagePromises = imageIds.map(async (imageId: string) => {
                     try {
                         const imageRecord = await this.inspectionService.pb.collection('images').getOne(imageId);
                         const filename = imageRecord['image'];
                         if (filename) {
-                            const url = this.inspectionService.getImageUrl(collectionId, imageId, filename);
+                            const url = this.inspectionService.getImageUrl(this.imagesCollectionId, imageId, filename);
                             await this.preloadImage(url);
                             return {
                                 url,
