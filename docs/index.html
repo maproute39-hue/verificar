@@ -87,15 +87,17 @@
       gap: 12px;
       margin-bottom: 18px;
     }
-    .mark {
+    .mark,
+    .brand img {
       width: 40px;
       height: 40px;
       display: grid;
       place-items: center;
       border-radius: 8px;
-      background: linear-gradient(135deg, var(--accent), var(--accent-2));
       color: #041016;
       font-weight: 900;
+      object-fit: contain;
+      padding: 6px;
     }
     .brand strong { display: block; line-height: 1.1; }
     .brand span { color: var(--muted); font-size: .78rem; }
@@ -301,7 +303,7 @@
   <div class="layout">
     <aside class="sidebar" id="sidebar">
       <div class="brand">
-        <div class="mark">V</div>
+        <img src="logo.svg" alt="VerificarIT">
         <div>
           <strong>VerificarIT</strong>
           <span>Documentación técnica</span>
@@ -339,7 +341,7 @@
         </p>
         <div class="grid">
           <div class="card"><small>Frontend</small><strong>Angular 21 standalone</strong></div>
-          <div class="card"><small>Backend</small><strong>PocketBase HTTPS</strong></div>
+          <div class="card"><small>Backend</small><strong>PocketBase v0.19.0</strong></div>
           <div class="card"><small>Reportes</small><strong>ExcelJS + Gotenberg</strong></div>
           <div class="card"><small>Estado</small><strong>Código depurado</strong></div>
         </div>
@@ -357,10 +359,12 @@
   |   |-- services: auth, inspection, realtime, excel, gotenberg, pwa
   |   `-- public/assets/templates/inspection.xlsx
   |
-  |-- PocketBase
+  |-- PocketBase v0.19.0
   |   |-- users
+  |   |-- files
   |   |-- inspections
   |   |-- images
+  |   |-- firmas
   |   `-- secuencias
   |
   `-- Gotenberg
@@ -413,28 +417,44 @@
       <section id="modelo">
         <h2>Modelo De Datos</h2>
         <p class="lead">
-          El schema de PocketBase no está versionado en el repositorio. El modelo documentado se infiere desde servicios, formularios y `inspection.model.ts`.
+          El schema de PocketBase está versionado en <code>docs/pb_schema.json</code> y corresponde a PocketBase server <code>v0.19.0</code>. La app activa consume principalmente <code>users</code>, <code>inspections</code>, <code>images</code> y <code>secuencias</code>.
         </p>
         <div class="table">
           <table>
             <thead><tr><th>Colección</th><th>Uso</th><th>Campos relevantes</th></tr></thead>
             <tbody>
-              <tr><td><code>users</code></td><td>Autenticación</td><td>`email`, `username`, `name`, `role`, `phone`, `avatar`, `verified`.</td></tr>
-              <tr><td><code>inspections</code></td><td>Inspecciones</td><td>Conductor, propietario, vehículo, documentos, checklist, firmas e imágenes.</td></tr>
-              <tr><td><code>images</code></td><td>Archivos</td><td>Campo file `image`; los IDs se referencian desde inspecciones.</td></tr>
-              <tr><td><code>secuencias</code></td><td>Consecutivos</td><td>`prefijo`, `ultimo_numero`.</td></tr>
+              <tr><td><code>users</code></td><td>Autenticación</td><td><code>name</code>, <code>avatar</code>, <code>type</code>, <code>role</code>, <code>phone</code>, <code>status</code>.</td></tr>
+              <tr><td><code>inspections</code></td><td>Inspecciones activas</td><td>117 campos para conductor, propietario, vehículo, documentos, checklist, firmas, QR y verificación.</td></tr>
+              <tr><td><code>images</code></td><td>Fotografías</td><td>Campo file <code>image</code>; los IDs se guardan en <code>inspections.images</code>.</td></tr>
+              <tr><td><code>secuencias</code></td><td>Consecutivos</td><td><code>ultimo_numero</code>, <code>tipo_inspeccion</code>, <code>prefijo</code>.</td></tr>
+              <tr><td><code>files</code></td><td>Archivos auxiliares</td><td><code>image</code>, <code>type</code>, <code>userId</code>.</td></tr>
+              <tr><td><code>firmas</code></td><td>Firmas</td><td><code>image</code>, <code>numero_certificado</code>.</td></tr>
+              <tr><td><code>inspections_busetas</code></td><td>Legado backend</td><td>98 campos históricos; el componente Angular de busetas fue retirado para la entrega.</td></tr>
             </tbody>
           </table>
         </div>
         <h3>Grupos De Campos De Inspección</h3>
         <ul>
           <li>Identificación: `id`, `numero_certificado`, `created`, `updated`.</li>
-          <li>Conductor y propietario: nombres, identificación, teléfono, WhatsApp, licencia, propietario y documento.</li>
+          <li>Conductor y propietario: nombres, identificación, teléfono, WhatsApp, número y vigencia de licencia, propietario y documento.</li>
           <li>Vehículo: placa, marca, modelo, color, clase, código, capacidad y kilometraje.</li>
           <li>Documentos: SOAT, licencia de tránsito, revisión tecnomecánica y tarjeta de operación.</li>
           <li>Checklist: eléctrico, motor, carrocería, cabina, seguridad, kit, parte baja, frenos, dirección y llantas.</li>
-          <li>Evidencias: firmas base64 e imágenes asociadas.</li>
+          <li>Evidencias y verificación: firmas base64, imágenes asociadas, <code>publicUrl</code>, <code>verificationCode</code> y <code>qrImage</code>.</li>
         </ul>
+        <h3>Valores Controlados</h3>
+        <div class="table">
+          <table>
+            <thead><tr><th>Campo</th><th>Valores</th></tr></thead>
+            <tbody>
+              <tr><td>Checklist técnico</td><td><code>ok</code>, <code>negativo</code>, <code>na</code></td></tr>
+              <tr><td><code>estado</code></td><td><code>borrador</code>, <code>aprobada</code>, <code>rechazada</code></td></tr>
+              <tr><td><code>status</code></td><td><code>approved</code>, <code>rejected</code></td></tr>
+              <tr><td><code>tipo_propietario</code></td><td><code>empresa</code>, <code>persona</code></td></tr>
+              <tr><td><code>users.role</code></td><td><code>client</code>, <code>admin</code></td></tr>
+            </tbody>
+          </table>
+        </div>
       </section>
 
       <section id="endpoints">
@@ -526,10 +546,12 @@ frontend:
         <p>Configurar rewrite SPA: `/<*>` hacia `/index.html` con estado 200.</p>
         <h3>PocketBase En EC2</h3>
         <ul>
+          <li>Usar PocketBase server <code>v0.19.0</code> para mantener compatibilidad con <code>docs/pb_schema.json</code>.</li>
           <li>Ejecutar como servicio systemd.</li>
           <li>Servir detrás de HTTPS.</li>
           <li>Persistir y respaldar `pb_data`.</li>
-          <li>Versionar schema y reglas.</li>
+          <li>Importar o validar <code>docs/pb_schema.json</code> antes de liberar.</li>
+          <li>Versionar schema y reglas después de cada cambio operativo.</li>
           <li>Restringir CORS.</li>
         </ul>
         <h3>Gotenberg En Dokploy</h3>

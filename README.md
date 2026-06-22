@@ -43,10 +43,12 @@ Navegador/PWA
   |   |-- services: auth, inspections, realtime, excel, gotenberg, pwa
   |   `-- assets/templates/inspection.xlsx
   |
-  |-- PocketBase HTTPS
+  |-- PocketBase v0.19.0 HTTPS
   |   |-- users
+  |   |-- files
   |   |-- inspections
   |   |-- images
+  |   |-- firmas
   |   `-- secuencias
   |
   `-- Gotenberg HTTPS
@@ -63,7 +65,8 @@ No hay backend Node dentro del repositorio. El frontend consume PocketBase y Got
 | Frontend | Angular 21, standalone components |
 | Lenguaje | TypeScript 5.9 |
 | PWA | `@angular/service-worker`, `ngsw-config.json`, `public/manifest.json` |
-| Datos | PocketBase SDK `pocketbase@^0.26.6` |
+| Backend de datos | PocketBase server `v0.19.0` |
+| Cliente de datos | PocketBase SDK `pocketbase@^0.26.6` |
 | Realtime | PocketBase realtime subscriptions |
 | Formularios | Angular Reactive Forms, FormsModule |
 | Firmas | `@almothafar/angular-signature-pad` |
@@ -80,7 +83,7 @@ No hay backend Node dentro del repositorio. El frontend consume PocketBase y Got
 - Node.js `>=20.19` o `>=22.12`.
 - npm `>=10`.
 - Angular CLI compatible con Angular 21.
-- PocketBase accesible por HTTPS.
+- PocketBase `v0.19.0` accesible por HTTPS.
 - Gotenberg accesible por HTTPS.
 
 ```bash
@@ -133,7 +136,8 @@ dist/verificar-app/browser
 ├── ngsw-config.json
 ├── proxy.conf.json
 ├── docs/
-│   └── index.html
+│   ├── index.html
+│   └── pb_schema.json
 ├── public/
 │   ├── manifest.json
 │   └── assets/
@@ -193,30 +197,43 @@ dist/verificar-app/browser
 
 ## Modelo De Datos
 
-El repositorio no contiene migraciones ni export del schema de PocketBase. El modelo se infiere desde `src/app/models/inspection.model.ts`, formularios y servicios.
+El esquema de PocketBase está versionado en `docs/pb_schema.json` y corresponde a PocketBase server `v0.19.0`. La aplicación activa consume principalmente `users`, `inspections`, `images` y `secuencias`; el export también conserva colecciones de soporte y una colección histórica de busetas que ya no tiene componente Angular activo.
 
-Colecciones requeridas:
+Colecciones del export:
 
 | Colección | Uso |
 |---|---|
-| `users` | Autenticación, perfiles y roles. |
-| `inspections` | Registro principal de inspecciones. |
-| `images` | Archivos/fotografías. |
-| `secuencias` | Consecutivos de certificados por prefijo. |
+| `users` | Auth collection con perfil, rol, teléfono, avatar y estado. |
+| `inspections` | Registro principal activo de inspecciones; 117 campos de datos, checklist, evidencias y verificación. |
+| `images` | Archivos/fotografías; campo file `image` con tamaño máximo aproximado de 50 MB. |
+| `secuencias` | Consecutivos por tipo y prefijo: `ultimo_numero`, `tipo_inspeccion`, `prefijo`. |
+| `files` | Colección auxiliar de archivos con `image`, `type` y `userId`. |
+| `firmas` | Evidencias de firma asociadas por `numero_certificado`. |
+| `inspections_busetas` | Colección histórica/legado del backend; el flujo Angular de busetas fue retirado para la entrega. |
 
 Campos principales de `inspections`:
 
 - Identificación: `id`, `numero_certificado`, `created`, `updated`.
-- Conductor: `nombres_conductor`, `identificacion`, `telefono`, `whatsapp`, `fecha_vencimiento_licencia`.
+- Conductor: `nombres_conductor`, `identificacion`, `telefono`, `whatsapp`, `licencia_conductor_numero`, `fecha_vencimiento_licencia`.
 - Propietario: `propietario`, `documento_propietario`, `tipo_propietario`.
 - Vehículo: `placa`, `marca`, `modelo`, `color`, `clase_vehiculo`, `codigo_vehiculo`, `capacidad_pasajeros`, `kilometraje`.
 - Documentos: `soat`, `licencia_transito`, `revision_tecnomecanica`, `tarjeta_operacion`.
 - Fechas: `fecha_inspeccion`, `fecha_vigencia`, `fecha_vencimiento_soat`, `fecha_vencimiento_revision_tecnomecanica`, `fecha_vencimiento_tarjeta_operacion`.
-- Estado: `estado`, `status`, `observaciones`, `created_by`.
+- Estado y publicación: `estado`, `status`, `observaciones`, `created_by`, `publicUrl`, `verificationCode`, `qrImage`.
 - Checklist: sistema eléctrico, motor, carrocería, cabina, seguridad, kit de carretera, parte baja, frenos, dirección y llantas.
 - Evidencia: `firma_conductor`, `firma_inspector`, `images`.
 
 Los listados limitan campos con `INSPECTION_LIST_FIELDS` y eliminan firmas base64 para reducir peso en memoria, realtime y `localStorage`.
+
+Valores select principales:
+
+| Campo | Valores |
+|---|---|
+| Checklist técnico | `ok`, `negativo`, `na` |
+| `estado` | `borrador`, `aprobada`, `rechazada` |
+| `status` | `approved`, `rejected` |
+| `tipo_propietario` | `empresa`, `persona` |
+| `users.role` | `client`, `admin` |
 
 ## Endpoints Consumidos
 
@@ -335,10 +352,12 @@ Validar después del despliegue:
 
 Recomendaciones mínimas:
 
+- Usar PocketBase server `v0.19.0` para mantener compatibilidad con `docs/pb_schema.json`.
 - Ejecutar PocketBase como servicio systemd.
 - Servir detrás de HTTPS con Nginx, Caddy o balanceador.
 - Persistir y respaldar `pb_data`.
-- Exportar y versionar schema/reglas.
+- Importar o validar el schema desde `docs/pb_schema.json` antes de liberar.
+- Exportar y versionar schema/reglas después de cada cambio operativo.
 - Restringir CORS al dominio de la app.
 - Validar permisos por colección y rol.
 

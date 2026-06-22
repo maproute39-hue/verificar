@@ -1,0 +1,3717 @@
+[
+  {
+    "id": "f9q1b1tqjk39t8f",
+    "name": "files",
+    "type": "base",
+    "system": false,
+    "schema": [
+      {
+        "system": false,
+        "id": "t2vg0hlk",
+        "name": "image",
+        "type": "file",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "maxSize": 5242880,
+          "mimeTypes": [],
+          "thumbs": [],
+          "protected": false
+        }
+      },
+      {
+        "system": false,
+        "id": "djnoha0k",
+        "name": "type",
+        "type": "text",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      },
+      {
+        "system": false,
+        "id": "4b9kiifs",
+        "name": "userId",
+        "type": "text",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      }
+    ],
+    "indexes": [],
+    "listRule": "",
+    "viewRule": "",
+    "createRule": "",
+    "updateRule": "",
+    "deleteRule": "",
+    "options": {}
+  },
+  {
+    "id": "_pb_users_auth_",
+    "name": "users",
+    "type": "auth",
+    "system": false,
+    "schema": [
+      {
+        "system": false,
+        "id": "users_name",
+        "name": "name",
+        "type": "text",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      },
+      {
+        "system": false,
+        "id": "users_avatar",
+        "name": "avatar",
+        "type": "file",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "maxSize": 5242880,
+          "mimeTypes": [
+            "image/jpeg",
+            "image/png",
+            "image/svg+xml",
+            "image/gif",
+            "image/webp"
+          ],
+          "thumbs": null,
+          "protected": false
+        }
+      },
+      {
+        "system": false,
+        "id": "qekgozqm",
+        "name": "type",
+        "type": "text",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      },
+      {
+        "system": false,
+        "id": "eivxpp2s",
+        "name": "role",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "client",
+            "admin"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "eir5hyga",
+        "name": "phone",
+        "type": "text",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      },
+      {
+        "system": false,
+        "id": "n6ypwzyq",
+        "name": "status",
+        "type": "bool",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {}
+      }
+    ],
+    "indexes": [],
+    "listRule": "",
+    "viewRule": "",
+    "createRule": "",
+    "updateRule": "",
+    "deleteRule": "",
+    "options": {
+      "allowEmailAuth": true,
+      "allowOAuth2Auth": true,
+      "allowUsernameAuth": true,
+      "exceptEmailDomains": null,
+      "manageRule": null,
+      "minPasswordLength": 8,
+      "onlyEmailDomains": null,
+      "requireEmail": false
+    }
+  },
+  {
+    "id": "5bjt6wpqfj0rnsl",
+    "name": "images",
+    "type": "base",
+    "system": false,
+    "schema": [
+      {
+        "system": false,
+        "id": "jjqmldpp",
+        "name": "image",
+        "type": "file",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "maxSize": 50242880,
+          "mimeTypes": [],
+          "thumbs": [],
+          "protected": false
+        }
+      }
+    ],
+    "indexes": [],
+    "listRule": "",
+    "viewRule": "",
+    "createRule": "",
+    "updateRule": "",
+    "deleteRule": "",
+    "options": {}
+  },
+  {
+    "id": "ty7xmluakj2drnn",
+    "name": "secuencias",
+    "type": "base",
+    "system": false,
+    "schema": [
+      {
+        "system": false,
+        "id": "lvb2x3xc",
+        "name": "ultimo_numero",
+        "type": "number",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "noDecimal": false
+        }
+      },
+      {
+        "system": false,
+        "id": "euawl0nc",
+        "name": "tipo_inspeccion",
+        "type": "text",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      },
+      {
+        "system": false,
+        "id": "xpsoi2uy",
+        "name": "prefijo",
+        "type": "text",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      }
+    ],
+    "indexes": [],
+    "listRule": "",
+    "viewRule": "",
+    "createRule": "",
+    "updateRule": "",
+    "deleteRule": "",
+    "options": {}
+  },
+  {
+    "id": "hpuexi7q39ndnlg",
+    "name": "inspections_busetas",
+    "type": "base",
+    "system": false,
+    "schema": [
+      {
+        "system": false,
+        "id": "7jinx7qk",
+        "name": "fecha_inspeccion",
+        "type": "date",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": "",
+          "max": ""
+        }
+      },
+      {
+        "system": false,
+        "id": "uwuqjtst",
+        "name": "fecha_vigencia",
+        "type": "date",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": "",
+          "max": ""
+        }
+      },
+      {
+        "system": false,
+        "id": "gcfpddxv",
+        "name": "nombre_transportadora",
+        "type": "text",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      },
+      {
+        "system": false,
+        "id": "17jtja1c",
+        "name": "nombres_conductor",
+        "type": "text",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      },
+      {
+        "system": false,
+        "id": "hkdtmi6s",
+        "name": "identificacion",
+        "type": "text",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      },
+      {
+        "system": false,
+        "id": "refwwzwz",
+        "name": "telefono",
+        "type": "text",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      },
+      {
+        "system": false,
+        "id": "wehlls0v",
+        "name": "fecha_vencimiento_licencia",
+        "type": "date",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": "",
+          "max": ""
+        }
+      },
+      {
+        "system": false,
+        "id": "qtjxz0rs",
+        "name": "placa",
+        "type": "text",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      },
+      {
+        "system": false,
+        "id": "zp9yib30",
+        "name": "marca",
+        "type": "text",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      },
+      {
+        "system": false,
+        "id": "wndtuwdx",
+        "name": "modelo",
+        "type": "text",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      },
+      {
+        "system": false,
+        "id": "ceqwfamc",
+        "name": "kilometraje",
+        "type": "number",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "noDecimal": false
+        }
+      },
+      {
+        "system": false,
+        "id": "c5q6w958",
+        "name": "soat",
+        "type": "text",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      },
+      {
+        "system": false,
+        "id": "rxrxkhpn",
+        "name": "licencia_transito",
+        "type": "text",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      },
+      {
+        "system": false,
+        "id": "t1n4omtm",
+        "name": "revision_tecnomecanica",
+        "type": "text",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      },
+      {
+        "system": false,
+        "id": "pawmqaeg",
+        "name": "clase_vehiculo",
+        "type": "text",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      },
+      {
+        "system": false,
+        "id": "ccjxcfpq",
+        "name": "tarjeta_operacion",
+        "type": "text",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      },
+      {
+        "system": false,
+        "id": "31ptiiok",
+        "name": "color",
+        "type": "text",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      },
+      {
+        "system": false,
+        "id": "j23mwwyv",
+        "name": "codigo_vehiculo",
+        "type": "text",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      },
+      {
+        "system": false,
+        "id": "y6dtqtdy",
+        "name": "capacidad_pasajeros",
+        "type": "number",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "noDecimal": false
+        }
+      },
+      {
+        "system": false,
+        "id": "bqhvo1bg",
+        "name": "luces_navegacion",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "93wwbxmz",
+        "name": "luces_frenado",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "3lmidt8q",
+        "name": "luces_direccionales",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "u8csqmdo",
+        "name": "luz_reversa",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "7zzej7oh",
+        "name": "luces_estacionamiento",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "ls6jiij4",
+        "name": "luces_posicion",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "xospj2f6",
+        "name": "luz_antineblina",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "vz4e9m8p",
+        "name": "luz_placa",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "al6ax36b",
+        "name": "tablero_instrumentos",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "srvr3zrx",
+        "name": "bocina",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "3fpae9y9",
+        "name": "bateria",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "dsiytlya",
+        "name": "aire_acondicionado",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "yzrynddq",
+        "name": "aceite_motor",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "jympp0kc",
+        "name": "aceite_transmision",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "i4lck9iw",
+        "name": "liquido_refrigerante",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "qjhpdjbo",
+        "name": "liquido_frenos",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "bldt4wj5",
+        "name": "filtro_aire",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "048nphve",
+        "name": "hidraulico_direccion",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "wlslhlx5",
+        "name": "tension_correas",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "3rzifeeo",
+        "name": "parachoque_delantero",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "oedhvm27",
+        "name": "parachoque_trasero",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "qu1sahxo",
+        "name": "vidrios_seguridad",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "g4fescri",
+        "name": "vidrios_laterales",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "cqndjnni",
+        "name": "limpia_brisas",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "dvoapor2",
+        "name": "guardabarros",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "ogfkpxoa",
+        "name": "estribos_laterales",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "7j6azhaw",
+        "name": "placa_adhesivo",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "iv4agfgb",
+        "name": "chapa_compuerta",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "nkdypez4",
+        "name": "tapiceria",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "mntq9bsr",
+        "name": "manijas_seguros",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "2kbusexz",
+        "name": "sistema_elevavidrios",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "p4hovzwp",
+        "name": "antideslizantes_pedales",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "iqpdfgdl",
+        "name": "freno_mano",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "nir60h78",
+        "name": "tablero_instrumentos_interno",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "ggjewjgq",
+        "name": "sistema_frenos",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "abudj8ke",
+        "name": "abs",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "p5cjgrb0",
+        "name": "sistema_direccion",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "tboe2owl",
+        "name": "espejos_laterales",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "alolo5vq",
+        "name": "espejo_interno",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "gd2oqqum",
+        "name": "freno_mano_seguridad",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "g1fvreoc",
+        "name": "cinturones_seguridad",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "8h4l4wtq",
+        "name": "airbags",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "cecxohyr",
+        "name": "cadena_sujecion",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "cqlzflis",
+        "name": "columna_direccion",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "hjnhnn4n",
+        "name": "apoyacabezas",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "9l7unp74",
+        "name": "conos_triangular",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "in5jfc8p",
+        "name": "botiquin",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "z1fo18ma",
+        "name": "extintor",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "neda2gqs",
+        "name": "cunas",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "5al3slfe",
+        "name": "llanta_repuesto",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "xtj2v1bo",
+        "name": "caja_herramientas",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "mbzjkxrt",
+        "name": "linterna",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "4ysnmsoq",
+        "name": "gato",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "zr6dzeid",
+        "name": "buies_barra",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "qwonpiwn",
+        "name": "buies_tiera",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "ijulypng",
+        "name": "cuna_motor",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "5vawu87x",
+        "name": "guardapolvo_axiales",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "usvgblqg",
+        "name": "amortiguadores",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "7htdzohf",
+        "name": "hojas_muelles",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "8uw4yzl6",
+        "name": "llanta_di",
+        "type": "number",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "noDecimal": false
+        }
+      },
+      {
+        "system": false,
+        "id": "kz81izuk",
+        "name": "llanta_dd",
+        "type": "number",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "noDecimal": false
+        }
+      },
+      {
+        "system": false,
+        "id": "nmqnnoqs",
+        "name": "llanta_tie",
+        "type": "number",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "noDecimal": false
+        }
+      },
+      {
+        "system": false,
+        "id": "2l78y71g",
+        "name": "llanta_tde",
+        "type": "number",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "noDecimal": false
+        }
+      },
+      {
+        "system": false,
+        "id": "e12m5ci8",
+        "name": "created_by",
+        "type": "text",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      },
+      {
+        "system": false,
+        "id": "4xc4dsgv",
+        "name": "estado",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "borrador",
+            "completada",
+            "rechazada"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "nqy2ixj3",
+        "name": "observaciones",
+        "type": "text",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      },
+      {
+        "system": false,
+        "id": "5qzovxto",
+        "name": "fecha_vencimiento_soat",
+        "type": "date",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": "",
+          "max": ""
+        }
+      },
+      {
+        "system": false,
+        "id": "0on3f5sy",
+        "name": "fecha_vencimiento_revision_tecnomecanica",
+        "type": "date",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": "",
+          "max": ""
+        }
+      },
+      {
+        "system": false,
+        "id": "okjprtjm",
+        "name": "fecha_vencimiento_tarjeta_operacion",
+        "type": "date",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": "",
+          "max": ""
+        }
+      },
+      {
+        "system": false,
+        "id": "iwvaweab",
+        "name": "status",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "approved",
+            "rejected"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "fad1gfzc",
+        "name": "llanta_tii",
+        "type": "number",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "noDecimal": false
+        }
+      },
+      {
+        "system": false,
+        "id": "9bzj58tj",
+        "name": "llanta_tdi",
+        "type": "number",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "noDecimal": false
+        }
+      },
+      {
+        "system": false,
+        "id": "7ixpmnlx",
+        "name": "presion_llanta_d_li",
+        "type": "number",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "noDecimal": false
+        }
+      },
+      {
+        "system": false,
+        "id": "jwdclpi9",
+        "name": "presion_llanta_d_ld",
+        "type": "number",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "noDecimal": false
+        }
+      },
+      {
+        "system": false,
+        "id": "1rpeak2n",
+        "name": "presion_llanta_t_lie",
+        "type": "number",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "noDecimal": false
+        }
+      },
+      {
+        "system": false,
+        "id": "mmiwojae",
+        "name": "presion_llanta_t_lde",
+        "type": "number",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "noDecimal": false
+        }
+      },
+      {
+        "system": false,
+        "id": "sjlalfai",
+        "name": "presion_llanta_t_lii",
+        "type": "number",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "noDecimal": false
+        }
+      },
+      {
+        "system": false,
+        "id": "j5vg0nhv",
+        "name": "presion_llanta_t_ldi",
+        "type": "number",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "noDecimal": false
+        }
+      },
+      {
+        "system": false,
+        "id": "jz3dcl7t",
+        "name": "categoria_licencia",
+        "type": "number",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "noDecimal": false
+        }
+      }
+    ],
+    "indexes": [],
+    "listRule": "",
+    "viewRule": "",
+    "createRule": "",
+    "updateRule": "",
+    "deleteRule": "",
+    "options": {}
+  },
+  {
+    "id": "7oc6avl5khla2mw",
+    "name": "firmas",
+    "type": "base",
+    "system": false,
+    "schema": [
+      {
+        "system": false,
+        "id": "esecuyry",
+        "name": "image",
+        "type": "file",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "maxSize": 5242880,
+          "mimeTypes": [],
+          "thumbs": [],
+          "protected": false
+        }
+      },
+      {
+        "system": false,
+        "id": "xgzovcfb",
+        "name": "numero_certificado",
+        "type": "text",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      }
+    ],
+    "indexes": [],
+    "listRule": "",
+    "viewRule": "",
+    "createRule": "",
+    "updateRule": "",
+    "deleteRule": "",
+    "options": {}
+  },
+  {
+    "id": "vmgyi8jq13vg6lm",
+    "name": "inspections",
+    "type": "base",
+    "system": false,
+    "schema": [
+      {
+        "system": false,
+        "id": "8pzmxbsu",
+        "name": "fecha_inspeccion",
+        "type": "date",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": "",
+          "max": ""
+        }
+      },
+      {
+        "system": false,
+        "id": "rvciixno",
+        "name": "fecha_vigencia",
+        "type": "date",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": "",
+          "max": ""
+        }
+      },
+      {
+        "system": false,
+        "id": "uy6tgtsr",
+        "name": "nombre_transportadora",
+        "type": "text",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      },
+      {
+        "system": false,
+        "id": "092qgulw",
+        "name": "nombres_conductor",
+        "type": "text",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      },
+      {
+        "system": false,
+        "id": "58tmhp3c",
+        "name": "identificacion",
+        "type": "text",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      },
+      {
+        "system": false,
+        "id": "nvu2jx1f",
+        "name": "telefono",
+        "type": "text",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      },
+      {
+        "system": false,
+        "id": "mg6rwc7l",
+        "name": "fecha_vencimiento_licencia_backup",
+        "type": "date",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": "",
+          "max": ""
+        }
+      },
+      {
+        "system": false,
+        "id": "jnzcznsy",
+        "name": "placa",
+        "type": "text",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      },
+      {
+        "system": false,
+        "id": "di6mipwk",
+        "name": "marca",
+        "type": "text",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      },
+      {
+        "system": false,
+        "id": "qiqs9sme",
+        "name": "modelo",
+        "type": "text",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      },
+      {
+        "system": false,
+        "id": "lfbqhkq8",
+        "name": "kilometraje",
+        "type": "number",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "noDecimal": false
+        }
+      },
+      {
+        "system": false,
+        "id": "7lbrdrsb",
+        "name": "soat",
+        "type": "text",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      },
+      {
+        "system": false,
+        "id": "kmsvwscf",
+        "name": "licencia_transito",
+        "type": "text",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      },
+      {
+        "system": false,
+        "id": "j7pd0b2k",
+        "name": "revision_tecnomecanica",
+        "type": "text",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      },
+      {
+        "system": false,
+        "id": "uzymq3v4",
+        "name": "clase_vehiculo",
+        "type": "text",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      },
+      {
+        "system": false,
+        "id": "a1qip8le",
+        "name": "tarjeta_operacion",
+        "type": "text",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      },
+      {
+        "system": false,
+        "id": "5suxhp6u",
+        "name": "color",
+        "type": "text",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      },
+      {
+        "system": false,
+        "id": "4wgbkzby",
+        "name": "codigo_vehiculo",
+        "type": "text",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      },
+      {
+        "system": false,
+        "id": "q94h0ucw",
+        "name": "capacidad_pasajeros",
+        "type": "number",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "noDecimal": false
+        }
+      },
+      {
+        "system": false,
+        "id": "ni0znrwf",
+        "name": "luces_navegacion",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "mbjwb81u",
+        "name": "luces_frenado",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "kxilisqg",
+        "name": "luces_direccionales",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "yhvhyf6w",
+        "name": "luz_reversa",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "vtwkwklq",
+        "name": "luces_estacionamiento",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "ycy20m2u",
+        "name": "luces_posicion",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "kbmoamsb",
+        "name": "luz_antineblina",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "otcemm6w",
+        "name": "luz_placa",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "kekq0ryn",
+        "name": "tablero_instrumentos",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "jlvu0hnt",
+        "name": "bocina",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "o1rhe1r2",
+        "name": "bateria",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "srqvenoz",
+        "name": "aire_acondicionado",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "t95cokf2",
+        "name": "aceite_motor",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "myf2nrfc",
+        "name": "aceite_transmision",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "vgeb3shp",
+        "name": "liquido_refrigerante",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "z9ypak2r",
+        "name": "liquido_frenos",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "encd9lzm",
+        "name": "filtro_aire",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "ptf5nksu",
+        "name": "hidraulico_direccion",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "eljbwump",
+        "name": "tension_correas",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "hb5slacq",
+        "name": "parachoque_delantero",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "ueaor5sa",
+        "name": "parachoque_trasero",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "9xncxj5e",
+        "name": "vidrios_seguridad",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "z4uhcx1v",
+        "name": "vidrios_laterales",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "t0kumevf",
+        "name": "limpia_brisas",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "c0oujaog",
+        "name": "guardabarros",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "f7iat42f",
+        "name": "estribos_laterales",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "rycpvvvy",
+        "name": "placa_adhesivo",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "aj1kseej",
+        "name": "chapa_compuerta",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "mwob6ifj",
+        "name": "tapiceria",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "gzemen7w",
+        "name": "manijas_seguros",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "drisuuxo",
+        "name": "vidrios_electricos",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "hov7jay0",
+        "name": "antideslizantes_pedales",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "msphrkcp",
+        "name": "tablero_instrumentos_interno",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "jtfmg0sx",
+        "name": "abs",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "v1wuqc4r",
+        "name": "espejos_laterales",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "xdwlvdeu",
+        "name": "espejo_interno",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "kcssmh68",
+        "name": "freno_mano_seguridad",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "4j6aw5te",
+        "name": "cinturones_seguridad",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "ywuwxsou",
+        "name": "airbags",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "cr37i0fd",
+        "name": "cadena_sujecion",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "vmouwcch",
+        "name": "columna_direccion",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "jpbxw6bx",
+        "name": "apoyacabezas",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "docxdwon",
+        "name": "barra_antivuelco",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "dstsbopw",
+        "name": "rejilla_vidrio_trasero",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "99lqjg7x",
+        "name": "conos_triangular",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "hsaxv6lj",
+        "name": "botiquin",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "1jjbuyvq",
+        "name": "extintor",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "qnbgdy9d",
+        "name": "cunas",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "0xxwxa6l",
+        "name": "llanta_repuesto",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "1mtxku8x",
+        "name": "caja_herramientas",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "q2kwbb3b",
+        "name": "linterna",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "g2peidfd",
+        "name": "gato",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "4ppaze04",
+        "name": "buies_barra",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "ciulcctt",
+        "name": "buies_tiera",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "taq4rmhs",
+        "name": "cuna_motor",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "o8k1ftvv",
+        "name": "guardapolvo_axiales",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "vsebbdxi",
+        "name": "amortiguadores",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "3nexk3ia",
+        "name": "hojas_muelles",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "hia3th2p",
+        "name": "silenciadores",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "cscbp3z9",
+        "name": "tanques_compresor",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "rbf8ifbq",
+        "name": "llanta_di",
+        "type": "number",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "noDecimal": false
+        }
+      },
+      {
+        "system": false,
+        "id": "nragpu48",
+        "name": "llanta_dd",
+        "type": "number",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "noDecimal": false
+        }
+      },
+      {
+        "system": false,
+        "id": "sxeiphad",
+        "name": "llanta_tie",
+        "type": "number",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "noDecimal": false
+        }
+      },
+      {
+        "system": false,
+        "id": "448uv3ff",
+        "name": "llanta_tde",
+        "type": "number",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "noDecimal": false
+        }
+      },
+      {
+        "system": false,
+        "id": "garooslf",
+        "name": "created_by",
+        "type": "text",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      },
+      {
+        "system": false,
+        "id": "ed9fs6es",
+        "name": "estado",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "borrador",
+            "aprobada",
+            "rechazada"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "mokwmip4",
+        "name": "observaciones",
+        "type": "text",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      },
+      {
+        "system": false,
+        "id": "pk1qmaac",
+        "name": "fecha_vencimiento_soat",
+        "type": "date",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": "",
+          "max": ""
+        }
+      },
+      {
+        "system": false,
+        "id": "mszaobl4",
+        "name": "fecha_vencimiento_revision_tecnomecanica",
+        "type": "date",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": "",
+          "max": ""
+        }
+      },
+      {
+        "system": false,
+        "id": "nm6ucryy",
+        "name": "fecha_vencimiento_tarjeta_operacion",
+        "type": "date",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": "",
+          "max": ""
+        }
+      },
+      {
+        "system": false,
+        "id": "olmpusat",
+        "name": "status",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "approved",
+            "rejected"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "atrkdot7",
+        "name": "llanta_tii",
+        "type": "number",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "noDecimal": false
+        }
+      },
+      {
+        "system": false,
+        "id": "znyz5reh",
+        "name": "llanta_tdi",
+        "type": "number",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "noDecimal": false
+        }
+      },
+      {
+        "system": false,
+        "id": "gxwn8es5",
+        "name": "presion_llanta_d_li",
+        "type": "number",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "noDecimal": false
+        }
+      },
+      {
+        "system": false,
+        "id": "oseksycj",
+        "name": "presion_llanta_d_ld",
+        "type": "number",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "noDecimal": false
+        }
+      },
+      {
+        "system": false,
+        "id": "wqfa9f28",
+        "name": "presion_llanta_t_lie",
+        "type": "number",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "noDecimal": false
+        }
+      },
+      {
+        "system": false,
+        "id": "ick6hofe",
+        "name": "presion_llanta_t_lde",
+        "type": "number",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "noDecimal": false
+        }
+      },
+      {
+        "system": false,
+        "id": "bkf48ln6",
+        "name": "presion_llanta_t_lii",
+        "type": "number",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "noDecimal": false
+        }
+      },
+      {
+        "system": false,
+        "id": "sbmr6r7a",
+        "name": "presion_llanta_t_ldi",
+        "type": "number",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "noDecimal": false
+        }
+      },
+      {
+        "system": false,
+        "id": "fb4z887q",
+        "name": "propietario",
+        "type": "text",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      },
+      {
+        "system": false,
+        "id": "idsi6z8d",
+        "name": "documento_propietario",
+        "type": "text",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      },
+      {
+        "system": false,
+        "id": "im2k0evv",
+        "name": "tipo_propietario",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "empresa",
+            "persona"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "2zwmwedx",
+        "name": "images",
+        "type": "json",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {}
+      },
+      {
+        "system": false,
+        "id": "mi7q4ptc",
+        "name": "whatsapp",
+        "type": "bool",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {}
+      },
+      {
+        "system": false,
+        "id": "jwj3mpby",
+        "name": "licencia_conductor_numero",
+        "type": "text",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      },
+      {
+        "system": false,
+        "id": "m1jgmxz7",
+        "name": "numero_certificado",
+        "type": "text",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      },
+      {
+        "system": false,
+        "id": "lwu3oynx",
+        "name": "pedal_frenos",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "lge2saie",
+        "name": "bomba_frenos",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "tojmctfz",
+        "name": "caja_deposito",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "ckgolp2t",
+        "name": "terminales",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "xpokm4wa",
+        "name": "barras_bujes",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "i9hkjdvt",
+        "name": "protectores",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "ok",
+            "negativo",
+            "na"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "rzesnbwz",
+        "name": "firma_conductor",
+        "type": "text",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      },
+      {
+        "system": false,
+        "id": "jqvahhxo",
+        "name": "firma_inspector",
+        "type": "text",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      },
+      {
+        "system": false,
+        "id": "wcn88p23",
+        "name": "fecha_vencimiento_licencia",
+        "type": "text",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      },
+      {
+        "system": false,
+        "id": "c4ecfeck",
+        "name": "publicUrl",
+        "type": "text",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      },
+      {
+        "system": false,
+        "id": "vmbrjsxo",
+        "name": "qrImage",
+        "type": "file",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "maxSize": 5242880,
+          "mimeTypes": [],
+          "thumbs": [],
+          "protected": false
+        }
+      },
+      {
+        "system": false,
+        "id": "w7xyon1j",
+        "name": "verificationCode",
+        "type": "text",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      }
+    ],
+    "indexes": [],
+    "listRule": "",
+    "viewRule": "",
+    "createRule": "",
+    "updateRule": "",
+    "deleteRule": "",
+    "options": {}
+  }
+]
