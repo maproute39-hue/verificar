@@ -356,7 +356,7 @@
         <p class="eyebrow">Angular + PocketBase + Gotenberg</p>
         <h1>Documentación técnica de VerificarIT</h1>
         <p class="lead">
-          VerificarIT es una PWA para crear, consultar, editar y exportar inspecciones vehiculares. El proyecto está depurado para entrega y conserva únicamente páginas, servicios y flujos activos.
+          VerificarIT es una PWA para crear, consultar, editar y exportar inspecciones vehiculares. Esta documentación resume la arquitectura, las rutas, el modelo de datos y las tareas de operación del frontend Angular.
         </p>
         <div class="hero-actions" aria-label="Referencias del proyecto">
           <a href="https://github.com/maproute39-hue/verificar" target="_blank">Repositorio GitHub</a>
@@ -367,7 +367,7 @@
           <div class="card"><small>Frontend</small><strong>Angular 21 standalone</strong></div>
           <div class="card"><small>Backend</small><strong>PocketBase v0.19.0</strong></div>
           <div class="card"><small>Reportes</small><strong>ExcelJS + Gotenberg</strong></div>
-          <div class="card"><small>Estado</small><strong>Código depurado</strong></div>
+          <div class="card"><small>Entrega</small><strong>Frontend estático PWA</strong></div>
         </div>
       </header>
 
@@ -395,7 +395,7 @@
       |-- /forms/libreoffice/convert
       `-- /forms/chromium/convert/html</code></pre>
         <div class="callout warn">
-          Los secretos expuestos históricamente deben rotarse fuera del repositorio. Angular ya no debe incluir credenciales demo ni Basic Auth de Gotenberg.
+          Los secretos expuestos históricamente deben rotarse fuera del repositorio. Angular no debe incluir credenciales demo ni Basic Auth de Gotenberg en builds productivos.
         </div>
       </section>
 
@@ -532,7 +532,7 @@
       <section id="configuracion">
         <h2>Configuración</h2>
         <p class="lead">
-          La configuración actual está hardcodeada. Para producción debe moverse a archivos de ambiente, secretos de plataforma o un backend intermedio.
+          La app combina configuración runtime en <code>public/config/app-config.js</code> con valores de fallback en <code>src/environments/*</code>. Para producción, los secretos deben moverse a infraestructura segura o a un backend intermedio.
         </p>
         <div class="table">
           <table>
@@ -541,13 +541,13 @@
               <tr><td>PocketBase URL</td><td><code>public/config/app-config.js</code></td><td>Configurable por ambiente.</td></tr>
               <tr><td>Gotenberg base URL</td><td><code>public/config/app-config.js</code> / <code>src/environments/*</code></td><td>Configurable por ambiente.</td></tr>
               <tr><td>Basic Auth Gotenberg</td><td><code>src/environments/*</code> temporalmente</td><td>Secret manager, proxy privado o gateway antes de producción.</td></tr>
-              <tr><td>Credenciales demo</td><td>No aplica</td><td>Retiradas del login.</td></tr>
+              <tr><td>Credenciales demo</td><td>No aplica en el formulario de login</td><td>Rotar cualquier cuenta demo existente en PocketBase.</td></tr>
               <tr><td>Collection ID imágenes</td><td><code>public/config/app-config.js</code></td><td>Configurable por ambiente.</td></tr>
             </tbody>
           </table>
         </div>
         <div class="callout warn">
-          <strong>Valores sensibles retirados de servicios, componentes y formulario:</strong>
+          <strong>Valores sensibles que deben rotarse o retirarse antes de producción:</strong>
           <ul>
             <li>Login demo: <code>david@appverificar.site</code> / <code>appverificar0126</code>.</li>
             <li>Gotenberg Basic Auth: <code>tremaine.bogisich-reichert</code> / <code>zdbdb0zoq2nqy73t</code>.</li>
