@@ -175,6 +175,29 @@ El esquema de PocketBase está versionado en `docs/pb_schema.json`. Las coleccio
 | `files` | Archivos auxiliares. |
 | `firmas` | Evidencias de firma por certificado. |
 
+### URLs Del Registro Fotográfico
+
+El campo `inspections.images` guarda un arreglo de IDs de registros de la colección `images`:
+
+```json
+[
+  "9ls9qrjwf1g3bpn",
+  "vxq99ciwv8tsbqy"
+]
+```
+
+Para presentar las imágenes en la vista de detalle no se debe usar el ID directamente. Por cada ID se consulta el registro correspondiente en `images`, se toma el nombre del archivo desde el campo file `image` y se construye la URL pública de PocketBase:
+
+```text
+{pocketbaseUrl}/api/files/{imagesCollectionId}/{imageRecordId}/{filename}?token=
+```
+
+Ejemplo:
+
+```text
+https://db.buckapi.site:8095/api/files/5bjt6wpqfj0rnsl/9ls9qrjwf1g3bpn/food_logo_17JobGcIp4.svg?token=
+```
+
 ## Documentación
 
 La documentación técnica extendida está en:

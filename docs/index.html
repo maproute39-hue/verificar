@@ -500,6 +500,13 @@ npm run build</code></pre>
             </tbody>
           </table>
         </div>
+        <h3>Registro Fotográfico</h3>
+        <p>
+          El campo <code>inspections.images</code> guarda un arreglo de IDs de registros de la colección <code>images</code>, por ejemplo <code>["9ls9qrjwf1g3bpn", "vxq99ciwv8tsbqy"]</code>. Para presentar una fotografía, la UI debe consultar cada registro en <code>images</code>, leer el nombre real del archivo desde el campo file <code>image</code> y construir la URL pública de PocketBase.
+        </p>
+        <pre><code>{pocketbaseUrl}/api/files/{imagesCollectionId}/{imageRecordId}/{filename}?token=</code></pre>
+        <p>Ejemplo:</p>
+        <pre><code>https://db.buckapi.site:8095/api/files/5bjt6wpqfj0rnsl/9ls9qrjwf1g3bpn/food_logo_17JobGcIp4.svg?token=</code></pre>
         <h3>Grupos De Campos De Inspección</h3>
         <ul>
           <li>Identificación: <code>id</code>, <code>numero_certificado</code>, <code>created</code>, <code>updated</code>.</li>
