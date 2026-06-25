@@ -24,6 +24,10 @@ interface FlatpickrOptions {
     minDate?: string | Date;
     onChange?: (selectedDates: Date[], dateStr: string) => void;
 }
+interface InspectionImage {
+    id: string | null;
+    url: string;
+}
 @Component({
     selector: 'app-detail',
     standalone: true,
@@ -172,7 +176,7 @@ export class Detail implements OnInit, AfterViewInit {
             }
             if (uploadedImageIds.length > 0) {
                 const inspection = await this.inspectionService.pb.collection('inspections').getOne(id);
-                const currentImages = inspection['images'] || [];
+                const currentImages = this.normalizeInspectionImagesField(inspection['images']);
                 const updatedImages = [...currentImages, ...uploadedImageIds];
                 await this.inspectionService.pb.collection('inspections').update(id, {
                     images: updatedImages
@@ -218,13 +222,21 @@ export class Detail implements OnInit, AfterViewInit {
                 allowOutsideClick: false,
                 didOpen: () => Swal.showLoading()
             });
-            const imageId = this.extractImageIdFromUrl(imageUrl);
+            const imageId = this.inspectionImageRecords[index]?.id || this.extractImageIdFromUrl(imageUrl);
             if (imageId) {
                 await this.inspectionService.pb.collection('images').delete(imageId);
             }
             const inspection = await this.inspectionService.pb.collection('inspections').getOne(id);
-            const currentImages = inspection['images'] || [];
-            const updatedImages = currentImages.filter((imgId: string) => imgId !== imageId);
+            const currentImages = this.normalizeInspectionImagesField(inspection['images']);
+            const updatedImages = currentImages.filter((image: any) => {
+                if (!imageId) {
+                    return image !== imageUrl;
+                }
+                if (typeof image === 'string') {
+                    return image !== imageId;
+                }
+                return image?.id !== imageId;
+            });
             await this.inspectionService.pb.collection('inspections').update(id, {
                 images: updatedImages
             });
@@ -267,6 +279,7 @@ export class Detail implements OnInit, AfterViewInit {
     @ViewChild('fechaVencimientoTarjetaOperacion')
     fechaVencimientoTarjetaOperacionInput!: ElementRef<HTMLInputElement>;
     inspectionImages: string[] = [];
+    inspectionImageRecords: InspectionImage[] = [];
     isLoadingImages: boolean = false;
     private album: any[] = [];
     private flatpickrInstances: any[] = [];
@@ -476,31 +489,16 @@ export class Detail implements OnInit, AfterViewInit {
         this.isLoadingImages = true;
         this.album = [];
         this.inspectionImages = [];
+        this.inspectionImageRecords = [];
         this.cdr.detectChanges();
         try {
             const inspection = await this.inspectionService.pb.collection('inspections').getOne(inspectionId);
-            const imageIds = inspection['images'] || [];
-            if (imageIds.length > 0) {
-                const imagePromises = imageIds.map(async (imageId: string) => {
-                    try {
-                        const imageRecord = await this.inspectionService.pb.collection('images').getOne(imageId);
-                        const filename = imageRecord['image'];
-                        if (filename) {
-                            const url = this.inspectionService.getImageUrl(this.imagesCollectionId, imageId, filename);
-                            await this.preloadImage(url);
-                            return {
-                                url,
-                                imageRecord
-                            };
-                        }
-                        return null;
-                    }
-                    catch (error) {
-                        console.error(`Error al cargar imagen ${imageId}:`, error);
-                        return null;
-                    }
-                });
-                const loadedImages = (await Promise.all(imagePromises)).filter(Boolean);
+            const images = this.normalizeInspectionImagesField(inspection['images']);
+            if (images.length > 0) {
+                const loadedImages = (await Promise.all(
+                    images.map((image: any) => this.resolveInspectionImage(image))
+                )).filter(Boolean) as InspectionImage[];
+                this.inspectionImageRecords = loadedImages;
                 this.inspectionImages = loadedImages.map(img => img.url);
                 this.album = loadedImages.map((img, index) => ({
                     src: img.url,
@@ -518,6 +516,64 @@ export class Detail implements OnInit, AfterViewInit {
             this.cdr.detectChanges();
         }
     }
+    private normalizeInspectionImagesField(images: any): any[] {
+        if (!images) {
+            return [];
+        }
+        if (Array.isArray(images)) {
+            return images;
+        }
+        if (typeof images === 'string') {
+            const trimmed = images.trim();
+            if (!trimmed) {
+                return [];
+            }
+            if (trimmed.startsWith('[') || trimmed.startsWith('{')) {
+                try {
+                    const parsed = JSON.parse(trimmed);
+                    return Array.isArray(parsed) ? parsed : [parsed];
+                }
+                catch (error) {
+                    console.warn('No se pudo interpretar el campo images como JSON:', error);
+                }
+            }
+            return [trimmed];
+        }
+        return [images];
+    }
+    private async resolveInspectionImage(image: any): Promise<InspectionImage | null> {
+        try {
+            if (typeof image === 'string' && this.isImageUrl(image)) {
+                await this.preloadImage(image);
+                return {
+                    id: this.extractImageIdFromUrl(image),
+                    url: image
+                };
+            }
+            const imageRecord = typeof image === 'string'
+                ? await this.inspectionService.pb.collection('images').getOne(image)
+                : image;
+            const imageId = imageRecord?.id || (typeof image === 'string' ? image : null);
+            const filename = Array.isArray(imageRecord?.image) ? imageRecord.image[0] : imageRecord?.image;
+            if (!imageId || !filename) {
+                return null;
+            }
+            const collectionId = imageRecord?.collectionId || imageRecord?.collectionName || this.imagesCollectionId;
+            const url = this.inspectionService.getImageUrl(collectionId, imageId, filename);
+            await this.preloadImage(url);
+            return {
+                id: imageId,
+                url
+            };
+        }
+        catch (error) {
+            console.error('Error al cargar imagen de inspección:', image, error);
+            return null;
+        }
+    }
+    private isImageUrl(value: string): boolean {
+        return /^(https?:\/\/|data:image\/|\/|assets\/)/i.test(value);
+    }
     async testGotenberg(): Promise<void> {
         try {
             const testBlob = new Blob(['test'], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
@@ -530,7 +586,7 @@ export class Detail implements OnInit, AfterViewInit {
         }
     }
     onImageError(event: any): void {
-        event.target.src = 'assets/images/placeholder.jpg';
+        event.target.src = 'assets/images/no_image.png';
         event.target.onerror = null;
     }
     openImageModal(imageUrl: string, index: number): void {

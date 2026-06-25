@@ -102,6 +102,7 @@ export interface Inspection {
     tanques_compresor?: string;
     firma_conductor?: string;
     firma_inspector?: string;
+    images?: string[];
     llanta_d_ld?: number;
     llanta_t_lie?: number;
     llanta_t_lii?: number;

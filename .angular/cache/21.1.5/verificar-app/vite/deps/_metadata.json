@@ -1,0 +1,130 @@
+{
+  "hash": "d1f960d0",
+  "configHash": "17037555",
+  "lockfileHash": "a3bbb6cc",
+  "browserHash": "3419d8c7",
+  "optimized": {
+    "@almothafar/angular-signature-pad": {
+      "src": "../../../../../../node_modules/@almothafar/angular-signature-pad/fesm2022/almothafar-angular-signature-pad.mjs",
+      "file": "@almothafar_angular-signature-pad.js",
+      "fileHash": "1fb4ab38",
+      "needsInterop": false
+    },
+    "@angular/common": {
+      "src": "../../../../../../node_modules/@angular/common/fesm2022/common.mjs",
+      "file": "@angular_common.js",
+      "fileHash": "2a7eb060",
+      "needsInterop": false
+    },
+    "@angular/common/http": {
+      "src": "../../../../../../node_modules/@angular/common/fesm2022/http.mjs",
+      "file": "@angular_common_http.js",
+      "fileHash": "d6ab1571",
+      "needsInterop": false
+    },
+    "@angular/core": {
+      "src": "../../../../../../node_modules/@angular/core/fesm2022/core.mjs",
+      "file": "@angular_core.js",
+      "fileHash": "6be1d5e4",
+      "needsInterop": false
+    },
+    "@angular/forms": {
+      "src": "../../../../../../node_modules/@angular/forms/fesm2022/forms.mjs",
+      "file": "@angular_forms.js",
+      "fileHash": "38df5731",
+      "needsInterop": false
+    },
+    "@angular/platform-browser": {
+      "src": "../../../../../../node_modules/@angular/platform-browser/fesm2022/platform-browser.mjs",
+      "file": "@angular_platform-browser.js",
+      "fileHash": "54bb0972",
+      "needsInterop": false
+    },
+    "@angular/router": {
+      "src": "../../../../../../node_modules/@angular/router/fesm2022/router.mjs",
+      "file": "@angular_router.js",
+      "fileHash": "f45c9441",
+      "needsInterop": false
+    },
+    "@angular/service-worker": {
+      "src": "../../../../../../node_modules/@angular/service-worker/fesm2022/service-worker.mjs",
+      "file": "@angular_service-worker.js",
+      "fileHash": "4900b6f1",
+      "needsInterop": false
+    },
+    "exceljs": {
+      "src": "../../../../../../node_modules/exceljs/dist/exceljs.min.js",
+      "file": "exceljs.js",
+      "fileHash": "4c48d180",
+      "needsInterop": true
+    },
+    "file-saver": {
+      "src": "../../../../../../node_modules/file-saver/dist/FileSaver.min.js",
+      "file": "file-saver.js",
+      "fileHash": "9fbc9a16",
+      "needsInterop": true
+    },
+    "ngx-lightbox": {
+      "src": "../../../../../../node_modules/ngx-lightbox/index.js",
+      "file": "ngx-lightbox.js",
+      "fileHash": "7c501709",
+      "needsInterop": false
+    },
+    "pocketbase": {
+      "src": "../../../../../../node_modules/pocketbase/dist/pocketbase.es.mjs",
+      "file": "pocketbase.js",
+      "fileHash": "3d268ef8",
+      "needsInterop": false
+    },
+    "rxjs": {
+      "src": "../../../../../../node_modules/rxjs/dist/esm5/index.js",
+      "file": "rxjs.js",
+      "fileHash": "b5659b4a",
+      "needsInterop": false
+    },
+    "rxjs/operators": {
+      "src": "../../../../../../node_modules/rxjs/dist/esm5/operators/index.js",
+      "file": "rxjs_operators.js",
+      "fileHash": "68380e82",
+      "needsInterop": false
+    },
+    "sweetalert2": {
+      "src": "../../../../../../node_modules/sweetalert2/dist/sweetalert2.esm.all.js",
+      "file": "sweetalert2.js",
+      "fileHash": "3d6eb503",
+      "needsInterop": false
+    }
+  },
+  "chunks": {
+    "chunk-RCPDPIZ6": {
+      "file": "chunk-RCPDPIZ6.js"
+    },
+    "chunk-XBMUXO6R": {
+      "file": "chunk-XBMUXO6R.js"
+    },
+    "chunk-3WR3CYBJ": {
+      "file": "chunk-3WR3CYBJ.js"
+    },
+    "chunk-Q2MC5GWD": {
+      "file": "chunk-Q2MC5GWD.js"
+    },
+    "chunk-335KF3H6": {
+      "file": "chunk-335KF3H6.js"
+    },
+    "chunk-JRFR6BLO": {
+      "file": "chunk-JRFR6BLO.js"
+    },
+    "chunk-HWYXSU2G": {
+      "file": "chunk-HWYXSU2G.js"
+    },
+    "chunk-MARUHEWW": {
+      "file": "chunk-MARUHEWW.js"
+    },
+    "chunk-6ATBX5TQ": {
+      "file": "chunk-6ATBX5TQ.js"
+    },
+    "chunk-VL5VAURS": {
+      "file": "chunk-VL5VAURS.js"
+    }
+  }
+}

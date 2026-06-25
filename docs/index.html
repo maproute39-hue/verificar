@@ -364,6 +364,7 @@
           <a href="https://github.com/maproute39-hue/verificar" target="_blank">Repositorio GitHub</a>
           <a href="https://github.com/maproute39-hue/verificar/blob/main/README.md">README</a>
           <a href="pb_schema.json" target="_blank">Schema PocketBase</a>
+          <a href="gotenberg-amplify-seguridad.md" target="_blank">Seguridad Gotenberg</a>
         </div>
         <div class="grid">
           <div class="card"><small>Frontend</small><strong>Angular 21 standalone</strong></div>
@@ -584,6 +585,7 @@ npm run build</code></pre>
               <tr><td>Gotenberg base URL</td><td><code>public/config/app-config.js</code> / <code>src/environments/*</code></td><td>Configurable por ambiente.</td></tr>
               <tr><td>Collection ID imágenes</td><td><code>public/config/app-config.js</code></td><td>Configurable por ambiente.</td></tr>
               <tr><td>Autenticación de PDF</td><td>Proxy/backend recomendado</td><td>No incluir credenciales de Gotenberg en el bundle Angular.</td></tr>
+              <tr><td>Acceso demo</td><td><code>david@appverificar.site</code></td><td>Usuario de prueba para validación funcional.</td></tr>
             </tbody>
           </table>
         </div>
@@ -592,6 +594,9 @@ npm run build</code></pre>
   gotenbergBaseUrl: 'https://pdf.example.com',
   imagesCollectionId: 'collection_id'
 };</code></pre>
+        <p>
+          Para el manejo seguro de credenciales de Gotenberg en Amplify, ver <a href="gotenberg-amplify-seguridad.md" target="_blank">Seguridad de Gotenberg en AWS Amplify</a>.
+        </p>
       </section>
 
       <section id="despliegue">

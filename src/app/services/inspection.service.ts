@@ -106,8 +106,10 @@ export class InspectionService {
     searchByPlaca(placa: string): Observable<Inspection[]> {
         return this.getAllInspections(1, 50, '-created', `placa~"${placa}"`).pipe(map(response => response.items));
     }
-    getImageUrl(collectionId: string, recordId: string, filename: string, thumb: string = '0x0'): string {
-        return `${this.pb.baseUrl}/api/files/${collectionId}/${recordId}/${filename}?thumb=${thumb}`;
+    getImageUrl(collectionId: string, recordId: string, filename: string, thumb: string = ''): string {
+        const baseUrl = this.pb.baseUrl.replace(/\/$/, '');
+        const fileUrl = `${baseUrl}/api/files/${collectionId}/${recordId}/${filename}`;
+        return thumb ? `${fileUrl}?thumb=${thumb}` : `${fileUrl}?token=`;
     }
     async getNextCertificateNumberPreview(prefix: string): Promise<string> {
         const secuencia = await this.pb.collection('secuencias').getFirstListItem(`prefijo="${prefix}"`);
